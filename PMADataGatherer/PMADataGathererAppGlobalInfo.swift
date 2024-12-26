@@ -24,7 +24,7 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.1903"
+    static let sGlobalInfoAppVers:String                                 = "v1.2001"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
     static let sGlobalInfoAppLogFilespec:String                          = "PMADataGatherer.log"
@@ -55,7 +55,7 @@ public class AppGlobalInfo: NSObject
     static let bIssueTestAppUserNotifications:Bool                       = false
     static let bInstantiateAppParseCoreManager:Bool                      = true
     static let bInstantiateAppCoreLocationSupport:Bool                   = true
-    static let bPerformAppCoreLocationTesting:Bool                       = true
+    static let bPerformAppCoreLocationTesting:Bool                       = false
     static let bPerformAppDevTesting:Bool                                = true
     static let sAppUploadNotifyFrom:String                               = "dcox@justmacapps.net"
 
