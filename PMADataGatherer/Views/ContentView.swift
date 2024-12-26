@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.2506"
+        static let sClsVers      = "v1.2601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
         static let bClsTrace     = true
@@ -60,8 +60,10 @@ struct ContentView: View
     @State private var isAppExecutionPreviousShowing:Bool        = false
 
     @State private var cContentViewRefreshButtonPresses:Int      = 0
+    @State private var cContentViewAppDataButtonPresses:Int      = 0
     @State private var cContentViewAppLocationButtonPresses:Int  = 0
 
+    @State private var isAppDataViewModal:Bool                   = false
     @State private var isAppLocationViewModal:Bool               = false
 
     @State private var shouldContentViewChange:Bool              = false
@@ -430,6 +432,62 @@ struct ContentView: View
                     }
 
                 }
+
+                Spacer()
+
+                Button
+                {
+
+                    self.cContentViewAppDataButtonPresses += 1
+
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView in Button(Xcode).'App Data...'.#(\(self.cContentViewAppDataButtonPresses))...")
+
+                    self.isAppDataViewModal.toggle()
+
+            //  #if os(macOS)
+            //
+            //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+            //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+            //
+            //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
+            //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
+            //
+            //  #endif
+            //
+                }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "swiftdata")
+                            .help(Text("App Data Gatherer"))
+                            .imageScale(.large)
+
+                        Text("Data")
+                            .font(.caption)
+
+                    }
+
+                }
+            #if os(macOS)
+                .sheet(isPresented:$isAppDataViewModal, content:
+                    {
+          
+                        AppDataGathererView(jmAppParseCoreManager:getAppParseCoreManagerInstance())
+          
+                    }
+                )
+            #endif
+            #if os(iOS)
+                .fullScreenCover(isPresented:$isAppDataViewModal)
+                {
+
+                    AppDataGathererView(jmAppParseCoreManager:getAppParseCoreManagerInstance())
+
+                }
+            #endif
 
                 Spacer()
 

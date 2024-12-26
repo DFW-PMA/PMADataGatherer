@@ -78,6 +78,8 @@
 		F08C00C82CE536430045A5CD /* JmAppParseCoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08C00C62CE536430045A5CD /* JmAppParseCoreManager.swift */; };
 		F08C00CB2CE537420045A5CD /* ParseLiveQuery in Frameworks */ = {isa = PBXBuildFile; productRef = F08C00CA2CE537420045A5CD /* ParseLiveQuery */; };
 		F08C00CD2CE537420045A5CD /* ParseObjC in Frameworks */ = {isa = PBXBuildFile; productRef = F08C00CC2CE537420045A5CD /* ParseObjC */; };
+		F08C86B02D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08C86AF2D1DBAEF00D5B19A /* AppDataGathererView.swift */; };
+		F08C86B12D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08C86AF2D1DBAEF00D5B19A /* AppDataGathererView.swift */; };
 		F091A2842C8F6FEF00FB85D5 /* RestURLData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A2802C8F6FEE00FB85D5 /* RestURLData.swift */; };
 		F091A2852C8F6FEF00FB85D5 /* RestURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A2812C8F6FEF00FB85D5 /* RestURLResponse.swift */; };
 		F091A2862C8F6FEF00FB85D5 /* RestURLEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A2822C8F6FEF00FB85D5 /* RestURLEndpoint.swift */; };
@@ -197,6 +199,7 @@
 		F07F7B942C94DB2D0094AE18 /* DefinesObjCOverrides.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefinesObjCOverrides.m; sourceTree = "<group>"; };
 		F08A94752D11F1A900B69C3C /* AppTidScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTidScheduleView.swift; sourceTree = "<group>"; };
 		F08C00C62CE536430045A5CD /* JmAppParseCoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JmAppParseCoreManager.swift; sourceTree = "<group>"; };
+		F08C86AF2D1DBAEF00D5B19A /* AppDataGathererView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererView.swift; sourceTree = "<group>"; };
 		F091A2802C8F6FEE00FB85D5 /* RestURLData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestURLData.swift; sourceTree = "<group>"; };
 		F091A2812C8F6FEF00FB85D5 /* RestURLResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestURLResponse.swift; sourceTree = "<group>"; };
 		F091A2822C8F6FEF00FB85D5 /* RestURLEndpoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestURLEndpoint.swift; sourceTree = "<group>"; };
@@ -339,6 +342,7 @@
 		F028C5BF2C486134007C459E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F08C86AF2D1DBAEF00D5B19A /* AppDataGathererView.swift */,
 				F08A94752D11F1A900B69C3C /* AppTidScheduleView.swift */,
 				F029E0B92C823ACB00FC96B9 /* AppAboutView.swift */,
 				F069E2AE2CEFADE5001F0A5E /* AppAuthenticateView.swift */,
@@ -546,6 +550,7 @@
 				F028C5B32C48610A007C459E /* ContentView.swift in Sources */,
 				F0F1277E2CEB944D00656B7E /* AppLocationView.swift in Sources */,
 				F0289D332C53D98D001B19CD /* HelpBasicMode.swift in Sources */,
+				F08C86B02D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */,
 				F00619A62C94A8060094614E /* MultipartRequestInfo.swift in Sources */,
 				F091A2862C8F6FEF00FB85D5 /* RestURLEndpoint.swift in Sources */,
 				F00619A02C94A8060094614E /* MultipartRequestDriver.swift in Sources */,
@@ -607,6 +612,7 @@
 				F0BCCC5D2C820EF1007EA382 /* HelpBasicView.swift in Sources */,
 				F0BCCC5E2C820EF1007EA382 /* SettingsSingleView.swift in Sources */,
 				F0EF628C2C8B70BE00DB79DB /* DeveloperSupportEmail.swift in Sources */,
+				F08C86B12D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */,
 				F0CBE9002CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */,
 				F0F1277D2CEB944D00656B7E /* AppLocationView.swift in Sources */,
 				F0474E5B2CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift in Sources */,
@@ -878,7 +884,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 01.02.24C361;
+				CURRENT_PROJECT_VERSION = 01.03.24C361;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -928,7 +934,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 01.02.24C361;
+				CURRENT_PROJECT_VERSION = 01.03.24C361;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
