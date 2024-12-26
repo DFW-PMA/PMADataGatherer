@@ -6,6 +6,7 @@
 //  Copyright © JustMacApps 2023-2024. All rights reserved.
 //
 
+import Foundation
 import SwiftUI
 
 struct AppDataGathererView: View 
@@ -15,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0101"
+        static let sClsVers      = "v1.0111"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
         static let bClsTrace     = true
@@ -30,9 +31,12 @@ struct AppDataGathererView: View
     
     @StateObject   var jmAppParseCoreManager:JmAppParseCoreManager
     
-    @State private var cAppDataGathererViewRefreshButtonPresses:Int = 0
+    @State private var cAppDataGathererViewRefreshButtonPresses:Int   = 0
+    @State private var cAppDataGathererViewTherapistButtonPresses:Int = 0
 
-                   var jmAppDelegateVisitor:JmAppDelegateVisitor    = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @State private var isAppDataTherapist1ViewModal:Bool              = false
+
+                   var jmAppDelegateVisitor:JmAppDelegateVisitor      = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
     init(jmAppParseCoreManager:JmAppParseCoreManager)
     {
@@ -99,8 +103,8 @@ struct AppDataGathererView: View
 
                         let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Refresh'.#(\(self.cAppDataGathererViewRefreshButtonPresses))...")
 
-                        let _ = self.checkIfAppParseCoreHasPFCscDataItems()
-                        let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems()
+                    //  let _ = self.checkIfAppParseCoreHasPFCscDataItems()
+                    //  let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems()
 
                     }
                     label:
@@ -154,12 +158,140 @@ struct AppDataGathererView: View
 
                 Text("")
 
-                ScrollView(.vertical)
+            //  ScrollView(.vertical)
+            //  {
+
+                List
                 {
 
-                    Text("...<under-construction> DATA Gatherer...")
+                    Section
+                    {
+
+                        HStack(alignment:.center)
+                        {
+
+                            Spacer()
+
+                            Button
+                            {
+
+                                self.cAppDataGathererViewTherapistButtonPresses += 1
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by TID #1'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+
+                                self.isAppDataTherapist1ViewModal.toggle()
+
+                            }
+                            label:
+                            {
+
+                                VStack(alignment:.center)
+                                {
+
+                                    Label("", systemImage: "bed.double")
+                                        .help(Text("Therapist Data Gatherer #1 by TID Screen..."))
+                                        .imageScale(.large)
+
+                                    Text("Therapist - Data Gatherer by TID #1 - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                        .font(.caption)
+
+                                }
+
+                            }
+                        #if os(macOS)
+                            .sheet(isPresented:$isAppDataTherapist1ViewModal, content:
+                                {
+
+                                    AppDataGathererTherapist1View(jmAppParseCoreManager:jmAppParseCoreManager)
+
+                                }
+                            )
+                        #endif
+                        #if os(iOS)
+                            .fullScreenCover(isPresented:$isAppDataTherapist1ViewModal)
+                            {
+
+                                AppDataGathererTherapist1View(jmAppParseCoreManager:jmAppParseCoreManager)
+
+                            }
+                        #endif
+
+                            Spacer()
+
+                        }
+
+                    }
+                    header:
+                    {
+
+                        Text("Therapist(s)")
+                            .bold()
+                            .italic()
+                            .underline()
+
+                    }
+
+                    Section
+                    {
+
+                        HStack(alignment:.center)
+                        {
+
+                            Spacer()
+
+                            Text("<under-construction>")
+                                .bold()
+                                .italic()
+                                .underline()
+                            Text(" => DATA Gatherer #2...")
+
+                            Spacer()
+
+                        }
+
+                    }
+                    header:
+                    {
+
+                        Text("Patient(s)")
+                            .bold()
+                            .italic()
+                            .underline()
+
+                    }
+
+                    Section
+                    {
+
+                        HStack(alignment:.center)
+                        {
+
+                            Spacer()
+
+                            Text("<under-construction>")
+                                .bold()
+                                .italic()
+                                .underline()
+                            Text(" => DATA Gatherer #3...")
+
+                            Spacer()
+
+                        }
+
+                    }
+                    header:
+                    {
+
+                        Text("Other")
+                            .bold()
+                            .italic()
+                            .underline()
+
+                    }
 
                 }
+
+            //  }
 
             }
 
@@ -168,270 +300,6 @@ struct AppDataGathererView: View
         
     }
     
-    private func checkIfAppParseCoreHasPFCscDataItems() -> Bool
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-  
-        if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
-
-            let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForCSC()
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
-
-        }
-
-        var bWasAppPFCscDataPresent:Bool = false
-
-        if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
-
-            bWasAppPFCscDataPresent = false
-
-        }
-        else
-        {
-
-            if ((jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems.count)! < 1)
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
-
-                bWasAppPFCscDataPresent = false
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
-
-                bWasAppPFCscDataPresent = true
-
-            }
-
-        }
-        
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
-  
-        return bWasAppPFCscDataPresent
-  
-    }   // End of private func checkIfAppParseCoreHasPFCscDataItems().
-
-    private func checkIfAppParseCoreHasPFPatientCalDayItems() -> Bool
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-  
-        var bWasAppPFPatientCalDayCalled:Bool = false
-
-        if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreManager' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
-
-            let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.gatherJmAppParsePFQueriesForScheduledLocationsInBackground()
-
-            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreManager' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
-
-            bWasAppPFPatientCalDayCalled = true
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
-
-            bWasAppPFPatientCalDayCalled = false
-
-        }
-
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFPatientCalDayCalled' is [\(String(describing: bWasAppPFPatientCalDayCalled))]...")
-  
-        return bWasAppPFPatientCalDayCalled
-  
-    }   // End of private func checkIfAppParseCoreHasPFPatientCalDayItems().
-
-    private func convertPFCscDataItemToTid(pfCscDataItem:ParsePFCscDataItem)->String
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'pfCscDataItem' is [\(pfCscDataItem)]...")
-
-        // Use the TherapistName in the PFCscDataItem to lookup the 'sPFTherapistParseTID'...
-
-        var sPFTherapistParseTID:String = ""
-
-        if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
-        
-            let jmAppParseCoreManager:JmAppParseCoreManager = self.jmAppDelegateVisitor.jmAppParseCoreManager!
-
-            if (pfCscDataItem.sPFCscParseName.count > 0)
-            {
-
-                sPFTherapistParseTID = jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
-
-            }
-
-        }
-        
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
-  
-        return sPFTherapistParseTID
-  
-    }   // End of private func convertPFCscDataItemToTid(pfCscDataItem:PFCscDataItem)->String.
-
-    private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem]
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
-
-        // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
-
-        var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
-
-        if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
-        
-            let jmAppParseCoreManager:JmAppParseCoreManager = self.jmAppDelegateVisitor.jmAppParseCoreManager!
-
-            if (sPFTherapistParseTID.count > 0)
-            {
-
-                if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
-                {
-
-                    listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
-
-                }
-
-            }
-
-        }
-        
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
-  
-        return listScheduledPatientLocationItems
-  
-    }   // End of private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem].
-
-    private func getScheduledPatientLocationItemsForPFCscDataItem(pfCscDataItem:ParsePFCscDataItem)->[ScheduledPatientLocationItem]
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'pfCscDataItem' is [\(pfCscDataItem)]...")
-
-        // Use the Therapist TID to lookup any ScheduledPatientLocationItem(s)...
-
-        let sPFTherapistParseTID:String
-            = self.convertPFCscDataItemToTid(pfCscDataItem:pfCscDataItem)
-        let listScheduledPatientLocationItems:[ScheduledPatientLocationItem] 
-            = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sPFTherapistParseTID)
-
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
-  
-        return listScheduledPatientLocationItems
-  
-    }   // End of private func getScheduledPatientLocationItemsForPFCscDataItem(pfCscDataItem:PFCscDataItem)->[ScheduledPatientLocationItem].
-
-    private func getScheduledPatientLocationItemsCountForPFCscDataItem(pfCscDataItem:ParsePFCscDataItem)->Int
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'pfCscDataItem' is [\(pfCscDataItem)]...")
-
-        // Use the 'pfCscDataItem' to lookup any ScheduledPatientLocationItem(s) and return their count...
-
-        var cScheduledPatientLocationItems:Int = 0
-        let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
-            = self.getScheduledPatientLocationItemsForPFCscDataItem(pfCscDataItem:pfCscDataItem)
-
-        if (listScheduledPatientLocationItems.count > 0)
-        {
-        
-            cScheduledPatientLocationItems = listScheduledPatientLocationItems.count
-        
-        }
-        else
-        {
-        
-            cScheduledPatientLocationItems = 0
-        
-        }
-
-        if (cScheduledPatientLocationItems == 1)
-        {
-        
-            let scheduledPatientLocationItem:ScheduledPatientLocationItem = listScheduledPatientLocationItems[0]
-
-            self.xcgLogMsg("\(sCurrMethodDisp) <Checking> The ONLY Patient 'visit' for 'sPFTherapistParseTID' of [\(scheduledPatientLocationItem.sTid)] to determine if it is a 'placeholder' object...")
-
-            // If the ONLY Patient 'visit' is a 'placeholder' object (no PID or Date values), reset the returned Visit count to 0...
-
-            if (scheduledPatientLocationItem.iPid                     == -1 &&
-                scheduledPatientLocationItem.sVDate.count              < 1  &&
-                scheduledPatientLocationItem.sVDateStartTime.count     < 1  &&
-                scheduledPatientLocationItem.sVDateStartTime24h.count  < 1)
-            {
-
-                cScheduledPatientLocationItems = 0
-
-                self.xcgLogMsg("\(sCurrMethodDisp) <Checking> The ONLY Patient 'visit' for 'sPFTherapistParseTID' of [\(scheduledPatientLocationItem.sTid)] is a 'placeholder' object - resetting the 'visits' count to 0...")
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) <Checking> The ONLY Patient 'visit' for 'sPFTherapistParseTID' of [\(scheduledPatientLocationItem.sTid)] is NOT a 'placeholder' object...")
-
-            }
-        
-        }
-
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'cScheduledPatientLocationItems' is [\(cScheduledPatientLocationItems)]...")
-  
-        return cScheduledPatientLocationItems
-  
-    }   // End of private func getScheduledPatientLocationItemsCountForPFCscDataItem(pfCscDataItem:ParsePFCscDataItem)->Int.
-
 }   // End of struct AppDataGathererView(View).
 
 #Preview 
