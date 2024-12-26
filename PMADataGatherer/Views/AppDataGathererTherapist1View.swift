@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1View"
-        static let sClsVers      = "v1.0115"
+        static let sClsVers      = "v1.0116"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
         static let bClsTrace     = true
@@ -286,14 +286,6 @@ struct AppDataGathererTherapist1View: View
 
                         self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
 
-                    //  if (self.sTherapistName.count  > 0 &&
-                    //      self.sTherapistName       != "-N/A-")
-                    //  {
-                    //  
-                    //      self.isAppRunTherapistLocateByTidSuccessful.toggle()
-                    //  
-                    //  }
-
                         self.isAppRunTherapistLocateByTidShowing.toggle()
 
                     }
@@ -323,14 +315,14 @@ struct AppDataGathererTherapist1View: View
                         }
 
                     }
-                    .alert("TID #(\(sTherapistTID)) is Therapist 'named' [\(sTherapistName)]...", 
-                           isPresented:$isAppRunTherapistLocateByTidShowing)
-                    {
-                        Button("Ok", role:.cancel)
-                        {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'locate' the Therapist by TID...")
-                        }
-                    }
+                //  .alert("TID #(\(sTherapistTID)) is Therapist 'named' [\(sTherapistName)]...", 
+                //         isPresented:$isAppRunTherapistLocateByTidShowing)
+                //  {
+                //      Button("Ok", role:.cancel)
+                //      {
+                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'locate' the Therapist by TID...")
+                //      }
+                //  }
                     .padding()
 
                 }
