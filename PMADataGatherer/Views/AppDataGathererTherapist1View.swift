@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1View"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
         static let bClsTrace     = true
@@ -186,7 +186,9 @@ struct AppDataGathererTherapist1View: View
                         .foregroundColor(.red)
 
                     TextField("Therapist TID...", text:$sTherapistTID)
+                    #if os(iOS)
                         .keyboardType(.numberPad)
+                    #endif
                         .onReceive(Just(sTherapistTID))
                         { newValue in
                             let filteredValue = newValue.filter { "0123456789".contains($0) }
