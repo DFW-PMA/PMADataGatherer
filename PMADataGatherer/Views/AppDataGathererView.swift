@@ -2,7 +2,7 @@
 //  AppDataGathererView.swift
 //  PMADataGatherer
 //
-//  Created by Daryl Cox on 11/18/2024.
+//  Created by Daryl Cox on 12/26/2024.
 //  Copyright © JustMacApps 2023-2024. All rights reserved.
 //
 
@@ -16,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0111"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
         static let bClsTrace     = true
@@ -177,7 +177,7 @@ struct AppDataGathererView: View
 
                                 self.cAppDataGathererViewTherapistButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by TID #1'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by TID'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
 
                                 self.isAppDataTherapist1ViewModal.toggle()
 
@@ -192,7 +192,7 @@ struct AppDataGathererView: View
                                         .help(Text("Therapist Data Gatherer #1 by TID Screen..."))
                                         .imageScale(.large)
 
-                                    Text("Therapist - Data Gatherer by TID #1 - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                    Text("Therapist - Data Gatherer by TID - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
                                         .font(.caption)
 
                                 }

@@ -2,7 +2,7 @@
 //  AppDataGathererTherapist1DetailsView.swift
 //  PMADataGatherer
 //
-//  Created by Daryl Cox on 11/18/2024.
+//  Created by Daryl Cox on 12/26/2024.
 //  Copyright © JustMacApps 2023-2024. All rights reserved.
 //
 
@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0104"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
         static let bClsTrace     = true
@@ -128,7 +128,7 @@ struct AppDataGathererTherapist1DetailsView: View
                 Text(" - - - - - - - - - - - - - - - - - - - - ")
                     .frame(maxWidth:.infinity, alignment:.center)
 
-                Text("DATA Gatherer - Therapist Details by TID #1")
+                Text("DATA Gatherer - Therapist Details by TID")
                     .bold()
                     .frame(maxWidth:.infinity, alignment:.center)
 
