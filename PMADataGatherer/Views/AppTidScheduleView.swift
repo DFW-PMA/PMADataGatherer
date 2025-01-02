@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 12/17/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -20,7 +20,7 @@ struct AppTidScheduleView: View
         static let sClsId        = "AppTidScheduleView"
         static let sClsVers      = "v1.0205"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright © JustMacApps 2023-2024. All rights reserved."
+        static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         

@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 07/25/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import SwiftUI
@@ -26,7 +26,7 @@ public class AppGlobalInfo: NSObject
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
     static let sGlobalInfoAppVers:String                                 = "v1.2001"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
-    static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+    static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
     static let sGlobalInfoAppLogFilespec:String                          = "PMADataGatherer.log"
     static let sGlobalInfoAppLastGoodLogFilespec:String                  = "PMADataGatherer.last_good.log"
     static let sGlobalInfoAppLastCrashLogFilespec:String                 = "PMADataGatherer.crashed_last.log"

@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 12/26/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -18,7 +18,7 @@ struct AppDataGathererView: View
         static let sClsId        = "AppDataGathererView"
         static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         

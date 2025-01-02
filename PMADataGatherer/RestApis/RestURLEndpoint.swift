@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 08/11/2024.
-//  Copyright (c) JustMacApps 2018-2024. All rights reserved.
+//  Copyright (c) JustMacApps 2018-2025. All rights reserved.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ public class RestURLEndpoint: NSObject
         static let sClsId        = "RestURLEndpoint"
         static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright (c) JustMacApps 2018-2024. All rights reserved."
+        static let sClsCopyRight = "Copyright (c) JustMacApps 2018-2025. All rights reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true        
 

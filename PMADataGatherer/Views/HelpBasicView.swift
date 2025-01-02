@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by JustMacApps.net on 05/07/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -18,7 +18,7 @@ struct HelpBasicView: View
         static let sClsId          = "HelpBasicView"
         static let sClsVers        = "v1.1001"
         static let sClsDisp        = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
         static let bClsFileLog     = true
         

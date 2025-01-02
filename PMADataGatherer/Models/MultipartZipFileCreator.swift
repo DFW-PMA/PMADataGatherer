@@ -3,7 +3,7 @@
 //  JustAMultipartRequestTest1
 //
 //  Created by JustMacApps.net on 09/10/2024.
-//  Copyright © 2023-2024 JustMacApps. All rights reserved.
+//  Copyright © 2023-2025 JustMacApps. All rights reserved.
 //
 
 import Foundation
@@ -18,7 +18,7 @@ class MultipartZipFileCreator: NSObject
         static let sClsId          = "MultipartZipFileCreator"
         static let sClsVers        = "v1.0301"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
-        static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
         static let bClsFileLog     = true
         

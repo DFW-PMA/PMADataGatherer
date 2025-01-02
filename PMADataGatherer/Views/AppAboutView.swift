@@ -3,7 +3,7 @@
 //  VisitVerify
 //
 //  Created by Daryl Cox on 08/24/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ struct AppAboutView: View
         static let sClsId        = "AppAboutView"
         static let sClsVers      = "v1.0901"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright © JustMacApps 2023-2024. All rights reserved."
+        static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         

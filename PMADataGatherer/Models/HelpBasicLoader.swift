@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by JustMacApps.net on 06/11/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -25,7 +25,7 @@ class HelpBasicLoader: NSObject
         static let sClsId        = "HelpBasicLoader"
         static let sClsVers      = "v1.0801"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         

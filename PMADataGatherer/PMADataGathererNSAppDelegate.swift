@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by JustMacApps.net on 07/19/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 //import Cocoa
@@ -20,7 +20,7 @@ class PMADataGathererNSAppDelegate: NSObject, NSApplicationDelegate, ObservableO
         static let sClsId        = "PMADataGathererNSAppDelegate"
         static let sClsVers      = "v1.1401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         

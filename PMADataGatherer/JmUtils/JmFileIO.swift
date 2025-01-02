@@ -3,7 +3,7 @@
 //  JmUtils_Library
 //
 //  First version created by Daryl Cox on 04/18/2015 - renamed 12/22/2023.
-//  Copyright (c) 2015-2024 JustMacApps. All rights reserved.
+//  Copyright (c) 2015-2025 JustMacApps. All rights reserved.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ public class JmFileIO
         static let sClsId        = "JmFileIO"
         static let sClsVers      = "v8.0101"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2015-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2015-2025. All Rights Reserved."
         static let bClsTrace     = false
         static let bClsFileLog   = false
 

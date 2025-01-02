@@ -3,7 +3,7 @@
 //  JmUtils_Library
 //
 //  Created by JustMacApps.net on 06/11/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 
@@ -27,7 +27,7 @@ class JmUserDefaults: NSObject
         static let sClsId        = "JmUserDefaults"
         static let sClsVers      = "v1.0704"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         

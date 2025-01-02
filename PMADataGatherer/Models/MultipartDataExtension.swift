@@ -3,7 +3,7 @@
 //  JustAMultipartRequestTest1
 //
 //  Created by JustMacApps.net on 09/10/2024.
-//  Copyright © 2023-2024 JustMacApps. All rights reserved.
+//  Copyright © 2023-2025 JustMacApps. All rights reserved.
 //
 
 import Foundation

@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 12/11/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         static let sClsId        = "JmAppSwiftDataManager"
         static let sClsVers      = "v1.0301"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2024-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         

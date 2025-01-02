@@ -3,7 +3,7 @@
 //  JmUtils_Library
 //
 //  Created by Daryl Cox on 08/22/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -19,7 +19,7 @@ public class JmXcodeBuildSettings
         static let sClsId        = "JmXcodeBuildSettings"
         static let sClsVers      = "v1.0501"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
         static let bClsFileLog   = false
 

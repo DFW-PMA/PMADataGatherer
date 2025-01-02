@@ -3,7 +3,7 @@
 //  JustAMultipartRequestTest1
 //
 //  Created by JustMacApps.net on 11/06/2024.
-//  Copyright © 2023-2024 JustMacApps. All rights reserved.
+//  Copyright © 2023-2025 JustMacApps. All rights reserved.
 //
 
 import Foundation
@@ -129,7 +129,7 @@ class MultipartZipFileService: NSObject
         static let sClsId          = "MultipartZipFileService"
         static let sClsVers        = "v1.0205"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
-        static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
         static let bClsFileLog     = true
         

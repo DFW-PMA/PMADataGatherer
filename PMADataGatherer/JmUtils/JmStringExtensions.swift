@@ -3,7 +3,7 @@
 //  JmUtils_Library
 //
 //  First version created by Daryl Cox on 05/19/2016.
-//  Copyright (c) 2016-2024 JustMacApps. All rights reserved.
+//  Copyright (c) 2016-2025 JustMacApps. All rights reserved.
 //
 
 import Foundation

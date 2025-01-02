@@ -3,7 +3,7 @@
 //  JmUtils_Library
 //
 //  Created by Daryl Cox on 11/04/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -20,9 +20,9 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.1903"
+        static let sClsVers      = "v1.2001"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
         static let bClsFileLog   = false
 
@@ -80,6 +80,10 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
                                                                                            // Key:sPFTherapistParseTID(String)
 
        private      var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                   = false
+
+    @Published      var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]          = [Int:ParsePFTherapistFileItem]()
+                                                                                           // [Int:ParsePFTherapistFileItem]
+                                                                                           // Key:Tid(Int) -> TherapistID (Int)
 
                     var jmAppDelegateVisitor:JmAppDelegateVisitor?                       = nil
                                                                                            // 'jmAppDelegateVisitor' MUST remain declared this way
@@ -181,6 +185,9 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         asToString.append("[")
         asToString.append("'dictSchedPatientLocItems': [\(String(describing: self.dictSchedPatientLocItems))]")
         asToString.append("'bHasDictSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictSchedPatientLocItemsBeenDisplayed))]")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'dictPFTherapistFileItems': [\(String(describing: self.dictPFTherapistFileItems))]")
         asToString.append("],")
         asToString.append("]")
 
@@ -449,6 +456,18 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
                     }
 
+
+                    let iPFTherapistParseTID:Int = Int(sPFTherapistParseTID) ?? -1
+
+                    if (iPFTherapistParseTID < 0)
+                    {
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistObjects)) 'pfTherapistObject' - the 'tid' field (Int) is less than 0 - Warning!")
+
+                        continue
+
+                    }
+
                     let sPFTherapistParseName:String = String(describing: (pfTherapistObject.object(forKey:"name") ?? "-N/A-"))
 
                     if (sPFTherapistParseName.count  < 1 ||
@@ -471,6 +490,14 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
                         self.dictTherapistTidXref[sPFTherapistParseTID]       = sPFTherapistParseName
                         self.dictTherapistTidXref[sPFTherapistParseName]      = sPFTherapistParseTID
                         self.dictTherapistTidXref[sPFTherapistParseNameLower] = sPFTherapistParseTID
+
+                        // Track the Therapist in the dictionary of TherapistFile item(s)...
+
+                        let pfTherapistFileItem:ParsePFTherapistFileItem      = ParsePFTherapistFileItem()
+
+                        pfTherapistFileItem.constructParsePFTherapistFileItemFromPFObject(pfTherapistFileObject:pfTherapistObject)
+
+                        self.dictPFTherapistFileItems[iPFTherapistParseTID]   = pfTherapistFileItem
 
                         // Track the Therapist in the dictionary of Scheduled Patient 'location' item(s)...
 

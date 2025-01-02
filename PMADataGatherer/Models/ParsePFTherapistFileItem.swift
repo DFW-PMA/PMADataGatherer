@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by JustMacApps.net on 12/27/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
@@ -18,9 +18,9 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0101"
+        static let sClsVers      = "v1.0205"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         
@@ -84,13 +84,13 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     var iPFTherapistFileLicenseNumber:Int                = -1         // 'pfTherapistFileObject[licenseNum]'
 
     // ----------------------------------------------------------------------------------------------------------
-    // "notActive"          : false,
-    // "office"             : NumberInt(0),
-    // "isSupervisor"       : NumberInt(0),
-    // "haveAssts"          : NumberInt(0),
+    // "notActive"          : Bool,
+    // "office"             : Bool,
+    // "isSupervisor"       : Bool,
+    // "haveAssts"          : Bool,
     // "type"               : NumberInt(2),
     // "superID"            : NumberInt(5),
-    // "mentorID"           : NumberInt(9), // 9 -> NOT Assigned...
+    // "mentorID"           : NumberInt(5), // #9 -> means NOT Assigned...
     // ----------------------------------------------------------------------------------------------------------
 
     // Item 'keyed' field(s):
@@ -121,8 +121,8 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     // "expectedWkVisits"   : NumberInt(0),
     // "lateWkVisits"       : NumberInt(0),
     // "prevWkVoids2"       : null,
-    // "makeupsAllowed"     : true,
-    // "over50Allowed"      : false,
+    // "makeupsAllowed"     : Bool,
+    // "over50Allowed"      : Bool,
     // "finalSyncRatios"    : ["12/20/24, 3:13 PM;On Time: 0 - Late: 0 - Missed Deadline: 3"],
     // "wkPtsMissingVisits" : [...],
     // "pidsForFriday"      : ["13819","13664","13740","13861","13741"],
@@ -273,58 +273,46 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         asToString.append("'aclPFTherapistFile': [\(String(describing: self.aclPFTherapistFile))],")
         asToString.append("'bPFTherapistFileIsDataAvailable': [\(String(describing: self.bPFTherapistFileIsDataAvailable))],")
         asToString.append("'bPFTherapistFileIdDirty': [\(String(describing: self.bPFTherapistFileIdDirty))],")
-        asToString.append("'sPFTherapistFileAllKeys': [\(String(describing: self.sPFTherapistFileAllKeys))],")
+        asToString.append("'listPFTherapistFileAllKeys': [\(String(describing: self.listPFTherapistFileAllKeys))],")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'iPFTherapistFileTID': [\(String(describing: self.iPFTherapistFileTID))],")
+        asToString.append("'iPFTherapistFileTID': (\(String(describing: self.iPFTherapistFileTID))),")
         asToString.append("'sPFTherapistFileName': [\(String(describing: self.sPFTherapistFileName))],")
         asToString.append("'sPFTherapistFilePhone': [\(String(describing: self.sPFTherapistFilePhone))],")
         asToString.append("'sPFTherapistFileEmail': [\(String(describing: self.sPFTherapistFileEmail))],")
         asToString.append("'sPFTherapistFileUsername': [\(String(describing: self.sPFTherapistFileUsername))],")
         asToString.append("'sPFTherapistFilePassword': [\(String(describing: self.sPFTherapistFilePassword))],")
         asToString.append("'listPFTherapistFileHomeLoc': [\(String(describing: self.listPFTherapistFileHomeLoc))],")
-        asToString.append("'iPFTherapistFileLicenseNumber': [\(String(describing: self.iPFTherapistFileLicenseNumber))],")
+        asToString.append("'iPFTherapistFileLicenseNumber': (\(String(describing: self.iPFTherapistFileLicenseNumber))),")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'bPFTherapistFileNotActive': [\(String(describing: self.bPFTherapistFileNotActive))],")
         asToString.append("'bPFTherapistFileOffice': [\(String(describing: self.bPFTherapistFileOffice))],")
-        asToString.append("'iPFTherapistFileTID': [\(String(describing: self.iPFTherapistFileTID))],")
-        asToString.append("'iPFTherapistFileTID': [\(String(describing: self.iPFTherapistFileTID))],")
-        asToString.append("'iPFTherapistFileTID': [\(String(describing: self.iPFTherapistFileTID))],")
-        asToString.append("'iPFTherapistFileTID': [\(String(describing: self.iPFTherapistFileTID))],")
-        asToString.append("'iPFTherapistFileTID': [\(String(describing: self.iPFTherapistFileTID))],")
-
-
-
-        var bPFTherapistFileNotActive:Bool                   = false      // 'pfTherapistFileObject[notActive]'
-        var bPFTherapistFileOffice:Bool                      = false      // 'pfTherapistFileObject[office]'
-        var bPFTherapistFileIsSupervisor:Bool                = false      // 'pfTherapistFileObject[isSupervisor]'
-        var bPFTherapistFileHaveAssistants:Bool              = false      // 'pfTherapistFileObject[haveAssts]'
-        var iPFTherapistFileType:Int                         = -1         // 'pfTherapistFileObject[type]'
-        var iPFTherapistFileSuperID:Int                      = -1         // 'pfTherapistFileObject[superID]'
-        var iPFTherapistFileMentorID:Int                     = -1         // 'pfTherapistFileObject[mentorID]'
-
-        var sPFTherapistFileLastSync:String                  = "-N/A"     // 'pfTherapistFileObject[lastSync]'
-        var iPFTherapistFileIpadUpdate:Int                   = -1         // 'pfTherapistFileObject[iPadUpdate]'
-        var iPFTherapistFileIphoneUpdate:Int                 = -1         // 'pfTherapistFileObject[iPhoneUpdate]'
-
-        var sPFTherapistFileStartWeek:String                 = "-N/A-"    // 'pfTherapistFileObject[startWk]'
-        var sPFTherapistFileWeekStartInvoice:String          = "-N/A-"    // 'pfTherapistFileObject[wkStartInvoice]'
-        var iPFTherapistFileExpectedWeekVisits:Int           = -1         // 'pfTherapistFileObject[expectedWkVisits]'
-        var iPFTherapistFileLateWeekVisits:Int               = -1         // 'pfTherapistFileObject[lateWkVisits]'
-        var iPFTherapistFilePreviousWeekVoids2:Int           = -1         // 'pfTherapistFileObject[prevWkVoids2]'
-        var bPFTherapistFileMakeupsAllowed:Bool              = false      // 'pfTherapistFileObject[makeupsAllowed]'
-        var bPFTherapistFileOver50Allowed:Bool               = false      // 'pfTherapistFileObject[over50Allowed]'
-
-        var listPFTherapistFileFinalSyncRatios:[String]      = []         // 'pfTherapistFileObject[finalSyncRatios]'
-        var listPFTherapistFileWeekPtMissingVisits:[String]  = []         // 'pfTherapistFileObject[wkPtsMissingVisits]'
-        var listPFTherapistFilePidsForFriday:[String]        = []         // 'pfTherapistFileObject[pidsForFriday]'
-        var listPFTherapistFileParentIDs:[String]            = []         // 'pfTherapistFileObject[parentIDs]'
-
-
-
-
-
+        asToString.append("'bPFTherapistFileIsSupervisor': [\(String(describing: self.bPFTherapistFileIsSupervisor))],")
+        asToString.append("'bPFTherapistFileHaveAssistants': [\(String(describing: self.bPFTherapistFileHaveAssistants))],")
+        asToString.append("'iPFTherapistFileType': (\(String(describing: self.iPFTherapistFileType))),")
+        asToString.append("'iPFTherapistFileSuperID': (\(String(describing: self.iPFTherapistFileSuperID))),")
+        asToString.append("'iPFTherapistFileMentorID': (\(String(describing: self.iPFTherapistFileMentorID))),")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'sPFTherapistFileLastSync': [\(String(describing: self.sPFTherapistFileLastSync))],")
+        asToString.append("'iPFTherapistFileIpadUpdate': (\(String(describing: self.iPFTherapistFileIpadUpdate))),")
+        asToString.append("'iPFTherapistFileIphoneUpdate': (\(String(describing: self.iPFTherapistFileIphoneUpdate))),")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'sPFTherapistFileStartWeek': [\(String(describing: self.sPFTherapistFileStartWeek))],")
+        asToString.append("'sPFTherapistFileWeekStartInvoice': [\(String(describing: self.sPFTherapistFileWeekStartInvoice))],")
+        asToString.append("'iPFTherapistFileExpectedWeekVisits': (\(String(describing: self.iPFTherapistFileExpectedWeekVisits))),")
+        asToString.append("'iPFTherapistFileLateWeekVisits': (\(String(describing: self.iPFTherapistFileLateWeekVisits))),")
+        asToString.append("'iPFTherapistFilePreviousWeekVoids2': (\(String(describing: self.iPFTherapistFilePreviousWeekVoids2))),")
+        asToString.append("'bPFTherapistFileMakeupsAllowed': [\(String(describing: self.bPFTherapistFileMakeupsAllowed))],")
+        asToString.append("'bPFTherapistFileOver50Allowed': [\(String(describing: self.bPFTherapistFileOver50Allowed))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'listPFTherapistFileFinalSyncRatios': [\(String(describing: self.listPFTherapistFileFinalSyncRatios))],")
+        asToString.append("'listPFTherapistFileWeekPtMissingVisits': [\(String(describing: self.listPFTherapistFileWeekPtMissingVisits))],")
+        asToString.append("'listPFTherapistFilePidsForFriday': [\(String(describing: self.listPFTherapistFilePidsForFriday))],")
+        asToString.append("'listPFTherapistFileParentIDs': [\(String(describing: self.listPFTherapistFileParentIDs))],")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'pfTherapistFileObjectLatitude': [\(String(describing: self.pfTherapistFileObjectLatitude))],")
@@ -363,79 +351,66 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         // Display the various field(s) of this object in the Log...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'id'                           is [\(String(describing: self.id))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'pfTherapistFileObject'                  is [\(String(describing: self.pfTherapistFileObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'id'                                     is [\(String(describing: self.id))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObject'                  is [\(String(describing: self.pfTherapistFileObject))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sPFTherapistFileClassName'         is [\(String(describing: self.sPFTherapistFileClassName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sPFTherapistFileObjectId'          is [\(String(describing: self.sPFTherapistFileObjectId))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'datePFTherapistFileCreatedAt'      is [\(String(describing: self.datePFTherapistFileCreatedAt))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'datePFTherapistFileUpdatedAt'      is [\(String(describing: self.datePFTherapistFileUpdatedAt))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'aclPFTherapistFile'                is [\(String(describing: self.aclPFTherapistFile))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'bPFTherapistFileIsDataAvailable'   is [\(String(describing: self.bPFTherapistFileIsDataAvailable))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'bPFTherapistFileIdDirty'           is [\(String(describing: self.bPFTherapistFileIdDirty))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sPFTherapistFileAllKeys'           is [\(String(describing: self.sPFTherapistFileAllKeys))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileClassName'              is [\(String(describing: self.sPFTherapistFileClassName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileObjectId'               is [\(String(describing: self.sPFTherapistFileObjectId))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFTherapistFileCreatedAt'           is [\(String(describing: self.datePFTherapistFileCreatedAt))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFTherapistFileUpdatedAt'           is [\(String(describing: self.datePFTherapistFileUpdatedAt))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'aclPFTherapistFile'                     is [\(String(describing: self.aclPFTherapistFile))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileIsDataAvailable'        is [\(String(describing: self.bPFTherapistFileIsDataAvailable))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileIdDirty'                is [\(String(describing: self.bPFTherapistFileIdDirty))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFTherapistFileAllKeys'             is [\(String(describing: self.listPFTherapistFileAllKeys))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sPFTherapistFileName'              is [\(String(describing: self.sPFTherapistFileName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileTID'                    is (\(String(describing: self.iPFTherapistFileTID)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileName'                   is [\(String(describing: self.sPFTherapistFileName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFilePhone'                  is [\(String(describing: self.sPFTherapistFilePhone))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileEmail'                  is [\(String(describing: self.sPFTherapistFileEmail))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileUsername'               is [\(String(describing: self.sPFTherapistFileUsername))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFilePassword'               is [\(String(describing: self.sPFTherapistFilePassword))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFTherapistFileHomeLoc'             is [\(String(describing: self.listPFTherapistFileHomeLoc))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileLicenseNumber'          is (\(String(describing: self.iPFTherapistFileLicenseNumber)))...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileNotActive'              is [\(String(describing: self.bPFTherapistFileNotActive))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileOffice'                 is [\(String(describing: self.bPFTherapistFileOffice))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileIsSupervisor'           is [\(String(describing: self.bPFTherapistFileIsSupervisor))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileHaveAssistants'         is [\(String(describing: self.bPFTherapistFileHaveAssistants))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileType'                   is (\(String(describing: self.iPFTherapistFileType)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileSuperID'                is (\(String(describing: self.iPFTherapistFileSuperID)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileMentorID'               is (\(String(describing: self.iPFTherapistFileMentorID)))...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileLastSync'               is [\(String(describing: self.sPFTherapistFileLastSync))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileIpadUpdate'             is (\(String(describing: self.iPFTherapistFileIpadUpdate)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileIphoneUpdate'           is (\(String(describing: self.iPFTherapistFileIphoneUpdate)))...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileStartWeek'              is [\(String(describing: self.sPFTherapistFileStartWeek))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileWeekStartInvoice'       is [\(String(describing: self.sPFTherapistFileWeekStartInvoice))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileExpectedWeekVisits'     is (\(String(describing: self.iPFTherapistFileExpectedWeekVisits)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileLateWeekVisits'         is (\(String(describing: self.iPFTherapistFileLateWeekVisits)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFilePreviousWeekVoids2'     is (\(String(describing: self.iPFTherapistFilePreviousWeekVoids2)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileMakeupsAllowed'         is [\(String(describing: self.bPFTherapistFileMakeupsAllowed))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFTherapistFileOver50Allowed'          is [\(String(describing: self.bPFTherapistFileOver50Allowed))]...")
 
-        var iPFTherapistFileTID:Int                          = -1         // 'pfTherapistFileObject[ID]'
-        var sPFTherapistFileName:String                      = "-N/A-"    // 'pfTherapistFileObject[name]'
-        var sPFTherapistFilePhone:String                     = "-N/A-"    // 'pfTherapistFileObject[phone]'
-        var sPFTherapistFileEmail:String                     = "-N/A-"    // 'pfTherapistFileObject[email]'
-        var sPFTherapistFileUsername:String                  = "-N/A-"    // 'pfTherapistFileObject[username]'
-        var sPFTherapistFilePassword:String                  = "-N/A-"    // 'pfTherapistFileObject[password]'
-        var listPFTherapistFileHomeLoc:[String]              = []         // 'pfTherapistFileObject[homeLoc]' [latitude,longitude]
-        var iPFTherapistFileLicenseNumber:Int                = -1         // 'pfTherapistFileObject[licenseNum]'
+        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFTherapistFileFinalSyncRatios'     is [\(String(describing: self.listPFTherapistFileFinalSyncRatios))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFTherapistFileWeekPtMissingVisits' is [\(String(describing: self.listPFTherapistFileWeekPtMissingVisits))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFTherapistFilePidsForFriday'       is [\(String(describing: self.listPFTherapistFilePidsForFriday))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFTherapistFileParentIDs'           is [\(String(describing: self.listPFTherapistFileParentIDs))]...")
 
-        var bPFTherapistFileNotActive:Bool                   = false      // 'pfTherapistFileObject[notActive]'
-        var bPFTherapistFileOffice:Bool                      = false      // 'pfTherapistFileObject[office]'
-        var bPFTherapistFileIsSupervisor:Bool                = false      // 'pfTherapistFileObject[isSupervisor]'
-        var bPFTherapistFileHaveAssistants:Bool              = false      // 'pfTherapistFileObject[haveAssts]'
-        var iPFTherapistFileType:Int                         = -1         // 'pfTherapistFileObject[type]'
-        var iPFTherapistFileSuperID:Int                      = -1         // 'pfTherapistFileObject[superID]'
-        var iPFTherapistFileMentorID:Int                     = -1         // 'pfTherapistFileObject[mentorID]'
-
-        var sPFTherapistFileLastSync:String                  = "-N/A"     // 'pfTherapistFileObject[lastSync]'
-        var iPFTherapistFileIpadUpdate:Int                   = -1         // 'pfTherapistFileObject[iPadUpdate]'
-        var iPFTherapistFileIphoneUpdate:Int                 = -1         // 'pfTherapistFileObject[iPhoneUpdate]'
-
-        var sPFTherapistFileStartWeek:String                 = "-N/A-"    // 'pfTherapistFileObject[startWk]'
-        var sPFTherapistFileWeekStartInvoice:String          = "-N/A-"    // 'pfTherapistFileObject[wkStartInvoice]'
-        var iPFTherapistFileExpectedWeekVisits:Int           = -1         // 'pfTherapistFileObject[expectedWkVisits]'
-        var iPFTherapistFileLateWeekVisits:Int               = -1         // 'pfTherapistFileObject[lateWkVisits]'
-        var iPFTherapistFilePreviousWeekVoids2:Int           = -1         // 'pfTherapistFileObject[prevWkVoids2]'
-        var bPFTherapistFileMakeupsAllowed:Bool              = false      // 'pfTherapistFileObject[makeupsAllowed]'
-        var bPFTherapistFileOver50Allowed:Bool               = false      // 'pfTherapistFileObject[over50Allowed]'
-
-        var listPFTherapistFileFinalSyncRatios:[String]      = []         // 'pfTherapistFileObject[finalSyncRatios]'
-        var listPFTherapistFileWeekPtMissingVisits:[String]  = []         // 'pfTherapistFileObject[wkPtsMissingVisits]'
-        var listPFTherapistFilePidsForFriday:[String]        = []         // 'pfTherapistFileObject[pidsForFriday]'
-        var listPFTherapistFileParentIDs:[String]            = []         // 'pfTherapistFileObject[parentIDs]'
-
-
-
-
-
-
-
-
-
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'pfTherapistFileObjectLatitude'          is [\(String(describing: self.pfTherapistFileObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'pfTherapistFileObjectLongitude'         is [\(String(describing: self.pfTherapistFileObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sPFTherapistFileObjectLatitude'         is [\(String(describing: self.sPFTherapistFileObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sPFTherapistFileObjectLongitude'        is [\(String(describing: self.sPFTherapistFileObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'dblPFTherapistFileObjectLatitude'       is [\(String(describing: self.dblPFTherapistFileObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'dblPFTherapistFileObjectLongitude'      is [\(String(describing: self.dblPFTherapistFileObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'dblConvertedLatitude'         is [\(String(describing: self.dblConvertedLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'dblConvertedLongitude'        is [\(String(describing: self.dblConvertedLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sCurrentLocationName'         is [\(String(describing: self.sCurrentLocationName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sCurrentCity'                 is [\(String(describing: self.sCurrentCity))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sCurrentCountry'              is [\(String(describing: self.sCurrentCountry))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sCurrentPostalCode'           is [\(String(describing: self.sCurrentPostalCode))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'sCurrentTimeZone'             is [\(String(describing: self.sCurrentTimeZone))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): 'bCurrentAddessLookupComplete' is [\(String(describing: self.bCurrentAddessLookupComplete))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObjectLatitude'          is [\(String(describing: self.pfTherapistFileObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObjectLongitude'         is [\(String(describing: self.pfTherapistFileObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileObjectLatitude'         is [\(String(describing: self.sPFTherapistFileObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileObjectLongitude'        is [\(String(describing: self.sPFTherapistFileObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFTherapistFileObjectLatitude'       is [\(String(describing: self.dblPFTherapistFileObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFTherapistFileObjectLongitude'      is [\(String(describing: self.dblPFTherapistFileObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLatitude'                   is [\(String(describing: self.dblConvertedLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLongitude'                  is [\(String(describing: self.dblConvertedLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sCurrentLocationName'                   is [\(String(describing: self.sCurrentLocationName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sCurrentCity'                           is [\(String(describing: self.sCurrentCity))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sCurrentCountry'                        is [\(String(describing: self.sCurrentCountry))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sCurrentPostalCode'                     is [\(String(describing: self.sCurrentPostalCode))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sCurrentTimeZone'                       is [\(String(describing: self.sCurrentTimeZone))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bCurrentAddessLookupComplete'           is [\(String(describing: self.bCurrentAddessLookupComplete))]...")
 
         // Exit:
 
@@ -451,89 +426,104 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'idpfTherapistFileObject' is (\(idpfTherapistFileObject)) - 'pfTherapistFileObject' is [\(String(describing: pfTherapistFileObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'pfTherapistFileObject' is [\(String(describing: pfTherapistFileObject))]...")
 
         // Assign the various field(s) of this object from the supplied PFObject...
 
         self.pfTherapistFileObject                  = pfTherapistFileObject                                                             
         
-        self.sPFTherapistFileClassName         = pfTherapistFileObject.parseClassName
-    //  if pfTherapistFileObject.objectId != nil && pfTherapistFileObject.objectId?.count ?? <#default value#> > 0 { self.sPFTherapistFileObjectId = pfTherapistFileObject.objectId } else { self.sPFTherapistFileObjectId = "" }
-        self.sPFTherapistFileObjectId          = pfTherapistFileObject.objectId  != nil ? pfTherapistFileObject.objectId!  : ""
-        self.datePFTherapistFileCreatedAt      = pfTherapistFileObject.createdAt != nil ? pfTherapistFileObject.createdAt! : nil
-        self.datePFTherapistFileUpdatedAt      = pfTherapistFileObject.updatedAt != nil ? pfTherapistFileObject.updatedAt! : nil
-        self.aclPFTherapistFile                = pfTherapistFileObject.acl
-        self.bPFTherapistFileIsDataAvailable   = pfTherapistFileObject.isDataAvailable
-        self.bPFTherapistFileIdDirty           = pfTherapistFileObject.isDirty
-        self.sPFTherapistFileAllKeys           = pfTherapistFileObject.allKeys
+        self.sPFTherapistFileClassName              = pfTherapistFileObject.parseClassName
+        self.sPFTherapistFileObjectId               = pfTherapistFileObject.objectId  != nil ? pfTherapistFileObject.objectId!  : ""
+        self.datePFTherapistFileCreatedAt           = pfTherapistFileObject.createdAt != nil ? pfTherapistFileObject.createdAt! : nil
+        self.datePFTherapistFileUpdatedAt           = pfTherapistFileObject.updatedAt != nil ? pfTherapistFileObject.updatedAt! : nil
+        self.aclPFTherapistFile                     = pfTherapistFileObject.acl
+        self.bPFTherapistFileIsDataAvailable        = pfTherapistFileObject.isDataAvailable
+        self.bPFTherapistFileIdDirty                = pfTherapistFileObject.isDirty
+        self.listPFTherapistFileAllKeys             = pfTherapistFileObject.allKeys
 
-        self.sPFTherapistFileName              = String(describing: pfTherapistFileObject.object(forKey:"name")!)
-        self.sPFTherapistFileLastLocDate       = String(describing: (pfTherapistFileObject.object(forKey:"lastLocDate") ?? ""))
-        self.sPFTherapistFileLastLocTime       = String(describing: (pfTherapistFileObject.object(forKey:"lastLocTime") ?? "")).lowercased()
-        self.sPFTherapistFileLastLatitude      = String(describing: (pfTherapistFileObject.object(forKey:"latitude")    ?? ""))
-        self.sPFTherapistFileLastLongitude     = String(describing: (pfTherapistFileObject.object(forKey:"longitude")   ?? ""))
+        self.iPFTherapistFileTID                    = Int(String(describing: pfTherapistFileObject.object(forKey:"ID")))         ?? -1
+        self.sPFTherapistFileName                   = String(describing: (pfTherapistFileObject.object(forKey:"name")            ?? ""))
+        self.sPFTherapistFilePhone                  = String(describing: (pfTherapistFileObject.object(forKey:"phone")           ?? ""))
+        self.sPFTherapistFileEmail                  = String(describing: (pfTherapistFileObject.object(forKey:"email")           ?? ""))
+        self.sPFTherapistFileUsername               = String(describing: (pfTherapistFileObject.object(forKey:"username")        ?? ""))
+        self.sPFTherapistFilePassword               = String(describing: (pfTherapistFileObject.object(forKey:"password")        ?? ""))
+    //  self.listPFTherapistFileHomeLoc             = pfTherapistFileObject.object(forKey:"homeLoc") ?? []
+        self.iPFTherapistFileLicenseNumber          = Int(String(describing: pfTherapistFileObject.object(forKey:"licenseNum"))) ?? -1
 
+        self.bPFTherapistFileNotActive              = Bool(String(describing: pfTherapistFileObject.object(forKey:"notActive")))    ?? false
+        self.bPFTherapistFileOffice                 = Bool(String(describing: pfTherapistFileObject.object(forKey:"office")))       ?? false
+        self.bPFTherapistFileIsSupervisor           = Bool(String(describing: pfTherapistFileObject.object(forKey:"isSupervisor"))) ?? false
+        self.bPFTherapistFileHaveAssistants         = Bool(String(describing: pfTherapistFileObject.object(forKey:"haveAssts")))    ?? false
+        self.iPFTherapistFileType                   = pfTherapistFileObject.object(forKey:"type")!     as! Int
+        self.iPFTherapistFileSuperID                = pfTherapistFileObject.object(forKey:"superID")!  as! Int
+        self.iPFTherapistFileMentorID               = pfTherapistFileObject.object(forKey:"mentorID")! as! Int
 
+        self.sPFTherapistFileLastSync               = String(describing: pfTherapistFileObject.object(forKey:"lastSync")!)
+        self.iPFTherapistFileIpadUpdate             = pfTherapistFileObject.object(forKey:"iPadUpdate")!   as! Int
+        self.iPFTherapistFileIphoneUpdate           = pfTherapistFileObject.object(forKey:"iPhoneUpdate")! as! Int
 
+        self.sPFTherapistFileStartWeek              = String(describing: pfTherapistFileObject.object(forKey:"startWk")!)
+        self.sPFTherapistFileWeekStartInvoice       = String(describing: pfTherapistFileObject.object(forKey:"wkStartInvoice")!)
+        self.iPFTherapistFileExpectedWeekVisits     = pfTherapistFileObject.object(forKey:"expectedWkVisits")! as! Int
+        self.iPFTherapistFileLateWeekVisits         = pfTherapistFileObject.object(forKey:"lateWkVisits")!     as! Int
+    //  self.iPFTherapistFilePreviousWeekVoids2     = pfTherapistFileObject.object(forKey:"prevWkVoids2")!     as! Int
+        self.bPFTherapistFileMakeupsAllowed         = Bool(String(describing: pfTherapistFileObject.object(forKey:"makeupsAllowed"))) ?? false
+        self.bPFTherapistFileOver50Allowed          = Bool(String(describing: pfTherapistFileObject.object(forKey:"over50Allowed")))  ?? false
 
-
-
-
-
-
-
-
-
+    //  self.listPFTherapistFileFinalSyncRatios     = pfTherapistFileObject[finalSyncRatios]!
+    //  self.listPFTherapistFileWeekPtMissingVisits = pfTherapistFileObject[wkPtsMissingVisits]!
+    //  self.listPFTherapistFilePidsForFriday       = pfTherapistFileObject[pidsForFriday]!
+    //  self.listPFTherapistFileParentIDs           = pfTherapistFileObject[parentIDs]!
         
-        self.pfTherapistFileObjectLatitude          = (pfTherapistFileObject.object(forKey:"latitude"))  != nil ? pfTherapistFileObject.object(forKey:"latitude")  : nil
-        self.pfTherapistFileObjectLongitude         = (pfTherapistFileObject.object(forKey:"longitude")) != nil ? pfTherapistFileObject.object(forKey:"longitude") : nil
-        self.sPFTherapistFileObjectLatitude         = String(describing: self.pfTherapistFileObjectLatitude!)
-        self.sPFTherapistFileObjectLongitude        = String(describing: self.pfTherapistFileObjectLongitude!)
-        self.dblPFTherapistFileObjectLatitude       = Double(self.sPFTherapistFileObjectLatitude)  ?? 0.0
-        self.dblPFTherapistFileObjectLongitude      = Double(self.sPFTherapistFileObjectLongitude) ?? 0.0
-        self.dblConvertedLatitude         = Double(String(describing: pfTherapistFileObject.object(forKey:"latitude")!))  ?? 0.0
-        self.dblConvertedLongitude        = Double(String(describing: pfTherapistFileObject.object(forKey:"longitude")!)) ?? 0.0
-        
-        self.sCurrentLocationName         = ""
-        self.sCurrentCity                 = ""
-        self.sCurrentCountry              = ""
-        self.sCurrentPostalCode           = ""
-        self.sCurrentTimeZone             = ""
-
-        self.bCurrentAddessLookupComplete = false
-
-        if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
-        {
-
-            let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
-
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): Calling 'updateGeocoderLocation()' for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)]...")
-
-            let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idpfTherapistFileObject, 
-                                                               latitude:  self.dblConvertedLatitude, 
-                                                               longitude: self.dblConvertedLongitude, 
-                                                               withCompletionHandler:
-                                                                   { (requestID:Int, dictCurrentLocation:[String:Any]) in
-                                                               
-                                                                       self.sCurrentLocationName         = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
-                                                                       self.sCurrentCity                 = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
-                                                                       self.sCurrentCountry              = String(describing: (dictCurrentLocation["sCurrentCountry"]      ?? ""))
-                                                                       self.sCurrentPostalCode           = String(describing: (dictCurrentLocation["sCurrentPostalCode"]   ?? ""))
-                                                                       self.sCurrentTimeZone             = String(describing: (dictCurrentLocation["tzCurrentTimeZone"]    ?? ""))
-                                                                       self.bCurrentAddessLookupComplete = true
-                                                               
-                                                                   }
-                                                              )
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): CoreLocation (service) is NOT available...")
-
-            self.bCurrentAddessLookupComplete = false
-
-        }
+    //  self.pfTherapistFileObjectLatitude          = (pfTherapistFileObject.object(forKey:"latitude"))  != nil ? pfTherapistFileObject.object(forKey:"latitude")  : nil
+    //  self.pfTherapistFileObjectLongitude         = (pfTherapistFileObject.object(forKey:"longitude")) != nil ? pfTherapistFileObject.object(forKey:"longitude") : nil
+    //  self.sPFTherapistFileObjectLatitude         = String(describing: self.pfTherapistFileObjectLatitude!)
+    //  self.sPFTherapistFileObjectLongitude        = String(describing: self.pfTherapistFileObjectLongitude!)
+    //  self.dblPFTherapistFileObjectLatitude       = Double(self.sPFTherapistFileObjectLatitude)  ?? 0.0
+    //  self.dblPFTherapistFileObjectLongitude      = Double(self.sPFTherapistFileObjectLongitude) ?? 0.0
+    //  self.dblConvertedLatitude                   = Double(String(describing: pfTherapistFileObject.object(forKey:"latitude")!))  ?? 0.0
+    //  self.dblConvertedLongitude                  = Double(String(describing: pfTherapistFileObject.object(forKey:"longitude")!)) ?? 0.0
+    //  
+    //  self.sCurrentLocationName                   = ""
+    //  self.sCurrentCity                           = ""
+    //  self.sCurrentCountry                        = ""
+    //  self.sCurrentPostalCode                     = ""
+    //  self.sCurrentTimeZone                       = ""
+    //
+    //  self.bCurrentAddessLookupComplete           = false
+    //
+    //  if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
+    //  {
+    //
+    //      let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): Calling 'updateGeocoderLocation()' for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)]...")
+    //
+    //      let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idpfTherapistFileObject, 
+    //                                                         latitude:  self.dblConvertedLatitude, 
+    //                                                         longitude: self.dblConvertedLongitude, 
+    //                                                         withCompletionHandler:
+    //                                                             { (requestID:Int, dictCurrentLocation:[String:Any]) in
+    //                                                         
+    //                                                                 self.sCurrentLocationName         = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
+    //                                                                 self.sCurrentCity                 = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
+    //                                                                 self.sCurrentCountry              = String(describing: (dictCurrentLocation["sCurrentCountry"]      ?? ""))
+    //                                                                 self.sCurrentPostalCode           = String(describing: (dictCurrentLocation["sCurrentPostalCode"]   ?? ""))
+    //                                                                 self.sCurrentTimeZone             = String(describing: (dictCurrentLocation["tzCurrentTimeZone"]    ?? ""))
+    //                                                                 self.bCurrentAddessLookupComplete = true
+    //                                                         
+    //                                                             }
+    //                                                        )
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfTherapistFileObject)): CoreLocation (service) is NOT available...")
+    //
+    //      self.bCurrentAddessLookupComplete = false
+    //
+    //  }
 
         // Exit:
 

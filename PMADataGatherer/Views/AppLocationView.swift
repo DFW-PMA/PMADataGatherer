@@ -3,7 +3,7 @@
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 11/18/2024.
-//  Copyright © JustMacApps 2023-2024. All rights reserved.
+//  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import SwiftUI
@@ -17,7 +17,7 @@ struct AppLocationView: View
         static let sClsId        = "AppLocationView"
         static let sClsVers      = "v1.0410"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
-        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2024. All Rights Reserved."
+        static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         
