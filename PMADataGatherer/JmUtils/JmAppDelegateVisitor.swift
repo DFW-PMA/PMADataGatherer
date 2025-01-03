@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.2602"
+        static let sClsVers      = "v1.2604"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -1508,11 +1508,11 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         let multipartRequestDriver:MultipartRequestDriver = MultipartRequestDriver(bGenerateResponseLongMsg:false, 
                                                                                    bAlertIsBypassed:alertIsBypassed)
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)' - 'alertIsBypassed' is [\(alertIsBypassed)]...")
 
         multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:multipartRequestInfo)
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Called  'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)' - 'alertIsBypassed' is [\(alertIsBypassed)]...")
 
         // Exit:
 
