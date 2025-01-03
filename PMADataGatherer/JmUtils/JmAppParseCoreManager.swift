@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2001"
+        static let sClsVers      = "v1.2104"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -84,6 +84,8 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     @Published      var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]          = [Int:ParsePFTherapistFileItem]()
                                                                                            // [Int:ParsePFTherapistFileItem]
                                                                                            // Key:Tid(Int) -> TherapistID (Int)
+
+       private      var bHasDictTherapistFileItemsBeenDisplayed:Bool                     = false
 
                     var jmAppDelegateVisitor:JmAppDelegateVisitor?                       = nil
                                                                                            // 'jmAppDelegateVisitor' MUST remain declared this way
@@ -188,6 +190,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         asToString.append("],")
         asToString.append("[")
         asToString.append("'dictPFTherapistFileItems': [\(String(describing: self.dictPFTherapistFileItems))]")
+        asToString.append("'bHasDictTherapistFileItemsBeenDisplayed': [\(String(describing: self.bHasDictTherapistFileItemsBeenDisplayed))]")
         asToString.append("],")
         asToString.append("]")
 
@@ -499,6 +502,8 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
                         self.dictPFTherapistFileItems[iPFTherapistParseTID]   = pfTherapistFileItem
 
+                        self.xcgLogMsg("\(sCurrMethodDisp) Added an Item keyed by 'iPFTherapistParseTID' of [\(iPFTherapistParseTID)] added an Item 'pfTherapistFileItem' of [\(pfTherapistFileItem.toString())] to the dictionary of 'dictPFTherapistFileItems' item(s)...")
+
                         // Track the Therapist in the dictionary of Scheduled Patient 'location' item(s)...
 
                         if (self.dictSchedPatientLocItems[sPFTherapistParseTID] == nil)
@@ -621,6 +626,50 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
             {
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictSchedPatientLocItems' item(s) - item(s) count is less than 1 - Warning!")
+
+            }
+
+        }
+
+        // If we created item(s) in the 'dictPFTherapistFileItems' and we haven't displayed them, then display them...
+
+        if (bHasDictTherapistFileItemsBeenDisplayed == false)
+        {
+
+            bHasDictTherapistFileItemsBeenDisplayed = true
+
+            if (self.dictPFTherapistFileItems.count > 0)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+
+                var cPFTherapistParseTIDs:Int = 0
+
+                for (iPFTherapistParseTID, pfTherapistFileItem) in self.dictPFTherapistFileItems
+                {
+
+                    cPFTherapistParseTIDs += 1
+
+                    if (iPFTherapistParseTID < 0)
+                    {
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+
+                        continue
+
+                    }
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+
+                    pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
+
+                }
+
+            }
+            else
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
 
             }
 

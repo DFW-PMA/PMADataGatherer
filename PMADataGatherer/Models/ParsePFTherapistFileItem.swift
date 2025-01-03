@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0205"
+        static let sClsVers      = "v1.0303"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -263,7 +263,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         asToString.append("],")
         asToString.append("[")
         asToString.append("'id': [\(String(describing: self.id))],")
-        asToString.append("'pfTherapistFileObject': [\(String(describing: self.pfTherapistFileObject))],")
+    //  asToString.append("'pfTherapistFileObject': [\(String(describing: self.pfTherapistFileObject))],")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'sPFTherapistFileClassName': [\(String(describing: self.sPFTherapistFileClassName))],")
@@ -454,21 +454,22 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         self.bPFTherapistFileOffice                 = Bool(String(describing: pfTherapistFileObject.object(forKey:"office")))       ?? false
         self.bPFTherapistFileIsSupervisor           = Bool(String(describing: pfTherapistFileObject.object(forKey:"isSupervisor"))) ?? false
         self.bPFTherapistFileHaveAssistants         = Bool(String(describing: pfTherapistFileObject.object(forKey:"haveAssts")))    ?? false
-        self.iPFTherapistFileType                   = pfTherapistFileObject.object(forKey:"type")!     as! Int
-        self.iPFTherapistFileSuperID                = pfTherapistFileObject.object(forKey:"superID")!  as! Int
-        self.iPFTherapistFileMentorID               = pfTherapistFileObject.object(forKey:"mentorID")! as! Int
+        self.iPFTherapistFileType                   = Int(String(describing: pfTherapistFileObject.object(forKey:"type")))          ?? -1
+        self.iPFTherapistFileSuperID                = Int(String(describing: pfTherapistFileObject.object(forKey:"superID")))       ?? -1
+        self.iPFTherapistFileMentorID               = Int(String(describing: pfTherapistFileObject.object(forKey:"mentorID")))      ?? -1
 
-        self.sPFTherapistFileLastSync               = String(describing: pfTherapistFileObject.object(forKey:"lastSync")!)
-        self.iPFTherapistFileIpadUpdate             = pfTherapistFileObject.object(forKey:"iPadUpdate")!   as! Int
-        self.iPFTherapistFileIphoneUpdate           = pfTherapistFileObject.object(forKey:"iPhoneUpdate")! as! Int
+        self.sPFTherapistFileLastSync               = String(describing: (pfTherapistFileObject.object(forKey:"lastSync")           ?? ""))
+        self.iPFTherapistFileIpadUpdate             = Int(String(describing: pfTherapistFileObject.object(forKey:"iPadUpdate")))    ?? 0
+        self.iPFTherapistFileIphoneUpdate           = Int(String(describing: pfTherapistFileObject.object(forKey:"iPadUpdate")))    ?? 0
 
-        self.sPFTherapistFileStartWeek              = String(describing: pfTherapistFileObject.object(forKey:"startWk")!)
-        self.sPFTherapistFileWeekStartInvoice       = String(describing: pfTherapistFileObject.object(forKey:"wkStartInvoice")!)
-        self.iPFTherapistFileExpectedWeekVisits     = pfTherapistFileObject.object(forKey:"expectedWkVisits")! as! Int
-        self.iPFTherapistFileLateWeekVisits         = pfTherapistFileObject.object(forKey:"lateWkVisits")!     as! Int
+        self.sPFTherapistFileStartWeek              = String(describing: (pfTherapistFileObject.object(forKey:"startWk")               ?? ""))
+        self.sPFTherapistFileWeekStartInvoice       = String(describing: (pfTherapistFileObject.object(forKey:"wkStartInvoice")        ?? ""))
+        self.iPFTherapistFileExpectedWeekVisits     = Int(String(describing: pfTherapistFileObject.object(forKey:"expectedWkVisits"))) ?? 0
+        self.iPFTherapistFileLateWeekVisits         = Int(String(describing: pfTherapistFileObject.object(forKey:"lateWkVisits")))     ?? 0
     //  self.iPFTherapistFilePreviousWeekVoids2     = pfTherapistFileObject.object(forKey:"prevWkVoids2")!     as! Int
-        self.bPFTherapistFileMakeupsAllowed         = Bool(String(describing: pfTherapistFileObject.object(forKey:"makeupsAllowed"))) ?? false
-        self.bPFTherapistFileOver50Allowed          = Bool(String(describing: pfTherapistFileObject.object(forKey:"over50Allowed")))  ?? false
+        self.iPFTherapistFilePreviousWeekVoids2     = 0
+        self.bPFTherapistFileMakeupsAllowed         = Bool(String(describing: pfTherapistFileObject.object(forKey:"makeupsAllowed")))  ?? false
+        self.bPFTherapistFileOver50Allowed          = Bool(String(describing: pfTherapistFileObject.object(forKey:"over50Allowed")))   ?? false
 
     //  self.listPFTherapistFileFinalSyncRatios     = pfTherapistFileObject[finalSyncRatios]!
     //  self.listPFTherapistFileWeekPtMissingVisits = pfTherapistFileObject[wkPtsMissingVisits]!
