@@ -16,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0301"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -35,6 +35,7 @@ struct AppDataGathererView: View
     @State private var cAppDataGathererViewTherapistButtonPresses:Int = 0
 
     @State private var isAppDataTherapist1ViewModal:Bool              = false
+    @State private var isAppDataTherapist2ViewModal:Bool              = false
 
                    var jmAppDelegateVisitor:JmAppDelegateVisitor      = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
@@ -102,9 +103,6 @@ struct AppDataGathererView: View
                         self.cAppDataGathererViewRefreshButtonPresses += 1
 
                         let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Refresh'.#(\(self.cAppDataGathererViewRefreshButtonPresses))...")
-
-                    //  let _ = self.checkIfAppParseCoreHasPFCscDataItems()
-                    //  let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems()
 
                     }
                     label:
@@ -212,6 +210,59 @@ struct AppDataGathererView: View
                             {
 
                                 AppDataGathererTherapist1View(jmAppParseCoreManager:jmAppParseCoreManager)
+
+                            }
+                        #endif
+
+                            Spacer()
+
+                        }
+
+                        HStack(alignment:.center)
+                        {
+
+                            Spacer()
+
+                            Button
+                            {
+
+                                self.cAppDataGathererViewTherapistButtonPresses += 1
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+
+                                self.isAppDataTherapist2ViewModal.toggle()
+
+                            }
+                            label:
+                            {
+
+                                VStack(alignment:.center)
+                                {
+
+                                    Label("", systemImage: "bed.double")
+                                        .help(Text("Therapist Data Gatherer #2 by tName Screen..."))
+                                        .imageScale(.large)
+
+                                    Text("Therapist - Data Gatherer by tName - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                        .font(.caption)
+
+                                }
+
+                            }
+                        #if os(macOS)
+                            .sheet(isPresented:$isAppDataTherapist2ViewModal, content:
+                                {
+
+                                    AppDataGathererTherapist2View(jmAppParseCoreManager:jmAppParseCoreManager)
+
+                                }
+                            )
+                        #endif
+                        #if os(iOS)
+                            .fullScreenCover(isPresented:$isAppDataTherapist2ViewModal)
+                            {
+
+                                AppDataGathererTherapist2View(jmAppParseCoreManager:jmAppParseCoreManager)
 
                             }
                         #endif

@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0308"
+        static let sClsVers      = "v1.0311"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -311,7 +311,11 @@ struct AppDataGathererTherapist1DetailsView: View
                         {
 
                             Text("Therapists' Supervisor TID #")
-                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)")
+
+                            let sSupervisorTID:String  = "\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)"
+                            let sSupervisorName:String = self.locateAppTherapistNamebyTid(sTherapistTID:sSupervisorTID)
+
+                            Text("\(sSupervisorTID) <\(sSupervisorName)>")
 
                         }
                         .font(.caption2) 
@@ -320,7 +324,11 @@ struct AppDataGathererTherapist1DetailsView: View
                         {
 
                             Text("Therapists' Mentor TID #")
-                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileMentorID)")
+
+                            let sMentorTID:String  = "\(self.pfTherapistFileItem!.iPFTherapistFileMentorID)"
+                            var sMentorName:String = (self.pfTherapistFileItem!.iPFTherapistFileMentorID == 9) ? "-unassigned-" : self.locateAppTherapistNamebyTid(sTherapistTID:sMentorTID)
+
+                            Text("\(sMentorTID) <\(sMentorName)>")
 
                         }
                         .font(.caption2) 
