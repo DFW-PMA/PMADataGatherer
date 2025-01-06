@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0302"
+        static let sClsVers      = "v1.0308"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -160,7 +160,7 @@ struct AppDataGathererTherapist1DetailsView: View
                 HStack()
                 {
 
-                    Text(":: Therapists' Name: ")
+                    Text("Therapists' Name: ")
 
                     Text("\(self.sTherapistName)")
                         .italic()
@@ -169,22 +169,314 @@ struct AppDataGathererTherapist1DetailsView: View
 
                 }
 
-                Divider()
-
             if (self.pfTherapistFileItem != nil)
             {
             
-                HStack()
+                ScrollView(.vertical)
                 {
 
-                    Text(":: Therapists' Address: ")
+                    Grid(alignment:.leadingFirstTextBaseline, horizontalSpacing:5, verticalSpacing: 3)
+                    {
 
-                    Text("\(self.pfTherapistFileItem!.sHomeLocLocationName), \(self.pfTherapistFileItem!.sHomeLocCity) \(self.pfTherapistFileItem!.sHomeLocPostalCode)")
+                        // Column Headings:
 
-                    Spacer()
+                        Divider() 
+
+                        GridRow 
+                        {
+
+                            Text("Item")
+                                .bold()
+                                .underline()
+                            Text("Value")
+                                .bold()
+                                .underline()
+
+                        }
+                        .font(.caption) 
+
+                        Divider() 
+
+                        // Item Rows:
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Phone #")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFilePhone)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Email")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileEmail)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Username")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileUsername)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Password")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFilePassword)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' HOME Location")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileHomeLoc)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Address")
+                            Text("\(self.pfTherapistFileItem!.sHomeLocLocationName), \(self.pfTherapistFileItem!.sHomeLocCity) \(self.pfTherapistFileItem!.sHomeLocPostalCode)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' License #")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileLicenseNumber)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' NOT Active?")
+                            Text("\(self.pfTherapistFileItem!.bPFTherapistFileNotActive)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' is OFFICE?")
+                            Text("\(self.pfTherapistFileItem!.bPFTherapistFileOffice)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' is Supervisor?")
+                            Text("\(self.pfTherapistFileItem!.bPFTherapistFileIsSupervisor)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' has Assistant(s)?")
+                            Text("\(self.pfTherapistFileItem!.bPFTherapistFileHaveAssistants)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' TYPE")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileType)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Supervisor TID #")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Mentor TID #")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileMentorID)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' LAST Sync")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileLastSync)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' iPad Update #")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileIpadUpdate)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' iPhone Update #")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileIphoneUpdate)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Start Week")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileStartWeek)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Start Invoice")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileWeekStartInvoice)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' # of EXPECTED Week Visit(s)")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileExpectedWeekVisits)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' # of LATE Week Visit(s)")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileLateWeekVisits)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' # of Previous Week VOID(s)")
+                            Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFilePreviousWeekVoids2)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Makeups Allowed?")
+                            Text("\(self.pfTherapistFileItem!.bPFTherapistFileMakeupsAllowed)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Over 50 Allowed?")
+                            Text("\(self.pfTherapistFileItem!.bPFTherapistFileOver50Allowed)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Final Sync Ratios")
+                            Text("\(self.pfTherapistFileItem!.listPFTherapistFileFinalSyncRatios)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Week Patient(s) 'missing' visit(s)")
+                            Text("\(self.pfTherapistFileItem!.listPFTherapistFileWeekPtMissingVisits)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' PID(s) for Friday")
+                            Text("\(self.pfTherapistFileItem!.listPFTherapistFilePidsForFriday)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Parent ID(s)")
+                            Text("\(self.pfTherapistFileItem!.listPFTherapistFileParentIDs)")
+
+                        }
+                        .font(.caption2) 
+
+                        Divider() 
+
+                    }
 
                 }
-            
+
+            }
+            else
+            {
+
+                Divider() 
+
+                // Item Rows:
+
+                GridRow(alignment:.bottom)
+                {
+
+                    Text("<<< NO Data >>>")
+                    Text("Therapist TID #(\(self.sTherapistTID))")
+                        .italic()
+
+                }
+                .font(.caption2) 
+
+                Divider() 
+
             }
 
                 Spacer()
