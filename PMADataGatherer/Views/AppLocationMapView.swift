@@ -16,7 +16,7 @@ struct AppLocationMapView: View
     {
         
         static let sClsId        = "AppLocationMapView"
-        static let sClsVers      = "v1.1006"
+        static let sClsVers      = "v1.1103"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -28,6 +28,7 @@ struct AppLocationMapView: View
 
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.colorScheme)      var colorScheme
 
            private let fMapLatLongTolerance:Double               = 0.0025
 
@@ -87,7 +88,20 @@ struct AppLocationMapView: View
     var body: some View
     {
         
-        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) - Map #(\(parsePFCscDataItem.idPFCscObject)) for [\(parsePFCscDataItem.sPFCscParseName)]...")
+        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) - Map #(\(parsePFCscDataItem.idPFCscObject)) for [\(parsePFCscDataItem.sPFCscParseName)] - 'colorScheme' is [\(colorScheme)]...")
+
+        if (colorScheme == .dark)
+        {
+        
+            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) - Map #(\(parsePFCscDataItem.idPFCscObject)) for [\(parsePFCscDataItem.sPFCscParseName)] - 'colorScheme' is running in 'dark' mode...")
+        
+        }
+        else
+        {
+        
+            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) - Map #(\(parsePFCscDataItem.idPFCscObject)) for [\(parsePFCscDataItem.sPFCscParseName)] - 'colorScheme' is running in 'light' mode...")
+        
+        }
 
         let sPFTherapistParseTID:String
             = self.convertPFCscDataItemToTid(pfCscDataItem:parsePFCscDataItem)
@@ -147,6 +161,18 @@ struct AppLocationMapView: View
 
                             Text("\(parsePFCscDataItem.sCurrentLocationName), \(parsePFCscDataItem.sCurrentCity) \(parsePFCscDataItem.sCurrentPostalCode)")
                                 .font(.caption)
+                            #if os(iOS)
+                                .onAppear(
+                                    perform:
+                                    {
+                                        UIApplication.shared.isIdleTimerDisabled = true 
+                                    })
+                                .onDisappear(
+                                    perform:
+                                    {
+                                        UIApplication.shared.isIdleTimerDisabled = false
+                                    })
+                            #endif
 
                             Spacer()
 

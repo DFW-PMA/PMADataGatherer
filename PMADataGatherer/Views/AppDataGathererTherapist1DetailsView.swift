@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0302"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -31,9 +31,11 @@ struct AppDataGathererTherapist1DetailsView: View
     @Environment(\.presentationMode) var presentationMode
 
     @Binding     private var sTherapistTID:String
-    @State       private var sTherapistName:String                     = ""
 
-                         var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @State       private var sTherapistName:String                         = ""
+    @State       private var pfTherapistFileItem:ParsePFTherapistFileItem? = nil
+
+                         var jmAppDelegateVisitor:JmAppDelegateVisitor     = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
     init(sTherapistTID:Binding<String>)
     {
@@ -167,6 +169,24 @@ struct AppDataGathererTherapist1DetailsView: View
 
                 }
 
+                Divider()
+
+            if (self.pfTherapistFileItem != nil)
+            {
+            
+                HStack()
+                {
+
+                    Text(":: Therapists' Address: ")
+
+                    Text("\(self.pfTherapistFileItem!.sHomeLocLocationName), \(self.pfTherapistFileItem!.sHomeLocCity) \(self.pfTherapistFileItem!.sHomeLocPostalCode)")
+
+                    Spacer()
+
+                }
+            
+            }
+
                 Spacer()
 
             }
@@ -194,6 +214,10 @@ struct AppDataGathererTherapist1DetailsView: View
         {
         
             sTherapistName = self.jmAppDelegateVisitor.jmAppParseCoreManager!.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
+
+            let iTherapistTID:Int = Int(sTherapistTID)!
+
+            self.pfTherapistFileItem = self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems[iTherapistTID]
         
         }
 

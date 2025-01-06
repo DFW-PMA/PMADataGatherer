@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0410"
+        static let sClsVers      = "v1.0501"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -163,6 +163,18 @@ struct AppLocationView: View
                     .font(.footnote)
 
                 Text("")
+                #if os(iOS)
+                    .onAppear(
+                        perform:
+                        {
+                            UIApplication.shared.isIdleTimerDisabled = true 
+                        })
+                    .onDisappear(
+                        perform:
+                        {
+                            UIApplication.shared.isIdleTimerDisabled = false
+                        })
+                #endif
 
                 ScrollView(.vertical)
                 {
