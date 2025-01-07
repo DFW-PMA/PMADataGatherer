@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0401"
+        static let sClsVers      = "v1.0409"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -34,6 +34,11 @@ struct AppDataGathererTherapist1DetailsView: View
 
     @State       private var sTherapistName:String                         = ""
     @State       private var pfTherapistFileItem:ParsePFTherapistFileItem? = nil
+
+    @State       private var sSupervisorTID:String                         = ""
+    @State       private var sSupervisorName:String                        = ""
+
+    @State       private var isAppSupervisorDetailsByTIDShowing:Bool       = false
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor     = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
@@ -311,12 +316,92 @@ struct AppDataGathererTherapist1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Therapists' Supervisor TID #")
+                            VStack
+                            {
 
-                            let sSupervisorTID:String  = "\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)"
-                            let sSupervisorName:String = self.locateAppTherapistNamebyTid(sTherapistTID:sSupervisorTID)
+                                Text("Therapists' Supervisor TID #")
+                                Text("")    // ...vertical spacing...
+                                Text("")    // ...vertical spacing...
 
-                            Text("\(sSupervisorTID) <\(sSupervisorName)>")
+                            }
+
+                            HStack()
+                            {
+
+                                Text("\(sSupervisorTID) <\(sSupervisorName)>")
+                                    .onAppear
+                                    {
+
+                                        self.sSupervisorTID  = "\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)"
+                                        self.sSupervisorName = self.locateAppTherapistNamebyTid(sTherapistTID:"\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)")
+
+                                    }
+
+                                if (self.sSupervisorTID.count    > 0 &&
+                                    (self.sSupervisorName.count  > 0 &&
+                                     self.sSupervisorName       != "-N/A-"))
+                                {
+
+                                    Button
+                                    {
+
+                                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1DetailsView in Button(Xcode).'Supervisor Detail(s) by TID'...")
+
+                                        self.isAppSupervisorDetailsByTIDShowing.toggle()
+
+                                    }
+                                    label:
+                                    {
+
+                                        VStack(alignment:.center)
+                                        {
+
+                                            Label("", systemImage: "doc.questionmark")
+                                                .help(Text("Show Supervisor Detail(s) by TID..."))
+                                                .imageScale(.medium)
+
+                                            HStack(alignment:.center)
+                                            {
+
+                                                Spacer()
+
+                                                Text("Supervisor Details...")
+                                                    .font(.caption2)
+
+                                                Spacer()
+
+                                            }
+
+                                        }
+
+                                    }
+                                #if os(macOS)
+                                    .sheet(isPresented:$isAppSupervisorDetailsByTIDShowing, content:
+                                    {
+
+                                        AppDataGathererTherapist1DetailsView(sTherapistTID:$sSupervisorTID)
+
+                                    })
+                                #endif
+                                #if os(iOS)
+                                    .fullScreenCover(isPresented:$isAppSupervisorDetailsByTIDShowing)
+                                    {
+
+                                        AppDataGathererTherapist1DetailsView(sTherapistTID:$sSupervisorTID)
+
+                                    }
+                                #endif
+                                    .padding()
+
+                                }
+                                else
+                                {
+
+                                    Spacer()
+
+                                }
+
+                            }
 
                         }
                         .font(.caption2) 
@@ -511,7 +596,8 @@ struct AppDataGathererTherapist1DetailsView: View
 
         var sTherapistName:String = ""
 
-        if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+        if (sTherapistTID.count                              > 0 &&
+            self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
         {
         
             sTherapistName = self.jmAppDelegateVisitor.jmAppParseCoreManager!.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
@@ -563,7 +649,7 @@ struct AppDataGathererTherapist1DetailsView: View
         let sPhoneNumberMask:String              = "(XXX) XXX-XXXX"
         let sPhoneNumberCleaned:String           = sPhoneNumber.components(separatedBy:CharacterSet.decimalDigits.inverted).joined()
         var siPhoneNumberStartIndex:String.Index = sPhoneNumberCleaned.startIndex
-        var eiPhoneNumberEndIndex:String.Index   = sPhoneNumberCleaned.endIndex
+        let eiPhoneNumberEndIndex:String.Index   = sPhoneNumberCleaned.endIndex
         
         for chCurrentNumber in sPhoneNumberMask where siPhoneNumberStartIndex < eiPhoneNumberEndIndex
         {

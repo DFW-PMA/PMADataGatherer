@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1View"
-        static let sClsVers      = "v1.0202"
+        static let sClsVers      = "v1.0203"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -237,7 +237,7 @@ struct AppDataGathererTherapist1View: View
 
                                 Label("", systemImage: "doc.questionmark")
                                     .help(Text("Show Therapist Detail(s) by TID..."))
-                                    .imageScale(.large)
+                                    .imageScale(.medium)
 
                                 HStack(alignment:.center)
                                 {
@@ -245,7 +245,7 @@ struct AppDataGathererTherapist1View: View
                                     Spacer()
 
                                     Text("Therapist Details...")
-                                        .font(.caption)
+                                        .font(.caption2)
 
                                     Spacer()
 
