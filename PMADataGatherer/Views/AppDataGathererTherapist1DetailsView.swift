@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0311"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -203,7 +203,8 @@ struct AppDataGathererTherapist1DetailsView: View
                         {
 
                             Text("Therapists' Phone #")
-                            Text("\(self.pfTherapistFileItem!.sPFTherapistFilePhone)")
+                            Text("\(self.formatPhoneNumber(sPhoneNumber:self.pfTherapistFileItem!.sPFTherapistFilePhone))")
+                        //  Text("\(self.pfTherapistFileItem!.sPFTherapistFilePhone)")
 
                         }
                         .font(.caption2) 
@@ -535,5 +536,61 @@ struct AppDataGathererTherapist1DetailsView: View
         return sTherapistName
   
     }   // End of private func locateAppTherapistNamebyTid(sTherapistTID:String)->String.
+
+    private func formatPhoneNumber(sPhoneNumber:String = "")->String
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPhoneNumber' is [\(sPhoneNumber)]...")
+
+        // Format the supplied Phone #...
+
+        var sPhoneNumberFormatted:String = ""
+        
+        if (sPhoneNumber.count < 1)
+        {
+            
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+
+            return sPhoneNumberFormatted
+            
+        }
+        
+        let sPhoneNumberMask:String              = "(XXX) XXX-XXXX"
+        let sPhoneNumberCleaned:String           = sPhoneNumber.components(separatedBy:CharacterSet.decimalDigits.inverted).joined()
+        var siPhoneNumberStartIndex:String.Index = sPhoneNumberCleaned.startIndex
+        var eiPhoneNumberEndIndex:String.Index   = sPhoneNumberCleaned.endIndex
+        
+        for chCurrentNumber in sPhoneNumberMask where siPhoneNumberStartIndex < eiPhoneNumberEndIndex
+        {
+            
+            if chCurrentNumber == "X"
+            {
+                
+                sPhoneNumberFormatted.append(sPhoneNumberCleaned[siPhoneNumberStartIndex])
+                
+                siPhoneNumberStartIndex = sPhoneNumberCleaned.index(after:siPhoneNumberStartIndex)
+                
+            }
+            else
+            {
+                
+                sPhoneNumberFormatted.append(chCurrentNumber)
+                
+            }
+            
+        }
+
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+  
+        return sPhoneNumberFormatted
+        
+    }   // End of private func formatPhoneNumber(sPhoneNumber:String)->String
 
 }   // End of struct AppDataGathererTherapist1DetailsView(View).

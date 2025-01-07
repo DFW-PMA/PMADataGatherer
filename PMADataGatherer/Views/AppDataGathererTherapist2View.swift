@@ -17,7 +17,7 @@ struct AppDataGathererTherapist2View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.0102"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -37,8 +37,8 @@ struct AppDataGathererTherapist2View: View
     
     @FocusState  private var focusedField:FocusedFields?
 
-    @State       private var sTherapistName:String                                  = ""
     @State       private var sTherapistTID:String                                   = ""
+    @State       private var sTherapistName:String                                  = ""
 
     @StateObject         var jmAppParseCoreManager:JmAppParseCoreManager
     
@@ -181,26 +181,6 @@ struct AppDataGathererTherapist2View: View
                 HStack()
                 {
 
-                    Text("=> Enter the Therapists' Name: ")
-                        .foregroundColor(.red)
-
-                    TextField("Therapist tName...", text:$sTherapistName)
-                        .italic()
-                        .focused($focusedField, equals:.therapistName)
-                        .onAppear
-                        {
-                            self.sTherapistName = ""
-                            self.sTherapistTID  = ""
-                            focusedField        = .therapistName
-                        }
-
-                    Spacer()
-                    
-                }
-
-                HStack()
-                {
-
                     Text("===> Therapists' TID: ")
 
                     Text("\(sTherapistTID)")
@@ -277,7 +257,27 @@ struct AppDataGathererTherapist2View: View
 
                 }
 
-                Spacer()
+                HStack()
+                {
+
+                    Text("=> Enter the Therapists' Name: ")
+                        .foregroundColor(.red)
+
+                    TextField("Therapist tName...", text:$sTherapistName)
+                        .italic()
+                        .focused($focusedField, equals:.therapistName)
+                        .onAppear
+                        {
+                            self.sTherapistName = ""
+                            self.sTherapistTID  = ""
+                            focusedField        = .therapistName
+                        }
+
+                    Spacer()
+                    
+                }
+
+                Text("")
 
                 HStack
                 {
