@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.0301"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -117,7 +117,7 @@ struct SettingsSingleViewCore: View
       
                     self.cAppAboutButtonPresses += 1
       
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
       
                     self.isAppAboutViewModal.toggle()
       
@@ -152,7 +152,7 @@ struct SettingsSingleViewCore: View
       
                     self.cAppHelpViewButtonPresses += 1
       
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App HelpView'.#(\(self.cAppHelpViewButtonPresses))...")
+                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App HelpView'.#(\(self.cAppHelpViewButtonPresses))...")
       
                     self.isAppHelpViewModal.toggle()
       
@@ -188,7 +188,7 @@ struct SettingsSingleViewCore: View
       
                     self.cAppLogViewButtonPresses += 1
       
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App LogView'.#(\(self.cAppLogViewButtonPresses))...")
+                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App LogView'.#(\(self.cAppLogViewButtonPresses))...")
       
                     self.isAppLogViewModal.toggle()
       
@@ -337,7 +337,7 @@ struct SettingsSingleViewCore: View
       
                         self.cAppZipFileButtonPresses += 1
       
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore in Button(Xcode).'App ZipFile'.#(\(self.cAppZipFileButtonPresses))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'App ZipFile'.#(\(self.cAppZipFileButtonPresses))...")
       
                         self.isAppZipFileShowing.toggle()
       
@@ -371,6 +371,13 @@ struct SettingsSingleViewCore: View
                             self.uploadCurrentAppLogToDevs()
                         }
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
       
                     Spacer()
       
@@ -398,6 +405,13 @@ struct SettingsSingleViewCore: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                     Spacer()
@@ -407,7 +421,7 @@ struct SettingsSingleViewCore: View
       
                         self.cAppCrashButtonPresses += 1
       
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore in Button(Xcode).'App Crash'.#(\(self.cAppCrashButtonPresses))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'App Crash'.#(\(self.cAppCrashButtonPresses))...")
       
                         self.isAppCrashShowing.toggle()
       
@@ -441,6 +455,13 @@ struct SettingsSingleViewCore: View
                             fatalError("The User pressed 'Ok' to force an App 'crash'!")
                         }
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
       
                     Spacer()
       
@@ -477,7 +498,7 @@ struct SettingsSingleViewCore: View
       
                         self.cAppReleaseUpdateButtonPresses += 1
       
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App 'download' Release'.#(\(self.cAppReleaseUpdateButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Release'.#(\(self.cAppReleaseUpdateButtonPresses))...")
       
                         self.isAppDownloadReleaseUpdateShowing.toggle()
       
@@ -532,7 +553,7 @@ struct SettingsSingleViewCore: View
       
                         self.cAppPreReleaseUpdateButtonPresses += 1
       
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App 'download' Pre-Release'.#(\(self.cAppPreReleaseUpdateButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Pre-Release'.#(\(self.cAppPreReleaseUpdateButtonPresses))...")
       
                         self.isAppDownloadPreReleaseUpdateShowing.toggle()
       

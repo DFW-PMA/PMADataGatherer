@@ -345,7 +345,7 @@ struct AppDataGathererTherapist1DetailsView: View
                                     Button
                                     {
 
-                                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1DetailsView in Button(Xcode).'Supervisor Detail(s) by TID'...")
+                                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1DetailsView.Button(Xcode).'Supervisor Detail(s) by TID'...")
 
                                         self.isAppSupervisorDetailsByTIDShowing.toggle()
 

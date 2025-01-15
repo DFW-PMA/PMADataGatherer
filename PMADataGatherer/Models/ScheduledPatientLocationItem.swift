@@ -16,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.0603"
+        static let sClsVers      = "v1.0604"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -234,13 +234,13 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
         }
   
-        self.sTName  = String(describing: (pfPatientCalDayItem.object(forKey:"tName")     ?? ""))
+        self.sTName  = String(describing: (pfPatientCalDayItem.object(forKey:"tName")  ?? ""))
 
-        self.sPid    = String(describing: (pfPatientCalDayItem.object(forKey:"pid")       ?? "-1"))
+        self.sPid    = String(describing: (pfPatientCalDayItem.object(forKey:"pid")    ?? "-1"))
         self.iPid    = Int(self.sPid)!
-        self.sPtName = String(describing: (pfPatientCalDayItem.object(forKey:"ptName")    ?? ""))
+        self.sPtName = String(describing: (pfPatientCalDayItem.object(forKey:"ptName") ?? ""))
 
-        self.sVDate  = String(describing: (pfPatientCalDayItem.object(forKey:"VDate")     ?? ""))
+        self.sVDate  = String(describing: (pfPatientCalDayItem.object(forKey:"VDate")  ?? ""))
 
         // Pull and 'clean' the 'startTime' value...
 

@@ -17,7 +17,7 @@ struct LogFileView: View
     {
         
         static let sClsId          = "LogFileView"
-        static let sClsVers        = "v1.1501"
+        static let sClsVers        = "v1.1601"
         static let sClsDisp        = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
@@ -125,6 +125,13 @@ struct LogFileView: View
 
                 }
                 .quickLookPreview($logFileUrl)
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
                 .padding()
 
                 Spacer()
@@ -134,7 +141,7 @@ struct LogFileView: View
 
                     self.cLogFileViewAppLogClearButtonPresses += 1
 
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView in Button(Xcode).'App Log 'Clear'.#(\(self.cLogFileViewAppLogClearButtonPresses))'...")
+                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView.Button(Xcode).'App Log 'Clear'.#(\(self.cLogFileViewAppLogClearButtonPresses))'...")
 
                     self.jmAppDelegateVisitor.clearAppDelegateVisitorTraceLogFile()
 
@@ -163,6 +170,13 @@ struct LogFileView: View
                     Button("Ok", role:.cancel) { }
 
                 }
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
 
                 Spacer()
 

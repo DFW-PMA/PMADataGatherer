@@ -112,7 +112,7 @@ struct AppDataGathererTherapist2View: View
 
                         self.cAppDataGathererTherapist2ViewRefreshButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererTherapist2View in Button(Xcode).'Refresh'.#(\(self.cAppDataGathererTherapist2ViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Refresh'.#(\(self.cAppDataGathererTherapist2ViewRefreshButtonPresses))...")
 
                     }
                     label:
@@ -199,7 +199,7 @@ struct AppDataGathererTherapist2View: View
                         Button
                         {
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View in Button(Xcode).'Therapist Detail(s) by tName'...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Therapist Detail(s) by tName'...")
 
                             self.isAppTherapistDetailsByTNameShowing.toggle()
 
@@ -285,7 +285,7 @@ struct AppDataGathererTherapist2View: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View in Button(Xcode).'Locate the Therapist by tName'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Locate the Therapist by tName'...")
 
                         self.sTherapistTID = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
 

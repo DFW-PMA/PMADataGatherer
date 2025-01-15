@@ -16,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0301"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -102,7 +102,7 @@ struct AppDataGathererView: View
 
                         self.cAppDataGathererViewRefreshButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Refresh'.#(\(self.cAppDataGathererViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Refresh'.#(\(self.cAppDataGathererViewRefreshButtonPresses))...")
 
                     }
                     label:
@@ -121,6 +121,13 @@ struct AppDataGathererView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
 
                     Spacer()
 
@@ -150,6 +157,13 @@ struct AppDataGathererView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -175,7 +189,7 @@ struct AppDataGathererView: View
 
                                 self.cAppDataGathererViewTherapistButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by TID'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by TID'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
 
                                 self.isAppDataTherapist1ViewModal.toggle()
 
@@ -228,7 +242,7 @@ struct AppDataGathererView: View
 
                                 self.cAppDataGathererViewTherapistButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
 
                                 self.isAppDataTherapist2ViewModal.toggle()
 

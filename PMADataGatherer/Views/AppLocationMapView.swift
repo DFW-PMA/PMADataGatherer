@@ -206,7 +206,7 @@ struct AppLocationMapView: View
 
                         self.cAppTidScheduleViewButtonPresses += 1
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView in Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
 
                         self.isAppTidScheduleViewModal.toggle()
 

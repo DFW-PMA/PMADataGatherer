@@ -17,7 +17,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.1702"
+        static let sClsVers      = "v1.1801"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -145,7 +145,7 @@ struct AppAuthenticateView: View
 
                         self.cAppAboutButtonPresses += 1
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
 
                         self.isAppAboutViewModal.toggle()
 
@@ -309,7 +309,7 @@ struct AppAuthenticateView: View
 
                                 self.cAppAboutButtonPresses += 1
 
-                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
 
                                 self.isAppAboutViewModal.toggle()
 

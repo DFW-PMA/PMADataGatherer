@@ -61,6 +61,10 @@
 		F05B51562CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05B51542CE7D8B5008A0EEE /* ParsePFCscDataItem.swift */; };
 		F05EBBB12D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
 		F05EBBB22D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
+		F05EE1D22D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */; };
+		F05EE1D32D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */; };
+		F05EE1D52D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */; };
+		F05EE1D62D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */; };
 		F0601D932C77C73C00443D72 /* JmXcodeBuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0601D922C77C73C00443D72 /* JmXcodeBuildSettings.swift */; };
 		F069E2AC2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069E2AB2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift */; };
 		F069E2AD2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069E2AB2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift */; };
@@ -198,6 +202,8 @@
 		F04D88A12CDAA8A00002AA0B /* MultipartZipFileCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartZipFileCreator.swift; sourceTree = "<group>"; };
 		F05B51542CE7D8B5008A0EEE /* ParsePFCscDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFCscDataItem.swift; sourceTree = "<group>"; };
 		F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererTherapist2View.swift; sourceTree = "<group>"; };
+		F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSwiftDataItem.swift; sourceTree = "<group>"; };
+		F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JmAppAlarmSoundManager.swift; sourceTree = "<group>"; };
 		F0601D922C77C73C00443D72 /* JmXcodeBuildSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmXcodeBuildSettings.swift; sourceTree = "<group>"; };
 		F069E2AB2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFAdminsDataItem.swift; sourceTree = "<group>"; };
 		F069E2AE2CEFADE5001F0A5E /* AppAuthenticateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthenticateView.swift; sourceTree = "<group>"; };
@@ -282,6 +288,7 @@
 		F0289D2C2C53D920001B19CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */,
 				F048393D2D2733430060D765 /* ParsePFTherapistFileItem.swift */,
 				F0EF09D22D00B6CC0088D819 /* ScheduledPatientLocationItem.swift */,
 				F06C01B82CFE0A16007703E2 /* PFAdminsSwiftDataItem.swift */,
@@ -401,6 +408,7 @@
 		F0D17B862C52E3D5000E5A52 /* JmUtils */ = {
 			isa = PBXGroup;
 			children = (
+				F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */,
 				F06BB2932D0B6D7200E524E5 /* JmAppSwiftDataManager.swift */,
 				F0D473972C7AD2960027F651 /* JmAppDelegateVisitor.swift */,
 				F0EEDD842CADC38400E437E8 /* JmAppDelegateVisitor-Bridging-Header.h */,
@@ -568,6 +576,7 @@
 				F0F1277E2CEB944D00656B7E /* AppLocationView.swift in Sources */,
 				F0289D332C53D98D001B19CD /* HelpBasicMode.swift in Sources */,
 				F08C86B02D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */,
+				F05EE1D52D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */,
 				F00619A62C94A8060094614E /* MultipartRequestInfo.swift in Sources */,
 				F091A2862C8F6FEF00FB85D5 /* RestURLEndpoint.swift in Sources */,
 				F00619A02C94A8060094614E /* MultipartRequestDriver.swift in Sources */,
@@ -590,6 +599,7 @@
 				F0CBE9012CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */,
 				F0786E472CE68E9E0052A534 /* CoreLocationSiteItem.swift in Sources */,
 				F07F7B952C94DB2D0094AE18 /* DefinesObjCOverrides.m in Sources */,
+				F05EE1D22D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */,
 				F0289D2B2C53D863001B19CD /* HelpBasicView.swift in Sources */,
 				F0D17B922C52E951000E5A52 /* SettingsSingleView.swift in Sources */,
 				F03240302C49672900ED9508 /* PMADataGathererNSAppDelegate.swift in Sources */,
@@ -639,6 +649,7 @@
 				F0CBE9002CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */,
 				F0F1277D2CEB944D00656B7E /* AppLocationView.swift in Sources */,
 				F0474E5B2CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift in Sources */,
+				F05EE1D32D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */,
 				F0474E5C2CDAA54A0079B1E0 /* JmAppUserNotificationIdentifiers.swift in Sources */,
 				F00619A52C94A8060094614E /* MultipartRequest.swift in Sources */,
 				F05B51562CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */,
@@ -661,6 +672,7 @@
 				F0DC5D322CDBCE7A009F0090 /* MultipartZipFileService.swift in Sources */,
 				F0BCCC662C820EF1007EA382 /* JmObjCSwiftEnvBridge.swift in Sources */,
 				F0BB63FE2CF4DB6900B22F9D /* SettingsSingleViewCore.swift in Sources */,
+				F05EE1D62D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */,
 				F04D88A32CDAA8A00002AA0B /* MultipartZipFileCreator.swift in Sources */,
 				F0BCCC672C820EF1007EA382 /* HelpBasicLoader.swift in Sources */,
 				F0BCCC682C820EF1007EA382 /* JmStringExtensions.swift in Sources */,
@@ -821,7 +833,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 07.01.25C014;
+				CURRENT_PROJECT_VERSION = 08.05.25C015;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -865,7 +877,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 07.01.25C014;
+				CURRENT_PROJECT_VERSION = 08.05.25C015;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -908,7 +920,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 07.01.25C014;
+				CURRENT_PROJECT_VERSION = 08.05.25C015;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -958,7 +970,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 07.01.25C014;
+				CURRENT_PROJECT_VERSION = 08.05.25C015;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";

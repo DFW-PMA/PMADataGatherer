@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.2601"
+        static let sClsVers      = "v1.2702"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -161,7 +161,7 @@ struct ContentView: View
 
                     self.cAppViewSuspendButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView in Button(Xcode).'Quit'.#(\(self.cAppViewSuspendButtonPresses))...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'Quit'.#(\(self.cAppViewSuspendButtonPresses))...")
 
                     self.isAppSuspendShowing.toggle()
 
@@ -204,7 +204,7 @@ struct ContentView: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentViewClock in Button(Xcode).'\(sAppExecutionPreviousButtonText)'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentViewClock.Button(Xcode).'\(sAppExecutionPreviousButtonText)'...")
 
                         self.isAppExecutionPreviousShowing.toggle()
 
@@ -249,7 +249,7 @@ struct ContentView: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView in Button(Xcode).'\(sAppExecutionCurrentButtonText)'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'\(sAppExecutionCurrentButtonText)'...")
 
                         self.isAppExecutionCurrentShowing.toggle()
 
@@ -293,7 +293,7 @@ struct ContentView: View
 
                     self.cAppViewSettingsButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView in Button(Xcode).'Settings'.#(\(self.cAppViewSettingsButtonPresses))...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'Settings'.#(\(self.cAppViewSettingsButtonPresses))...")
 
                     self.isAppSettingsModal.toggle()
 
@@ -413,7 +413,7 @@ struct ContentView: View
 
                     self.cContentViewRefreshButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)ContentView in Button(Xcode).'Refresh'.#(\(self.cContentViewRefreshButtonPresses))...")
+                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'Refresh'.#(\(self.cContentViewRefreshButtonPresses))...")
 
                 }
                 label:
@@ -432,6 +432,13 @@ struct ContentView: View
                     }
 
                 }
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
 
                 Spacer()
 
@@ -440,7 +447,7 @@ struct ContentView: View
 
                     self.cContentViewAppDataButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView in Button(Xcode).'App Data...'.#(\(self.cContentViewAppDataButtonPresses))...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Data...'.#(\(self.cContentViewAppDataButtonPresses))...")
 
                     self.isAppDataViewModal.toggle()
 
@@ -488,6 +495,13 @@ struct ContentView: View
 
                 }
             #endif
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
 
                 Spacer()
 
@@ -496,7 +510,7 @@ struct ContentView: View
 
                     self.cContentViewAppLocationButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView in Button(Xcode).'App Location'.#(\(self.cContentViewAppLocationButtonPresses))...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Location'.#(\(self.cContentViewAppLocationButtonPresses))...")
 
                     self.isAppLocationViewModal.toggle()
 
@@ -544,13 +558,20 @@ struct ContentView: View
 
                 }
             #endif
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
 
                 Spacer()
 
                 Button
                 {
                 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView in Button(Xcode).'Logout' pressed...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'Logout' pressed...")
 
                     self.sLoginPassword = ""
                     
@@ -573,6 +594,13 @@ struct ContentView: View
                     }
 
                 }
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
                 
                 Spacer()
 
@@ -776,90 +804,6 @@ struct ContentView: View
         return
   
     }   // End of uploadPreviousAppLogToDevs().
-
-//  func checkIfAppParseCoreHasPFInstallationCurrent() -> Bool
-//  {
-//
-//      let sCurrMethod:String = #function
-//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-//      
-//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' is [\(String(describing: jmAppDelegateVisitor))] - details are [\(jmAppDelegateVisitor.toString())]...")
-//
-//      if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-//      {
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
-//
-//          let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFInstallationCurrentInstance()
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
-//
-//      }
-//      else
-//      {
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent' - 'jmAppParseCoreManager' is nil - Error!")
-//
-//      }
-//
-//      var bWasAppPFInstallationCurrentPresent:Bool = false
-//
-//      if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
-//      {
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
-//
-//          bWasAppPFInstallationCurrentPresent = false
-//
-//      }
-//      else
-//      {
-//
-//      //  self.jmAppParseCoreManager = (jmAppDelegateVisitor.jmAppParseCoreManager?)!
-//
-//          if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
-//          {
-//
-//              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is nil...")
-//
-//              if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
-//              {
-//
-//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is STILL nil...")
-//
-//                  bWasAppPFInstallationCurrentPresent = false
-//
-//              }
-//              else
-//              {
-//
-//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
-//
-//                  bWasAppPFInstallationCurrentPresent = true
-//
-//              }
-//
-//          }
-//          else
-//          {
-//
-//              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
-//
-//              bWasAppPFInstallationCurrentPresent = true
-//
-//          }
-//
-//      }
-//      
-//      // Exit...
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
-//
-//      return bWasAppPFInstallationCurrentPresent
-//
-//  }   // End of checkIfAppParseCoreHasPFInstallationCurrent().
 
     func getAppParseCoreManagerInstance()->JmAppParseCoreManager
     {

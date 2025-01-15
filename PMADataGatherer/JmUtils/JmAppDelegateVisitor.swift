@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.2604"
+        static let sClsVers      = "v1.2807"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -128,9 +128,24 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     }
 
-    var sAppDelegateVisitorCompletionAlertMessage:String?          = nil
-    var sAppDelegateVisitorCompletionAlertButtonText:String?       = nil
-    var appDelegateVisitorCompletionClosure:(()->())?              = nil
+    @Published 
+    var isAppDelegateVisitorShowingCompletionAlert2ndButton:Bool   = false
+    {
+
+        didSet
+        {
+
+            objectWillChange.send()
+
+        }
+
+    }
+
+    var sAppDelegateVisitorCompletionAlertMessage:String           = ""
+    var sAppDelegateVisitorCompletionAlertButtonText1:String       = ""
+    var sAppDelegateVisitorCompletionAlertButtonText2:String       = ""
+    var appDelegateVisitorCompletionClosure1:(()->())?             = nil
+    var appDelegateVisitorCompletionClosure2:(()->())?             = nil
 
     // App <global> 'state' control(s):
 
@@ -146,15 +161,15 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     var sAppDelegateVisitorLogToSaveFilespec:String!               = nil
 
 //  // Various App SwiftData field(s):
-//  
-//  var modelConfiguration:ModelConfiguration                      = ModelConfiguration(isStoredInMemoryOnly:false, allowsSave:true)
+//
+//  var schema:Schema?                                             = nil
+//  var modelConfiguration:ModelConfiguration?                     = nil
 //  var modelContainer:ModelContainer?                             = nil
 //  var modelContext:ModelContext?                                 = nil
-//  var pfAdminsSwiftDataItems:[PFAdminsSwiftDataItem]             = []
 //  @Published 
-//  var cPFAdminsSwiftDataItems:Int                                = 0
+//  var alarmSwiftDataItems:[AlarmSwiftDataItem]                   = []
 //  @Published 
-//  var bArePFAdminsSwiftDataItemsAvailable:Bool                   = false
+//  var bAreAlarmSwiftDataItemsAvailable:Bool                      = false
     
     // App <possible> JmAppSwiftData Manager instance:
 
@@ -171,6 +186,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     // App <possible> (Apple) UNUserNotificationCenter Manager instance:
 
+//  var jmAppUserNotificationManager:JmAppUserNotificationManager? = JmAppUserNotificationManager()
     var jmAppUserNotificationManager:JmAppUserNotificationManager? = nil
 
     // App <possible> ParseCore (Client) framework Manager instance:
@@ -236,9 +252,12 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         asToString.append("],")
         asToString.append("[")
         asToString.append("isAppDelegateVisitorShowingCompletionAlert': [\(self.isAppDelegateVisitorShowingCompletionAlert)],")
+        asToString.append("isAppDelegateVisitorShowingCompletionAlert2ndButton': [\(self.isAppDelegateVisitorShowingCompletionAlert2ndButton)],")
         asToString.append("sAppDelegateVisitorCompletionAlertMessage': [\(String(describing: self.sAppDelegateVisitorCompletionAlertMessage))],")
-        asToString.append("sAppDelegateVisitorCompletionAlertButtonText': [\(String(describing: self.sAppDelegateVisitorCompletionAlertButtonText))],")
-        asToString.append("appDelegateVisitorCompletionClosure': [\(String(describing: self.appDelegateVisitorCompletionClosure))],")
+        asToString.append("sAppDelegateVisitorCompletionAlertButtonText1': [\(String(describing: self.sAppDelegateVisitorCompletionAlertButtonText1))],")
+        asToString.append("sAppDelegateVisitorCompletionAlertButtonText2': [\(String(describing: self.sAppDelegateVisitorCompletionAlertButtonText2))],")
+        asToString.append("appDelegateVisitorCompletionClosure1': [\(String(describing: self.appDelegateVisitorCompletionClosure1))],")
+        asToString.append("appDelegateVisitorCompletionClosure2': [\(String(describing: self.appDelegateVisitorCompletionClosure2))],")
         asToString.append("],")
         asToString.append("[")
         asToString.append("bWasAppLogFilePresentAtStartup': [\(self.bWasAppLogFilePresentAtStartup)],")
@@ -253,12 +272,12 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         asToString.append("sAppDelegateVisitorLogToSaveFilespec': [\(String(describing: self.sAppDelegateVisitorLogToSaveFilespec))],")
         asToString.append("],")
         asToString.append("[")
-    //  asToString.append("SwiftData 'modelConfiguration': (\(self.modelConfiguration)),")
+    //  asToString.append("SwiftData 'schema': (\(String(describing: self.schema))),")
+    //  asToString.append("SwiftData 'modelConfiguration': (\(String(describing: self.modelConfiguration))),")
     //  asToString.append("SwiftData 'modelContainer': (\(String(describing: self.modelContainer))),")
     //  asToString.append("SwiftData 'modelContext': (\(String(describing: self.modelContext))),")
-    //  asToString.append("SwiftData 'pfAdminsSwiftDataItems': (\(String(describing: self.pfAdminsSwiftDataItems))),")
-    //  asToString.append("SwiftData 'cPFAdminsSwiftDataItems': (\(String(describing: self.cPFAdminsSwiftDataItems))),")
-    //  asToString.append("SwiftData 'bArePFAdminsSwiftDataItemsAvailable': (\(String(describing: self.bArePFAdminsSwiftDataItemsAvailable))),")
+    //  asToString.append("SwiftData 'alarmSwiftDataItems': (\(String(describing: self.alarmSwiftDataItems))),")
+    //  asToString.append("SwiftData 'bAreAlarmSwiftDataItemsAvailable': (\(String(describing: self.bAreAlarmSwiftDataItemsAvailable))),")
     //  asToString.append("],")
     //  asToString.append("[")
         asToString.append("jmAppSwiftDataManager': [\(String(describing: self.jmAppSwiftDataManager))],")
@@ -291,7 +310,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
         // NOTE: The method 'performAppDelegateVisitorStartupCrashLogic()' MUST be the first method called
         //       by this 'init()' method to properly handle startup if there was an App 'crash': 
-
+ 
         self.performAppDelegateVisitorStartupCrashLogic()
 
         // Setup the 'logging' output (console and file):
@@ -426,7 +445,9 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
             self.xcgLogMsg("\(sCurrMethodDisp) Instantiating the 'self.jmAppUserNotificationManager' instance...")
 
-            self.jmAppUserNotificationManager = JmAppUserNotificationManager()
+        //  self.jmAppUserNotificationManager = JmAppUserNotificationManager()
+
+            self.jmAppUserNotificationManager = JmAppUserNotificationManager.ClassSingleton.appUserNotificationManager
 
             self.jmAppUserNotificationManager?.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
           
@@ -475,7 +496,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         return
 
     }   // End of public func runPostInitializationTasks().
-        
+
     @objc public func xcgLogMsg(_ sMessage:String)
     {
 
@@ -567,7 +588,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
         // Setup the AppDelegateVisitor (physical) 'log' file:
 
-        do 
+        do
         {
 
             self.urlAppDelegateVisitorLogFilepath = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask ,appropriateFor: nil, create: true)
@@ -1296,13 +1317,17 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     }   // End of @objc public func resetAppDelegateVisitorSignalGlobalAlert().
 
-    public func setAppDelegateVisitorSignalCompletionAlert(_ alertMsg:String? = nil, alertButtonText:String? = nil, withCompletion completionHandler:(()->())?)
+    public func setAppDelegateVisitorSignalCompletionAlert(_ alertMsg:String? = nil, 
+                                                     alertButtonText1:String? = nil, 
+                                                     alertButtonText2:String? = nil,
+                                                     withCompletion1 completionHandler1:(()->())?,
+                                                     withCompletion2 completionHandler2:(()->())?)
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter(s) 'alertMsg' is [\(String(describing: alertMsg))] - 'alertButtonText' is [\(String(describing: alertButtonText))] - 'completionHandler' is [\(String(describing: completionHandler))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter(s) 'alertMsg' is [\(String(describing: alertMsg))] - 'alertButtonText1' is [\(String(describing: alertButtonText1))] - 'alertButtonText2' is [\(String(describing: alertButtonText2))] - 'completionHandler1' is [\(String(describing: completionHandler1))] - 'completionHandler2' is [\(String(describing: completionHandler2))]...")
 
         // Set the Alert fields (Message and Button Text) and then signal the Global Alert...
 
@@ -1316,37 +1341,78 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         else
         {
 
-            self.sAppDelegateVisitorCompletionAlertMessage = alertMsg
+            self.sAppDelegateVisitorCompletionAlertMessage = alertMsg ?? "-N/A-"
 
         }
 
-        if (alertButtonText        == nil ||
-            alertButtonText!.count  < 1)
+        if (alertButtonText1        == nil ||
+            alertButtonText1!.count  < 1)
         {
 
-            self.sAppDelegateVisitorCompletionAlertButtonText = "-N/A-"
+            self.sAppDelegateVisitorCompletionAlertButtonText1 = "-N/A-"
 
         }
         else
         {
 
-            self.sAppDelegateVisitorCompletionAlertButtonText = alertButtonText
+            self.sAppDelegateVisitorCompletionAlertButtonText1 = alertButtonText1 ?? "-N/A"
 
         }
         
-        if completionHandler != nil
+        if (alertButtonText1        == nil ||
+            alertButtonText1!.count  < 1)
+        {
+
+            self.sAppDelegateVisitorCompletionAlertButtonText2 = ""
+
+        }
+        else
+        {
+
+            self.sAppDelegateVisitorCompletionAlertButtonText2 = alertButtonText2 ?? ""
+
+        }
+        
+        if completionHandler1 != nil
         {
             
-            self.appDelegateVisitorCompletionClosure = completionHandler
+            self.appDelegateVisitorCompletionClosure1 = completionHandler1
             
         }
         else
         {
             
-            self.appDelegateVisitorCompletionClosure = nil
+            self.appDelegateVisitorCompletionClosure1 = nil
             
         }
 
+        if completionHandler2 != nil
+        {
+            
+            self.appDelegateVisitorCompletionClosure2 = completionHandler2
+            
+        }
+        else
+        {
+            
+            self.appDelegateVisitorCompletionClosure2 = nil
+            
+        }
+
+        
+        if (self.sAppDelegateVisitorCompletionAlertButtonText2.count < 1)
+        {
+
+            self.isAppDelegateVisitorShowingCompletionAlert2ndButton = false
+
+        }
+        else
+        {
+
+            self.isAppDelegateVisitorShowingCompletionAlert2ndButton = true
+
+        }
+        
         self.isAppDelegateVisitorShowingCompletionAlert = true
 
         // Exit:
@@ -1357,7 +1423,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     }   // End of @objc public func setAppDelegateVisitorSignalCompletionAlert(_ alertMsg:String? = nil, alertButtonText:String? = nil, withCompletion completionHandler:@escaping(Void)->(Void)?)
 
-    @objc public func resetAppDelegateVisitorSignalCompletionAlert()
+    @objc public func resetAppDelegateVisitorSignalCompletionAlert(idButtonClicked:Int = 1)
     {
 
         let sCurrMethod:String = #function
@@ -1367,27 +1433,55 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
         // (Optionally) call the 'completion' handler and reset the signal of the 'completion' Alert...
 
-        if self.appDelegateVisitorCompletionClosure != nil
+        if (idButtonClicked == 1)
         {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'completion' closure - 'appDelegateVisitorCompletionClosure' is [\(String(describing: self.appDelegateVisitorCompletionClosure))]...")
+            if self.appDelegateVisitorCompletionClosure1 != nil
+            {
 
-            self.appDelegateVisitorCompletionClosure!()
+                self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'completion' closure #1 - 'appDelegateVisitorCompletionClosure1' is [\(String(describing: self.appDelegateVisitorCompletionClosure1))]...")
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'completion' closure - 'appDelegateVisitorCompletionClosure' is [\(String(describing: self.appDelegateVisitorCompletionClosure))]...")
+                self.appDelegateVisitorCompletionClosure1!()
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'completion' closure #1 - 'appDelegateVisitorCompletionClosure1' is [\(String(describing: self.appDelegateVisitorCompletionClosure1))]...")
+
+            }
+            else
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Bypassing calling the 'completion' closure #1 - 'appDelegateVisitorCompletionClosure1' is nil...")
+
+            }
 
         }
         else
         {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Bypassing calling the 'completion' closure - 'appDelegateVisitorCompletionClosure' is nil...")
+            if self.appDelegateVisitorCompletionClosure2 != nil
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'completion' closure #2 - 'appDelegateVisitorCompletionClosure2' is [\(String(describing: self.appDelegateVisitorCompletionClosure2))]...")
+
+                self.appDelegateVisitorCompletionClosure2!()
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'completion' closure #2 - 'appDelegateVisitorCompletionClosure2' is [\(String(describing: self.appDelegateVisitorCompletionClosure2))]...")
+
+            }
+            else
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Bypassing calling the 'completion' closure #2 - 'appDelegateVisitorCompletionClosure2' is nil...")
+
+            }
 
         }
 
-        self.sAppDelegateVisitorCompletionAlertMessage    = "-N/A-"
-        self.sAppDelegateVisitorCompletionAlertButtonText = "-N/A-"
-        self.appDelegateVisitorCompletionClosure          = nil
-        self.isAppDelegateVisitorShowingCompletionAlert   = false
+    //  self.sAppDelegateVisitorCompletionAlertMessage     = "-N/A-"
+    //  self.sAppDelegateVisitorCompletionAlertButtonText1 = "-N/A-"
+    //  self.sAppDelegateVisitorCompletionAlertButtonText2 = ""
+    //  self.appDelegateVisitorCompletionClosure1          = nil
+    //  self.appDelegateVisitorCompletionClosure2          = nil
+        self.isAppDelegateVisitorShowingCompletionAlert    = false
 
         // Exit:
 
@@ -1508,11 +1602,11 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         let multipartRequestDriver:MultipartRequestDriver = MultipartRequestDriver(bGenerateResponseLongMsg:false, 
                                                                                    bAlertIsBypassed:alertIsBypassed)
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)' - 'alertIsBypassed' is [\(alertIsBypassed)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
 
         multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:multipartRequestInfo)
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Called  'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)' - 'alertIsBypassed' is [\(alertIsBypassed)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
 
         // Exit:
 

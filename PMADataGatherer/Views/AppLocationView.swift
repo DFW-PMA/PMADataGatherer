@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0501"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -99,7 +99,7 @@ struct AppLocationView: View
 
                         self.cAppLocationViewRefreshButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLocationView in Button(Xcode).'Refresh'.#(\(self.cAppLocationViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLocationView.Button(Xcode).'Refresh'.#(\(self.cAppLocationViewRefreshButtonPresses))...")
 
                         let _ = self.checkIfAppParseCoreHasPFCscDataItems()
                         let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems()
@@ -121,6 +121,13 @@ struct AppLocationView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
 
                     Spacer()
 
@@ -150,6 +157,13 @@ struct AppLocationView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -248,6 +262,13 @@ struct AppLocationView: View
 
                                 }
                                 .gridColumnAlignment(.center)
+                            #if os(macOS)
+                                .buttonStyle(.borderedProminent)
+                                .padding()
+                            //  .background(???.isPressed ? .blue : .gray)
+                                .cornerRadius(10)
+                                .foregroundColor(Color.primary)
+                            #endif
 
                                 Text("(\(self.getScheduledPatientLocationItemsCountForPFCscDataItem(pfCscDataItem:pfCscObject)))")
                                     .bold()
