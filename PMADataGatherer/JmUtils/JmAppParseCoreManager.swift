@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2201"
+        static let sClsVers      = "v1.2205"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -360,58 +360,63 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
                 listPFAdminsObjects!.count > 0)
             {
                 
-                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryAdmins' returned a count of #(\(listPFAdminsObjects!.count)) PFObject(s)...")
-                self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryAdmins'...")
-
-                var cPFAdminsObjects:Int   = 0
-                self.dictPFAdminsDataItems = [:]
-
-                for pfAdminsObject in listPFAdminsObjects!
+                DispatchQueue.main.async
                 {
 
-                    cPFAdminsObjects += 1
+                    self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryAdmins' returned a count of #(\(listPFAdminsObjects!.count)) PFObject(s)...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryAdmins'...")
 
-                    let parsePFAdminsDataItem:ParsePFAdminsDataItem = ParsePFAdminsDataItem()
+                    var cPFAdminsObjects:Int   = 0
+                    self.dictPFAdminsDataItems = [:]
 
-                    parsePFAdminsDataItem.constructParsePFAdminsDataItemFromPFObject(idPFAdminsObject:cPFAdminsObjects, pfAdminsObject:pfAdminsObject)
-
-                    let sPFAdminsParseTID:String = parsePFAdminsDataItem.sPFAdminsParseTID
-
-                    if (sPFAdminsParseTID.count  < 1 ||
-                        sPFAdminsParseTID       == "-N/A-")
+                    for pfAdminsObject in listPFAdminsObjects!
                     {
 
-                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' - the 'tid' field is nil or '-N/A-' - Warning!")
+                        cPFAdminsObjects += 1
 
-                        continue
+                        let parsePFAdminsDataItem:ParsePFAdminsDataItem = ParsePFAdminsDataItem()
+
+                        parsePFAdminsDataItem.constructParsePFAdminsDataItemFromPFObject(idPFAdminsObject:cPFAdminsObjects, pfAdminsObject:pfAdminsObject)
+
+                        let sPFAdminsParseTID:String = parsePFAdminsDataItem.sPFAdminsParseTID
+
+                        if (sPFAdminsParseTID.count  < 1 ||
+                            sPFAdminsParseTID       == "-N/A-")
+                        {
+
+                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                            continue
+
+                        }
+
+                        self.dictPFAdminsDataItems[sPFAdminsParseTID] = parsePFAdminsDataItem
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' keyed by 'sPFAdminsParseTID' of [\(sPFAdminsParseTID)] to the dictionary of item(s)...")
 
                     }
-
-                    self.dictPFAdminsDataItems[sPFAdminsParseTID] = parsePFAdminsDataItem
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' keyed by 'sPFAdminsParseTID' of [\(sPFAdminsParseTID)] to the dictionary of item(s)...")
-
-                }
-                
-                if (self.dictPFAdminsDataItems.count > 0)
-                {
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) Adding the 'TherapistFile' query data to the dictionary of 'parsePFAdminsDataItem' item(s)...")
-
-                    self.getJmAppParsePFQueryForTherapistFileToAddToAdmins()
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of 'parsePFAdminsDataItem' item(s)...")
-
-                    for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
+                    
+                    if (self.dictPFAdminsDataItems.count > 0)
                     {
 
-                        parsePFAdminsDataItem.displayParsePFAdminsDataItemToLog()
+                        self.xcgLogMsg("\(sCurrMethodDisp) Adding the 'TherapistFile' query data to the dictionary of 'parsePFAdminsDataItem' item(s)...")
+
+                        self.getJmAppParsePFQueryForTherapistFileToAddToAdmins()
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of 'parsePFAdminsDataItem' item(s)...")
+
+                        for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
+                        {
+
+                            parsePFAdminsDataItem.displayParsePFAdminsDataItemToLog()
+
+                        }
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) Copying the item(s) from the dictionary of 'parsePFAdminsDataItem' to SwiftData...")
+
+                        self.copyJmAppParsePFAdminsToSwiftData()
 
                     }
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) Copying the item(s) from the dictionary of 'parsePFAdminsDataItem' to SwiftData...")
-
-                    self.copyJmAppParsePFAdminsToSwiftData()
 
                 }
 
@@ -758,29 +763,34 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
             if (listPFCscObjects != nil &&
                 listPFCscObjects!.count > 0)
             {
-                
-                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryCSC' returned a count of #(\(listPFCscObjects!.count)) PFObject(s)...")
-                self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryCSC'...")
 
-                self.cPFCscObjects      = 0
-                self.listPFCscDataItems = []
-                self.listPFCscNameItems = []
-
-                for pfCscObject in listPFCscObjects!
+                DispatchQueue.main.async
                 {
 
-                    self.cPFCscObjects += 1
+                    self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryCSC' returned a count of #(\(listPFCscObjects!.count)) PFObject(s)...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryCSC'...")
 
-                    let parsePFCscDataItem:ParsePFCscDataItem = ParsePFCscDataItem()
+                    self.cPFCscObjects      = 0
+                    self.listPFCscDataItems = []
+                    self.listPFCscNameItems = []
 
-                    parsePFCscDataItem.constructParsePFCscDataItemFromPFObject(idPFCscObject:cPFCscObjects, pfCscObject:pfCscObject)
+                    for pfCscObject in listPFCscObjects!
+                    {
 
-                    parsePFCscDataItem.sPFTherapistParseTID = self.convertTherapistNameToTid(sPFTherapistParseName:parsePFCscDataItem.sPFCscParseName)
+                        self.cPFCscObjects += 1
 
-                    self.listPFCscNameItems.append(parsePFCscDataItem.sPFCscParseName)
-                    self.listPFCscDataItems.append(parsePFCscDataItem)
+                        let parsePFCscDataItem:ParsePFCscDataItem = ParsePFCscDataItem()
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(self.cPFCscObjects)) 'parsePFCscDataItem' to the list of name(s)/item(s)...")
+                        parsePFCscDataItem.constructParsePFCscDataItemFromPFObject(idPFCscObject:self.cPFCscObjects, pfCscObject:pfCscObject)
+
+                        parsePFCscDataItem.sPFTherapistParseTID = self.convertTherapistNameToTid(sPFTherapistParseName:parsePFCscDataItem.sPFCscParseName)
+
+                        self.listPFCscNameItems.append(parsePFCscDataItem.sPFCscParseName)
+                        self.listPFCscDataItems.append(parsePFCscDataItem)
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(self.cPFCscObjects)) 'parsePFCscDataItem' to the list of name(s)/item(s)...")
+
+                    }
 
                 }
 
@@ -1620,6 +1630,45 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return sPFTherapistParseTID
 
     } // End of public func convertTherapistNameToTid(sPFTherapistParseName:String)->String.
+    
+    func locatePFCscDataItemByID(id:UUID)->ParsePFCscDataItem
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'id' is [\(id)]...")
+
+        // Locate a given PFCscDataItem given an 'id' (aka, UUID)...
+
+        var pfCscDataItem:ParsePFCscDataItem = ParsePFCscDataItem()
+
+        if (self.listPFCscDataItems.count > 1)
+        {
+        
+            for currentPFCscDataItem:ParsePFCscDataItem in self.listPFCscDataItems
+            {
+
+                if (currentPFCscDataItem.id == id)
+                {
+                
+                    pfCscDataItem = currentPFCscDataItem
+                    
+                    break
+                
+                }
+
+            }
+        
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'pfCscDataItem' is [\(pfCscDataItem)]...")
+  
+        return pfCscDataItem
+
+    } // End of func locatePFCscDataItemByID(id:UUID)->ParsePFCscDataItem.
     
 }   // End of public class JmAppParseCoreManager.
 

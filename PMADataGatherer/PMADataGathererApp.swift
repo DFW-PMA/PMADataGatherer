@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//import SwiftUI
+import SwiftUI
 import SwiftData
 
 @main
@@ -18,7 +18,7 @@ struct PMADataGathererApp: App
     {
         
         static let sClsId        = "PMADataGathererApp"
-        static let sClsVers      = "v1.1804"
+        static let sClsVers      = "v1.1808"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -44,9 +44,10 @@ struct PMADataGathererApp: App
 
     // App Data field(s):
 
-    let sAppBundlePath:String                     = Bundle.main.bundlePath
+    let sAppBundlePath:String                                       = Bundle.main.bundlePath
 
-    var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                    var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
     init()
     {
@@ -91,59 +92,59 @@ struct PMADataGathererApp: App
         
         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) - 'sAppBundlePath' is [\(sAppBundlePath)]...")
         
-        WindowGroup 
+        WindowGroup
         {
             
             AppAuthenticateView()
                 .navigationTitle(AppGlobalInfo.sGlobalInfoAppId)
-                .onOpenURL(perform: 
-                { url in
+                .onOpenURL(perform:
+                            { url in
                     
                     self.xcgLogMsg("\(ClassInfo.sClsDisp):AuthenticateView.onOpenURL() performed for the URL of [\(url)]...")
-
+                    
                 })
-
+            
         }
         .handlesExternalEvents(matching: [])
-    #if os(macOS)
+#if os(macOS)
         .commands
         {
-
+            
             AppInfoCommands()
-
+            
             HelpCommands()
-
+            
         }
-    #endif
+#endif
         
-    #if os(macOS)
+#if os(macOS)
         Settings
         {
-      
+            
             SettingsSingleView()
-      
+            
         }
-    #endif
+#endif
         
-    #if os(macOS)
+#if os(macOS)
         // This is the Window to diaplay the AppLocationView...this works from MacOS...
-
+        
         Window("AppLocation", id:"AppLocationView")
         {
-
-        //  AppLocationView(jmAppParseCoreManager:jmAppDelegateVisitor.jmAppParseCoreManager!)
+            
+            //  AppLocationView(jmAppParseCoreManager:jmAppDelegateVisitor.jmAppParseCoreManager!)
             AppLocationView()
-
+            
         }
-
+        
         // This is the Window to diaplay the AppLocationMapView...this works from MacOS...
-
-        Window("AppLocationMap", id:"AppLocationMapView")
-        {
-
-        //  AppLocationMapView(parsePFCscDataItem:ParsePFCscDataItem())
-            AppLocationMapView(parsePFCscDataItem: ParsePFCscDataItem())
-
+        
+        WindowGroup("AppLocationMap", id:"AppLocationMapView", for: UUID.self)
+        { $uuid in
+            
+            AppLocationMapView(parsePFCscDataItem:jmAppParseCoreManager.locatePFCscDataItemByID(id:uuid ?? UUID()))
+            //  AppLocationMapView(parsePFCscDataItem:ParsePFCscDataItem())
+            
         }
 
         // This is the Window to diaplay the AppTidScheduleView...this works from MacOS...

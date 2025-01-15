@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0601"
+        static let sClsVers      = "v1.0607"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -27,6 +27,7 @@ struct AppLocationView: View
 
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.openWindow)       var openWindow
     
     @State private  var cAppLocationViewRefreshButtonPresses:Int    = 0
     @State private  var cAppLocationViewRefreshAutoTimer:Int        = 0
@@ -229,11 +230,11 @@ struct AppLocationView: View
                             GridRow(alignment:.bottom)
                             {
 
-                                NavigationLink
+                            #if os(macOS)
+                                Button
                                 {
-
-                                    AppLocationMapView(parsePFCscDataItem:pfCscObject).navigationBarBackButtonHidden(false)
-
+                                    // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                                    openWindow(id:"AppLocationMapView", value:pfCscObject.id)
                                 }
                                 label:
                                 {
@@ -262,12 +263,44 @@ struct AppLocationView: View
 
                                 }
                                 .gridColumnAlignment(.center)
-                            #if os(macOS)
                                 .buttonStyle(.borderedProminent)
                                 .padding()
                             //  .background(???.isPressed ? .blue : .gray)
                                 .cornerRadius(10)
                                 .foregroundColor(Color.primary)
+                            #endif
+                            #if os(iOS)
+                                NavigationLink
+                                {
+                                    AppLocationMapView(parsePFCscDataItem:pfCscObject).navigationBarBackButtonHidden(false)
+                                }
+                                label:
+                                {
+
+                                    VStack(alignment:.center)
+                                    {
+
+                                        Label("", systemImage: "mappin.and.ellipse")
+                                            .help(Text("'Map' the App Location..."))
+                                            .imageScale(.small)
+                                        #if os(macOS)
+                                            .onTapGesture(count:1)
+                                            {
+
+                                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.GridRow.NavigationLink.'.onTapGesture()' received - Map #(\(pfCscObject.idPFCscObject))...")
+
+                                                let _ = AppLocationMapView(parsePFCscDataItem:pfCscObject)
+
+                                            }
+                                        #endif
+
+                                        Text("Map #(\(pfCscObject.idPFCscObject))")
+                                            .font(.caption2)
+
+                                    }
+
+                                }
+                                .gridColumnAlignment(.center)
                             #endif
 
                                 Text("(\(self.getScheduledPatientLocationItemsCountForPFCscDataItem(pfCscDataItem:pfCscObject)))")

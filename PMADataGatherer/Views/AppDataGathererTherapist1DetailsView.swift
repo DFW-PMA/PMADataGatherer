@@ -427,7 +427,7 @@ struct AppDataGathererTherapist1DetailsView: View
                             Text("Therapists' Mentor TID #")
 
                             let sMentorTID:String  = "\(self.pfTherapistFileItem!.iPFTherapistFileMentorID)"
-                            var sMentorName:String = (self.pfTherapistFileItem!.iPFTherapistFileMentorID == 9) ? "-unassigned-" : self.locateAppTherapistNamebyTid(sTherapistTID:sMentorTID)
+                            let sMentorName:String = (self.pfTherapistFileItem!.iPFTherapistFileMentorID == 9) ? "-unassigned-" : self.locateAppTherapistNamebyTid(sTherapistTID:sMentorTID)
 
                             Text("\(sMentorTID) <\(sMentorName)>")
 
