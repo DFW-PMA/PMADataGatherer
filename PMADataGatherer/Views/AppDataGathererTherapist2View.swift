@@ -17,7 +17,7 @@ struct AppDataGathererTherapist2View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.0202"
+        static let sClsVers      = "v1.0305"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -40,7 +40,7 @@ struct AppDataGathererTherapist2View: View
     @State       private var sTherapistTID:String                                   = ""
     @State       private var sTherapistName:String                                  = ""
 
-    @StateObject         var jmAppParseCoreManager:JmAppParseCoreManager
+//  @StateObject         var jmAppParseCoreManager:JmAppParseCoreManager
     
     @State       private var cAppDataGathererTherapist2ViewRefreshButtonPresses:Int = 0
 
@@ -48,16 +48,18 @@ struct AppDataGathererTherapist2View: View
     @State       private var isAppTherapistDetailsByTNameShowing:Bool               = false
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor              = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
-    init(jmAppParseCoreManager:JmAppParseCoreManager)
+//  init(jmAppParseCoreManager:JmAppParseCoreManager)
+    init()
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        // Handle the 'jmAppParseCoreManager' parameter...
-
-        self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
+    //  // Handle the 'jmAppParseCoreManager' parameter...
+    //
+    //  self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
@@ -131,6 +133,13 @@ struct AppDataGathererTherapist2View: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
 
                     Spacer()
 
@@ -160,6 +169,13 @@ struct AppDataGathererTherapist2View: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -245,6 +261,13 @@ struct AppDataGathererTherapist2View: View
 
                         }
                     #endif
+                    #if os(macOS)
+                        .buttonStyle(.borderedProminent)
+                        .padding()
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
                         .padding()
                     
                     }
@@ -266,6 +289,11 @@ struct AppDataGathererTherapist2View: View
                     TextField("Therapist tName...", text:$sTherapistName)
                         .italic()
                         .focused($focusedField, equals:.therapistName)
+                        .onSubmit
+                        {
+                            self.sTherapistTID  = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
+                            focusedField        = .therapistName
+                        }
                         .onAppear
                         {
                             self.sTherapistName = ""
@@ -308,6 +336,7 @@ struct AppDataGathererTherapist2View: View
                                 Spacer()
 
                                 Text("=> Locate the Therapist by tName...")
+                                    .bold()
                                     .font(.caption)
                                     .foregroundColor(.red)
 
@@ -318,6 +347,13 @@ struct AppDataGathererTherapist2View: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -365,7 +401,7 @@ struct AppDataGathererTherapist2View: View
 #Preview 
 {
     
-    AppDataGathererTherapist2View(jmAppParseCoreManager:JmAppParseCoreManager())
+    AppDataGathererTherapist2View()
     
 }
 

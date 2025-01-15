@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.2702"
+        static let sClsVers      = "v1.2704"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -451,6 +451,13 @@ struct ContentView: View
 
                     self.isAppDataViewModal.toggle()
 
+                #if os(macOS)
+              
+                    // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                    openWindow(id:"AppDataGathererView")
+              
+                #endif
+
             //  #if os(macOS)
             //
             //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
@@ -460,7 +467,7 @@ struct ContentView: View
             //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
             //
             //  #endif
-            //
+            
                 }
                 label:
                 {
@@ -478,20 +485,20 @@ struct ContentView: View
                     }
 
                 }
-            #if os(macOS)
-                .sheet(isPresented:$isAppDataViewModal, content:
-                    {
-          
-                        AppDataGathererView(jmAppParseCoreManager:getAppParseCoreManagerInstance())
-          
-                    }
-                )
-            #endif
+        //  #if os(macOS)
+        //      .sheet(isPresented:$isAppDataViewModal, content:
+        //          {
+        //
+        //              AppDataGathererView()
+        //
+        //          }
+        //      )
+        //  #endif
             #if os(iOS)
                 .fullScreenCover(isPresented:$isAppDataViewModal)
                 {
 
-                    AppDataGathererView(jmAppParseCoreManager:getAppParseCoreManagerInstance())
+                    AppDataGathererView()
 
                 }
             #endif
@@ -545,7 +552,7 @@ struct ContentView: View
                 .sheet(isPresented:$isAppLocationViewModal, content:
                     {
           
-                        AppLocationView(jmAppParseCoreManager:getAppParseCoreManagerInstance())
+                        AppLocationView()
           
                     }
                 )
@@ -554,7 +561,7 @@ struct ContentView: View
                 .fullScreenCover(isPresented:$isAppLocationViewModal)
                 {
 
-                    AppLocationView(jmAppParseCoreManager:getAppParseCoreManagerInstance())
+                    AppLocationView()
 
                 }
             #endif
@@ -805,25 +812,25 @@ struct ContentView: View
   
     }   // End of uploadPreviousAppLogToDevs().
 
-    func getAppParseCoreManagerInstance()->JmAppParseCoreManager
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' is [\(String(describing: jmAppDelegateVisitor))] - details are [\(jmAppDelegateVisitor.toString())]...")
-
-        let jmAppParseCoreManager:JmAppParseCoreManager = jmAppDelegateVisitor.jmAppParseCoreManager ?? JmAppParseCoreManager()
-  
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'jmAppDelegateVisitor.jmAppParseCoreManager?' is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager))]...")
-  
-        return jmAppParseCoreManager
-  
-    }   // End of getAppParseCoreManagerInstance()->jmAppParseCoreManager.
+//  func getAppParseCoreManagerInstance()->JmAppParseCoreManager
+//  {
+//
+//      let sCurrMethod:String = #function
+//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+//      
+//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' is [\(String(describing: jmAppDelegateVisitor))] - details are [\(jmAppDelegateVisitor.toString())]...")
+//
+//      let jmAppParseCoreManager:JmAppParseCoreManager = jmAppDelegateVisitor.jmAppParseCoreManager ?? JmAppParseCoreManager()
+//
+//      // Exit...
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'jmAppDelegateVisitor.jmAppParseCoreManager?' is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager))]...")
+//
+//      return jmAppParseCoreManager
+//
+//  }   // End of getAppParseCoreManagerInstance()->jmAppParseCoreManager.
 
 }   // END of struct ContentView(View).
 

@@ -20,13 +20,22 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2104"
+        static let sClsVers      = "v1.2201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
         static let bClsFileLog   = false
 
     }   // End of struct ClassInfo.
+
+    // Class 'singleton' instance:
+
+    struct ClassSingleton
+    {
+
+        static var appParseCodeManager:JmAppParseCoreManager                             = JmAppParseCoreManager()
+
+    }
 
     // App Data field(s):
 
@@ -98,7 +107,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
                     var  listPreXCGLoggerMessages:[String]                               = Array()
 
-    override init()
+    private override init()
     {
         
         let sCurrMethod:String = #function
@@ -114,7 +123,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
         return
 
-    }   // End of override init().
+    }   // End of private override init().
 
     private func xcgLogMsg(_ sMessage:String)
     {
@@ -231,6 +240,30 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
         }
 
+        // Finish any 'initialization' work:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreManager Invoking 'self.runPostInitializationTasks()'...")
+    
+        self.runPostInitializationTasks()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreManager Invoked  'self.runPostInitializationTasks()'...")
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.jmAppDelegateVisitor' is [\(String(describing: self.jmAppDelegateVisitor))]...")
+    
+        return
+
+    } // End of public func setJmAppDelegateVisitorInstance().
+
+    private func runPostInitializationTasks()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(self)]...")
+
         // Finish performing any setup with the ParseCore (Client) framework...
         // --------------------------------------------------------------------------------------------------
         // ParseCore doc: -> https://docs.parseplatform.org/ios/guide/
@@ -260,11 +293,11 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.jmAppDelegateVisitor' is [\(String(describing: self.jmAppDelegateVisitor))]...")
-    
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
         return
 
-    } // End of public func setJmAppDelegateVisitorInstance().
+    }   // End of private func runPostInitializationTasks().
 
     public func getJmAppParsePFQueryForAdmins()
     {

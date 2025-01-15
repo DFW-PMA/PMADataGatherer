@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0409"
+        static let sClsVers      = "v1.0503"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -41,6 +41,7 @@ struct AppDataGathererTherapist1DetailsView: View
     @State       private var isAppSupervisorDetailsByTIDShowing:Bool       = false
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor     = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager   = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
     init(sTherapistTID:Binding<String>)
     {
@@ -126,6 +127,13 @@ struct AppDataGathererTherapist1DetailsView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -391,6 +399,13 @@ struct AppDataGathererTherapist1DetailsView: View
 
                                     }
                                 #endif
+                                #if os(macOS)
+                                    .buttonStyle(.borderedProminent)
+                                    .padding()
+                                //  .background(???.isPressed ? .blue : .gray)
+                                    .cornerRadius(10)
+                                    .foregroundColor(Color.primary)
+                                #endif
                                     .padding()
 
                                 }
@@ -596,15 +611,14 @@ struct AppDataGathererTherapist1DetailsView: View
 
         var sTherapistName:String = ""
 
-        if (sTherapistTID.count                              > 0 &&
-            self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+        if (sTherapistTID.count > 0)
         {
         
-            sTherapistName = self.jmAppDelegateVisitor.jmAppParseCoreManager!.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
+            sTherapistName = self.jmAppParseCoreManager.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
 
             let iTherapistTID:Int = Int(sTherapistTID)!
 
-            self.pfTherapistFileItem = self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems[iTherapistTID]
+            self.pfTherapistFileItem = self.jmAppParseCoreManager.dictPFTherapistFileItems[iTherapistTID]
         
         }
 

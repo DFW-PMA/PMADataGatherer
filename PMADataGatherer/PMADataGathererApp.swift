@@ -18,7 +18,7 @@ struct PMADataGathererApp: App
     {
         
         static let sClsId        = "PMADataGathererApp"
-        static let sClsVers      = "v1.1702"
+        static let sClsVers      = "v1.1804"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -131,7 +131,8 @@ struct PMADataGathererApp: App
         Window("AppLocation", id:"AppLocationView")
         {
 
-            AppLocationView(jmAppParseCoreManager:jmAppDelegateVisitor.jmAppParseCoreManager!)
+        //  AppLocationView(jmAppParseCoreManager:jmAppDelegateVisitor.jmAppParseCoreManager!)
+            AppLocationView()
 
         }
 
@@ -140,7 +141,8 @@ struct PMADataGathererApp: App
         Window("AppLocationMap", id:"AppLocationMapView")
         {
 
-            AppLocationMapView(parsePFCscDataItem:ParsePFCscDataItem())
+        //  AppLocationMapView(parsePFCscDataItem:ParsePFCscDataItem())
+            AppLocationMapView(parsePFCscDataItem: ParsePFCscDataItem())
 
         }
 
@@ -149,9 +151,21 @@ struct PMADataGathererApp: App
         Window("AppTidSchedule", id:"AppTidScheduleView")
         {
 
-            AppTidScheduleView(listScheduledPatientLocationItems:[ScheduledPatientLocationItem()])
+        //  AppTidScheduleView(listScheduledPatientLocationItems:[ScheduledPatientLocationItem()])
+        //  AppTidScheduleView(listScheduledPatientLocationItems: <#[ScheduledPatientLocationItem]#>)
+            AppTidScheduleView(listScheduledPatientLocationItems: [])
 
         }
+
+        // This is the Window to diaplay the AppLocationView...this works from MacOS...
+
+        Window("AppDataGatherer", id:"AppDataGathererView")
+        {
+
+            AppDataGathererView()
+
+        }
+
     #endif
         
     }

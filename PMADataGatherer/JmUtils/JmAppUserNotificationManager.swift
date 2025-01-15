@@ -20,7 +20,7 @@ public class JmAppUserNotificationManager: NSObject, UNUserNotificationCenterDel
     {
 
         static let sClsId        = "JmAppUserNotificationManager"
-        static let sClsVers      = "v1.2607"
+        static let sClsVers      = "v1.2701"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -258,11 +258,11 @@ public class JmAppUserNotificationManager: NSObject, UNUserNotificationCenterDel
 
         // Finish any 'initialization' work:
 
-        self.xcgLogMsg("\(sCurrMethodDisp)' UserNotificationManager Invoking 'self.runPostInitializationTasks()'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) UserNotificationManager Invoking 'self.runPostInitializationTasks()'...")
     
         self.runPostInitializationTasks()
 
-        self.xcgLogMsg("\(sCurrMethodDisp)' UserNotificationManager Invoked  'self.runPostInitializationTasks()'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) UserNotificationManager Invoked  'self.runPostInitializationTasks()'...")
     
         // Exit:
 

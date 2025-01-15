@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.2807"
+        static let sClsVers      = "v1.2902"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -464,7 +464,8 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
             self.xcgLogMsg("\(sCurrMethodDisp) Instantiating the 'self.JmAppParseCoreManager' instance...")
 
-            self.jmAppParseCoreManager = JmAppParseCoreManager()
+        //  self.jmAppParseCoreManager = JmAppParseCoreManager()
+            self.jmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
 
             self.jmAppParseCoreManager?.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
           

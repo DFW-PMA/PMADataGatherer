@@ -775,11 +775,12 @@ struct AppAuthenticateView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
   
-        let jmAppParseCoreManager:JmAppParseCoreManager = jmAppDelegateVisitor.jmAppParseCoreManager ?? JmAppParseCoreManager()
+    //  let jmAppParseCoreManager:JmAppParseCoreManager = jmAppDelegateVisitor.jmAppParseCoreManager ?? JmAppParseCoreManager()
+        let jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
   
         // Exit...
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'jmAppDelegateVisitor.jmAppParseCoreManager?' is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'jmAppParseCoreManager' is [\(String(describing: jmAppParseCoreManager))]...")
   
         return jmAppParseCoreManager
   

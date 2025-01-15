@@ -28,23 +28,23 @@ struct AppLocationView: View
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
     
-    @StateObject   var jmAppParseCoreManager:JmAppParseCoreManager
-    
-    @State private var cAppLocationViewRefreshButtonPresses:Int  = 0
-    @State private var cAppLocationViewRefreshAutoTimer:Int      = 0
-    @State private var cAppScheduleViewRefreshAutoTimer:Int      = 0
+    @State private  var cAppLocationViewRefreshButtonPresses:Int    = 0
+    @State private  var cAppLocationViewRefreshAutoTimer:Int        = 0
+    @State private  var cAppScheduleViewRefreshAutoTimer:Int        = 0
 
-                   var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                    var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
-    init(jmAppParseCoreManager:JmAppParseCoreManager)
+//  init(jmAppParseCoreManager:JmAppParseCoreManager)
+    init()
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        // Handle the 'jmAppParseCoreManager' parameter...
-
-        self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
+    //  // Handle the 'jmAppParseCoreManager' parameter...
+    //
+    //  self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
@@ -440,19 +440,13 @@ struct AppLocationView: View
 
         // Use the TherapistName in the PFCscDataItem to lookup the 'sPFTherapistParseTID'...
 
-        var sPFTherapistParseTID:String = ""
+        var sPFTherapistParseTID:String                 = ""
+        let jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
 
-        if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+        if (pfCscDataItem.sPFCscParseName.count > 0)
         {
-        
-            let jmAppParseCoreManager:JmAppParseCoreManager = self.jmAppDelegateVisitor.jmAppParseCoreManager!
 
-            if (pfCscDataItem.sPFCscParseName.count > 0)
-            {
-
-                sPFTherapistParseTID = jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
-
-            }
+            sPFTherapistParseTID = jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
 
         }
         
@@ -475,21 +469,15 @@ struct AppLocationView: View
         // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
 
         var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
+        let jmAppParseCoreManager:JmAppParseCoreManager                      = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
 
-        if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+        if (sPFTherapistParseTID.count > 0)
         {
-        
-            let jmAppParseCoreManager:JmAppParseCoreManager = self.jmAppDelegateVisitor.jmAppParseCoreManager!
 
-            if (sPFTherapistParseTID.count > 0)
+            if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
             {
 
-                if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
-                {
-
-                    listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
-
-                }
+                listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
 
             }
 
@@ -595,7 +583,7 @@ struct AppLocationView: View
 #Preview 
 {
     
-    AppLocationView(jmAppParseCoreManager:JmAppParseCoreManager())
+    AppLocationView()
     
 }
 
