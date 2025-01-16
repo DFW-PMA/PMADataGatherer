@@ -1,26 +1,26 @@
 //
-//  JmAppParseCoreManager.swift
+//  JmAppParseCoreBackgroundDataRepo.swift
 //  JmUtils_Library
 //
-//  Created by Daryl Cox on 11/04/2024.
+//  Created by Daryl Cox on 01/16/2025.
 //  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
 import Foundation
-import ParseCore
 import SwiftData
+import ParseCore
 
-// Implementation class to handle access to the ParseCore framework.
+// Implementation class to handle access to the ParseCore 'background' Data (repo).
 
 //@MainActor
-public class JmAppParseCoreManager: NSObject, ObservableObject
+public class JmAppParseCoreBackgroundDataRepo: NSObject
 {
 
     struct ClassInfo
     {
 
-        static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2301"
+        static let sClsId        = "JmAppParseCoreBackgroundDataRepo"
+        static let sClsVers      = "v1.0102"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -33,79 +33,49 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     struct ClassSingleton
     {
 
-        static var appParseCodeManager:JmAppParseCoreManager                             = JmAppParseCoreManager()
+        static var appParseCodeBkgdDataRepo:JmAppParseCoreBackgroundDataRepo = JmAppParseCoreBackgroundDataRepo()
 
     }
 
     // App Data field(s):
 
-                    let timerPublisherTherapistLocations                                 = Timer.publish(every: (3 * 60), on: .main, in: .common).autoconnect()
-                                                                                           // TIMER to update Therapist location(s):
-                                                                                           // Note: implement .onReceive() on a field within the displaying 'View'...
-                                                                                           // 
-                                                                                           // @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager
-                                                                                           // ...
-                                                                                           // .onReceive(jmAppParseCoreManager.timerPublisherTherapistLocations,
-                                                                                           //     perform:
-                                                                                           //     { dtObserved in
-                                                                                           //         ...
-                                                                                           //     })
+    var parseConfig:ParseClientConfiguration?                                = nil       
 
-                    let timerPublisherScheduleLocations                                  = Timer.publish(every: (25 * 60), on: .main, in: .common).autoconnect()
-                                                                                           // TIMER to update (Patient) Schedule(d) location(s):
-                                                                                           // Note: implement .onReceive() on a field within the displaying 'View'...
-                                                                                           // 
-                                                                                           // @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager
-                                                                                           // ...
-                                                                                           // .onReceive(jmAppParseCoreManager.timerPublisherScheduleLocations,
-                                                                                           //     perform:
-                                                                                           //     { dtObserved in
-                                                                                           //         ...
-                                                                                           //     })
+    var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]                 = [:]
+                                                                               // [String:ParsePFAdminsDataItem]
+                                                                               // Key:PFAdminsParseTID(String)
 
-       public       var parseConfig:ParseClientConfiguration?                            = nil       
-       public       var pfInstallationCurrent:PFInstallation?                            = nil
-       public       var bPFInstallationHasBeenEnumerated:Bool                            = false
+    var bHasDictTherapistFileItemsBeenDisplayed:Bool                         = false
+    var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]              = [Int:ParsePFTherapistFileItem]()
+                                                                               // [Int:ParsePFTherapistFileItem]
+                                                                               // Key:Tid(Int) -> TherapistID (Int)
 
-       private      var cPFQueryCSCs:Int                                                 = 0
+    var dictTherapistTidXref:[String:String]                                 = [String:String]()
+                                                                               // [String:String]
+                                                                               // Key:Tid(String)                       -> TherapistName (String)
+                                                                               // Key:TherapistName(String)             -> Tid (String)
+                                                                               // Key:TherapistName(String)<lowercased> -> Tid (String)
 
-    @Published      var cPFCscObjectsRefresh:Int                                         = 0
-    @Published      var cPFCscObjects:Int                                                = 0
-    @Published      var listPFCscDataItems:[ParsePFCscDataItem]                          = []
-                    var listPFCscNameItems:[String]                                      = []
+    var bNeedFirstPassSchedPatientLocations:Bool                             = true
+    var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                       = false
+    var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]]     = [String:[ScheduledPatientLocationItem]]()
+                                                                               // [String:[ScheduledPatientLocationItem]]
+                                                                               // Key:sPFTherapistParseTID(String)
 
-    @Published      var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]             = [:]
-                                                                                           // [String:ParsePFAdminsDataItem]
-                                                                                           // Key:PFAdminsParseTID(String)
+    var listPFCscDataItems:[ParsePFCscDataItem]                              = []
+    var listPFCscNameItems:[String]                                          = []
 
-    @Published      var dictTherapistTidXref:[String:String]                             = [String:String]()
-                                                                                           // [String:String]
-                                                                                           // Key:Tid(String)                       -> TherapistName (String)
-                                                                                           // Key:TherapistName(String)             -> Tid (String)
-                                                                                           // Key:TherapistName(String)<lowercased> -> Tid (String)
-
-    @Published      var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
-                                                                                           // [String:[ScheduledPatientLocationItem]]
-                                                                                           // Key:sPFTherapistParseTID(String)
-
-       private      var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                   = false
-
-    @Published      var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]          = [Int:ParsePFTherapistFileItem]()
-                                                                                           // [Int:ParsePFTherapistFileItem]
-                                                                                           // Key:Tid(Int) -> TherapistID (Int)
-
-       private      var bHasDictTherapistFileItemsBeenDisplayed:Bool                     = false
-
-                    var jmAppDelegateVisitor:JmAppDelegateVisitor?                       = nil
-                                                                                           // 'jmAppDelegateVisitor' MUST remain declared this way
-                                                                                           // as having it reference the 'shared' instance of 
-                                                                                           // JmAppDelegateVisitor causes a circular reference
-                                                                                           // between the 'init()' methods of the 2 classes...
-    @ObservedObject var jmAppSwiftDataManager:JmAppSwiftDataManager                      = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
+    var jmAppDelegateVisitor:JmAppDelegateVisitor?                           = nil
+                                                                               // 'jmAppDelegateVisitor' MUST remain declared this way
+                                                                               // as having it reference the 'shared' instance of 
+                                                                               // JmAppDelegateVisitor causes a circular reference
+                                                                               // between the 'init()' methods of the 2 classes...
+    var jmAppSwiftDataManager:JmAppSwiftDataManager                          = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
+    var jmAppParseCoreManager:JmAppParseCoreManager                          = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
-                    var  listPreXCGLoggerMessages:[String]                               = Array()
+    var  listPreXCGLoggerMessages:[String]                                   = Array()
 
     // ------------------------------------------------------------------------------------------------------
     //
@@ -192,28 +162,22 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         asToString.append("],")
         asToString.append("[")
         asToString.append("'parseConfig': [\(String(describing: self.parseConfig))]")
-        asToString.append("'pfInstallationCurrent': [\(String(describing: self.pfInstallationCurrent))]")
-        asToString.append("'bPFInstallationHasBeenEnumerated': [\(String(describing: self.bPFInstallationHasBeenEnumerated))]")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'cPFQueryCSCs': (\(String(describing: self.cPFQueryCSCs)))")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'cPFCscObjectsRefresh': (\(String(describing: self.cPFCscObjectsRefresh)))")
-        asToString.append("'cPFCscObjects': (\(String(describing: self.cPFCscObjects)))")
-        asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))]")
-        asToString.append("'listPFCscNameItems': [\(String(describing: self.listPFCscNameItems))]")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'dictPFAdminsDataItems': [\(String(describing: self.dictPFAdminsDataItems))]")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'dictSchedPatientLocItems': [\(String(describing: self.dictSchedPatientLocItems))]")
-        asToString.append("'bHasDictSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictSchedPatientLocItemsBeenDisplayed))]")
+        asToString.append("'bHasDictTherapistFileItemsBeenDisplayed': [\(String(describing: self.bHasDictTherapistFileItemsBeenDisplayed))]")
+        asToString.append("'dictPFTherapistFileItems': [\(String(describing: self.dictPFTherapistFileItems))]")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'dictPFTherapistFileItems': [\(String(describing: self.dictPFTherapistFileItems))]")
-        asToString.append("'bHasDictTherapistFileItemsBeenDisplayed': [\(String(describing: self.bHasDictTherapistFileItemsBeenDisplayed))]")
+        asToString.append("'bNeedFirstPassSchedPatientLocations': [\(String(describing: self.bNeedFirstPassSchedPatientLocations))]")
+        asToString.append("'bHasDictSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictSchedPatientLocItemsBeenDisplayed))]")
+        asToString.append("'dictSchedPatientLocItems': [\(String(describing: self.dictSchedPatientLocItems))]")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))]")
+        asToString.append("'listPFCscNameItems': [\(String(describing: self.listPFCscNameItems))]")
         asToString.append("],")
         asToString.append("]")
 
@@ -243,24 +207,24 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         {
 
             self.xcgLogMsg("")
-            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooling the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreManager === >>>")
+            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooling the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreBackgroundDataRepo === >>>")
 
             let sPreXCGLoggerMessages:String = self.listPreXCGLoggerMessages.joined(separator: "\n")
 
             self.xcgLogMsg(sPreXCGLoggerMessages)
 
-            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooled  the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreManager === >>>")
+            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooled  the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreBackgroundDataRepo === >>>")
             self.xcgLogMsg("")
 
         }
 
         // Finish any 'initialization' work:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreManager Invoking 'self.runPostInitializationTasks()'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreBackgroundDataRepo Invoking 'self.runPostInitializationTasks()'...")
     
         self.runPostInitializationTasks()
 
-        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreManager Invoked  'self.runPostInitializationTasks()'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreBackgroundDataRepo Invoked  'self.runPostInitializationTasks()'...")
 
         // Exit:
 
@@ -278,7 +242,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(self)]...")
 
-        // Finish performing any setup with the ParseCore (Client) framework...
+        // Finish performing any setup with the ParseCore 'background' Data repo...
         // --------------------------------------------------------------------------------------------------
         // ParseCore doc: -> https://docs.parseplatform.org/ios/guide/
         //
@@ -743,10 +707,6 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.cPFQueryCSCs += 1
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self.cPFQueryCSCs' is [\(self.cPFQueryCSCs)]...")
-
         // Issue a PFQuery for the 'CSC' class...
 
         self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'CSC' class...")
@@ -786,25 +746,26 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
                     self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryCSC' returned a count of #(\(listPFCscObjects!.count)) PFObject(s)...")
                     self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryCSC'...")
 
-                    self.cPFCscObjects      = 0
+                    var cPFCscObjects:Int   = 0
+                    
                     self.listPFCscDataItems = []
                     self.listPFCscNameItems = []
 
                     for pfCscObject in listPFCscObjects!
                     {
 
-                        self.cPFCscObjects += 1
+                        cPFCscObjects += 1
 
                         let parsePFCscDataItem:ParsePFCscDataItem = ParsePFCscDataItem()
 
-                        parsePFCscDataItem.constructParsePFCscDataItemFromPFObject(idPFCscObject:self.cPFCscObjects, pfCscObject:pfCscObject)
+                        parsePFCscDataItem.constructParsePFCscDataItemFromPFObject(idPFCscObject:cPFCscObjects, pfCscObject:pfCscObject)
 
                         parsePFCscDataItem.sPFTherapistParseTID = self.convertTherapistNameToTid(sPFTherapistParseName:parsePFCscDataItem.sPFCscParseName)
 
                         self.listPFCscNameItems.append(parsePFCscDataItem.sPFCscParseName)
                         self.listPFCscDataItems.append(parsePFCscDataItem)
 
-                        self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(self.cPFCscObjects)) 'parsePFCscDataItem' to the list of name(s)/item(s)...")
+                        self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFCscObjects)) 'parsePFCscDataItem' to the list of name(s)/item(s)...")
 
                     }
 
@@ -813,8 +774,10 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
                 // Gather the PFQueries to construct the new ScheduledPatientLocationItem(s) in the background
                 // (ONLY on the 1st call to this function - after that this fires from a View on a Timer)
 
-                if (self.cPFQueryCSCs == 1)
+                if (self.bNeedFirstPassSchedPatientLocations == true)
                 {
+                    
+                    self.bNeedFirstPassSchedPatientLocations = false
 
                     self.xcgLogMsg("\(sCurrMethodDisp) <1st Run> Calling 'self.gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient location data...")
 
@@ -837,10 +800,6 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
                         parsePFCscDataItem.displayParsePFCscDataItemToLog()
 
                     }
-
-                    // Kick the 'cPFCscObjectsRefresh' count to force any SwiftUI display(s) to refresh...
-
-                    self.cPFCscObjectsRefresh += 1
 
                 }
                 
@@ -867,90 +826,6 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return
 
     } // End of public func getJmAppParsePFQueryForCSC().
-
-    public func getJmAppParsePFInstallationCurrentInstance()->PFInstallation?
-    {
-        
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-
-        // Get and return the 'current' PFInstallation instance...
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Calling the PFInstallation 'current()' method...")
-
-        self.pfInstallationCurrent = PFInstallation.current()
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Called  the PFInstallation 'current()' method...")
-
-        // If 'current' PFInstallation instance is NOT nil, then dump the PFInstallation 'properties'...
-
-        if (self.bPFInstallationHasBeenEnumerated == false)
-        {
-
-            if (self.pfInstallationCurrent != nil)
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'pfInstallationCurrent.installationId' is [\(String(describing: self.pfInstallationCurrent?.installationId))]...")
-                self.xcgLogMsg("\(sCurrMethodDisp) 'pfInstallationCurrent.deviceType' is [\(String(describing: self.pfInstallationCurrent?.deviceType))]...")
-                self.xcgLogMsg("\(sCurrMethodDisp) 'pfInstallationCurrent.deviceToken' is [\(String(describing: self.pfInstallationCurrent?.deviceToken))]...")
-                self.xcgLogMsg("\(sCurrMethodDisp) 'pfInstallationCurrent.badge' is [\(String(describing: self.pfInstallationCurrent?.badge))]...")
-                self.xcgLogMsg("\(sCurrMethodDisp) 'pfInstallationCurrent.timeZone' is [\(String(describing: self.pfInstallationCurrent?.timeZone))]...")
-                self.xcgLogMsg("\(sCurrMethodDisp) 'pfInstallationCurrent.channels' is [\(String(describing: self.pfInstallationCurrent?.channels))]...")
-
-                do
-                {
-
-                    let pfInstallationQuery = PFInstallation.query()
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) 'pfInstallationQuery' is (\(String(describing: pfInstallationQuery))...")
-
-                    pfInstallationQuery?.whereKeyExists("AppVersionAndBuildNumber")
-
-                    let listPFObjects:[PFObject]? = try pfInstallationQuery?.findObjects()
-
-                    if (listPFObjects != nil &&
-                        listPFObjects!.count > 0)
-                    {
-
-                        self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfInstallationCurrent' returned a count of #(\(listPFObjects!.count)) PFObject(s)...")
-
-                    }
-
-                }
-                catch
-                {
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) Parse - failed to query 'pfInstallationCurrent' (but this is 'normal') - Details: \(error) - Error!")
-
-                }
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) Returned query of 'pfInstallationCurrent' is nil - Error!")
-
-            }
-
-            self.bPFInstallationHasBeenEnumerated = true
-
-        }
-
-    //  // TESTING: Always call the various 'testing' method(s)...for PRODUCTION this is handled in a View...
-    //
-    //  self.getJmAppParsePFQueryForAdmins()
-    //  self.getJmAppParsePFQueryForCSC()
-
-        // Exit:
-        
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.pfInstallationCurrent' is [\(String(describing: self.pfInstallationCurrent))] - 'self.jmAppDelegateVisitor' is [\(String(describing: self.jmAppDelegateVisitor))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.pfInstallationCurrent' is [\(String(describing: self.pfInstallationCurrent))]...")
-    
-        return self.pfInstallationCurrent
-
-    } // End of public func getJmAppParsePFInstallationCurrentInstance()->PFInstallation?.
 
     public func copyJmAppParsePFAdminsToSwiftData()
     {
@@ -1686,5 +1561,5 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
     } // End of func locatePFCscDataItemByID(id:UUID)->ParsePFCscDataItem.
     
-}   // End of public class JmAppParseCoreManager.
+}   // End of public class JmAppParseCoreBackgroundDataRepo.
 

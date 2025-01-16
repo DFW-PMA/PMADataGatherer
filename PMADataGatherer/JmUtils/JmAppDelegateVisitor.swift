@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.2902"
+        static let sClsVers      = "v1.2903"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -192,6 +192,8 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     // App <possible> ParseCore (Client) framework Manager instance:
 
     var jmAppParseCoreManager:JmAppParseCoreManager?               = nil
+    var jmAppParseCoreBackgroundDataRepo:JmAppParseCoreBackgroundDataRepo?
+                                                                   = nil
 
     // App <possible> CoreLocation service instance:
 
@@ -285,6 +287,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         asToString.append("jmAppMetricKitManager': [\(String(describing: self.jmAppMetricKitManager))],")
         asToString.append("jmAppUserNotificationManager': [\(String(describing: self.jmAppUserNotificationManager))],")
         asToString.append("jmAppParseCoreManager': [\(String(describing: self.jmAppParseCoreManager))],")
+        asToString.append("jmAppParseCoreBackgroundDataRepo': [\(String(describing: self.jmAppParseCoreBackgroundDataRepo))],")
         asToString.append("jmAppCLModelObservable2': [\(String(describing: self.jmAppCLModelObservable2))],")
         asToString.append("],")
         asToString.append("]")
@@ -462,14 +465,24 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
             // Instantiate the JmAppParseCoreManager...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Instantiating the 'self.JmAppParseCoreManager' instance...")
+            self.xcgLogMsg("\(sCurrMethodDisp) Instantiating the 'self.jmAppParseCoreManager' instance...")
 
         //  self.jmAppParseCoreManager = JmAppParseCoreManager()
             self.jmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
 
             self.jmAppParseCoreManager?.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
           
-            self.xcgLogMsg("\(sCurrMethodDisp) Instantiated  the 'self.JmAppParseCoreManager' instance...")
+            self.xcgLogMsg("\(sCurrMethodDisp) Instantiated  the 'self.jmAppParseCoreManager' instance...")
+
+            // Instantiate the JmAppParseCoreBackgroundDataRepo...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Instantiating the 'self.jmAppParseCoreBackgroundDataRepo' instance...")
+
+            self.jmAppParseCoreBackgroundDataRepo = JmAppParseCoreBackgroundDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
+
+            self.jmAppParseCoreBackgroundDataRepo?.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
+          
+            self.xcgLogMsg("\(sCurrMethodDisp) Instantiated  the 'self.jmAppParseCoreBackgroundDataRepo' instance...")
 
         }
 
