@@ -16,7 +16,7 @@ struct AppLocationMapView: View
     {
         
         static let sClsId        = "AppLocationMapView"
-        static let sClsVers      = "v1.1202"
+        static let sClsVers      = "v1.1204"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -30,19 +30,20 @@ struct AppLocationMapView: View
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme)      var colorScheme
 
-           private  let fMapLatLongTolerance:Double                 = 0.0025
+           private  let fMapLatLongTolerance:Double                           = 0.0025
 
-    @State private  var cAppMapTapPresses:Int                       = 0
-    @State private  var cAppTidScheduleViewButtonPresses:Int        = 0
+    @State private  var cAppMapTapPresses:Int                                 = 0
+    @State private  var cAppTidScheduleViewButtonPresses:Int                  = 0
 
-    @State private  var isAppTidScheduleViewModal:Bool              = false
-    @State private  var isAppMapTapAlertShowing:Bool                = false
-    @State private  var sMapTapMsg:String                           = ""
+    @State private  var isAppTidScheduleViewModal:Bool                        = false
+    @State private  var isAppMapTapAlertShowing:Bool                          = false
+    @State private  var sMapTapMsg:String                                     = ""
 
     @State          var parsePFCscDataItem:ParsePFCscDataItem
 
-                    var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                    var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                    var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
     init(parsePFCscDataItem:ParsePFCscDataItem)
     {

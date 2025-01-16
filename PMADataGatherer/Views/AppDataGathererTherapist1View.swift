@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1View"
-        static let sClsVers      = "v1.0308"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -49,6 +49,7 @@ struct AppDataGathererTherapist1View: View
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor              = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                         var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo  = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
 //  init(jmAppParseCoreManager:JmAppParseCoreManager)
     init()
@@ -385,7 +386,7 @@ struct AppDataGathererTherapist1View: View
 
         // Locate the Therapist 'name' by TID...
 
-        var sTherapistName:String = self.jmAppParseCoreManager.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
+        var sTherapistName:String = self.jmAppParseCoreBkgdDataRepo.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
 
         if (sTherapistName.count < 1)
         {

@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0607"
+        static let sClsVers      = "v1.0701"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -29,12 +29,13 @@ struct AppLocationView: View
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.openWindow)       var openWindow
     
-    @State private  var cAppLocationViewRefreshButtonPresses:Int    = 0
-    @State private  var cAppLocationViewRefreshAutoTimer:Int        = 0
-    @State private  var cAppScheduleViewRefreshAutoTimer:Int        = 0
+    @State private  var cAppLocationViewRefreshButtonPresses:Int              = 0
+    @State private  var cAppLocationViewRefreshAutoTimer:Int                  = 0
+    @State private  var cAppScheduleViewRefreshAutoTimer:Int                  = 0
 
-                    var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                    var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                    var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
 //  init(jmAppParseCoreManager:JmAppParseCoreManager)
     init()
@@ -367,29 +368,18 @@ struct AppLocationView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
   
-        if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+        let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForCSC()
 
-            let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForCSC()
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
-
-        }
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
 
         var bWasAppPFCscDataPresent:Bool = false
 
-        if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
+        if (self.jmAppParseCoreManager.listPFCscDataItems.count < 1)
         {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
 
             bWasAppPFCscDataPresent = false
 
@@ -397,24 +387,60 @@ struct AppLocationView: View
         else
         {
 
-            if ((jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems.count)! < 1)
-            {
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
 
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
-
-                bWasAppPFCscDataPresent = false
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
-
-                bWasAppPFCscDataPresent = true
-
-            }
+            bWasAppPFCscDataPresent = true
 
         }
+
+    //  if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+    //
+    //      let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForCSC()
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
+    //
+    //  }
+    //
+    //  var bWasAppPFCscDataPresent:Bool = false
+    //
+    //  if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
+    //
+    //      bWasAppPFCscDataPresent = false
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      if ((jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems.count)! < 1)
+    //      {
+    //
+    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
+    //
+    //          bWasAppPFCscDataPresent = false
+    //
+    //      }
+    //      else
+    //      {
+    //
+    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
+    //
+    //          bWasAppPFCscDataPresent = true
+    //
+    //      }
+    //
+    //  }
         
         // Exit...
   
@@ -432,34 +458,46 @@ struct AppLocationView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
   
-        var bWasAppPFPatientCalDayCalled:Bool = false
+        self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
 
-        if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
+        let _ = self.jmAppParseCoreBkgdDataRepo.gatherJmAppParsePFQueriesForScheduledLocationsInBackground()
 
-            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreManager' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
-
-            let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.gatherJmAppParsePFQueriesForScheduledLocationsInBackground()
-
-            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreManager' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
-
-            bWasAppPFPatientCalDayCalled = true
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
-
-            bWasAppPFPatientCalDayCalled = false
-
-        }
+        self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
 
         // Exit...
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFPatientCalDayCalled' is [\(String(describing: bWasAppPFPatientCalDayCalled))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
   
-        return bWasAppPFPatientCalDayCalled
+        return true
+
+    //  var bWasAppPFPatientCalDayCalled:Bool = false
+    //
+    //  if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreManager' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
+    //
+    //      let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.gatherJmAppParsePFQueriesForScheduledLocationsInBackground()
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreManager' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
+    //
+    //      bWasAppPFPatientCalDayCalled = true
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
+    //
+    //      bWasAppPFPatientCalDayCalled = false
+    //
+    //  }
+    //
+    //  // Exit...
+    //
+    //  self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFPatientCalDayCalled' is [\(String(describing: bWasAppPFPatientCalDayCalled))]...")
+    //
+    //  return bWasAppPFPatientCalDayCalled
   
     }   // End of private func checkIfAppParseCoreHasPFPatientCalDayItems().
 

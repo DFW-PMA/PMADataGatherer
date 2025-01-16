@@ -24,7 +24,7 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.2101"
+    static let sGlobalInfoAppVers:String                                 = "v1.2301"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
     static let sGlobalInfoAppLogFilespec:String                          = "PMADataGatherer.log"
@@ -38,11 +38,11 @@ public class AppGlobalInfo: NSObject
 
 #if os(macOS)
 
-    static let sHelpBasicFileExt:String                                  = "html"     // 'help' File extension: "md", "html", or "txt"
+    static let sHelpBasicFileExt:String                                  = "html"        // 'help' File extension: "md", "html", or "txt"
 
 #elseif os(iOS)
 
-    static let sHelpBasicFileExt:String                                  = "md"       // 'help' File extension: "md", "html", or "txt"
+    static let sHelpBasicFileExt:String                                  = "md"          // 'help' File extension: "md", "html", or "txt"
 
 #endif
 
@@ -51,12 +51,15 @@ public class AppGlobalInfo: NSObject
     static let bInstantiateAppSwiftDataManager:Bool                      = true
     static let bPerformAppObjCSwiftBridgeTest:Bool                       = true
     static let bInstantiateAppMetricKitManager:Bool                      = true
+    static let bAppMetricKitManagerSendDiagnostics:Bool                  = false
+    static let bAppMetricKitManagerSendMetrics:Bool                      = true
     static let bInstantiateAppUserNotificationsManager:Bool              = true
     static let bIssueTestAppUserNotifications:Bool                       = false
     static let bIssueShortAppUserNotifications:Bool                      = true
     static let bInstantiateAppParseCoreManager:Bool                      = true
     static let bInstantiateAppCoreLocationSupport:Bool                   = true
     static let bPerformAppCoreLocationTesting:Bool                       = false
+    static let bInstantiateAppMenuBarStatusBar:Bool                      = false
     static let bPerformAppDevTesting:Bool                                = true
     static let sAppUploadNotifyFrom:String                               = "dcox@justmacapps.net"
 
@@ -216,7 +219,7 @@ public class AppGlobalInfo: NSObject
         sAppVersionAndBuildNumber     = JmXcodeBuildSettings.jmAppVersionAndBuildNumber
         sAppCopyright                 = JmXcodeBuildSettings.jmAppCopyright      
 
-    }   // END of private override init().
+    }   // End of private override init().
 
 }
 

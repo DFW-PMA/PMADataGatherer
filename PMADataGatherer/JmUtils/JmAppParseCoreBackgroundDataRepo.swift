@@ -1,5 +1,5 @@
 //
-//  JmAppParseCoreBackgroundDataRepo.swift
+//  JmAppParseCoreBkgdDataRepo.swift
 //  JmUtils_Library
 //
 //  Created by Daryl Cox on 01/16/2025.
@@ -13,13 +13,13 @@ import ParseCore
 // Implementation class to handle access to the ParseCore 'background' Data (repo).
 
 //@MainActor
-public class JmAppParseCoreBackgroundDataRepo: NSObject
+public class JmAppParseCoreBkgdDataRepo: NSObject
 {
 
     struct ClassInfo
     {
 
-        static let sClsId        = "JmAppParseCoreBackgroundDataRepo"
+        static let sClsId        = "JmAppParseCoreBkgdDataRepo"
         static let sClsVers      = "v1.0102"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
@@ -33,7 +33,7 @@ public class JmAppParseCoreBackgroundDataRepo: NSObject
     struct ClassSingleton
     {
 
-        static var appParseCodeBkgdDataRepo:JmAppParseCoreBackgroundDataRepo = JmAppParseCoreBackgroundDataRepo()
+        static var appParseCodeBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo()
 
     }
 
@@ -207,13 +207,13 @@ public class JmAppParseCoreBackgroundDataRepo: NSObject
         {
 
             self.xcgLogMsg("")
-            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooling the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreBackgroundDataRepo === >>>")
+            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooling the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreBkgdDataRepo === >>>")
 
             let sPreXCGLoggerMessages:String = self.listPreXCGLoggerMessages.joined(separator: "\n")
 
             self.xcgLogMsg(sPreXCGLoggerMessages)
 
-            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooled  the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreBackgroundDataRepo === >>>")
+            self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooled  the JmAppDelegateVisitor.XCGLogger 'pre' Message(s) from JmAppParseCoreBkgdDataRepo === >>>")
             self.xcgLogMsg("")
 
         }
@@ -1561,5 +1561,5 @@ public class JmAppParseCoreBackgroundDataRepo: NSObject
 
     } // End of func locatePFCscDataItemByID(id:UUID)->ParsePFCscDataItem.
     
-}   // End of public class JmAppParseCoreBackgroundDataRepo.
+}   // End of public class JmAppParseCoreBkgdDataRepo.
 

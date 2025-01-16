@@ -192,7 +192,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     // App <possible> ParseCore (Client) framework Manager instance:
 
     var jmAppParseCoreManager:JmAppParseCoreManager?               = nil
-    var jmAppParseCoreBackgroundDataRepo:JmAppParseCoreBackgroundDataRepo?
+    var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo?
                                                                    = nil
 
     // App <possible> CoreLocation service instance:
@@ -287,7 +287,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         asToString.append("jmAppMetricKitManager': [\(String(describing: self.jmAppMetricKitManager))],")
         asToString.append("jmAppUserNotificationManager': [\(String(describing: self.jmAppUserNotificationManager))],")
         asToString.append("jmAppParseCoreManager': [\(String(describing: self.jmAppParseCoreManager))],")
-        asToString.append("jmAppParseCoreBackgroundDataRepo': [\(String(describing: self.jmAppParseCoreBackgroundDataRepo))],")
+        asToString.append("jmAppParseCoreBkgdDataRepo': [\(String(describing: self.jmAppParseCoreBkgdDataRepo))],")
         asToString.append("jmAppCLModelObservable2': [\(String(describing: self.jmAppCLModelObservable2))],")
         asToString.append("],")
         asToString.append("]")
@@ -474,15 +474,15 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
           
             self.xcgLogMsg("\(sCurrMethodDisp) Instantiated  the 'self.jmAppParseCoreManager' instance...")
 
-            // Instantiate the JmAppParseCoreBackgroundDataRepo...
+            // Instantiate the JmAppParseCoreBkgdDataRepo...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Instantiating the 'self.jmAppParseCoreBackgroundDataRepo' instance...")
+            self.xcgLogMsg("\(sCurrMethodDisp) Instantiating the 'self.jmAppParseCoreBkgdDataRepo' instance...")
 
-            self.jmAppParseCoreBackgroundDataRepo = JmAppParseCoreBackgroundDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
+            self.jmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
 
-            self.jmAppParseCoreBackgroundDataRepo?.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
+            self.jmAppParseCoreBkgdDataRepo?.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
           
-            self.xcgLogMsg("\(sCurrMethodDisp) Instantiated  the 'self.jmAppParseCoreBackgroundDataRepo' instance...")
+            self.xcgLogMsg("\(sCurrMethodDisp) Instantiated  the 'self.jmAppParseCoreBkgdDataRepo' instance...")
 
         }
 

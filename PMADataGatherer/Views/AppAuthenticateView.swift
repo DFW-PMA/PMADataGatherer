@@ -17,7 +17,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.1801"
+        static let sClsVers      = "v1.1901"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -39,24 +39,26 @@ struct AppAuthenticateView: View
 
     @Query              var pfAdminsSwiftDataItems:[PFAdminsSwiftDataItem]
 
-    @State      private var shouldContentViewChange:Bool                = false
-    @State      private var isUserAuthenticationAvailable:Bool          = false
-    @State      private var sCredentialsCheckReason:String              = ""
-    @State      private var isUserLoginFailureShowing:Bool              = false
-    @State      private var isUserLoggedIn:Bool                         = false
-    @State      private var sLoginUsername:String                       = ""
-    @State      private var sLoginPassword:String                       = ""
+    @State      private var shouldContentViewChange:Bool                          = false
+    @State      private var isUserAuthenticationAvailable:Bool                    = false
+    @State      private var sCredentialsCheckReason:String                        = ""
+    @State      private var isUserLoginFailureShowing:Bool                        = false
+    @State      private var isUserLoggedIn:Bool                                   = false
+    @State      private var sLoginUsername:String                                 = ""
+    @State      private var sLoginPassword:String                                 = ""
 
 #if os(iOS)
 
-    @State      private var cAppAboutButtonPresses:Int                  = 0
+    @State      private var cAppAboutButtonPresses:Int                            = 0
 
-    @State      private var isAppAboutViewModal:Bool                    = false
+    @State      private var isAppAboutViewModal:Bool                              = false
 
 #endif
 
-                        var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject     var jmAppSwiftDataManager:JmAppSwiftDataManager = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
+                        var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject     var jmAppSwiftDataManager:JmAppSwiftDataManager           = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
+    @ObservedObject     var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                        var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
 
     init()
     {
@@ -539,7 +541,7 @@ struct AppAuthenticateView: View
                 }
 
                 let _ = self.checkIfAppParseCoreHasPFCscDataItems()
-                let _ = self.checkIfAppParseCoreHasPFInstallationCurrent()
+            //  let _ = self.checkIfAppParseCoreHasPFInstallationCurrent()
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Invoked  background 'initialization' method(s)...");
 
@@ -564,30 +566,19 @@ struct AppAuthenticateView: View
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-  
-        if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
 
-            let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForAdmins()
+        let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForAdmins()
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary - 'jmAppParseCoreManager' is nil - Error!")
-
-        }
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
 
         var bWasAppPFAdminsDataPresent:Bool = false
 
-        if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
+        if (self.jmAppParseCoreManager.dictPFAdminsDataItems.count < 1)
         {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFAdminsDataPresent' is [\(String(describing: bWasAppPFAdminsDataPresent))]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is 'empty'...")
 
             bWasAppPFAdminsDataPresent = false
 
@@ -595,24 +586,60 @@ struct AppAuthenticateView: View
         else
         {
 
-            if ((jmAppDelegateVisitor.jmAppParseCoreManager?.dictPFAdminsDataItems.count)! < 1)
-            {
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.dictPFAdminsDataItems))]...")
 
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is 'empty'...")
-
-                bWasAppPFAdminsDataPresent = false
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.dictPFAdminsDataItems))]...")
-
-                bWasAppPFAdminsDataPresent = true
-
-            }
+            bWasAppPFAdminsDataPresent = true
 
         }
+  
+    //  if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
+    //
+    //      let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForAdmins()
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary - 'jmAppParseCoreManager' is nil - Error!")
+    //
+    //  }
+    //
+    //  var bWasAppPFAdminsDataPresent:Bool = false
+    //
+    //  if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFAdminsDataPresent' is [\(String(describing: bWasAppPFAdminsDataPresent))]...")
+    //
+    //      bWasAppPFAdminsDataPresent = false
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      if ((jmAppDelegateVisitor.jmAppParseCoreManager?.dictPFAdminsDataItems.count)! < 1)
+    //      {
+    //
+    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is 'empty'...")
+    //
+    //          bWasAppPFAdminsDataPresent = false
+    //
+    //      }
+    //      else
+    //      {
+    //
+    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.dictPFAdminsDataItems))]...")
+    //
+    //          bWasAppPFAdminsDataPresent = true
+    //
+    //      }
+    //
+    //  }
         
         // Exit...
   
@@ -630,29 +657,18 @@ struct AppAuthenticateView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
   
-        if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+        let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForCSC()
 
-            let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForCSC()
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
-
-        }
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
 
         var bWasAppPFCscDataPresent:Bool = false
 
-        if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
+        if (self.jmAppParseCoreManager.listPFCscDataItems.count < 1)
         {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
 
             bWasAppPFCscDataPresent = false
 
@@ -660,24 +676,60 @@ struct AppAuthenticateView: View
         else
         {
 
-            if ((jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems.count)! < 1)
-            {
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
 
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
-
-                bWasAppPFCscDataPresent = false
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
-
-                bWasAppPFCscDataPresent = true
-
-            }
+            bWasAppPFCscDataPresent = true
 
         }
+
+    //  if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+    //
+    //      let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForCSC()
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
+    //
+    //  }
+    //
+    //  var bWasAppPFCscDataPresent:Bool = false
+    //
+    //  if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
+    //
+    //      bWasAppPFCscDataPresent = false
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      if ((jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems.count)! < 1)
+    //      {
+    //
+    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
+    //
+    //          bWasAppPFCscDataPresent = false
+    //
+    //      }
+    //      else
+    //      {
+    //
+    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
+    //
+    //          bWasAppPFCscDataPresent = true
+    //
+    //      }
+    //
+    //  }
         
         // Exit...
   
@@ -687,85 +739,85 @@ struct AppAuthenticateView: View
   
     }   // End of private func checkIfAppParseCoreHasPFCscDataItems().
 
-    private func checkIfAppParseCoreHasPFInstallationCurrent() -> Bool
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-  
-        if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
-
-            let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFInstallationCurrentInstance()
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent' - 'jmAppParseCoreManager' is nil - Error!")
-
-        }
-
-        var bWasAppPFInstallationCurrentPresent:Bool = false
-
-        if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
-
-            bWasAppPFInstallationCurrentPresent = false
-
-        }
-        else
-        {
-
-            if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is nil...")
-
-                if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
-                {
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is STILL nil...")
-
-                    bWasAppPFInstallationCurrentPresent = false
-
-                }
-                else
-                {
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
-
-                    bWasAppPFInstallationCurrentPresent = true
-
-                }
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
-
-                bWasAppPFInstallationCurrentPresent = true
-
-            }
-
-        }
-        
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
-  
-        return bWasAppPFInstallationCurrentPresent
-  
-    }   // End of private func checkIfAppParseCoreHasPFInstallationCurrent().
+//  private func checkIfAppParseCoreHasPFInstallationCurrent() -> Bool
+//  {
+//
+//      let sCurrMethod:String = #function
+//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+//      
+//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+//
+//      if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+//      {
+//
+//          self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
+//
+//          let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFInstallationCurrentInstance()
+//
+//          self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
+//
+//      }
+//      else
+//      {
+//
+//          self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent' - 'jmAppParseCoreManager' is nil - Error!")
+//
+//      }
+//
+//      var bWasAppPFInstallationCurrentPresent:Bool = false
+//
+//      if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
+//      {
+//
+//          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
+//
+//          bWasAppPFInstallationCurrentPresent = false
+//
+//      }
+//      else
+//      {
+//
+//          if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
+//          {
+//
+//              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is nil...")
+//
+//              if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
+//              {
+//
+//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is STILL nil...")
+//
+//                  bWasAppPFInstallationCurrentPresent = false
+//
+//              }
+//              else
+//              {
+//
+//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
+//
+//                  bWasAppPFInstallationCurrentPresent = true
+//
+//              }
+//
+//          }
+//          else
+//          {
+//
+//              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
+//
+//              bWasAppPFInstallationCurrentPresent = true
+//
+//          }
+//
+//      }
+//      
+//      // Exit...
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
+//
+//      return bWasAppPFInstallationCurrentPresent
+//
+//  }   // End of private func checkIfAppParseCoreHasPFInstallationCurrent().
 
     private func getAppParseCoreManagerInstance()->JmAppParseCoreManager
     {
@@ -775,7 +827,6 @@ struct AppAuthenticateView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
   
-    //  let jmAppParseCoreManager:JmAppParseCoreManager = jmAppDelegateVisitor.jmAppParseCoreManager ?? JmAppParseCoreManager()
         let jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
   
         // Exit...
