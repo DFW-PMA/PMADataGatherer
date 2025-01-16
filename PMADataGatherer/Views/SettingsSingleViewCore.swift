@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.0401"
+        static let sClsVers      = "v1.0501"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -28,33 +28,34 @@ struct SettingsSingleViewCore: View
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
     
-           private var bInternalZipTest:Bool                     = false
+           private var bInternalZipTest:Bool                                 = false
 
-    @State private var cAppZipFileButtonPresses:Int              = 0
-    @State private var cAppCrashButtonPresses:Int                = 0
+    @State private var cAppZipFileButtonPresses:Int                          = 0
+    @State private var cAppCrashButtonPresses:Int                            = 0
 
-    @State private var isAppZipFileShowing:Bool                  = false
-    @State private var isAppCrashShowing:Bool                    = false
+    @State private var isAppZipFileShowing:Bool                              = false
+    @State private var isAppCrashShowing:Bool                                = false
 
 #if os(iOS)
 
-    @State private var cAppAboutButtonPresses:Int                = 0
-    @State private var cAppHelpViewButtonPresses:Int             = 0
-    @State private var cAppLogViewButtonPresses:Int              = 0
+    @State private var cAppAboutButtonPresses:Int                            = 0
+    @State private var cAppHelpViewButtonPresses:Int                         = 0
+    @State private var cAppLogViewButtonPresses:Int                          = 0
 
-    @State private var cAppReleaseUpdateButtonPresses:Int        = 0
-    @State private var cAppPreReleaseUpdateButtonPresses:Int     = 0
+    @State private var cAppReleaseUpdateButtonPresses:Int                    = 0
+    @State private var cAppPreReleaseUpdateButtonPresses:Int                 = 0
 
-    @State private var isAppAboutViewModal:Bool                  = false
-    @State private var isAppHelpViewModal:Bool                   = false
-    @State private var isAppLogViewModal:Bool                    = false
+    @State private var isAppAboutViewModal:Bool                              = false
+    @State private var isAppHelpViewModal:Bool                               = false
+    @State private var isAppLogViewModal:Bool                                = false
 
-    @State private var isAppDownloadReleaseUpdateShowing:Bool    = false
-    @State private var isAppDownloadPreReleaseUpdateShowing:Bool = false
+    @State private var isAppDownloadReleaseUpdateShowing:Bool                = false
+    @State private var isAppDownloadPreReleaseUpdateShowing:Bool             = false
 
 #endif
     
-                   var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                   var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                   var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
     init()
     {
@@ -889,7 +890,7 @@ struct SettingsSingleViewCore: View
             if (self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count > 0)
             {
 
-                self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreManager' dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
 
                 var cPFTherapistParseTIDs:Int = 0
 
@@ -901,13 +902,13 @@ struct SettingsSingleViewCore: View
                     if (iPFTherapistParseTID < 0)
                     {
 
-                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+                        self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
 
                         continue
 
                     }
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
 
                     pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
 
@@ -917,7 +918,7 @@ struct SettingsSingleViewCore: View
             else
             {
 
-                self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
+                self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the 'jmAppParseCoreManager' dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
 
             }
 
@@ -926,6 +927,43 @@ struct SettingsSingleViewCore: View
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' is nil - unable to get the dictionary 'dictPFTherapistFileItems' - Error!")
+
+        }
+
+        // Detail all TherapistFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
+
+        if (self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreBkgdDataRepo' dictionary of #(\(self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+
+            var cPFTherapistParseTIDs:Int = 0
+
+            for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems
+            {
+
+                cPFTherapistParseTIDs += 1
+
+                if (iPFTherapistParseTID < 0)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+
+                    continue
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+
+                pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
+
+            }
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
 
         }
 
