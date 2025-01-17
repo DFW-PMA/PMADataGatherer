@@ -17,7 +17,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppSwiftDataManager"
-        static let sClsVers      = "v1.0702"
+        static let sClsVers      = "v1.0703"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2024-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -328,20 +328,25 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
             self.fetchAppSwiftData(bShowDetailAfterFetch:bShowDetailAfterAdd)
 
             self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.fetchAppSwiftData()'...")
-
-            if (self.pfAdminsSwiftDataItems.count > 0)
+            
+            DispatchQueue.main.async
             {
 
-                self.bArePFAdminsSwiftDataItemsAvailable = true
+                if (self.pfAdminsSwiftDataItems.count > 0)
+                {
+
+                    self.bArePFAdminsSwiftDataItemsAvailable = true
+
+                }
+                else
+                {
+
+                    self.bArePFAdminsSwiftDataItemsAvailable = false
+
+                }
 
             }
-            else
-            {
-
-                self.bArePFAdminsSwiftDataItemsAvailable = false
-
-            }
-
+            
             self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Add) 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
             self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Add) 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
 
@@ -365,61 +370,66 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
         // Fetch (or re-fetch) the SwiftData 'model' Container's ModelContext...
         
-        do
+        DispatchQueue.main.async
         {
 
-            if (self.modelContext != nil) 
+            do
             {
 
-            //  let pfAdminsSwiftDataItemsPredicate  = #Predicate<PFAdminsSwiftDataItem>()
-            //  let pfAdminsSwiftDataItemsDescriptor = FetchDescriptor<PFAdminsSwiftDataItem>(predicate:PFAdminsSwiftDataItemsPredicate)
-                let pfAdminsSwiftDataItemsDescriptor = FetchDescriptor<PFAdminsSwiftDataItem>()
-                self.pfAdminsSwiftDataItems          = try self.modelContext!.fetch(pfAdminsSwiftDataItemsDescriptor)
-
-                if (self.pfAdminsSwiftDataItems.count > 0)
+                if (self.modelContext != nil)
                 {
 
-                    if (bShowDetailAfterFetch == true)
+                //  let pfAdminsSwiftDataItemsPredicate  = #Predicate<PFAdminsSwiftDataItem>()
+                //  let pfAdminsSwiftDataItemsDescriptor = FetchDescriptor<PFAdminsSwiftDataItem>(predicate:PFAdminsSwiftDataItemsPredicate)
+                    let pfAdminsSwiftDataItemsDescriptor = FetchDescriptor<PFAdminsSwiftDataItem>()
+                    self.pfAdminsSwiftDataItems          = try self.modelContext!.fetch(pfAdminsSwiftDataItemsDescriptor)
+
+                    if (self.pfAdminsSwiftDataItems.count > 0)
                     {
-                    
-                        self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.detailAppSwiftDataToLog()'...")
+
+                        if (bShowDetailAfterFetch == true)
+                        {
                         
-                        self.detailAppSwiftDataToLog()
-                    
-                        self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.detailAppSwiftDataToLog()'...")
+                            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.detailAppSwiftDataToLog()'...")
+                            
+                            self.detailAppSwiftDataToLog()
                         
+                            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.detailAppSwiftDataToLog()'...")
+                            
+                        }
+                        
+                        self.bArePFAdminsSwiftDataItemsAvailable = true
+
                     }
-                    
-                    self.bArePFAdminsSwiftDataItemsAvailable = true
+                    else
+                    {
+
+                        self.bArePFAdminsSwiftDataItemsAvailable = false
+
+                    }
+
+                    self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
+                    self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
 
                 }
-                else
-                {
 
-                    self.bArePFAdminsSwiftDataItemsAvailable = false
+            }
+            catch
+            {
+                
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext 'fetch' has failed - Details: \(error) - Error!")
 
-                }
+                self.bArePFAdminsSwiftDataItemsAvailable = false
+                self.modelContext                     = nil
+                self.modelContainer                   = nil
 
-                self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-                self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
-
+                self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager 'self.pfAdminsSwiftDataItems' has #(\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
+                self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+                
             }
 
         }
-        catch
-        {
-            
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext 'fetch' has failed - Details: \(error) - Error!")
-
-            self.bArePFAdminsSwiftDataItemsAvailable = false
-            self.modelContext                     = nil
-            self.modelContainer                   = nil
-
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager 'self.pfAdminsSwiftDataItems' has #(\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
-            
-        }
-
+        
         // Exit:
 
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bShowDetailAfterFetch' is [\(bShowDetailAfterFetch)]...")
@@ -558,36 +568,46 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             if (self.pfAdminsSwiftDataItems.count > 0)
             {
-
+                
                 var idPFAdminsSwiftDataItem:Int = 0
-
+                
                 for currentSwiftDataItem:PFAdminsSwiftDataItem in self.pfAdminsSwiftDataItems
                 {
-
+                    
                     idPFAdminsSwiftDataItem += 1
-
-                    if (idPFAdminsSwiftDataItem == 1) 
+                    
+                    if (idPFAdminsSwiftDataItem == 1)
                     {
-
+                        
                         currentSwiftDataItem.displayPFAdminsSwiftDataItemWithLocalStore(bShowLocalStore:true)
-
+                        
                     }
                     else
                     {
-
+                        
                         currentSwiftDataItem.displayPFAdminsSwiftDataItemWithLocalStore(bShowLocalStore:false)
-
+                        
                     }
-
+                    
                 }
-
-                self.bArePFAdminsSwiftDataItemsAvailable = true
-
+                
             }
-            else
+
+            DispatchQueue.main.async
             {
 
-                self.bArePFAdminsSwiftDataItemsAvailable = false
+                if (self.pfAdminsSwiftDataItems.count > 0)
+                {
+                    
+                    self.bArePFAdminsSwiftDataItemsAvailable = true
+
+                }
+                else
+                {
+
+                    self.bArePFAdminsSwiftDataItemsAvailable = false
+
+                }
 
             }
 
@@ -868,20 +888,25 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
                 }
 
             }
-
-            if (self.pfAdminsSwiftDataItems.count < 1)
-            {
-      
-                self.bArePFAdminsSwiftDataItemsAvailable = false
-
-            }
-            else
+            
+            DispatchQueue.main.async
             {
 
-                self.bArePFAdminsSwiftDataItemsAvailable = true
+                if (self.pfAdminsSwiftDataItems.count < 1)
+                {
+          
+                    self.bArePFAdminsSwiftDataItemsAvailable = false
+
+                }
+                else
+                {
+
+                    self.bArePFAdminsSwiftDataItemsAvailable = true
+
+                }
 
             }
-
+            
             self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager 'self.pfAdminsSwiftDataItems' has #(\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
             self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
       
@@ -1086,138 +1111,148 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         
         if (self.alarmSwiftDataItems.count > 0)
         {
-
+            
             if (self.alarmSwiftDataItems.count > 1)
             {
-
+                
                 self.xcgLogMsg("\(sCurrMethodDisp) Sorting #(\(self.alarmSwiftDataItems.count)) 'alarm' SwiftData Item(s) in the list...")
-
+                
                 self.alarmSwiftDataItems.sort
                 { (alarmSwiftDataItem1, alarmSwiftDataItem2) in
-
-                //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
-                //  Sort by 'enabled' first and 'dateAlarmFires' second...
-
+                    
+                    //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
+                    //  Sort by 'enabled' first and 'dateAlarmFires' second...
+                    
                     var bIsItem1LessThanItem2:Bool = false
-
+                    
                     if (alarmSwiftDataItem1.bIsAlarmEnabled == true &&
                         alarmSwiftDataItem2.bIsAlarmEnabled == true)
                     {
-
+                        
                         bIsItem1LessThanItem2 = (alarmSwiftDataItem1.dateAlarmFires < alarmSwiftDataItem2.dateAlarmFires)
-
+                        
                         self.xcgLogMsg("\(sCurrMethodDisp) Sort <op-comp> #(\(self.alarmSwiftDataItems.count)) 'alarm' SwiftData Item(s) in the list - returning 'bIsItem1LessThanItem2' of [\(bIsItem1LessThanItem2)] - Item 1 and Item 2 are BOTH 'enabled' - compared on dates...")
-
+                        
                     }
                     else
                     {
-
+                        
                         if (alarmSwiftDataItem1.bIsAlarmEnabled == true &&
                             alarmSwiftDataItem2.bIsAlarmEnabled == false)
                         {
-
+                            
                             bIsItem1LessThanItem2 = true
-
+                            
                             self.xcgLogMsg("\(sCurrMethodDisp) Sort <op-comp> #(\(self.alarmSwiftDataItems.count)) 'alarm' SwiftData Item(s) in the list - returning 'bIsItem1LessThanItem2' of [\(bIsItem1LessThanItem2)] - Item 1 is 'enabled' but Item 2 is NOT - compared on Item 1...")
-
+                            
                         }
                         else
                         {
-
+                            
                             if (alarmSwiftDataItem1.bIsAlarmEnabled == false &&
                                 alarmSwiftDataItem2.bIsAlarmEnabled == true)
                             {
-
+                                
                                 bIsItem1LessThanItem2 = false
-
+                                
                                 self.xcgLogMsg("\(sCurrMethodDisp) Sort <op-comp> #(\(self.alarmSwiftDataItems.count)) 'alarm' SwiftData Item(s) in the list - returning 'bIsItem1LessThanItem2' of [\(bIsItem1LessThanItem2)] - Item 1 is NOT 'enabled' but Item 2 IS - compared on Item 2...")
-
+                                
                             }
                             else
                             {
-
+                                
                                 bIsItem1LessThanItem2 = (alarmSwiftDataItem1.dateAlarmFires < alarmSwiftDataItem2.dateAlarmFires)
-
+                                
                                 self.xcgLogMsg("\(sCurrMethodDisp) Sort <op-comp> #(\(self.alarmSwiftDataItems.count)) 'alarm' SwiftData Item(s) in the list - returning 'bIsItem1LessThanItem2' of [\(bIsItem1LessThanItem2)] - Item 1 and Item 2 are BOTH NOT 'enabled' - compared on dates...")
-
+                                
                             }
-
+                            
                         }
-
+                        
                     }
-
+                    
                     self.xcgLogMsg("\(sCurrMethodDisp) Sort <op> #(\(self.alarmSwiftDataItems.count)) 'alarm' SwiftData Item(s) in the list - returning 'bIsItem1LessThanItem2' of [\(bIsItem1LessThanItem2)] - Item 1 'alarmSwiftDataItem1' is [\(alarmSwiftDataItem1.toString())] and Item 2 'alarmSwiftDataItem2' is [\(alarmSwiftDataItem2.toString())]...")
-
+                    
                     return bIsItem1LessThanItem2
-
+                    
                 }
-
+                
                 self.xcgLogMsg("\(sCurrMethodDisp) Sorted  #(\(self.alarmSwiftDataItems.count)) 'alarm' SwiftData Item(s) in the list...")
-
+                
             }
             
             for currentSwiftDataItem:AlarmSwiftDataItem in self.alarmSwiftDataItems
             {
-
-                if (currentSwiftDataItem.bIsAlarmEnabled == true) 
+                
+                if (currentSwiftDataItem.bIsAlarmEnabled == true)
                 {
-
+                    
                     cAppSwiftDataAlarmsEnabled += 1
-
+                    
                 }
-
+                
             }
-
-            self.bAreAlarmSwiftDataItemsAvailable = true
-
+            
         }
-        else
+        
+        DispatchQueue.main.async
         {
-
-            self.bAreAlarmSwiftDataItemsAvailable = false
-
-        }
-
-        self.xcgLogMsg("\(sCurrMethodDisp) #1 SwiftDataManager 'self.alarmSwiftDataItems' has (\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #1 SwiftDataManager 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
-
-        // After the 'sort', update the Alarms/Enabled/NextDateTime message...
-
-        self.sAlarmsEnabledMessage = "-N/A-"
-        self.sAlarmNextMessage     = ""
-
-        if (self.alarmSwiftDataItems.count > 0)
-        {
-
-            var sAlarmsTag:String = "Alarm"
 
             if (self.alarmSwiftDataItems.count > 1)
             {
-            
-                sAlarmsTag = "Alarms"
-            
+                
+                self.bAreAlarmSwiftDataItemsAvailable = true
+
             }
-
-        //  self.sAlarmsEnabledMessage = "(\(self.alarmSwiftDataItems.count)) \(sAlarmsTag) (\(cAppSwiftDataAlarmsEnabled)) 'enabled'"
-            self.sAlarmsEnabledMessage = "\(self.alarmSwiftDataItems.count) \(sAlarmsTag) - \(cAppSwiftDataAlarmsEnabled) Enabled"
-
-            if (cAppSwiftDataAlarmsEnabled > 0)
+            else
             {
 
-            //  self.sAlarmNextMessage = "Next at [\(self.alarmSwiftDataItems[0].getAlarmSwiftDataItemShortTitle())]"
-                self.sAlarmNextMessage = "Next -> \(self.alarmSwiftDataItems[0].getAlarmSwiftDataItemShortTitle())"
+                self.bAreAlarmSwiftDataItemsAvailable = false
 
             }
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #1 - 'self.alarmSwiftDataItems.count' is [\(self.alarmSwiftDataItems.count)] - 'cAppSwiftDataAlarmsEnabled' is (\(cAppSwiftDataAlarmsEnabled)) - 'self.sAlarmsEnabledMessage' is [\(self.sAlarmsEnabledMessage)] - 'self.sAlarmNextMessage' is [\(self.sAlarmNextMessage)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) #1 SwiftDataManager 'self.alarmSwiftDataItems' has (\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
+            self.xcgLogMsg("\(sCurrMethodDisp) #1 SwiftDataManager 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
 
-        }
-        else
-        {
+            // After the 'sort', update the Alarms/Enabled/NextDateTime message...
 
-            self.sAlarmsEnabledMessage = "NO Alarms..."
+            self.sAlarmsEnabledMessage = "-N/A-"
+            self.sAlarmNextMessage     = ""
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #2 - 'self.alarmSwiftDataItems.count' is [\(self.alarmSwiftDataItems.count)] - 'cAppSwiftDataAlarmsEnabled' is (\(cAppSwiftDataAlarmsEnabled)) - 'self.sAlarmsEnabledMessage' is [\(self.sAlarmsEnabledMessage)] - 'self.sAlarmNextMessage' is [\(self.sAlarmNextMessage)]...")
+            if (self.alarmSwiftDataItems.count > 0)
+            {
+
+                var sAlarmsTag:String = "Alarm"
+
+                if (self.alarmSwiftDataItems.count > 1)
+                {
+                
+                    sAlarmsTag = "Alarms"
+                
+                }
+
+            //  self.sAlarmsEnabledMessage = "(\(self.alarmSwiftDataItems.count)) \(sAlarmsTag) (\(cAppSwiftDataAlarmsEnabled)) 'enabled'"
+                self.sAlarmsEnabledMessage = "\(self.alarmSwiftDataItems.count) \(sAlarmsTag) - \(cAppSwiftDataAlarmsEnabled) Enabled"
+
+                if (cAppSwiftDataAlarmsEnabled > 0)
+                {
+
+                //  self.sAlarmNextMessage = "Next at [\(self.alarmSwiftDataItems[0].getAlarmSwiftDataItemShortTitle())]"
+                    self.sAlarmNextMessage = "Next -> \(self.alarmSwiftDataItems[0].getAlarmSwiftDataItemShortTitle())"
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #1 - 'self.alarmSwiftDataItems.count' is [\(self.alarmSwiftDataItems.count)] - 'cAppSwiftDataAlarmsEnabled' is (\(cAppSwiftDataAlarmsEnabled)) - 'self.sAlarmsEnabledMessage' is [\(self.sAlarmsEnabledMessage)] - 'self.sAlarmNextMessage' is [\(self.sAlarmNextMessage)]...")
+
+            }
+            else
+            {
+
+                self.sAlarmsEnabledMessage = "NO Alarms..."
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #2 - 'self.alarmSwiftDataItems.count' is [\(self.alarmSwiftDataItems.count)] - 'cAppSwiftDataAlarmsEnabled' is (\(cAppSwiftDataAlarmsEnabled)) - 'self.sAlarmsEnabledMessage' is [\(self.sAlarmsEnabledMessage)] - 'self.sAlarmNextMessage' is [\(self.sAlarmNextMessage)]...")
+
+            }
 
         }
 

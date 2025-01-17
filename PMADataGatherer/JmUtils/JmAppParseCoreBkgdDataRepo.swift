@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -303,6 +303,63 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         //  self.xcgLogMsg("\(sCurrMethodDisp) Copying the item(s) from the dictionary of 'parsePFAdminsDataItem' to SwiftData...")
         //
         //  self.copyJmAppParsePFAdminsToSwiftData()
+
+            // ----------------------------------------------------------------------------------------------
+            // var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem] = [:]
+            //                                                            // [String:ParsePFAdminsDataItem]
+            //                                                            // Key:PFAdminsParseTID(String)
+            // ----------------------------------------------------------------------------------------------
+
+            // If we have a different # of item(s) then the ParseCoreManager does, then deep copy and update it...
+
+            if (self.jmAppParseCoreManager.dictPFAdminsDataItems.count  < 1 ||
+                self.jmAppParseCoreManager.dictPFAdminsDataItems.count != self.dictPFAdminsDataItems.count)
+            {
+            
+                self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the dictionary 'dictPFAdminsDataItems' of 'parsePFAdminsDataItem' item(s)...")
+
+                var cDeepCopyPFAdminsDataItems:Int                               = 0 
+                var dictDeepCopyPFAdminsDataItems:[String:ParsePFAdminsDataItem] = [String:ParsePFAdminsDataItem]()
+
+                for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
+                {
+
+                    cDeepCopyPFAdminsDataItems                    += 1
+                    let newPFAdminsDataItem:ParsePFAdminsDataItem  = ParsePFAdminsDataItem(pfAdminsDataItem:parsePFAdminsDataItem)
+
+                    let sPFAdminsParseTID:String = parsePFAdminsDataItem.sPFAdminsParseTID
+
+                    if (sPFAdminsParseTID.count  < 1 ||
+                        sPFAdminsParseTID       == "-N/A-")
+                    {
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Skipping object #(\(cDeepCopyPFAdminsDataItems)) 'parsePFAdminsDataItem' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                        continue
+
+                    }
+
+                    dictDeepCopyPFAdminsDataItems[sPFAdminsParseTID] = newPFAdminsDataItem
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Added object #(\(cDeepCopyPFAdminsDataItems)) 'newPFAdminsDataItem' keyed by 'sPFAdminsParseTID' of [\(sPFAdminsParseTID)] to the 'deep copy' dictionary of item(s)...")
+
+                }
+
+                if (dictDeepCopyPFAdminsDataItems.count > 0)
+                {
+                
+                    DispatchQueue.main.async
+                    {
+
+                        self.jmAppParseCoreManager.dictPFAdminsDataItems = dictDeepCopyPFAdminsDataItems
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' replaced #(\(dictDeepCopyPFAdminsDataItems.count)) item(s) in the ParseCoreManager 'dictPFAdminsDataItems'...")
+
+                    }
+                
+                }
+            
+            }
 
             // Exit:
 
@@ -845,8 +902,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
             //  let pfAdminsSwiftDataItemsDescriptor = FetchDescriptor<PFAdminsSwiftDataItem>()
 
-            //  DispatchQueue.main.async
-            //  {
+                DispatchQueue.main.async
+                {
 
                     do
                     {
@@ -909,7 +966,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'self.jmAppSwiftDataManager.detailAppSwiftDataToLog()'...")
 
-            //  }
+                }
 
             }
             else
