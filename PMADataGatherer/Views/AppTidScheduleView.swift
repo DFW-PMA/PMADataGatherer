@@ -215,5 +215,5 @@ struct AppTidScheduleView: View
 
     }
     
-}   // END of struct AppTidScheduleView(View).
+}   // End of struct AppTidScheduleView(View).
 

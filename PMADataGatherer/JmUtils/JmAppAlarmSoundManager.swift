@@ -332,7 +332,7 @@ public class JmAppAlarmSoundManager: NSObject, AVAudioPlayerDelegate
     
         return
 
-    }   // END of public func jmAppAlarmManagerStartPlayingSound(_ soundName:String).
+    }   // End of public func jmAppAlarmManagerStartPlayingSound(_ soundName:String).
 
     public func jmAppAlarmManagerStopPlayingSound() 
     {
@@ -361,7 +361,7 @@ public class JmAppAlarmSoundManager: NSObject, AVAudioPlayerDelegate
     
         return
 
-    }   // END of public func jmAppAlarmManagerStopPlayingSound().
+    }   // End of public func jmAppAlarmManagerStopPlayingSound().
 
     // Method(s) 'required' by the AVAudioPlayerDelegate for a 'delegate'...
 
@@ -379,7 +379,7 @@ public class JmAppAlarmSoundManager: NSObject, AVAudioPlayerDelegate
     
         return
 
-    }   // END of func audioPlayerDidFinishPlaying(_ player:AVAudioPlayer, successfully flag:Bool).
+    }   // End of func audioPlayerDidFinishPlaying(_ player:AVAudioPlayer, successfully flag:Bool).
     
     public func audioPlayerDecodeErrorDidOccur(_ player:AVAudioPlayer, error:Error?) 
     {
@@ -395,7 +395,7 @@ public class JmAppAlarmSoundManager: NSObject, AVAudioPlayerDelegate
     
         return
 
-    }   // END of public func audioPlayerDecodeErrorDidOccur(_ player:AVAudioPlayer, error:Error?).
+    }   // End of public func audioPlayerDecodeErrorDidOccur(_ player:AVAudioPlayer, error:Error?).
 
 }   // End of public class JmAppAlarmSoundManager.
 

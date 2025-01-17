@@ -302,7 +302,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
         return
 
-    }   // END of public func displayParsePFCscDataItemToLog().
+    }   // End of public func displayParsePFCscDataItemToLog().
 
     public func constructParsePFCscDataItemFromPFObject(idPFCscObject:Int = 0, pfCscObject:PFObject)
     {
@@ -389,7 +389,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
         return
 
-    }   // END of public func constructParsePFCscDataItemFromPFObject(idPFCscObject:Int, pfCscObject:PFObject).
+    }   // End of public func constructParsePFCscDataItemFromPFObject(idPFCscObject:Int, pfCscObject:PFObject).
 
 }   // End of class ParsePFCscDataItem(NSObject, Identifiable).
 

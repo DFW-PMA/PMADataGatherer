@@ -776,7 +776,7 @@ struct SettingsSingleViewCore: View
   
         return
   
-    }   // END of private func uploadCurrentAppLogToDevs().
+    }   // End of private func uploadCurrentAppLogToDevs().
 
 #if os(iOS)
 
@@ -973,9 +973,9 @@ struct SettingsSingleViewCore: View
 
         return
 
-    }   // END of private func detailTherapistFileItems().
+    }   // End of private func detailTherapistFileItems().
 
-}   // END of struct SettingsSingleViewCore(View). 
+}   // End of struct SettingsSingleViewCore(View). 
 
 #Preview 
 {

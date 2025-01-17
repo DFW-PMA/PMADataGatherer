@@ -99,7 +99,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
         return
 
-    }   // END of override init().
+    }   // End of override init().
 
     convenience init(scheduledPatientLocationItem:ScheduledPatientLocationItem)
     {
@@ -140,7 +140,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
         return
   
-    }   // END of convenience init(scheduledPatientLocationItem:ScheduledPatientLocationItem).
+    }   // End of convenience init(scheduledPatientLocationItem:ScheduledPatientLocationItem).
 
     convenience init(pfTherapistFileItem:PFObject)
     {
@@ -162,7 +162,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
         return
   
-    }   // END of convenience init(pfTherapistFileItem:PFObject).
+    }   // End of convenience init(pfTherapistFileItem:PFObject).
 
     convenience init(pfPatientCalDayItem:PFObject)
     {
@@ -184,7 +184,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
         return
   
-    }   // END of convenience init(pfPatientCalDayItem:PFObject).
+    }   // End of convenience init(pfPatientCalDayItem:PFObject).
 
     public func updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:PFObject)
     {
@@ -213,7 +213,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
         return
   
-    }   // END of public func updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:PFObject).
+    }   // End of public func updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:PFObject).
 
     public func updateScheduledPatientLocationItemFromPFPatientCalDay(pfPatientCalDayItem:PFObject)
     {
@@ -290,7 +290,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
         return
   
-    }   // END of public func updateScheduledPatientLocationItemFromPFPatientCalDay(pfPatientCalDayItem:PFObject).
+    }   // End of public func updateScheduledPatientLocationItemFromPFPatientCalDay(pfPatientCalDayItem:PFObject).
 
     public func updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:PFObject)
     {
@@ -315,7 +315,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
         return
   
-    }   // END of public func updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:PFObject).
+    }   // End of public func updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:PFObject).
 
     private func xcgLogMsg(_ sMessage:String)
     {
@@ -425,7 +425,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
         return
 
-    }   // END of public func displayScheduledPatientLocationItemToLog().
+    }   // End of public func displayScheduledPatientLocationItemToLog().
     
     public func convertVDateStartTimeTo24Hour(sVDateStartTime:String)->(String, Int)
     {
@@ -492,7 +492,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
         return (sVDateStartTime24h, iVDateStartTime24h)
 
-    }   // END of convertVDateStartTimeTo24Hour(sVDateStartTime:String)->(String, Int).
+    }   // End of convertVDateStartTimeTo24Hour(sVDateStartTime:String)->(String, Int).
     
-}   // END of class ScheduledPatientLocationItem(NSObject, Identifiable).
+}   // End of class ScheduledPatientLocationItem(NSObject, Identifiable).
 

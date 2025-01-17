@@ -832,5 +832,5 @@ struct ContentView: View
 //
 //  }   // End of getAppParseCoreManagerInstance()->jmAppParseCoreManager.
 
-}   // END of struct ContentView(View).
+}   // End of struct ContentView(View).
 

@@ -17,7 +17,7 @@ enum ZipServiceError:Swift.Error
     case failedToCreateZIP(Swift.Error)
     case failedToGetDataFromZipURL
 
-}   // END of enum ZipServiceError:Swift.Error.
+}   // End of enum ZipServiceError:Swift.Error.
 
 enum ZipFileDetails 
 {
@@ -26,7 +26,7 @@ enum ZipFileDetails
     case existingFile(URL)
     case renamedFile(URL, toFilename:String)
 
-}   // END of enum ZipFileDetails.
+}   // End of enum ZipFileDetails.
 
 // Extension(s):
 
@@ -40,7 +40,7 @@ extension URL
 
     }
 
-}   // END of extension URL.
+}   // End of extension URL.
 
 extension ZipFileDetails 
 {
@@ -50,9 +50,9 @@ extension ZipFileDetails
 
         .data(text.data(using: .utf8) ?? Data(), filename: filename)
 
-    }   // END of static func text(_ text:String, filename:String)->ZipFileDetails
+    }   // End of static func text(_ text:String, filename:String)->ZipFileDetails
 
-}   // END of extension ZipFileDetails.
+}   // End of extension ZipFileDetails.
 
 extension ZipFileDetails 
 {
@@ -114,9 +114,9 @@ extension ZipFileDetails
 
         return
 
-    }   // END of func prepareInDirectory(directoryURL:URL) throws.
+    }   // End of func prepareInDirectory(directoryURL:URL) throws.
 
-}   // END of extension ZipFileDetails.
+}   // End of extension ZipFileDetails.
 
 // Method(s) - ZIP 'service':
 
@@ -243,7 +243,7 @@ class MultipartZipFileService: NSObject
 
         return zipFinalURL
 
-    }   // END of public func createZip(zipFinalURL:URL, fromDirectory directoryURL:URL)throws->URL.
+    }   // End of public func createZip(zipFinalURL:URL, fromDirectory directoryURL:URL)throws->URL.
 
     public func createZipAtTmp(zipFilename:String, zipExtension:String="zip", fromDirectory directoryURL:URL)throws->URL 
     {
@@ -283,7 +283,7 @@ class MultipartZipFileService: NSObject
 
         return try createZip(zipFinalURL:finalDirectoryToZipURL, fromDirectory:directoryURL)
 
-    }   // END of public func createZipAtTmp(zipFilename:String, zipExtension:String="zip", fromDirectory directoryURL:URL)throws->URL.
+    }   // End of public func createZipAtTmp(zipFilename:String, zipExtension:String="zip", fromDirectory directoryURL:URL)throws->URL.
 
     public func createZipAtTmp(zipFilename:String, zipExtension:String="zip", filesToZip:[ZipFileDetails])throws->URL 
     {
@@ -333,7 +333,7 @@ class MultipartZipFileService: NSObject
 
         return try createZipAtTmp(zipFilename:zipFilename, zipExtension:zipExtension, fromDirectory:directoryToZipURL)
 
-    }   // END of public func createZipAtTmp(zipFilename:String, zipExtension:String="zip", filesToZip:[ZipFileDetails])throws->URL.
+    }   // End of public func createZipAtTmp(zipFilename:String, zipExtension:String="zip", filesToZip:[ZipFileDetails])throws->URL.
     
     public func getZipData(zipFilename:String=UUID().uuidString, fromDirectory directoryURL:URL)throws->Data 
     {
@@ -351,7 +351,7 @@ class MultipartZipFileService: NSObject
 
         return try self.getZipData(zipFileURL:tmpZipURL)
 
-    }   // END of public func getZipData(zipFilename:String=UUID().uuidString, fromDirectory directoryURL:URL)throws->Data.
+    }   // End of public func getZipData(zipFilename:String=UUID().uuidString, fromDirectory directoryURL:URL)throws->Data.
     
     public func getZipData(zipFilename:String=UUID().uuidString, filesToZip:[ZipFileDetails])throws->Data 
     {
@@ -369,7 +369,7 @@ class MultipartZipFileService: NSObject
 
         return try self.getZipData(zipFileURL:tmpZipURL)
 
-    }   // END of func public getZipData(zipFilename:String=UUID().uuidString, filesToZip:[ZipFileDetails])throws->Data.
+    }   // End of func public getZipData(zipFilename:String=UUID().uuidString, filesToZip:[ZipFileDetails])throws->Data.
 
     private func getZipData(zipFileURL:URL)throws->Data 
     {
@@ -402,7 +402,7 @@ class MultipartZipFileService: NSObject
 
         }
 
-    }   // END of private func getZipData(zipFileURL:URL)throws->Data.
+    }   // End of private func getZipData(zipFileURL:URL)throws->Data.
 
-}   // END of final class MultipartZipFileService(NSObject).
+}   // End of final class MultipartZipFileService(NSObject).
 

@@ -1252,7 +1252,7 @@ struct AppAuthenticateView: View
   
     }   // End of private func dumpUserAuthenticationDataToLog().
 
-}   // END of struct AppAuthenticateView(View).
+}   // End of struct AppAuthenticateView(View).
 
 #Preview
 {

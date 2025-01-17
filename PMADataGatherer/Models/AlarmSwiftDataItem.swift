@@ -76,7 +76,7 @@ public class AlarmSwiftDataItem: Identifiable
         self.sMediaAlarmTitle       = "Alarm"
         self.sMediaAlarmMessage     = "Wake UP!"
 
-    }   // END of init().
+    }   // End of init().
 
     private func xcgLogMsg(_ sMessage:String)
     {
@@ -184,7 +184,7 @@ public class AlarmSwiftDataItem: Identifiable
 
         return
 
-    }   // END of public func updateAlarmSwiftDataItemFromAnother(alarmSwiftDataItem:AlarmSwiftDataItem, bCopyAlarmID:Bool).
+    }   // End of public func updateAlarmSwiftDataItemFromAnother(alarmSwiftDataItem:AlarmSwiftDataItem, bCopyAlarmID:Bool).
 
     public func getAlarmSwiftDataItemShortTitle()->String
     {
@@ -311,6 +311,6 @@ public class AlarmSwiftDataItem: Identifiable
 
         return
 
-    }   // END of public func displayAlarmSwiftDataItemWithLocalStore(bShowLocalStore:Bool).
+    }   // End of public func displayAlarmSwiftDataItemWithLocalStore(bShowLocalStore:Bool).
     
-}   // END of class AlarmSwiftDataItem(NSObject, Identifiable).
+}   // End of class AlarmSwiftDataItem(NSObject, Identifiable).
