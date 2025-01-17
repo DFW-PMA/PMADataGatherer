@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0403"
+        static let sClsVers      = "v1.0502"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -224,6 +224,88 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         return
 
     }   // End of override init().
+
+    convenience init(pfTherapistFileItem:ParsePFTherapistFileItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.init()
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfTherapistFileItem' is [\(pfTherapistFileItem)]...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.pfTherapistFileObject                  = pfTherapistFileItem.pfTherapistFileObject
+
+        self.sPFTherapistFileClassName              = pfTherapistFileItem.sPFTherapistFileClassName
+        self.sPFTherapistFileObjectId               = pfTherapistFileItem.sPFTherapistFileObjectId
+        self.datePFTherapistFileCreatedAt           = pfTherapistFileItem.datePFTherapistFileCreatedAt
+        self.datePFTherapistFileUpdatedAt           = pfTherapistFileItem.datePFTherapistFileUpdatedAt
+        self.aclPFTherapistFile                     = pfTherapistFileItem.aclPFTherapistFile
+        self.bPFTherapistFileIsDataAvailable        = pfTherapistFileItem.bPFTherapistFileIsDataAvailable
+        self.bPFTherapistFileIdDirty                = pfTherapistFileItem.bPFTherapistFileIdDirty
+        self.listPFTherapistFileAllKeys             = pfTherapistFileItem.listPFTherapistFileAllKeys
+        
+        self.iPFTherapistFileTID                    = pfTherapistFileItem.iPFTherapistFileTID
+        self.sPFTherapistFileName                   = pfTherapistFileItem.sPFTherapistFileName
+        self.sPFTherapistFilePhone                  = pfTherapistFileItem.sPFTherapistFilePhone
+        self.sPFTherapistFileEmail                  = pfTherapistFileItem.sPFTherapistFileEmail
+        self.sPFTherapistFileUsername               = pfTherapistFileItem.sPFTherapistFileUsername
+        self.sPFTherapistFilePassword               = pfTherapistFileItem.sPFTherapistFilePassword
+        self.sPFTherapistFileHomeLoc                = pfTherapistFileItem.sPFTherapistFileHomeLoc
+        self.iPFTherapistFileLicenseNumber          = pfTherapistFileItem.iPFTherapistFileLicenseNumber
+        
+        self.bPFTherapistFileNotActive              = pfTherapistFileItem.bPFTherapistFileNotActive
+        self.bPFTherapistFileOffice                 = pfTherapistFileItem.bPFTherapistFileOffice
+        self.bPFTherapistFileIsSupervisor           = pfTherapistFileItem.bPFTherapistFileIsSupervisor
+        self.bPFTherapistFileHaveAssistants         = pfTherapistFileItem.bPFTherapistFileHaveAssistants
+        self.iPFTherapistFileType                   = pfTherapistFileItem.iPFTherapistFileType
+        self.iPFTherapistFileSuperID                = pfTherapistFileItem.iPFTherapistFileSuperID
+        self.iPFTherapistFileMentorID               = pfTherapistFileItem.iPFTherapistFileMentorID
+        
+        self.sPFTherapistFileLastSync               = pfTherapistFileItem.sPFTherapistFileLastSync
+        self.iPFTherapistFileIpadUpdate             = pfTherapistFileItem.iPFTherapistFileIpadUpdate
+        self.iPFTherapistFileIphoneUpdate           = pfTherapistFileItem.iPFTherapistFileIphoneUpdate
+        
+        self.sPFTherapistFileStartWeek              = pfTherapistFileItem.sPFTherapistFileStartWeek
+        self.sPFTherapistFileWeekStartInvoice       = pfTherapistFileItem.sPFTherapistFileWeekStartInvoice
+        self.iPFTherapistFileExpectedWeekVisits     = pfTherapistFileItem.iPFTherapistFileExpectedWeekVisits
+        self.iPFTherapistFileLateWeekVisits         = pfTherapistFileItem.iPFTherapistFileLateWeekVisits
+        self.iPFTherapistFilePreviousWeekVoids2     = pfTherapistFileItem.iPFTherapistFilePreviousWeekVoids2
+        self.bPFTherapistFileMakeupsAllowed         = pfTherapistFileItem.bPFTherapistFileMakeupsAllowed
+        self.bPFTherapistFileOver50Allowed          = pfTherapistFileItem.bPFTherapistFileOver50Allowed
+        
+        self.listPFTherapistFileFinalSyncRatios     = pfTherapistFileItem.listPFTherapistFileFinalSyncRatios
+        self.listPFTherapistFileWeekPtMissingVisits = pfTherapistFileItem.listPFTherapistFileWeekPtMissingVisits
+        self.listPFTherapistFilePidsForFriday       = pfTherapistFileItem.listPFTherapistFilePidsForFriday
+        self.listPFTherapistFileParentIDs           = pfTherapistFileItem.listPFTherapistFileParentIDs
+        
+        self.pfTherapistFileObjectLatitude          = pfTherapistFileItem.pfTherapistFileObjectLatitude
+        self.pfTherapistFileObjectLongitude         = pfTherapistFileItem.pfTherapistFileObjectLongitude
+        self.sPFTherapistFileObjectLatitude         = pfTherapistFileItem.sPFTherapistFileObjectLatitude
+        self.sPFTherapistFileObjectLongitude        = pfTherapistFileItem.sPFTherapistFileObjectLongitude
+        self.dblPFTherapistFileObjectLatitude       = pfTherapistFileItem.dblPFTherapistFileObjectLatitude
+        self.dblPFTherapistFileObjectLongitude      = pfTherapistFileItem.dblPFTherapistFileObjectLongitude
+        self.dblConvertedLatitude                   = pfTherapistFileItem.dblConvertedLatitude
+        self.dblConvertedLongitude                  = pfTherapistFileItem.dblConvertedLongitude
+        
+        self.sHomeLocLocationName                   = pfTherapistFileItem.sHomeLocLocationName
+        self.sHomeLocCity                           = pfTherapistFileItem.sHomeLocCity
+        self.sHomeLocCountry                        = pfTherapistFileItem.sHomeLocCountry
+        self.sHomeLocPostalCode                     = pfTherapistFileItem.sHomeLocPostalCode
+        self.sHomeLocTimeZone                       = pfTherapistFileItem.sHomeLocTimeZone
+        
+        self.bHomeLocAddessLookupComplete           = pfTherapistFileItem.bHomeLocAddessLookupComplete
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of convenience init(pfTherapistFileItem:ParsePFTherapistFileItem).
 
     private func xcgLogMsg(_ sMessage:String)
     {

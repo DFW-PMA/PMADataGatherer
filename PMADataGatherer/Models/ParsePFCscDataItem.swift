@@ -18,7 +18,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFCscDataItem"
-        static let sClsVers      = "v1.0501"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -166,6 +166,62 @@ class ParsePFCscDataItem: NSObject, Identifiable
         return
 
     }   // End of override init().
+
+    convenience init(pfCscDataItem:ParsePFCscDataItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.init()
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfCscDataItem' is [\(pfCscDataItem)]...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.idPFCscObject                = pfCscDataItem.idPFCscObject               
+        self.pfCscObject                  = pfCscDataItem.pfCscObject                 
+        
+        self.sPFCscParseClassName         = pfCscDataItem.sPFCscParseClassName        
+        self.sPFCscParseObjectId          = pfCscDataItem.sPFCscParseObjectId         
+        self.datePFCscParseCreatedAt      = pfCscDataItem.datePFCscParseCreatedAt     
+        self.datePFCscParseUpdatedAt      = pfCscDataItem.datePFCscParseUpdatedAt     
+        self.aclPFCscParse                = pfCscDataItem.aclPFCscParse               
+        self.bPFCscParseIsDataAvailable   = pfCscDataItem.bPFCscParseIsDataAvailable  
+        self.bPFCscParseIdDirty           = pfCscDataItem.bPFCscParseIdDirty          
+        self.sPFCscParseAllKeys           = pfCscDataItem.sPFCscParseAllKeys          
+        
+        self.sPFCscParseName              = pfCscDataItem.sPFCscParseName             
+        self.sPFCscParseLastLocDate       = pfCscDataItem.sPFCscParseLastLocDate      
+        self.sPFCscParseLastLocTime       = pfCscDataItem.sPFCscParseLastLocTime      
+        self.sPFCscParseLastLatitude      = pfCscDataItem.sPFCscParseLastLatitude     
+        self.sPFCscParseLastLongitude     = pfCscDataItem.sPFCscParseLastLongitude    
+        
+        self.pfCscObjectLatitude          = pfCscDataItem.pfCscObjectLatitude         
+        self.pfCscObjectLongitude         = pfCscDataItem.pfCscObjectLongitude        
+        self.sPFCscObjectLatitude         = pfCscDataItem.sPFCscObjectLatitude        
+        self.sPFCscObjectLongitude        = pfCscDataItem.sPFCscObjectLongitude       
+        self.dblPFCscObjectLatitude       = pfCscDataItem.dblPFCscObjectLatitude      
+        self.dblPFCscObjectLongitude      = pfCscDataItem.dblPFCscObjectLongitude     
+        self.dblConvertedLatitude         = pfCscDataItem.dblConvertedLatitude        
+        self.dblConvertedLongitude        = pfCscDataItem.dblConvertedLongitude       
+        
+        self.sCurrentLocationName         = pfCscDataItem.sCurrentLocationName        
+        self.sCurrentCity                 = pfCscDataItem.sCurrentCity                
+        self.sCurrentCountry              = pfCscDataItem.sCurrentCountry             
+        self.sCurrentPostalCode           = pfCscDataItem.sCurrentPostalCode          
+        self.sCurrentTimeZone             = pfCscDataItem.sCurrentTimeZone            
+        
+        self.sPFTherapistParseTID         = pfCscDataItem.sPFTherapistParseTID        
+        self.bCurrentAddessLookupComplete = pfCscDataItem.bCurrentAddessLookupComplete
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of convenience init(pfCscDataItem:ParsePFCscDataItem).
 
     private func xcgLogMsg(_ sMessage:String)
     {
