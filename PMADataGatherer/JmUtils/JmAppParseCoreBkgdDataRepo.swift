@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0102"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -338,8 +338,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 listPFAdminsObjects!.count > 0)
             {
                 
-                DispatchQueue.main.async
-                {
+            //  DispatchQueue.main.async
+            //  {
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryAdmins' returned a count of #(\(listPFAdminsObjects!.count)) PFObject(s)...")
                     self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryAdmins'...")
@@ -398,7 +398,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                     }
 
-                }
+            //  }
 
             }
             
@@ -501,8 +501,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                     }
 
-                    DispatchQueue.main.async
-                    {
+                //  DispatchQueue.main.async
+                //  {
                     
                         // Build the Tid/TherapistName Xref dictionary...
 
@@ -546,7 +546,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                     
                         }
                     
-                    }
+                //  }
 
                     // Track the Therapist 'name' in the PFAdminsDataItem(s) dictionary...
                 
@@ -740,8 +740,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 listPFCscObjects!.count > 0)
             {
 
-                DispatchQueue.main.async
-                {
+            //  DispatchQueue.main.async
+            //  {
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryCSC' returned a count of #(\(listPFCscObjects!.count)) PFObject(s)...")
                     self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryCSC'...")
@@ -769,7 +769,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                     }
 
-                }
+            //  }
 
                 // Gather the PFQueries to construct the new ScheduledPatientLocationItem(s) in the background
                 // (ONLY on the 1st call to this function - after that this fires from a View on a Timer)
@@ -845,8 +845,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
             //  let pfAdminsSwiftDataItemsDescriptor = FetchDescriptor<PFAdminsSwiftDataItem>()
 
-                DispatchQueue.main.async
-                {
+            //  DispatchQueue.main.async
+            //  {
 
                     do
                     {
@@ -909,7 +909,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'self.jmAppSwiftDataManager.detailAppSwiftDataToLog()'...")
 
-                }
+            //  }
 
             }
             else
@@ -1182,14 +1182,14 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                             }
                         
-                            DispatchQueue.main.async
-                            {
+                        //  DispatchQueue.main.async
+                        //  {
 
                                 self.dictSchedPatientLocItems[sPFTherapistParseTID] = listScheduledPatientLocationItems
 
                                 self.xcgLogMsg("\(sCurrMethodDisp) Added #(\(cPFPatientCalDayObjects)) updated Item(s) to the 'listScheduledPatientLocationItems' of [\(listScheduledPatientLocationItems)] to the dictionary of 'dictSchedPatientLocItems' item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)]...")
 
-                            }
+                        //  }
                         
                         }
 
