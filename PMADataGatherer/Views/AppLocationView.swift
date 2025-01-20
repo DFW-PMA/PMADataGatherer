@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0701"
+        static let sClsVers      = "v1.0712"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -94,6 +94,77 @@ struct AppLocationView: View
                 HStack(alignment:.center)
                 {
 
+                    if (AppGlobalInfo.bPerformAppDevTesting == true)
+                    {
+
+                        Button
+                        {
+
+                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFCsc' pressed...")
+
+                            self.detailPFCscDataItems()
+
+                        }
+                        label:
+                        {
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "doc.text.magnifyingglass")
+                                    .help(Text("Log PFCscDataItem(s)..."))
+                                    .imageScale(.small)
+
+                                Text("Log PFCsc")
+                                    .font(.caption2)
+
+                            }
+
+                        }
+                        .padding()
+                    #if os(macOS)
+                        .buttonStyle(.borderedProminent)
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Sync PFData' pressed...")
+
+                        self.syncPFDataItems()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "doc.text.magnifyingglass")
+                                .help(Text("Sync PFQuery Data Item(s)..."))
+                                .imageScale(.small)
+
+                            Text("Sync PFData")
+                                .font(.caption2)
+
+                        }
+
+                    }
+                    .padding()
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+
+                    }
+
                     Spacer()
 
                     Button
@@ -103,8 +174,8 @@ struct AppLocationView: View
 
                         let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLocationView.Button(Xcode).'Refresh'.#(\(self.cAppLocationViewRefreshButtonPresses))...")
 
-                        let _ = self.checkIfAppParseCoreHasPFCscDataItems()
-                        let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems()
+                        let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
+                        let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems(bRefresh:true)
 
                     }
                     label:
@@ -172,7 +243,7 @@ struct AppLocationView: View
 
                 Text("")
 
-                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh))")
+                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppLocationViewRefreshButtonPresses).\(cAppLocationViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer))")
                     .bold()
                     .italic()
                     .underline(true)
@@ -334,9 +405,11 @@ struct AppLocationView: View
 
                             self.cAppLocationViewRefreshAutoTimer += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - Grid.Timer<notification> - <timerPublisherTherapistLocations> - setting auto 'refresh' by timer to #(\(self.cAppLocationViewRefreshAutoTimer))...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - Grid.Timer<notification> - <timerPublisherTherapistLocations> - setting auto 'refresh' by timer to #(\(self.cAppLocationViewRefreshAutoTimer)) - 'dtObserved' is [\(dtObserved)]...")
 
-                            let _ = self.checkIfAppParseCoreHasPFCscDataItems()
+                            let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:false)
+
+                            self.syncPFDataItems()
 
                         })
                     .onReceive(jmAppParseCoreManager.timerPublisherScheduleLocations,
@@ -345,9 +418,11 @@ struct AppLocationView: View
 
                             self.cAppScheduleViewRefreshAutoTimer += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #2 - Grid.Timer<notification> - <timerPublisherScheduleLocations> - setting auto 'refresh' by timer to #(\(self.cAppScheduleViewRefreshAutoTimer))...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #2 - Grid.Timer<notification> - <timerPublisherScheduleLocations> - setting auto 'refresh' by timer to #(\(self.cAppScheduleViewRefreshAutoTimer)) - 'dtObserved' is [\(dtObserved)]...")
 
-                            let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems()
+                            let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems(bRefresh:false)
+
+                            self.syncPFDataItems()
 
                         })
 
@@ -360,19 +435,30 @@ struct AppLocationView: View
         
     }
     
-    private func checkIfAppParseCoreHasPFCscDataItems() -> Bool
+    private func checkIfAppParseCoreHasPFCscDataItems(bRefresh:Bool = false) -> Bool
     {
   
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bRefresh' is [\(bRefresh)]...")
   
         self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
 
         let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForCSC()
 
         self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+
+        if (bRefresh == true)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method...")
+
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFAdminsDataItems()
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method...")
+        
+        }
 
         var bWasAppPFCscDataPresent:Bool = false
 
@@ -450,19 +536,34 @@ struct AppLocationView: View
   
     }   // End of private func checkIfAppParseCoreHasPFCscDataItems().
 
-    private func checkIfAppParseCoreHasPFPatientCalDayItems() -> Bool
+    private func checkIfAppParseCoreHasPFPatientCalDayItems(bRefresh:Bool = false) -> Bool
     {
   
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bRefresh' is [\(bRefresh)]...")
   
         self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
 
         let _ = self.jmAppParseCoreBkgdDataRepo.gatherJmAppParsePFQueriesForScheduledLocationsInBackground()
 
         self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to gather 'scheduled' Patient Schedule location data...")
+
+        if (bRefresh == true)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method(s)...")
+
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictTherapistTidXref()
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFTherapistFileItems()
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictSchedPatientLocItems()
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method(s)...")
+        
+        }
 
         // Exit...
   
@@ -648,6 +749,92 @@ struct AppLocationView: View
         return cScheduledPatientLocationItems
   
     }   // End of private func getScheduledPatientLocationItemsCountForPFCscDataItem(pfCscDataItem:ParsePFCscDataItem)->Int.
+
+    private func detailPFCscDataItems()
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFCscDataItem(s)...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreManager' #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) PFCscDataItem(s)...")
+
+        self.jmAppParseCoreManager.displayListPFCscDataItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreBkgdDataRepo' #(\(self.jmAppParseCoreBkgdDataRepo.listPFCscDataItems.count)) PFCscDataItem(s)...")
+
+        self.jmAppParseCoreBkgdDataRepo.displayListPFCscDataItems()
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of private func detailPFCscDataItems()
+
+    private func syncPFDataItems()
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // 'sync' (aka, deep copy) the ParseCoreBkgdDataRepo PFCscDataItem(s) to the ParseCoreManager...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPFAdminsDataItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFAdminsDataItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPFAdminsDataItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyDictTherapistTidXref()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictTherapistTidXref()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictTherapistTidXref()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPFTherapistFileItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFTherapistFileItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPFTherapistFileItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyDictSchedPatientLocItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictSchedPatientLocItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictSchedPatientLocItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscDataItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscDataItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscNameItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscNameItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'self.detailPFCscDataItems()'...")
+
+        self.detailPFCscDataItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked 'self.detailPFCscDataItems()'...")
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of private func syncPFDataItems()
 
 }   // End of struct AppLocationView(View).
 

@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2402"
+        static let sClsVers      = "v1.2501"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1685,6 +1685,208 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return pfCscDataItem
   
     } // End of func locatePFCscDataItemByID(id:UUID)->ParsePFCscDataItem.
+    
+    public func displayDictPFAdminsDataItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the dictionary of 'dictPFAdminsDataItems'...
+
+        if (self.dictPFAdminsDataItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of 'parsePFAdminsDataItem' item(s)...")
+
+            for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
+            {
+
+                parsePFAdminsDataItem.displayParsePFAdminsDataItemToLog()
+
+            }
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'parsePFAdminsDataItem' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictPFAdminsDataItems().
+    
+    public func displayDictPFTherapistFileItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the dictionary of 'dictPFTherapistFileItems'...
+
+        if (self.dictPFTherapistFileItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+
+            var cPFTherapistParseTIDs:Int = 0
+
+            for (iPFTherapistParseTID, pfTherapistFileItem) in self.dictPFTherapistFileItems
+            {
+
+                cPFTherapistParseTIDs += 1
+
+                if (iPFTherapistParseTID < 0)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+
+                    continue
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+
+                pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
+
+            }
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictPFTherapistFileItems().
+    
+    public func displayDictSchedPatientLocItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the dictionary of 'dictSchedPatientLocItems'...
+
+        if (self.dictSchedPatientLocItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictSchedPatientLocItems.count)) 'dictSchedPatientLocItems' item(s)...")
+
+            let cPFTherapistTotalTIDs:Int = self.dictSchedPatientLocItems.count
+            var cPFTherapistParseTIDs:Int = 0
+
+            for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictSchedPatientLocItems
+            {
+
+                cPFTherapistParseTIDs += 1
+
+                if (sPFTherapistParseTID.count  < 1 ||
+                    sPFTherapistParseTID       == "-N/A-")
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                    continue
+
+                }
+
+                if (listScheduledPatientLocationItems.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
+
+                    continue
+
+                }
+
+                var cScheduledPatientLocationItems:Int = 0
+
+                for scheduledPatientLocationItem in listScheduledPatientLocationItems
+                {
+
+                    cScheduledPatientLocationItems += 1
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Of #(\(cPFTherapistTotalTIDs)) TIDs - For TID [\(sPFTherapistParseTID)] - Displaying 'scheduledPatientLocationItem' item #(\(cPFTherapistParseTIDs).\(cScheduledPatientLocationItems)):")
+
+                    scheduledPatientLocationItem.displayScheduledPatientLocationItemToLog()
+
+                }
+
+            }
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictSchedPatientLocItems' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictSchedPatientLocItems().
+    
+    public func displayListPFCscDataItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the ...
+
+        if (self.listPFCscDataItems.count > 0)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the list of 'parsePFCscDataItem' item(s)...")
+
+            for parsePFCscDataItem in self.listPFCscDataItems
+            {
+
+                parsePFCscDataItem.displayParsePFCscDataItemToLog()
+
+            }
+        
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the list of 'listPFCscDataItems' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayListPFCscDataItems().
     
 }   // End of public class JmAppParseCoreManager.
 

@@ -17,7 +17,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     {
         
         static let sClsId        = "CoreLocationModelObservable2"
-        static let sClsVers      = "v1.0208"
+        static let sClsVers      = "v1.0301"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -45,7 +45,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     @Published var sCurrentSubAdministrativeArea:String       = "-N/A-"   // County (i.e. Tarrant County)
 
     @Published var listCoreLocationSiteItems:[CoreLocationSiteItem]
-                                                              = []        // List of the 'current' Location Site Item(s)
+                                                              = [CoreLocationSiteItem]()
+                                                                          // List of the 'current' Location Site Item(s)
                                                                           //      as CoreLocationSiteItem(s)...
     
                var jmAppDelegateVisitor:JmAppDelegateVisitor? = nil
@@ -237,7 +238,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         self.sCurrentSubThoroughfare       = "-N/A-"
         self.sCurrentAdministrativeArea    = "-N/A-"
         self.sCurrentSubAdministrativeArea = "-N/A-"
-        self.listCoreLocationSiteItems     = []
+        self.listCoreLocationSiteItems     = [CoreLocationSiteItem]()
 
         // Exit:
 
