@@ -220,11 +220,11 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
         // Finish any 'initialization' work:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreBackgroundDataRepo Invoking 'self.runPostInitializationTasks()'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreBkgdDataRepo Invoking 'self.runPostInitializationTasks()'...")
     
         self.runPostInitializationTasks()
 
-        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreBackgroundDataRepo Invoked  'self.runPostInitializationTasks()'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) ParseCoreBkgdDataRepo Invoked  'self.runPostInitializationTasks()'...")
 
         // Exit:
 
