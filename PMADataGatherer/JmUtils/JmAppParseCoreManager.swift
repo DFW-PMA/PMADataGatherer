@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2501"
+        static let sClsVers      = "v1.2601"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -70,29 +70,65 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 //     private      var cPFQueryCSCs:Int                                                 = 0
 
     @Published      var cPFCscObjectsRefresh:Int                                         = 0
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
     @Published      var cPFCscObjects:Int                                                = 0
-    @Published      var listPFCscDataItems:[ParsePFCscDataItem]                          = []
-                    var listPFCscNameItems:[String]                                      = []
+                    var listPFCscNameItems:[String]                                      = [String]()
+    @Published      var listPFCscDataItems:[ParsePFCscDataItem]                          = [ParsePFCscDataItem]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
-    @Published      var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]             = [:]
                                                                                            // [String:ParsePFAdminsDataItem]
                                                                                            // Key:PFAdminsParseTID(String)
+    @Published      var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]             = [String:ParsePFAdminsDataItem]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
-    @Published      var dictTherapistTidXref:[String:String]                             = [String:String]()
                                                                                            // [String:String]
                                                                                            // Key:Tid(String)                       -> TherapistName (String)
                                                                                            // Key:TherapistName(String)             -> Tid (String)
                                                                                            // Key:TherapistName(String)<lowercased> -> Tid (String)
+    @Published      var dictTherapistTidXref:[String:String]                             = [String:String]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
-    @Published      var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
                                                                                            // [String:[ScheduledPatientLocationItem]]
                                                                                            // Key:sPFTherapistParseTID(String)
+    @Published      var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
        private      var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                   = false
 
-    @Published      var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]          = [Int:ParsePFTherapistFileItem]()
                                                                                            // [Int:ParsePFTherapistFileItem]
                                                                                            // Key:Tid(Int) -> TherapistID (Int)
+    @Published      var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]          = [Int:ParsePFTherapistFileItem]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
        private      var bHasDictTherapistFileItemsBeenDisplayed:Bool                     = false
 
@@ -105,7 +141,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
-                    var  listPreXCGLoggerMessages:[String]                               = Array()
+                    var  listPreXCGLoggerMessages:[String]                               = [String]()
 
     // ------------------------------------------------------------------------------------------------------
     //

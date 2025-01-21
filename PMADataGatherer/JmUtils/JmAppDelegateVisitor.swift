@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.2903"
+        static let sClsVers      = "v1.3001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -85,14 +85,10 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     @Published 
     var appDelegateVisitorSwiftViewsShouldChange:Bool              = false
     {
-
         didSet
         {
-
             objectWillChange.send()
-
         }
-
     }
 
     // App <global> 'Alert' control(s):
@@ -100,14 +96,10 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     @Published 
     var isAppDelegateVisitorShowingAlert:Bool                      = false
     {
-
         didSet
         {
-
             objectWillChange.send()
-
         }
-
     }
 
     var sAppDelegateVisitorGlobalAlertMessage:String?              = nil
@@ -118,27 +110,19 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     @Published 
     var isAppDelegateVisitorShowingCompletionAlert:Bool            = false
     {
-
         didSet
         {
-
             objectWillChange.send()
-
         }
-
     }
 
     @Published 
     var isAppDelegateVisitorShowingCompletionAlert2ndButton:Bool   = false
     {
-
         didSet
         {
-
             objectWillChange.send()
-
         }
-
     }
 
     var sAppDelegateVisitorCompletionAlertMessage:String           = ""
@@ -201,7 +185,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
-    var listPreXCGLoggerMessages:[String]                          = Array()
+    var listPreXCGLoggerMessages:[String]                          = [String]()
 
     @objc public func toString() -> String
     {

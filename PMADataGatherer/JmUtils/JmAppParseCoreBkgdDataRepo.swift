@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0403"
+        static let sClsVers      = "v1.0405"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -41,7 +41,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
     var parseConfig:ParseClientConfiguration?                                = nil       
 
-    var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]                 = [:]
+    var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]                 = [String:ParsePFAdminsDataItem]()
                                                                                // [String:ParsePFAdminsDataItem]
                                                                                // Key:PFAdminsParseTID(String)
 
@@ -62,8 +62,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                                                                                // [String:[ScheduledPatientLocationItem]]
                                                                                // Key:sPFTherapistParseTID(String)
 
-    var listPFCscDataItems:[ParsePFCscDataItem]                              = []
-    var listPFCscNameItems:[String]                                          = []
+    var listPFCscDataItems:[ParsePFCscDataItem]                              = [ParsePFCscDataItem]()
+    var listPFCscNameItems:[String]                                          = [String]()
 
     var jmAppDelegateVisitor:JmAppDelegateVisitor?                           = nil
                                                                                // 'jmAppDelegateVisitor' MUST remain declared this way
@@ -75,7 +75,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
-    var  listPreXCGLoggerMessages:[String]                                   = Array()
+    var  listPreXCGLoggerMessages:[String]                                   = [String]()
 
     // ------------------------------------------------------------------------------------------------------
     //

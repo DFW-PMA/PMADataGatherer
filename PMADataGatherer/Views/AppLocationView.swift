@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0712"
+        static let sClsVers      = "v1.0714"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -248,6 +248,14 @@ struct AppLocationView: View
                     .italic()
                     .underline(true)
                     .font(.footnote)
+                    .onChange(of:self.cAppLocationViewRefreshAutoTimer)
+                    {
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #2 - Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)): for 'cAppLocationViewRefreshAutoTimer' of #(\(self.cAppLocationViewRefreshAutoTimer))...")
+                    }
+                    .onChange(of:self.cAppScheduleViewRefreshAutoTimer)
+                    {
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #3 - Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)): for 'cAppScheduleViewRefreshAutoTimer' of #(\(self.cAppScheduleViewRefreshAutoTimer))...")
+                    }
 
                 Text("")
                 #if os(iOS)
