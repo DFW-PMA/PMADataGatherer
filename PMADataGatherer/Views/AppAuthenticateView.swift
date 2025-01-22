@@ -17,7 +17,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.1901"
+        static let sClsVers      = "v1.1903"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -81,7 +81,7 @@ struct AppAuthenticateView: View
 
         // Continue App 'initialization'...
 
-        let _ = self.finishAppInitializationInBackground()
+    //  let _ = self.finishAppInitializationInBackground()
 
         // Exit...
 
@@ -489,6 +489,16 @@ struct AppAuthenticateView: View
             }
 
         }
+
+        Text("")            
+            .hidden()
+            .onAppear(
+                perform:
+                {
+                    // Continue App 'initialization'...
+
+                    let _ = self.finishAppInitializationInBackground()
+                })
         
     }
     

@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2601"
+        static let sClsVers      = "v1.2701"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -152,8 +152,8 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     //      self.dictSchedPatientLocItems[]              -> Patient Schedule for the day by Therapist(s)...
     //      self.dictTherapistTidXref[]                  -> Therapist TID/TName cross-reference dictionary...
     //      - - - - -
-    //      self.listPFCscDataItems:[ParsePFCscDataItem] -> All 'known' Patient(s)...
-    //      self.listPFCscNameItems:[String]             -> All 'known' Patient(s) 'name(s)'...
+    //      self.listPFCscDataItems:[ParsePFCscDataItem] -> All 'known' WorkRoute People...
+    //      self.listPFCscNameItems:[String]             -> All 'known' WorkRoute People 'name(s)'...
     //
     // ------------------------------------------------------------------------------------------------------
 

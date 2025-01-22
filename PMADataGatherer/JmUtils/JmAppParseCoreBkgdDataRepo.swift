@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0405"
+        static let sClsVers      = "v1.0605"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -86,8 +86,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     //      self.dictSchedPatientLocItems[]              -> Patient Schedule for the day by Therapist(s)...
     //      self.dictTherapistTidXref[]                  -> Therapist TID/TName cross-reference dictionary...
     //      - - - - -
-    //      self.listPFCscDataItems:[ParsePFCscDataItem] -> All 'known' Patient(s)...
-    //      self.listPFCscNameItems:[String]             -> All 'known' Patient(s) 'name(s)'...
+    //      self.listPFCscDataItems:[ParsePFCscDataItem] -> All 'known' WorkRoute People...
+    //      self.listPFCscNameItems:[String]             -> All 'known' WorkRoute People 'name(s)'...
     //
     // ------------------------------------------------------------------------------------------------------
 
@@ -176,8 +176,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         asToString.append("'dictSchedPatientLocItems': [\(String(describing: self.dictSchedPatientLocItems))]")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))]")
-        asToString.append("'listPFCscNameItems': [\(String(describing: self.listPFCscNameItems))]")
+        asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))] <WorkRoute items>")
+        asToString.append("'listPFCscNameItems': [\(String(describing: self.listPFCscNameItems))] <WorkRoute names>")
         asToString.append("],")
         asToString.append("]")
 
@@ -961,6 +961,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
         // Issue a PFQuery for the 'CSC' class...
 
         self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'CSC' class...")
@@ -994,36 +996,109 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 listPFCscObjects!.count > 0)
             {
 
-            //  DispatchQueue.main.async
-            //  {
+                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryCSC' returned a count of #(\(listPFCscObjects!.count)) PFObject(s)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryCSC'...")
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryCSC' returned a count of #(\(listPFCscObjects!.count)) PFObject(s)...")
-                    self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryCSC'...")
+                var cPFCscObjects:Int = 0
+                
+            //  self.listPFCscDataItems = []
+            //  self.listPFCscNameItems = []
 
-                    var cPFCscObjects:Int   = 0
-                    
-                    self.listPFCscDataItems = []
-                    self.listPFCscNameItems = []
+                var dictPFCscDataItems:[String:ParsePFCscDataItem] = [String:ParsePFCscDataItem]()
+                                                                     // [String:[ParsePFCscDataItem]]
 
-                    for pfCscObject in listPFCscObjects!
+                for currentPFCscDataItem:ParsePFCscDataItem in self.listPFCscDataItems
+                {
+
+                    if (currentPFCscDataItem.sPFCscParseName.count < 1)
                     {
-
-                        cPFCscObjects += 1
-
-                        let parsePFCscDataItem:ParsePFCscDataItem = ParsePFCscDataItem()
-
-                        parsePFCscDataItem.constructParsePFCscDataItemFromPFObject(idPFCscObject:cPFCscObjects, pfCscObject:pfCscObject)
-
-                        parsePFCscDataItem.sPFTherapistParseTID = self.convertTherapistNameToTid(sPFTherapistParseName:parsePFCscDataItem.sPFCscParseName)
-
-                        self.listPFCscNameItems.append(parsePFCscDataItem.sPFCscParseName)
-                        self.listPFCscDataItems.append(parsePFCscDataItem)
-
-                        self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFCscObjects)) 'parsePFCscDataItem' to the list of name(s)/item(s)...")
-
+                    
+                        continue
+                    
                     }
 
-            //  }
+                    dictPFCscDataItems[currentPFCscDataItem.sPFCscParseName] = currentPFCscDataItem
+
+                }
+
+                for pfCscObject in listPFCscObjects!
+                {
+
+                    cPFCscObjects += 1
+
+                    let parsePFCscDataItem:ParsePFCscDataItem = ParsePFCscDataItem()
+
+                    parsePFCscDataItem.constructParsePFCscDataItemFromPFObject(idPFCscObject:cPFCscObjects, pfCscObject:pfCscObject)
+
+                    let sPFCscParseName:String = parsePFCscDataItem.sPFCscParseName
+
+                    parsePFCscDataItem.sPFTherapistParseTID = self.convertTherapistNameToTid(sPFTherapistParseName:sPFCscParseName)
+
+                    if (dictPFCscDataItems.keys.contains(sPFCscParseName) == true)
+                    {
+                    
+                        let currentPFCscDataItem:ParsePFCscDataItem = dictPFCscDataItems[sPFCscParseName]!
+
+                        currentPFCscDataItem.overlayPFCscDataItemWithAnotherPFCscDataItem(pfCscDataItem:currentPFCscDataItem)
+
+                        // NO update to 'listPFCscDataItems' - the object is the same in the list as the dictionary...
+                        
+                        self.xcgLogMsg("\(sCurrMethodDisp) <PFQuery> Updated object #(\(cPFCscObjects)) 'parsePFCscDataItem' for key 'sPFCscParseName' of [\(sPFCscParseName)] to the tracking dictionary (automatic update in the list)...")
+                    
+                    }
+                    else
+                    {
+                    
+                        dictPFCscDataItems[sPFCscParseName] = parsePFCscDataItem
+
+                        self.listPFCscDataItems.append(parsePFCscDataItem)
+                        self.listPFCscNameItems.append(sPFCscParseName)
+
+                        // Dictionary and BOTH List(s) are updated as this is a 'new' Item...
+                        
+                        self.xcgLogMsg("\(sCurrMethodDisp) <PFQuery> Added object #(\(cPFCscObjects)) 'parsePFCscDataItem' for key 'sPFCscParseName' of [\(sPFCscParseName)] to the tracking dictionary and both lists of name(s)/item(s)...")
+                    
+                    }
+
+                //  self.listPFCscNameItems.append(parsePFCscDataItem.sPFCscParseName)
+                //  self.listPFCscDataItems.append(parsePFCscDataItem)
+                //
+                //  self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFCscObjects)) 'parsePFCscDataItem' to the list of name(s)/item(s)...")
+
+                }
+
+                if (dictPFCscDataItems.count > 0)
+                {
+                
+                    self.xcgLogMsg("\(sCurrMethodDisp) <PFQuery> 'tracking' - Displaying the <internal/local> dictionary 'dictPFCscDataItems' of (\(dictPFCscDataItems.count))) item(s)...")
+
+                    var cDictPFCscDataItems:Int = 0
+
+                    for (sPFCscParseName, currentPFCscDataItem) in dictPFCscDataItems
+                    {
+
+                        cDictPFCscDataItems += 1
+
+                        if (sPFCscParseName.count  < 1)
+                        {
+
+                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cDictPFCscDataItems)) 'sPFCscParseName' - the 'name' field is 'empty' - Warning!")
+
+                            continue
+
+                        }
+
+                        currentPFCscDataItem.displayParsePFCscDataItemToLog()
+
+                    }
+                
+                }
+                else
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <PFQuery> 'tracking' - Unable to display the <internal/local> dictionary 'dictPFCscDataItems' of (\(dictPFCscDataItems.count))) item(s) - Warning!")
+
+                }
 
                 // Gather the PFQueries to construct the new ScheduledPatientLocationItem(s) in the background
                 // (ONLY on the 1st call to this function - after that this fires from a View on a Timer)

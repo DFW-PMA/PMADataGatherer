@@ -26,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0506"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -635,7 +635,7 @@ struct AppDataGathererTherapist1DetailsView: View
                 
                     self.pfTherapistFileItem = self.jmAppParseCoreManager.dictPFTherapistFileItems[iTherapistTID]
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - 'self.pfTherapistFileItem' is [\(self.pfTherapistFileItem)]...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - 'self.pfTherapistFileItem' is [\(String(describing: self.pfTherapistFileItem))]...")
                 
                 }
                 else

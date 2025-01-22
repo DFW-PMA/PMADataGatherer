@@ -16,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.0701"
+        static let sClsVers      = "v1.0807"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -24,30 +24,33 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
         
     }
 
-    var id:UUID                                   = UUID()
+    var id:UUID                                             = UUID()
 
-    var sTid:String                               = "-1" // From 'PFAdminsSwiftDataItem' <String>
-                                                         // -OR- 'PFQuery::TherapistFile["ID"]'
-                                                         // -OR- 'PFQuery::PatientCalDay["tid"]'
-    var iTid:Int                                  = -1   // Converted from 'sTid <String>'...
-    var sTName:String                             = ""   // From 'PFQuery::PatientCalDay["tName"]'
-    var sTherapistName:String                     = ""   // From 'PFQuery::TherapistFile["name"]' 
+    var schedPatLocClonedFrom:ScheduledPatientLocationItem? = nil 
+    var schedPatLocClonedTo:ScheduledPatientLocationItem?   = nil 
 
-    var sPid:String                               = "-1" // From 'PFQuery::PatientCalDay["pid"]' <Int>
-    var iPid:Int                                  = -1   // Converted from 'sPid <String>'...
-    var sPtName:String                            = ""   // From 'PFQuery::PatientCalDay["ptName"]'
+    var sTid:String                                         = "-1" // From 'PFAdminsSwiftDataItem' <String>
+                                                                   // -OR- 'PFQuery::TherapistFile["ID"]'
+                                                                   // -OR- 'PFQuery::PatientCalDay["tid"]'
+    var iTid:Int                                            = -1   // Converted from 'sTid <String>'...
+    var sTName:String                                       = ""   // From 'PFQuery::PatientCalDay["tName"]'
+    var sTherapistName:String                               = ""   // From 'PFQuery::TherapistFile["name"]' 
 
-    var sVDate:String                             = ""   // From 'PFQuery::PatientCalDay["VDate"]'
-    var sVDateStartTime:String                    = ""   // From 'PFQuery::PatientCalDay["startTime"]'
-    var sVDateStartTime24h:String                 = ""   // Converted from 'sVDateStartTime'
-    var iVDateStartTime24h:Int                    = 0    // Converted from 'sVDateStartTime24h'
+    var sPid:String                                         = "-1" // From 'PFQuery::PatientCalDay["pid"]' <Int>
+    var iPid:Int                                            = -1   // Converted from 'sPid <String>'...
+    var sPtName:String                                      = ""   // From 'PFQuery::PatientCalDay["ptName"]'
 
-    var sLastVDate:String                         = ""   // From 'PFQuery::BackupVisit["VDate"]'
-    var sLastVDateType:String                     = "-1" // From 'PFQuery::BackupVisit["type"]'
-    var iLastVDateType:Int                        = -1   // Converted from 'sLastVDateType <String>'...
-    var sLastVDateAddress:String                  = ""   // From 'PFQuery::BackupVisit["address"]'
-    var sLastVDateLatitude:String                 = ""   // From 'PFQuery::BackupVisit["lat"]'
-    var sLastVDateLongitude:String                = ""   // From 'PFQuery::BackupVisit["long"]'
+    var sVDate:String                                       = ""   // From 'PFQuery::PatientCalDay["VDate"]'
+    var sVDateStartTime:String                              = ""   // From 'PFQuery::PatientCalDay["startTime"]'
+    var sVDateStartTime24h:String                           = ""   // Converted from 'sVDateStartTime'
+    var iVDateStartTime24h:Int                              = 0    // Converted from 'sVDateStartTime24h'
+
+    var sLastVDate:String                                   = ""   // From 'PFQuery::BackupVisit["VDate"]'
+    var sLastVDateType:String                               = "-1" // From 'PFQuery::BackupVisit["type"]'
+    var iLastVDateType:Int                                  = -1   // Converted from 'sLastVDateType <String>'...
+    var sLastVDateAddress:String                            = ""   // From 'PFQuery::BackupVisit["address"]'
+    var sLastVDateLatitude:String                           = ""   // From 'PFQuery::BackupVisit["lat"]'
+    var sLastVDateLongitude:String                          = ""   // From 'PFQuery::BackupVisit["long"]'
 
     var clLocationCoordinate2DPatLoc:CLLocationCoordinate2D
     {
@@ -71,27 +74,30 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
         // Finish the 'default' setup of field(s)...
 
-        self.id                  = UUID()
-        self.sTid                = "-1"
-        self.iTid                = Int(self.sTid)!
-        self.sTName              = ""
-        self.sTherapistName      = ""
+        self.id                    = UUID()
+    //  self.schedPatLocClonedFrom = nil
+    //  self.schedPatLocClonedTo   = nil
 
-        self.sPid                = "-1"
-        self.iPid                = Int(self.sPid)!
-        self.sPtName             = ""
+        self.sTid                  = "-1"
+        self.iTid                  = Int(self.sTid)!
+        self.sTName                = ""
+        self.sTherapistName        = ""
 
-        self.sVDate              = ""
-        self.sVDateStartTime     = ""
-        self.sVDateStartTime24h  = ""
-        self.iVDateStartTime24h  = 0
+        self.sPid                  = "-1"
+        self.iPid                  = Int(self.sPid)!
+        self.sPtName               = ""
 
-        self.sLastVDate          = ""
-        self.sLastVDateType      = "-1"
-        self.iLastVDateType      = Int(self.sLastVDateType)!
-        self.sLastVDateAddress   = ""
-        self.sLastVDateLatitude  = ""
-        self.sLastVDateLongitude = ""
+        self.sVDate                = ""
+        self.sVDateStartTime       = ""
+        self.sVDateStartTime24h    = ""
+        self.iVDateStartTime24h    = 0
+
+        self.sLastVDate            = ""
+        self.sLastVDateType        = "-1"
+        self.iLastVDateType        = Int(self.sLastVDateType)!
+        self.sLastVDateAddress     = ""
+        self.sLastVDateLatitude    = ""
+        self.sLastVDateLongitude   = ""
 
         // Exit:
 
@@ -113,26 +119,47 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
         // Finish the 'convenience' setup of field(s)...
 
-        self.sTid                = scheduledPatientLocationItem.sTid               
-        self.iTid                = scheduledPatientLocationItem.iTid               
-        self.sTName              = scheduledPatientLocationItem.sTName             
-        self.sTherapistName      = scheduledPatientLocationItem.sTherapistName     
-                                                                                   
-        self.sPid                = scheduledPatientLocationItem.sPid               
-        self.iPid                = scheduledPatientLocationItem.iPid               
-        self.sPtName             = scheduledPatientLocationItem.sPtName            
-                                                                                   
-        self.sVDate              = scheduledPatientLocationItem.sVDate             
-        self.sVDateStartTime     = scheduledPatientLocationItem.sVDateStartTime    
-        self.sVDateStartTime24h  = scheduledPatientLocationItem.sVDateStartTime24h
-        self.iVDateStartTime24h  = scheduledPatientLocationItem.iVDateStartTime24h
-                                                                                   
-        self.sLastVDate          = scheduledPatientLocationItem.sLastVDate         
-        self.sLastVDateType      = scheduledPatientLocationItem.sLastVDateType     
-        self.iLastVDateType      = scheduledPatientLocationItem.iLastVDateType     
-        self.sLastVDateAddress   = scheduledPatientLocationItem.sLastVDateAddress  
-        self.sLastVDateLatitude  = scheduledPatientLocationItem.sLastVDateLatitude 
-        self.sLastVDateLongitude = scheduledPatientLocationItem.sLastVDateLongitude
+        self.schedPatLocClonedFrom                         = scheduledPatientLocationItem 
+        self.schedPatLocClonedTo                           = nil 
+
+        scheduledPatientLocationItem.schedPatLocClonedFrom = nil
+        scheduledPatientLocationItem.schedPatLocClonedTo   = self
+
+        self.sTid                                          = scheduledPatientLocationItem.sTid               
+        self.iTid                                          = scheduledPatientLocationItem.iTid               
+        self.sTName                                        = scheduledPatientLocationItem.sTName             
+        self.sTherapistName                                = scheduledPatientLocationItem.sTherapistName     
+                                                                                                             
+        self.sPid                                          = scheduledPatientLocationItem.sPid               
+        self.iPid                                          = scheduledPatientLocationItem.iPid               
+        self.sPtName                                       = scheduledPatientLocationItem.sPtName            
+                                                                                                             
+        self.sVDate                                        = scheduledPatientLocationItem.sVDate             
+        self.sVDateStartTime                               = scheduledPatientLocationItem.sVDateStartTime    
+        self.sVDateStartTime24h                            = scheduledPatientLocationItem.sVDateStartTime24h
+        self.iVDateStartTime24h                            = scheduledPatientLocationItem.iVDateStartTime24h
+                                                                                                             
+        self.sLastVDate                                    = scheduledPatientLocationItem.sLastVDate         
+        self.sLastVDateType                                = scheduledPatientLocationItem.sLastVDateType     
+        self.iLastVDateType                                = scheduledPatientLocationItem.iLastVDateType     
+        self.sLastVDateAddress                             = scheduledPatientLocationItem.sLastVDateAddress  
+        self.sLastVDateLatitude                            = scheduledPatientLocationItem.sLastVDateLatitude 
+        self.sLastVDateLongitude                           = scheduledPatientLocationItem.sLastVDateLongitude
+
+        // Check if the 'current' Location data copied was 'blank'...
+
+        if (self.sLastVDateAddress.count   < 1 ||
+            self.sLastVDateLatitude.count  < 1 ||
+            self.sLastVDateLongitude.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy> <SchedPatLoc> - Copied 'self.sLastVDateAddress' is [\(self.sLastVDateAddress)] and 'self.sLastVDateLatitude' is [\(self.sLastVDateLatitude)] and 'self.sLastVDateLongitude' is [\(self.sLastVDateLongitude)] - 1 or all 3 are 'blank' - 'scheduledPatientLocationItem.sLastVDateAddress' is [\(scheduledPatientLocationItem.sLastVDateAddress)] and 'scheduledPatientLocationItem.sLastVDateLatitude' is [\(scheduledPatientLocationItem.sLastVDateLatitude)] and 'scheduledPatientLocationItem.sLastVDateLongitude' is [\(scheduledPatientLocationItem.sLastVDateLongitude)] - Warning!")
+        
+        }
+
+        // Trace the 'clone' From/To fields in both objects...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy> <SchedPatLoc> - From/To 'self.schedPatLocClonedFrom' is [\(String(describing: self.schedPatLocClonedFrom))] and 'self.schedPatLocClonedTo' is [\(String(describing: self.schedPatLocClonedTo))] - 'scheduledPatientLocationItem.schedPatLocClonedFrom' is [\(String(describing: scheduledPatientLocationItem.schedPatLocClonedFrom))] and 'scheduledPatientLocationItem.schedPatLocClonedTo' is [\(String(describing: scheduledPatientLocationItem.schedPatLocClonedTo))]...")
 
         // Exit:
   
@@ -354,7 +381,12 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
         asToString.append("'bClsFileLog': [\(ClassInfo.bClsFileLog)],")
         asToString.append("],")
         asToString.append("[")
+        asToString.append("'self': [\(String(describing: self))],")
         asToString.append("'id': [\(String(describing: self.id))],")
+        asToString.append("'schedPatLocClonedFrom': [\(String(describing: self.schedPatLocClonedFrom))],")
+        asToString.append("'schedPatLocClonedTo': [\(String(describing: self.schedPatLocClonedTo))],")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'sTid': [\(String(describing: self.sTid))],")
         asToString.append("'iTid': (\(String(describing: self.iTid))),")
         asToString.append("'sTName': [\(String(describing: self.sTName))],")
@@ -398,7 +430,11 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
         // Display the various field(s) of this object...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'id'                  is [\(String(describing: self.id))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'self'                  is [\(String(describing: self))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'id'                    is [\(String(describing: self.id))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'schedPatLocClonedFrom' is [\(String(describing: self.schedPatLocClonedFrom))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'schedPatLocClonedTo'   is [\(String(describing: self.schedPatLocClonedTo))]...")
+
         self.xcgLogMsg("\(sCurrMethodDisp) 'sTid'                is [\(String(describing: self.sTid))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'iTid'                is (\(String(describing: self.iTid)))...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sTName'              is [\(String(describing: self.sTName))]...")
