@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0606"
+        static let sClsVers      = "v1.0609"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1088,7 +1088,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                         }
 
-                        currentPFCscDataItem.displayParsePFCscDataItemToLog()
+                        currentPFCscDataItem.displayParsePFCscDataItemToLog(cDisplayItem:cDictPFCscDataItems)
 
                     }
                 
@@ -1116,23 +1116,23 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 }
 
-                // After a 6/10th of a second delay (for location information gathering), display the list of item(s)...
-
-                DispatchQueue.main.asyncAfter(deadline:(.now() + 0.6))
-                {
-
-                    self.displayListPFCscDataItems()
-
-                //  self.xcgLogMsg("\(sCurrMethodDisp) Displaying the list of 'parsePFCscDataItem' item(s)...")
-                //
-                //  for parsePFCscDataItem in self.listPFCscDataItems
-                //  {
-                //
-                //      parsePFCscDataItem.displayParsePFCscDataItemToLog()
-                //
-                //  }
-
-                }
+            //  // After a 6/10th of a second delay (for location information gathering), display the list of item(s)...
+            //
+            //  DispatchQueue.main.asyncAfter(deadline:(.now() + 0.6))
+            //  {
+            //
+            //      self.displayListPFCscDataItems()
+            //
+            //  //  self.xcgLogMsg("\(sCurrMethodDisp) Displaying the list of 'parsePFCscDataItem' item(s)...")
+            //  //
+            //  //  for parsePFCscDataItem in self.listPFCscDataItems
+            //  //  {
+            //  //
+            //  //      parsePFCscDataItem.displayParsePFCscDataItemToLog()
+            //  //
+            //  //  }
+            //
+            //  }
                 
             }
             else
@@ -1841,7 +1841,19 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                                                                                                let sState:String         = String(describing: (dictCurrentLocation["sCurrentAdministrativeArea"] ?? ""))
                                                                                                let sZipCode:String       = String(describing: (dictCurrentLocation["sCurrentPostalCode"]         ?? ""))
 
-                                                                                               scheduledPatientLocationItem.sLastVDateAddress = "\(sStreetAddress), \(sCity), \(sState), \(sZipCode)"
+                                                                                               if (sStreetAddress.count < 1 ||
+                                                                                                   sCity.count          < 1)
+                                                                                               {
+                                                                                                   
+                                                                                                   scheduledPatientLocationItem.sLastVDateAddress = ""
+                                                                                               
+                                                                                               }
+                                                                                               else
+                                                                                               {
+
+                                                                                                   scheduledPatientLocationItem.sLastVDateAddress = "\(sStreetAddress), \(sCity), \(sState), \(sZipCode)"
+
+                                                                                               }
 
                                                                                                self.xcgLogMsg("\(sCurrMethodDisp) Updated 'scheduledPatientLocationItem' for an address of [\(scheduledPatientLocationItem.sLastVDateAddress)] for Latitude/Longitude of [\(scheduledPatientLocationItem.sLastVDateLatitude)/\(scheduledPatientLocationItem.sLastVDateLongitude)]...")
 
@@ -2548,17 +2560,21 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
-        // Display the ...
+        // Display the list 'self.listPFCscDataItems'...
 
         if (self.listPFCscDataItems.count > 0)
         {
         
             self.xcgLogMsg("\(sCurrMethodDisp) Displaying the list of 'parsePFCscDataItem' item(s)...")
 
+            var cDictPFCscDataItems:Int = 0
+
             for parsePFCscDataItem in self.listPFCscDataItems
             {
 
-                parsePFCscDataItem.displayParsePFCscDataItemToLog()
+                cDictPFCscDataItems += 1
+
+                parsePFCscDataItem.displayParsePFCscDataItemToLog(cDisplayItem:cDictPFCscDataItems)
 
             }
         

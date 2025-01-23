@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0723"
+        static let sClsVers      = "v1.0806"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -308,7 +308,7 @@ struct AppLocationView: View
                                 .font(.caption)
                             Text("Time")
                                 .font(.caption)
-                            Text("Location")
+                            Text("Address or Location")
                                 .font(.caption)
 
                         }
@@ -317,6 +317,13 @@ struct AppLocationView: View
                         Divider() 
 
                         // Item Rows:
+
+                        // ----------------------------------------------------------------------------------
+                        //     ForEach(Array(dict), id: \.key) 
+                        //         { key, pfCscObject in
+                        //             Text("\(key) = \(pfCscObject)")
+                        //         }
+                        // ----------------------------------------------------------------------------------
 
                         ForEach(jmAppParseCoreManager.listPFCscDataItems) 
                         { pfCscObject in
@@ -409,12 +416,36 @@ struct AppLocationView: View
                                 Text(pfCscObject.sPFCscParseLastLocTime)
                                     .gridColumnAlignment(.center)
                                     .font(.caption)
-                                Text("\(pfCscObject.sCurrentLocationName), \(pfCscObject.sCurrentCity)")
-                                    .font(.caption)
                                     .onChange(of:jmAppParseCoreManager.cPFCscObjectsRefresh)
                                     {
                                         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - GridRow(Item(s)) #(\(pfCscObject.idPFCscObject)) for [\(pfCscObject.sPFCscParseName)] received a 'refresh' COUNT update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh))...")
                                     }
+                            if (pfCscObject.sCurrentLocationName.count < 1 ||
+                                pfCscObject.sCurrentCity.count         < 1)
+                            {
+                            
+                                Text("\(pfCscObject.dblConvertedLatitude), \(pfCscObject.dblConvertedLongitude)")
+                                    .font(.caption2)
+
+                            //  VStack(alignment:.leading)
+                            //  {
+                            //
+                            //      Text("\(pfCscObject.dblConvertedLatitude),")
+                            //          .font(.caption2)
+                            //
+                            //      Text("\(pfCscObject.dblConvertedLongitude)")
+                            //          .font(.caption2)
+                            //
+                            //  }
+                            
+                            }
+                            else
+                            {
+                            
+                                Text("\(pfCscObject.sCurrentLocationName), \(pfCscObject.sCurrentCity)")
+                                    .font(.caption)
+
+                            }
 
                             }
 

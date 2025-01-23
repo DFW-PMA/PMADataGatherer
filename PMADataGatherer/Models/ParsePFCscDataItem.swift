@@ -18,7 +18,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFCscDataItem"
-        static let sClsVers      = "v1.0721"
+        static let sClsVers      = "v1.0807"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -100,19 +100,26 @@ class ParsePFCscDataItem: NSObject, Identifiable
     //  TYPE of 'sCurrentCity'                is [String]        - value is [-N/A-]...
     // ----------------------------------------------------------------------------------------------------------------
 
-    // Item 'calculated'/'converted'/'looked'-up/'computed' field(s):
+    // Item 'calculated'/'converted'/'look-up'/'computed' field(s):
+
+    var sPFTherapistParseTID:String               = ""
 
     var pfCscObjectLatitude:Any?                  = nil
     var pfCscObjectLongitude:Any?                 = nil
 
-    var sPFCscObjectLatitude:String               = "0.0"
-    var sPFCscObjectLongitude:String              = "0.0"
+    var sPFCscObjectLatitude:String               = "0.00000"
+    var sPFCscObjectLongitude:String              = "0.00000"
 
-    var dblPFCscObjectLatitude:Double             = 0.0
-    var dblPFCscObjectLongitude:Double            = 0.0
+    var dblPFCscObjectLatitude:Double             = 0.00000
+    var dblPFCscObjectLongitude:Double            = 0.00000
 
-    var dblConvertedLatitude:Double               = 0.0
-    var dblConvertedLongitude:Double              = 0.0
+    var dblConvertedLatitude:Double               = 0.00000
+    var dblConvertedLongitude:Double              = 0.00000
+
+    // Item address 'lookup' flag(s) and field(s):
+
+    var bCurrentAddessLookupScheduled:Bool        = false
+    var bCurrentAddessLookupComplete:Bool         = false
 
     var sCurrentLocationName:String               = ""
     var sCurrentCity:String                       = ""
@@ -120,10 +127,13 @@ class ParsePFCscDataItem: NSObject, Identifiable
     var sCurrentPostalCode:String                 = ""
     var sCurrentTimeZone:String                   = ""
 
+    // Item coordinate and position 'computed' field(s):
+
     var clLocationCoordinate2D:CLLocationCoordinate2D
     {
 
-        return CLLocationCoordinate2D(latitude:self.dblConvertedLatitude, longitude:self.dblConvertedLongitude)
+        return CLLocationCoordinate2D(latitude: self.dblConvertedLatitude, 
+                                      longitude:self.dblConvertedLongitude)
 
     }
 
@@ -131,7 +141,8 @@ class ParsePFCscDataItem: NSObject, Identifiable
     {
 
         return MKCoordinateRegion(center:self.clLocationCoordinate2D,               
-                                    span:MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta:0.05))
+                                    span:MKCoordinateSpan(latitudeDelta: 0.05, 
+                                                          longitudeDelta:0.05))
 
     }
 
@@ -141,12 +152,6 @@ class ParsePFCscDataItem: NSObject, Identifiable
         return MapCameraPosition.region(self.mapCoordinateRegion)
 
     }
-
-    var sPFTherapistParseTID:String               = "-N/A-"
-
-    // Item address 'lookup' completed flag:
-
-    var bCurrentAddessLookupComplete:Bool         = false
 
     // App Data field(s):
 
@@ -306,6 +311,9 @@ class ParsePFCscDataItem: NSObject, Identifiable
         asToString.append("'sPFCscParseLastLongitude': [\(String(describing: self.sPFCscParseLastLongitude))],")
         asToString.append("],")
         asToString.append("[")
+        asToString.append("'sPFTherapistParseTID': [\(String(describing: self.sPFTherapistParseTID))],")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'pfCscObjectLatitude': [\(String(describing: self.pfCscObjectLatitude))],")
         asToString.append("'pfCscObjectLongitude': [\(String(describing: self.pfCscObjectLongitude))],")
         asToString.append("'sPFCscObjectLatitude': [\(String(describing: self.sPFCscObjectLatitude))],")
@@ -314,15 +322,18 @@ class ParsePFCscDataItem: NSObject, Identifiable
         asToString.append("'dblPFCscObjectLongitude': [\(String(describing: self.dblPFCscObjectLongitude))],")
         asToString.append("'dblConvertedLatitude': [\(String(describing: self.dblConvertedLatitude))],")
         asToString.append("'dblConvertedLongitude': [\(String(describing: self.dblConvertedLongitude))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'bCurrentAddessLookupScheduled': [\(String(describing: self.bCurrentAddessLookupScheduled))],")
+        asToString.append("'bCurrentAddessLookupComplete': [\(String(describing: self.bCurrentAddessLookupComplete))],")
         asToString.append("'sCurrentLocationName': [\(String(describing: self.sCurrentLocationName))],")
         asToString.append("'sCurrentCity': [\(String(describing: self.sCurrentCity))],")
         asToString.append("'sCurrentCountry': [\(String(describing: self.sCurrentCountry))],")
         asToString.append("'sCurrentPostalCode': [\(String(describing: self.sCurrentPostalCode))],")
         asToString.append("'sCurrentTimeZone': [\(String(describing: self.sCurrentTimeZone))],")
-        asToString.append("'bCurrentAddessLookupComplete': [\(String(describing: self.bCurrentAddessLookupComplete))],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
+    //  asToString.append("],")
+    //  asToString.append("[")
+    //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
         asToString.append("],")
         asToString.append("]")
 
@@ -332,7 +343,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
     }   // End of public func toString().
 
-    public func displayParsePFCscDataItemToLog()
+    public func displayParsePFCscDataItemToLog(cDisplayItem:Int = 0)
     {
 
         let sCurrMethod:String = #function
@@ -342,43 +353,47 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
         // Display the various field(s) of this object in the Log...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'self'                         is [\(String(describing: self))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'id'                           is [\(String(describing: self.id))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'pfCscObjectClonedFrom'        is [\(String(describing: self.pfCscObjectClonedFrom))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'pfCscObjectClonedTo'          is [\(String(describing: self.pfCscObjectClonedTo))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'self'                          is [\(String(describing: self))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'id'                            is [\(String(describing: self.id))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObjectClonedFrom'         is [\(String(describing: self.pfCscObjectClonedFrom))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObjectClonedTo'           is [\(String(describing: self.pfCscObjectClonedTo))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'idPFCscObject'                is [\(String(describing: self.idPFCscObject))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'pfCscObject'                  is [\(String(describing: self.pfCscObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'idPFCscObject'                 is [\(String(describing: self.idPFCscObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObject'                   is [\(String(describing: self.pfCscObject))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseClassName'         is [\(String(describing: self.sPFCscParseClassName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseObjectId'          is [\(String(describing: self.sPFCscParseObjectId))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'datePFCscParseCreatedAt'      is [\(String(describing: self.datePFCscParseCreatedAt))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'datePFCscParseUpdatedAt'      is [\(String(describing: self.datePFCscParseUpdatedAt))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'aclPFCscParse'                is [\(String(describing: self.aclPFCscParse))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'bPFCscParseIsDataAvailable'   is [\(String(describing: self.bPFCscParseIsDataAvailable))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'bPFCscParseIdDirty'           is [\(String(describing: self.bPFCscParseIdDirty))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseAllKeys'           is [\(String(describing: self.sPFCscParseAllKeys))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseClassName'          is [\(String(describing: self.sPFCscParseClassName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseObjectId'           is [\(String(describing: self.sPFCscParseObjectId))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'datePFCscParseCreatedAt'       is [\(String(describing: self.datePFCscParseCreatedAt))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'datePFCscParseUpdatedAt'       is [\(String(describing: self.datePFCscParseUpdatedAt))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'aclPFCscParse'                 is [\(String(describing: self.aclPFCscParse))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'bPFCscParseIsDataAvailable'    is [\(String(describing: self.bPFCscParseIsDataAvailable))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'bPFCscParseIdDirty'            is [\(String(describing: self.bPFCscParseIdDirty))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseAllKeys'            is [\(String(describing: self.sPFCscParseAllKeys))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseName'              is [\(String(describing: self.sPFCscParseName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseLastLocDate'       is [\(String(describing: self.sPFCscParseLastLocDate))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseLastLocTime'       is [\(String(describing: self.sPFCscParseLastLocTime))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseLastLatitude'      is [\(String(describing: self.sPFCscParseLastLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscParseLastLongitude'     is [\(String(describing: self.sPFCscParseLastLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseName'               is [\(String(describing: self.sPFCscParseName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseLastLocDate'        is [\(String(describing: self.sPFCscParseLastLocDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseLastLocTime'        is [\(String(describing: self.sPFCscParseLastLocTime))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseLastLatitude'       is [\(String(describing: self.sPFCscParseLastLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseLastLongitude'      is [\(String(describing: self.sPFCscParseLastLongitude))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'pfCscObjectLatitude'          is [\(String(describing: self.pfCscObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'pfCscObjectLongitude'         is [\(String(describing: self.pfCscObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscObjectLatitude'         is [\(String(describing: self.sPFCscObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sPFCscObjectLongitude'        is [\(String(describing: self.sPFCscObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'dblPFCscObjectLatitude'       is [\(String(describing: self.dblPFCscObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'dblPFCscObjectLongitude'      is [\(String(describing: self.dblPFCscObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'dblConvertedLatitude'         is [\(String(describing: self.dblConvertedLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'dblConvertedLongitude'        is [\(String(describing: self.dblConvertedLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sCurrentLocationName'         is [\(String(describing: self.sCurrentLocationName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sCurrentCity'                 is [\(String(describing: self.sCurrentCity))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sCurrentCountry'              is [\(String(describing: self.sCurrentCountry))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sCurrentPostalCode'           is [\(String(describing: self.sCurrentPostalCode))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'sCurrentTimeZone'             is [\(String(describing: self.sCurrentTimeZone))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): 'bCurrentAddessLookupComplete' is [\(String(describing: self.bCurrentAddessLookupComplete))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFTherapistParseTID'          is [\(String(describing: self.sPFTherapistParseTID))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObjectLatitude'           is [\(String(describing: self.pfCscObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObjectLongitude'          is [\(String(describing: self.pfCscObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscObjectLatitude'          is [\(String(describing: self.sPFCscObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscObjectLongitude'         is [\(String(describing: self.sPFCscObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'dblPFCscObjectLatitude'        is [\(String(describing: self.dblPFCscObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'dblPFCscObjectLongitude'       is [\(String(describing: self.dblPFCscObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'dblConvertedLatitude'          is [\(String(describing: self.dblConvertedLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'dblConvertedLongitude'         is [\(String(describing: self.dblConvertedLongitude))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'bCurrentAddessLookupScheduled' is [\(String(describing: self.bCurrentAddessLookupScheduled))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'bCurrentAddessLookupComplete'  is [\(String(describing: self.bCurrentAddessLookupComplete))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sCurrentLocationName'          is [\(String(describing: self.sCurrentLocationName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sCurrentCity'                  is [\(String(describing: self.sCurrentCity))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sCurrentCountry'               is [\(String(describing: self.sCurrentCountry))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sCurrentPostalCode'            is [\(String(describing: self.sCurrentPostalCode))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sCurrentTimeZone'              is [\(String(describing: self.sCurrentTimeZone))]...")
 
         // Exit:
 
@@ -398,78 +413,46 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
         // Assign the various field(s) of this object from the supplied PFObject...
 
-        self.idPFCscObject                = idPFCscObject                                                             
-        self.pfCscObject                  = pfCscObject                                                             
+        self.idPFCscObject                 = idPFCscObject                                                             
+        self.pfCscObject                   = pfCscObject                                                             
         
-        self.sPFCscParseClassName         = pfCscObject.parseClassName
+        self.sPFCscParseClassName          = pfCscObject.parseClassName
     //  if pfCscObject.objectId != nil && pfCscObject.objectId?.count ?? <#default value#> > 0 { self.sPFCscParseObjectId = pfCscObject.objectId } else { self.sPFCscParseObjectId = "" }
-        self.sPFCscParseObjectId          = pfCscObject.objectId  != nil ? pfCscObject.objectId!  : ""
-        self.datePFCscParseCreatedAt      = pfCscObject.createdAt != nil ? pfCscObject.createdAt! : nil
-        self.datePFCscParseUpdatedAt      = pfCscObject.updatedAt != nil ? pfCscObject.updatedAt! : nil
-        self.aclPFCscParse                = pfCscObject.acl
-        self.bPFCscParseIsDataAvailable   = pfCscObject.isDataAvailable
-        self.bPFCscParseIdDirty           = pfCscObject.isDirty
-        self.sPFCscParseAllKeys           = pfCscObject.allKeys
+        self.sPFCscParseObjectId           = pfCscObject.objectId  != nil ? pfCscObject.objectId!  : ""
+        self.datePFCscParseCreatedAt       = pfCscObject.createdAt != nil ? pfCscObject.createdAt! : nil
+        self.datePFCscParseUpdatedAt       = pfCscObject.updatedAt != nil ? pfCscObject.updatedAt! : nil
+        self.aclPFCscParse                 = pfCscObject.acl
+        self.bPFCscParseIsDataAvailable    = pfCscObject.isDataAvailable
+        self.bPFCscParseIdDirty            = pfCscObject.isDirty
+        self.sPFCscParseAllKeys            = pfCscObject.allKeys
 
-        self.sPFCscParseName              = String(describing: pfCscObject.object(forKey:"name")!)
-        self.sPFCscParseLastLocDate       = String(describing: (pfCscObject.object(forKey:"lastLocDate") ?? ""))
-        self.sPFCscParseLastLocTime       = String(describing: (pfCscObject.object(forKey:"lastLocTime") ?? "")).lowercased()
-        self.sPFCscParseLastLatitude      = String(describing: (pfCscObject.object(forKey:"latitude")    ?? ""))
-        self.sPFCscParseLastLongitude     = String(describing: (pfCscObject.object(forKey:"longitude")   ?? ""))
+        self.sPFCscParseName               = String(describing: pfCscObject.object(forKey:"name")!)
+        self.sPFCscParseLastLocDate        = String(describing: (pfCscObject.object(forKey:"lastLocDate") ?? ""))
+        self.sPFCscParseLastLocTime        = String(describing: (pfCscObject.object(forKey:"lastLocTime") ?? "")).lowercased()
+        self.sPFCscParseLastLatitude       = String(describing: (pfCscObject.object(forKey:"latitude")    ?? ""))
+        self.sPFCscParseLastLongitude      = String(describing: (pfCscObject.object(forKey:"longitude")   ?? ""))
+
+        self.sPFTherapistParseTID          = ""
         
-        self.pfCscObjectLatitude          = (pfCscObject.object(forKey:"latitude"))  != nil ? pfCscObject.object(forKey:"latitude")  : nil
-        self.pfCscObjectLongitude         = (pfCscObject.object(forKey:"longitude")) != nil ? pfCscObject.object(forKey:"longitude") : nil
-        self.sPFCscObjectLatitude         = String(describing: self.pfCscObjectLatitude!)
-        self.sPFCscObjectLongitude        = String(describing: self.pfCscObjectLongitude!)
-        self.dblPFCscObjectLatitude       = Double(self.sPFCscObjectLatitude)  ?? 0.0
-        self.dblPFCscObjectLongitude      = Double(self.sPFCscObjectLongitude) ?? 0.0
-        self.dblConvertedLatitude         = Double(String(describing: pfCscObject.object(forKey:"latitude")!))  ?? 0.0
-        self.dblConvertedLongitude        = Double(String(describing: pfCscObject.object(forKey:"longitude")!)) ?? 0.0
+        self.pfCscObjectLatitude           = (pfCscObject.object(forKey:"latitude"))  != nil ? pfCscObject.object(forKey:"latitude")  : nil
+        self.pfCscObjectLongitude          = (pfCscObject.object(forKey:"longitude")) != nil ? pfCscObject.object(forKey:"longitude") : nil
+        self.sPFCscObjectLatitude          = String(describing: self.pfCscObjectLatitude!)
+        self.sPFCscObjectLongitude         = String(describing: self.pfCscObjectLongitude!)
+        self.dblPFCscObjectLatitude        = Double(self.sPFCscObjectLatitude)  ?? 0.0
+        self.dblPFCscObjectLongitude       = Double(self.sPFCscObjectLongitude) ?? 0.0
+        self.dblConvertedLatitude          = Double(String(describing: pfCscObject.object(forKey:"latitude")!))  ?? 0.0
+        self.dblConvertedLongitude         = Double(String(describing: pfCscObject.object(forKey:"longitude")!)) ?? 0.0
         
-        self.sCurrentLocationName         = ""
-        self.sCurrentCity                 = ""
-        self.sCurrentCountry              = ""
-        self.sCurrentPostalCode           = ""
-        self.sCurrentTimeZone             = ""
+        self.bCurrentAddessLookupScheduled = false
+        self.bCurrentAddessLookupComplete  = false
+
+        self.sCurrentLocationName          = ""
+        self.sCurrentCity                  = ""
+        self.sCurrentCountry               = ""
+        self.sCurrentPostalCode            = ""
+        self.sCurrentTimeZone              = ""
 
         self.resolveLocationAndAddress()
-
-    //  self.bCurrentAddessLookupComplete = false
-    //
-    //  if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
-    //  {
-    //
-    //      let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFCscParseName)]...")
-    //
-    //      let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFCscObject, 
-    //                                                         latitude:  self.dblConvertedLatitude, 
-    //                                                         longitude: self.dblConvertedLongitude, 
-    //                                                         withCompletionHandler:
-    //                                                             { (requestID:Int, dictCurrentLocation:[String:Any]) in
-    //                                                         
-    //                                                                 self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFCscParseName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
-    //
-    //                                                                 self.sCurrentLocationName         = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
-    //                                                                 self.sCurrentCity                 = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
-    //                                                                 self.sCurrentCountry              = String(describing: (dictCurrentLocation["sCurrentCountry"]      ?? ""))
-    //                                                                 self.sCurrentPostalCode           = String(describing: (dictCurrentLocation["sCurrentPostalCode"]   ?? ""))
-    //                                                                 self.sCurrentTimeZone             = String(describing: (dictCurrentLocation["tzCurrentTimeZone"]    ?? ""))
-    //                                                                 self.bCurrentAddessLookupComplete = true
-    //                                                         
-    //                                                             }
-    //                                                        )
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): CoreLocation (service) is NOT available...")
-    //
-    //      self.bCurrentAddessLookupComplete = false
-    //
-    //  }
 
         // Exit:
 
@@ -533,6 +516,12 @@ class ParsePFCscDataItem: NSObject, Identifiable
         self.sPFCscObjectLongitude          = pfCscDataItem.sPFCscObjectLongitude       
         self.dblPFCscObjectLatitude         = pfCscDataItem.dblPFCscObjectLatitude      
         self.dblPFCscObjectLongitude        = pfCscDataItem.dblPFCscObjectLongitude     
+
+        let dblPreviousLatitude:Double      = self.dblConvertedLatitude
+        let dblPreviousLongitude:Double     = self.dblConvertedLongitude
+        let dblCurrentLatitude:Double       = pfCscDataItem.dblConvertedLatitude
+        let dblCurrentLongitude:Double      = pfCscDataItem.dblConvertedLongitude
+
         self.dblConvertedLatitude           = pfCscDataItem.dblConvertedLatitude        
         self.dblConvertedLongitude          = pfCscDataItem.dblConvertedLongitude       
 
@@ -550,6 +539,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
             self.sCurrentPostalCode             = pfCscDataItem.sCurrentPostalCode          
             self.sCurrentTimeZone               = pfCscDataItem.sCurrentTimeZone            
 
+            self.bCurrentAddessLookupScheduled  = pfCscDataItem.bCurrentAddessLookupScheduled
             self.bCurrentAddessLookupComplete   = pfCscDataItem.bCurrentAddessLookupComplete
         
         }
@@ -558,8 +548,11 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
             // 'self' (current) has location data, then use latitude/longitude changes to determine the update...
 
-            let bLocationLatitudeHasChanged:Bool  = (abs(self.dblConvertedLatitude  - pfCscDataItem.dblConvertedLatitude)  <= .ulpOfOne)
-            let bLocationLongitudeHasChanged:Bool = (abs(self.dblConvertedLongitude - pfCscDataItem.dblConvertedLongitude) <= .ulpOfOne)
+        //  let bLocationLatitudeHasChanged:Bool  = (abs(self.dblConvertedLatitude  - pfCscDataItem.dblConvertedLatitude)  <= .ulpOfOne)
+        //  let bLocationLongitudeHasChanged:Bool = (abs(self.dblConvertedLongitude - pfCscDataItem.dblConvertedLongitude) <= .ulpOfOne)
+
+            let bLocationLatitudeHasChanged:Bool  = (abs(dblPreviousLatitude  - dblCurrentLatitude)  > (3 * .ulpOfOne))
+            let bLocationLongitudeHasChanged:Bool = (abs(dblPreviousLongitude - dblCurrentLongitude) > (3 * .ulpOfOne))
 
             if (bLocationLatitudeHasChanged  == true ||
                 bLocationLongitudeHasChanged == true)
@@ -571,22 +564,31 @@ class ParsePFCscDataItem: NSObject, Identifiable
                 self.sCurrentPostalCode             = pfCscDataItem.sCurrentPostalCode          
                 self.sCurrentTimeZone               = pfCscDataItem.sCurrentTimeZone            
 
+                self.bCurrentAddessLookupScheduled  = pfCscDataItem.bCurrentAddessLookupScheduled
                 self.bCurrentAddessLookupComplete   = pfCscDataItem.bCurrentAddessLookupComplete
 
-                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> - Copied address data since 'bLocationLatitudeHasChanged' is [\(bLocationLatitudeHasChanged)] and/or 'bLocationLongitudeHasChanged' is [\(bLocationLongitudeHasChanged)] <location changed>...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> <location check> - Copied address data since 'bLocationLatitudeHasChanged' is [\(bLocationLatitudeHasChanged)] and/or 'bLocationLongitudeHasChanged' is [\(bLocationLongitudeHasChanged)] <location changed>...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> <location check> - Location is [\(dblCurrentLatitude),\(dblCurrentLongitude)] and was [\(dblPreviousLatitude),\(dblPreviousLongitude)]...")
+
+                if (self.sCurrentLocationName.count < 1 ||
+                    self.sCurrentCity.count         < 1)
+                {
+                
+                    self.bCurrentAddessLookupScheduled  = false
+                    self.bCurrentAddessLookupComplete   = false
+                
+                }
+            
+            }
+            else
+            {
+            
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> <location check> - Skipped copying address data since 'bLocationLatitudeHasChanged' is [\(bLocationLatitudeHasChanged)] and 'bLocationLongitudeHasChanged' is [\(bLocationLongitudeHasChanged)] <location has NOT changed>...")
             
             }
 
         }
         
-    //  self.sCurrentLocationName           = pfCscDataItem.sCurrentLocationName        
-    //  self.sCurrentCity                   = pfCscDataItem.sCurrentCity                
-    //  self.sCurrentCountry                = pfCscDataItem.sCurrentCountry             
-    //  self.sCurrentPostalCode             = pfCscDataItem.sCurrentPostalCode          
-    //  self.sCurrentTimeZone               = pfCscDataItem.sCurrentTimeZone            
-    //  
-    //  self.bCurrentAddessLookupComplete   = pfCscDataItem.bCurrentAddessLookupComplete
-
         // Check if the 'current' Location data copied was 'blank'...
 
         if (self.sCurrentLocationName.count < 1 ||
@@ -597,43 +599,6 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
             self.resolveLocationAndAddress()
 
-        //  self.bCurrentAddessLookupComplete = false
-        //
-        //  if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
-        //  {
-        //
-        //      let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
-        //
-        //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFCscParseName)]...")
-        //
-        //      let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFCscObject, 
-        //                                                         latitude:  self.dblConvertedLatitude, 
-        //                                                         longitude: self.dblConvertedLongitude, 
-        //                                                         withCompletionHandler:
-        //                                                             { (requestID:Int, dictCurrentLocation:[String:Any]) in
-        //
-        //                                                                 self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFCscParseName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
-        //
-        //                                                                 self.sCurrentLocationName         = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
-        //                                                                 self.sCurrentCity                 = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
-        //                                                                 self.sCurrentCountry              = String(describing: (dictCurrentLocation["sCurrentCountry"]      ?? ""))
-        //                                                                 self.sCurrentPostalCode           = String(describing: (dictCurrentLocation["sCurrentPostalCode"]   ?? ""))
-        //                                                                 self.sCurrentTimeZone             = String(describing: (dictCurrentLocation["tzCurrentTimeZone"]    ?? ""))
-        //                                                                 self.bCurrentAddessLookupComplete = true
-        //
-        //                                                             }
-        //                                                        )
-        //
-        //  }
-        //  else
-        //  {
-        //
-        //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): CoreLocation (service) is NOT available...")
-        //
-        //      self.bCurrentAddessLookupComplete = false
-        //
-        //  }
-        
         }
 
         // Trace the 'clone' From/To fields in both objects...
@@ -656,33 +621,53 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
+        if (self.bCurrentAddessLookupScheduled == true)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - bypassing the address 'resolve' - 'self.bCurrentAddessLookupScheduled' is [\(self.bCurrentAddessLookupScheduled)]...")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        
+        }
+
         // Use the Latitude/Longitude values to resolve address...
 
         if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
         {
 
-            self.bCurrentAddessLookupComplete = false
-
             let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
 
             self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFCscParseName)]...")
 
-            let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFCscObject, 
-                                                               latitude:  self.dblConvertedLatitude, 
-                                                               longitude: self.dblConvertedLongitude, 
-                                                               withCompletionHandler:
-                                                                   { (requestID:Int, dictCurrentLocation:[String:Any]) in
-                                                                       self.handleLocationAndAddressClosureEvent(bIsDownstreamObject:false, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
-                                                                   }
-                                                              )
+            self.bCurrentAddessLookupScheduled = true
+            self.bCurrentAddessLookupComplete  = false
+            
+            let dblDeadlineInterval:Double     = Double((0.5 * Double(self.idPFCscObject)))
+
+            DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
+            {
+                let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFCscObject, 
+                                                                   latitude:  self.dblConvertedLatitude, 
+                                                                   longitude: self.dblConvertedLongitude, 
+                                                                   withCompletionHandler:
+                                                                       { (requestID:Int, dictCurrentLocation:[String:Any]) in
+                                                                           self.handleLocationAndAddressClosureEvent(bIsDownstreamObject:false, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
+                                                                       }
+                                                                  )
+            }
 
         }
         else
         {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): CoreLocation (service) is NOT available...")
+            self.bCurrentAddessLookupScheduled = false
+            self.bCurrentAddessLookupComplete  = false
 
-            self.bCurrentAddessLookupComplete = false
+            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): CoreLocation (service) is NOT available...")
 
         }
 
@@ -755,6 +740,8 @@ class ParsePFCscDataItem: NSObject, Identifiable
             self.bCurrentAddessLookupComplete = false
 
         }
+
+        self.bCurrentAddessLookupScheduled = false
 
         // Exit:
 

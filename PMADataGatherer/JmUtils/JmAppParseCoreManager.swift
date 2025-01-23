@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2701"
+        static let sClsVers      = "v1.2703"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1901,10 +1901,14 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         
             self.xcgLogMsg("\(sCurrMethodDisp) Displaying the list of 'parsePFCscDataItem' item(s)...")
 
+            var cDictPFCscDataItems:Int = 0
+
             for parsePFCscDataItem in self.listPFCscDataItems
             {
 
-                parsePFCscDataItem.displayParsePFCscDataItemToLog()
+                cDictPFCscDataItems += 1
+
+                parsePFCscDataItem.displayParsePFCscDataItemToLog(cDisplayItem:cDictPFCscDataItems)
 
             }
         

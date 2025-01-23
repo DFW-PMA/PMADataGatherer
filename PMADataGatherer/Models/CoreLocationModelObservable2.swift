@@ -17,7 +17,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     {
         
         static let sClsId        = "CoreLocationModelObservable2"
-        static let sClsVers      = "v1.0301"
+        static let sClsVers      = "v1.0303"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true

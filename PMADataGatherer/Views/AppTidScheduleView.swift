@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0205"
+        static let sClsVers      = "v1.0304"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -172,7 +172,7 @@ struct AppTidScheduleView: View
 
                             Text("Date")
                             Text("Time")
-                            Text("Address")
+                            Text("Address or Location")
 
                         }
                         .font(.title2) 
@@ -195,8 +195,25 @@ struct AppTidScheduleView: View
                                     .font(.caption)
                                 Text(scheduledPatientLocationItem.sVDateStartTime)
                                     .font(.caption)
+
+                            if (scheduledPatientLocationItem.sLastVDateAddress.count  < 1       ||
+                                scheduledPatientLocationItem.sLastVDateAddress       == ""      ||
+                                scheduledPatientLocationItem.sLastVDateAddress       == "-N/A-" ||
+                                scheduledPatientLocationItem.sLastVDateAddress       == ",,,"   ||
+                                scheduledPatientLocationItem.sLastVDateAddress       == ", , , ")
+                            {
+                            
+                                Text("\(scheduledPatientLocationItem.sLastVDateLatitude), \(scheduledPatientLocationItem.sLastVDateLongitude)")
+                                    .font(.caption2)
+                            
+                            }
+                            else
+                            {
+                            
                                 Text(scheduledPatientLocationItem.sLastVDateAddress)
                                     .font(.caption2)
+                            
+                            }
 
                             }
 
