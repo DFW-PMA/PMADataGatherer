@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0714"
+        static let sClsVers      = "v1.0723"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -28,6 +28,9 @@ struct AppLocationView: View
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.openWindow)       var openWindow
+
+    static          var timerOnDemand90Sec                                    = Timer()
+    static          var timerOnDemand3Sec                                     = Timer()
     
     @State private  var cAppLocationViewRefreshButtonPresses:Int              = 0
     @State private  var cAppLocationViewRefreshAutoTimer:Int                  = 0
@@ -242,6 +245,17 @@ struct AppLocationView: View
                 }
 
                 Text("")
+                    .onAppear(
+                        perform:
+                        {
+                        //  AppLocationView.timerOnDemand3Sec  = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
+                            AppLocationView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:75, repeats:false)
+                            { _ in
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
+                                self.syncPFDataItems()
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
+                            }
+                        })
 
                 Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppLocationViewRefreshButtonPresses).\(cAppLocationViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer))")
                     .bold()
@@ -417,7 +431,14 @@ struct AppLocationView: View
 
                             let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:false)
 
-                            self.syncPFDataItems()
+                        //  self.syncPFDataItems()
+
+                            AppLocationView.timerOnDemand3Sec = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
+                            { _ in
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
+                                self.syncPFDataItems()
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
+                            }
 
                         })
                     .onReceive(jmAppParseCoreManager.timerPublisherScheduleLocations,
@@ -430,9 +451,23 @@ struct AppLocationView: View
 
                             let _ = self.checkIfAppParseCoreHasPFPatientCalDayItems(bRefresh:false)
 
-                            self.syncPFDataItems()
+                        //  self.syncPFDataItems()
+
+                            AppLocationView.timerOnDemand3Sec = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
+                            { _ in
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
+                                self.syncPFDataItems()
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
+                            }
 
                         })
+                //  .onReceive(AppLocationView.timerOnDemand3Sec,
+                //      perform:
+                //      { _ in
+                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #3 - Received an <on demand> '3-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
+                //          self.syncPFDataItems()
+                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #3 - Received an <on demand> '3-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
+                //      })
 
                 }
 
@@ -484,6 +519,33 @@ struct AppLocationView: View
             self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
 
             bWasAppPFCscDataPresent = true
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Sorting #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) Item(s) in the 'jmAppParseCoreManager.listPFCscDataItems' of [\(self.jmAppParseCoreManager.listPFCscDataItems)]...")
+
+            self.jmAppParseCoreManager.listPFCscDataItems.sort
+            { (pfCscDataItem1, pfCscDataItem2) in
+
+            //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
+
+            var bIsItem1GreaterThanItem2:Bool = false
+
+            if (pfCscDataItem1.sPFCscParseLastLocDate != pfCscDataItem2.sPFCscParseLastLocDate)
+            {
+                bIsItem1GreaterThanItem2 = (pfCscDataItem1.sPFCscParseLastLocDate > pfCscDataItem2.sPFCscParseLastLocDate)
+            }
+            else
+            {
+            //  bIsItem1GreaterThanItem2:Bool = (pfCscDataItem1.sPFCscParseLastLocTime < pfCscDataItem2.sPFCscParseLastLocTime)
+                bIsItem1GreaterThanItem2 = (pfCscDataItem1.sPFCscParseLastLocTime > pfCscDataItem2.sPFCscParseLastLocTime)
+            }
+
+            //  self.xcgLogMsg("\(sCurrMethodDisp) Sort <OP> Returning 'bIsItem1GreaterThanItem2' of [\(bIsItem1GreaterThanItem2)] because 'pfCscDataItem1.sPFCscParseLastLocTime' is [\(pfCscDataItem1.sPFCscParseLastLocTime)] and is less than 'pfCscDataItem2.sPFCscParseLastLocTime' is [\(pfCscDataItem2.sPFCscParseLastLocTime)]...")
+
+                return bIsItem1GreaterThanItem2
+
+            }
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Sorted  #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) Item(s) in the 'jmAppParseCoreManager.listPFCscDataItems' of [\(self.jmAppParseCoreManager.listPFCscDataItems)]...")
 
         }
 

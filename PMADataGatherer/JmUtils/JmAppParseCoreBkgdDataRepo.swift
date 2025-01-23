@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0605"
+        static let sClsVers      = "v1.0606"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1039,7 +1039,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                     
                         let currentPFCscDataItem:ParsePFCscDataItem = dictPFCscDataItems[sPFCscParseName]!
 
-                        currentPFCscDataItem.overlayPFCscDataItemWithAnotherPFCscDataItem(pfCscDataItem:currentPFCscDataItem)
+                        currentPFCscDataItem.overlayPFCscDataItemWithAnotherPFCscDataItem(pfCscDataItem:parsePFCscDataItem)
 
                         // NO update to 'listPFCscDataItems' - the object is the same in the list as the dictionary...
                         
