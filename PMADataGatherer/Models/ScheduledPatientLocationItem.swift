@@ -16,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.0807"
+        static let sClsVers      = "v1.0902"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -25,6 +25,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
     }
 
     var id:UUID                                             = UUID()
+    var idSchedPatLocObject:Int                             = 0
 
     var schedPatLocClonedFrom:ScheduledPatientLocationItem? = nil 
     var schedPatLocClonedTo:ScheduledPatientLocationItem?   = nil 
@@ -48,9 +49,9 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
     var sLastVDate:String                                   = ""   // From 'PFQuery::BackupVisit["VDate"]'
     var sLastVDateType:String                               = "-1" // From 'PFQuery::BackupVisit["type"]'
     var iLastVDateType:Int                                  = -1   // Converted from 'sLastVDateType <String>'...
-    var sLastVDateAddress:String                            = ""   // From 'PFQuery::BackupVisit["address"]'
     var sLastVDateLatitude:String                           = ""   // From 'PFQuery::BackupVisit["lat"]'
     var sLastVDateLongitude:String                          = ""   // From 'PFQuery::BackupVisit["long"]'
+    var sLastVDateAddress:String                            = ""   // From 'PFQuery::BackupVisit["address"]'
 
     var clLocationCoordinate2DPatLoc:CLLocationCoordinate2D
     {
@@ -60,44 +61,17 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
 
     }
 
-    var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    var jmAppDelegateVisitor:JmAppDelegateVisitor           = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
 
     override init()
     {
-
+        
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
         super.init()
-        
+
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-
-        // Finish the 'default' setup of field(s)...
-
-        self.id                    = UUID()
-    //  self.schedPatLocClonedFrom = nil
-    //  self.schedPatLocClonedTo   = nil
-
-        self.sTid                  = "-1"
-        self.iTid                  = Int(self.sTid)!
-        self.sTName                = ""
-        self.sTherapistName        = ""
-
-        self.sPid                  = "-1"
-        self.iPid                  = Int(self.sPid)!
-        self.sPtName               = ""
-
-        self.sVDate                = ""
-        self.sVDateStartTime       = ""
-        self.sVDateStartTime24h    = ""
-        self.iVDateStartTime24h    = 0
-
-        self.sLastVDate            = ""
-        self.sLastVDateType        = "-1"
-        self.iLastVDateType        = Int(self.sLastVDateType)!
-        self.sLastVDateAddress     = ""
-        self.sLastVDateLatitude    = ""
-        self.sLastVDateLongitude   = ""
 
         // Exit:
 
@@ -115,51 +89,11 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
         self.init()
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
 
         // Finish the 'convenience' setup of field(s)...
 
-        self.schedPatLocClonedFrom                         = scheduledPatientLocationItem 
-        self.schedPatLocClonedTo                           = nil 
-
-        scheduledPatientLocationItem.schedPatLocClonedFrom = nil
-        scheduledPatientLocationItem.schedPatLocClonedTo   = self
-
-        self.sTid                                          = scheduledPatientLocationItem.sTid               
-        self.iTid                                          = scheduledPatientLocationItem.iTid               
-        self.sTName                                        = scheduledPatientLocationItem.sTName             
-        self.sTherapistName                                = scheduledPatientLocationItem.sTherapistName     
-                                                                                                             
-        self.sPid                                          = scheduledPatientLocationItem.sPid               
-        self.iPid                                          = scheduledPatientLocationItem.iPid               
-        self.sPtName                                       = scheduledPatientLocationItem.sPtName            
-                                                                                                             
-        self.sVDate                                        = scheduledPatientLocationItem.sVDate             
-        self.sVDateStartTime                               = scheduledPatientLocationItem.sVDateStartTime    
-        self.sVDateStartTime24h                            = scheduledPatientLocationItem.sVDateStartTime24h
-        self.iVDateStartTime24h                            = scheduledPatientLocationItem.iVDateStartTime24h
-                                                                                                             
-        self.sLastVDate                                    = scheduledPatientLocationItem.sLastVDate         
-        self.sLastVDateType                                = scheduledPatientLocationItem.sLastVDateType     
-        self.iLastVDateType                                = scheduledPatientLocationItem.iLastVDateType     
-        self.sLastVDateAddress                             = scheduledPatientLocationItem.sLastVDateAddress  
-        self.sLastVDateLatitude                            = scheduledPatientLocationItem.sLastVDateLatitude 
-        self.sLastVDateLongitude                           = scheduledPatientLocationItem.sLastVDateLongitude
-
-        // Check if the 'current' Location data copied was 'blank'...
-
-        if (self.sLastVDateAddress.count   < 1 ||
-            self.sLastVDateLatitude.count  < 1 ||
-            self.sLastVDateLongitude.count < 1)
-        {
-        
-            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy> <SchedPatLoc> - Copied 'self.sLastVDateAddress' is [\(self.sLastVDateAddress)] and 'self.sLastVDateLatitude' is [\(self.sLastVDateLatitude)] and 'self.sLastVDateLongitude' is [\(self.sLastVDateLongitude)] - 1 or all 3 are 'blank' - 'scheduledPatientLocationItem.sLastVDateAddress' is [\(scheduledPatientLocationItem.sLastVDateAddress)] and 'scheduledPatientLocationItem.sLastVDateLatitude' is [\(scheduledPatientLocationItem.sLastVDateLatitude)] and 'scheduledPatientLocationItem.sLastVDateLongitude' is [\(scheduledPatientLocationItem.sLastVDateLongitude)] - Warning!")
-        
-        }
-
-        // Trace the 'clone' From/To fields in both objects...
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy> <SchedPatLoc> - From/To 'self.schedPatLocClonedFrom' is [\(String(describing: self.schedPatLocClonedFrom))] and 'self.schedPatLocClonedTo' is [\(String(describing: self.schedPatLocClonedTo))] - 'scheduledPatientLocationItem.schedPatLocClonedFrom' is [\(String(describing: scheduledPatientLocationItem.schedPatLocClonedFrom))] and 'scheduledPatientLocationItem.schedPatLocClonedTo' is [\(String(describing: scheduledPatientLocationItem.schedPatLocClonedTo))]...")
+        self.init(bDeepCopyIsAnOverlay:false, scheduledPatientLocationItem:scheduledPatientLocationItem)
 
         // Exit:
   
@@ -168,6 +102,53 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
         return
   
     }   // End of convenience init(scheduledPatientLocationItem:ScheduledPatientLocationItem).
+
+    convenience init(bDeepCopyIsAnOverlay:Bool, scheduledPatientLocationItem:ScheduledPatientLocationItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.init()
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.overlayScheduledPatientLocationItemWithAnotherScheduledPatientLocationItem(scheduledPatientLocationItem:scheduledPatientLocationItem)
+
+        if (bDeepCopyIsAnOverlay == false)
+        {
+        
+            self.schedPatLocClonedFrom                         = scheduledPatientLocationItem
+            self.schedPatLocClonedFrom                         = self
+
+        //  scheduledPatientLocationItem.schedPatLocClonedFrom = nil
+            scheduledPatientLocationItem.schedPatLocClonedFrom = self
+        
+        }
+
+    //  // Check if the 'current' Location data copied was 'blank'...
+    //
+    //  if (self.sHomeLocLocationName.count < 1 ||
+    //      self.sHomeLocCity.count         < 1)
+    //  {
+    //  
+    //      self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <ScheduledPatientLocationItem> - Copied 'self.sHomeLocLocationName' is [\(self.sHomeLocLocationName)] and 'self.sHomeLocCity' is [\(self.sHomeLocCity)] - 1 or both are 'blank' - 'pfTherapistFileItem.sHomeLocLocationName' is [\(pfTherapistFileItem.sHomeLocLocationName)] and 'pfTherapistFileItem.sHomeLocCity' is [\(pfTherapistFileItem.sHomeLocCity)] - Warning!")
+    //  
+    //  }
+    //
+    //  // Trace the 'clone' From/To fields in both objects...
+    //
+    //  self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <ScheduledPatientLocationItem> - From/To 'self.pfTherapistFileObjectClonedFrom' is [\(String(describing: self.pfTherapistFileObjectClonedFrom))] and 'self.pfTherapistFileObjectClonedTo' is [\(String(describing: self.pfTherapistFileObjectClonedTo))] - 'pfTherapistFileItem.pfTherapistFileObjectClonedFrom' is [\(String(describing: pfTherapistFileItem.pfTherapistFileObjectClonedFrom))] and 'pfTherapistFileItem.pfTherapistFileObjectClonedTo' is [\(String(describing: pfTherapistFileItem.pfTherapistFileObjectClonedTo))]...")
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of convenience init(bDeepCopyIsAnOverlay:Bool, scheduledPatientLocationItem:ScheduledPatientLocationItem).
 
     convenience init(pfTherapistFileItem:PFObject)
     {
@@ -213,6 +194,191 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
     }   // End of convenience init(pfPatientCalDayItem:PFObject).
 
+    private func xcgLogMsg(_ sMessage:String)
+    {
+
+        if (self.jmAppDelegateVisitor.bAppDelegateVisitorLogFilespecIsUsable == true)
+        {
+      
+            self.jmAppDelegateVisitor.xcgLogMsg(sMessage)
+      
+        }
+        else
+        {
+      
+            print("\(sMessage)")
+      
+        }
+
+        // Exit:
+
+        return
+
+    }   // End of private func xcgLogMsg().
+
+    public func toString()->String
+    {
+
+        var asToString:[String] = Array()
+
+        asToString.append("[")
+        asToString.append("[")
+        asToString.append("'sClsId': [\(ClassInfo.sClsId)],")
+        asToString.append("'sClsVers': [\(ClassInfo.sClsVers)],")
+        asToString.append("'sClsDisp': [\(ClassInfo.sClsDisp)],")
+        asToString.append("'sClsCopyRight': [\(ClassInfo.sClsCopyRight)],")
+        asToString.append("'bClsTrace': [\(ClassInfo.bClsTrace)],")
+        asToString.append("'bClsFileLog': [\(ClassInfo.bClsFileLog)],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'self': [\(String(describing: self))],")
+        asToString.append("'id': [\(String(describing: self.id))],")
+        asToString.append("'idSchedPatLocObject': [\(String(describing: self.idSchedPatLocObject))],")
+        asToString.append("'schedPatLocClonedFrom': [\(String(describing: self.schedPatLocClonedFrom))],")
+        asToString.append("'schedPatLocClonedTo': [\(String(describing: self.schedPatLocClonedTo))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'sTid': [\(String(describing: self.sTid))],")
+        asToString.append("'iTid': (\(String(describing: self.iTid))),")
+        asToString.append("'sTName': [\(String(describing: self.sTName))],")
+        asToString.append("'sTherapistName': [\(String(describing: self.sTherapistName))],")
+        asToString.append("'sPid': [\(String(describing: self.sPid))],")
+        asToString.append("'iPid': (\(String(describing: self.iPid))),")
+        asToString.append("'sPtName': [\(String(describing: self.sPtName))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'sVDate': [\(String(describing: self.sVDate))],")
+        asToString.append("'sVDateStartTime': [\(String(describing: self.sVDateStartTime))],")
+        asToString.append("'sVDateStartTime24h': [\(String(describing: self.sVDateStartTime24h))],")
+        asToString.append("'iVDateStartTime24h': (\(String(describing: self.iVDateStartTime24h))),")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'sLastVDate': [\(String(describing: self.sLastVDate))],")
+        asToString.append("'sLastVDateType': [\(String(describing: self.sLastVDateType))],")
+        asToString.append("'iLastVDateType': (\(String(describing: self.iLastVDateType))),")
+        asToString.append("'sLastVDateLatitude': [\(String(describing: self.sLastVDateLatitude))],")
+        asToString.append("'sLastVDateLongitude': [\(String(describing: self.sLastVDateLongitude))],")
+        asToString.append("'sLastVDateAddress': [\(String(describing: self.sLastVDateAddress))],")
+    //  asToString.append("],")
+    //  asToString.append("[")
+    //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor)],")
+        asToString.append("],")
+        asToString.append("]")
+
+        let sContents:String = "{"+(asToString.joined(separator: ""))+"}"
+
+        return sContents
+
+    }   // End of public func toString().
+
+    public func displayScheduledPatientLocationItemToLog()
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the various field(s) of this object...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'self'                  is [\(String(describing: self))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'id'                    is [\(String(describing: self.id))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'idSchedPatLocObject'   is [\(String(describing: self.idSchedPatLocObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'schedPatLocClonedFrom' is [\(String(describing: self.schedPatLocClonedFrom))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'schedPatLocClonedTo'   is [\(String(describing: self.schedPatLocClonedTo))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sTid'                  is [\(String(describing: self.sTid))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iTid'                  is (\(String(describing: self.iTid)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sTName'                is [\(String(describing: self.sTName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sTherapistName'        is [\(String(describing: self.sTherapistName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPid'                  is [\(String(describing: self.sPid))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPid'                  is (\(String(describing: self.iPid)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPtName'               is [\(String(describing: self.sPtName))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sVDate'                is [\(String(describing: self.sVDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sVDateStartTime'       is [\(String(describing: self.sVDateStartTime))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sVDateStartTime24h'    is [\(String(describing: self.sVDateStartTime24h))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iVDateStartTime24h'    is (\(String(describing: self.iVDateStartTime24h)))...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDate'            is [\(String(describing: self.sLastVDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateType'        is [\(String(describing: self.sLastVDateType))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iLastVDateType'        is (\(String(describing: self.iLastVDateType)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateLatitude'    is [\(String(describing: self.sLastVDateLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateLongitude'   is [\(String(describing: self.sLastVDateLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateAddress'     is [\(String(describing: self.sLastVDateAddress))]...")
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of public func displayScheduledPatientLocationItemToLog().
+
+    public func overlayScheduledPatientLocationItemWithAnotherScheduledPatientLocationItem(scheduledPatientLocationItem:ScheduledPatientLocationItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.idSchedPatLocObject                           = scheduledPatientLocationItem.idSchedPatLocObject 
+
+    //  // 'Object' From/To update does NOT occur in an 'overlay'...
+    //
+    //  self.schedPatLocClonedFrom                         = scheduledPatientLocationItem 
+    //  self.schedPatLocClonedTo                           = nil 
+    //
+    //  scheduledPatientLocationItem.schedPatLocClonedFrom = nil
+    //  scheduledPatientLocationItem.schedPatLocClonedTo   = self
+
+        self.sTid                                          = scheduledPatientLocationItem.sTid               
+        self.iTid                                          = scheduledPatientLocationItem.iTid               
+        self.sTName                                        = scheduledPatientLocationItem.sTName             
+        self.sTherapistName                                = scheduledPatientLocationItem.sTherapistName     
+                                                                                                             
+        self.sPid                                          = scheduledPatientLocationItem.sPid               
+        self.iPid                                          = scheduledPatientLocationItem.iPid               
+        self.sPtName                                       = scheduledPatientLocationItem.sPtName            
+                                                                                                             
+        self.sVDate                                        = scheduledPatientLocationItem.sVDate             
+        self.sVDateStartTime                               = scheduledPatientLocationItem.sVDateStartTime    
+        self.sVDateStartTime24h                            = scheduledPatientLocationItem.sVDateStartTime24h
+        self.iVDateStartTime24h                            = scheduledPatientLocationItem.iVDateStartTime24h
+                                                                                                             
+        self.sLastVDate                                    = scheduledPatientLocationItem.sLastVDate         
+        self.sLastVDateType                                = scheduledPatientLocationItem.sLastVDateType     
+        self.iLastVDateType                                = scheduledPatientLocationItem.iLastVDateType     
+        self.sLastVDateLatitude                            = scheduledPatientLocationItem.sLastVDateLatitude 
+        self.sLastVDateLongitude                           = scheduledPatientLocationItem.sLastVDateLongitude
+        self.sLastVDateAddress                             = scheduledPatientLocationItem.sLastVDateAddress  
+
+        // Check if the 'current' Location data copied was 'blank'...
+
+        if (self.sLastVDateAddress.count   < 1 ||
+            self.sLastVDateLatitude.count  < 1 ||
+            self.sLastVDateLongitude.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy> <SchedPatLoc> - Copied 'self.sLastVDateAddress' is [\(self.sLastVDateAddress)] and 'self.sLastVDateLatitude' is [\(self.sLastVDateLatitude)] and 'self.sLastVDateLongitude' is [\(self.sLastVDateLongitude)] - 1 or all 3 are 'blank' - 'scheduledPatientLocationItem.sLastVDateAddress' is [\(scheduledPatientLocationItem.sLastVDateAddress)] and 'scheduledPatientLocationItem.sLastVDateLatitude' is [\(scheduledPatientLocationItem.sLastVDateLatitude)] and 'scheduledPatientLocationItem.sLastVDateLongitude' is [\(scheduledPatientLocationItem.sLastVDateLongitude)] - Warning!")
+        
+        }
+
+        // Trace the 'clone' From/To fields in both objects...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy> <SchedPatLoc> - From/To 'self.schedPatLocClonedFrom' is [\(String(describing: self.schedPatLocClonedFrom))] and 'self.schedPatLocClonedTo' is [\(String(describing: self.schedPatLocClonedTo))] - 'scheduledPatientLocationItem.schedPatLocClonedFrom' is [\(String(describing: scheduledPatientLocationItem.schedPatLocClonedFrom))] and 'scheduledPatientLocationItem.schedPatLocClonedTo' is [\(String(describing: scheduledPatientLocationItem.schedPatLocClonedTo))]...")
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of public func overlayScheduledPatientLocationItemWithAnotherScheduledPatientLocationItem(scheduledPatientLocationItem:ScheduledPatientLocationItem).
+    
     public func updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:PFObject)
     {
         
@@ -344,125 +510,6 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
   
     }   // End of public func updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:PFObject).
 
-    private func xcgLogMsg(_ sMessage:String)
-    {
-
-        if (self.jmAppDelegateVisitor.bAppDelegateVisitorLogFilespecIsUsable == true)
-        {
-      
-            self.jmAppDelegateVisitor.xcgLogMsg(sMessage)
-      
-        }
-        else
-        {
-      
-            print("\(sMessage)")
-      
-        }
-
-        // Exit:
-
-        return
-
-    }   // End of private func xcgLogMsg().
-
-    public func toString()->String
-    {
-
-        var asToString:[String] = Array()
-
-        asToString.append("[")
-        asToString.append("[")
-        asToString.append("'sClsId': [\(ClassInfo.sClsId)],")
-        asToString.append("'sClsVers': [\(ClassInfo.sClsVers)],")
-        asToString.append("'sClsDisp': [\(ClassInfo.sClsDisp)],")
-        asToString.append("'sClsCopyRight': [\(ClassInfo.sClsCopyRight)],")
-        asToString.append("'bClsTrace': [\(ClassInfo.bClsTrace)],")
-        asToString.append("'bClsFileLog': [\(ClassInfo.bClsFileLog)],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'self': [\(String(describing: self))],")
-        asToString.append("'id': [\(String(describing: self.id))],")
-        asToString.append("'schedPatLocClonedFrom': [\(String(describing: self.schedPatLocClonedFrom))],")
-        asToString.append("'schedPatLocClonedTo': [\(String(describing: self.schedPatLocClonedTo))],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'sTid': [\(String(describing: self.sTid))],")
-        asToString.append("'iTid': (\(String(describing: self.iTid))),")
-        asToString.append("'sTName': [\(String(describing: self.sTName))],")
-        asToString.append("'sTherapistName': [\(String(describing: self.sTherapistName))],")
-        asToString.append("'sPid': [\(String(describing: self.sPid))],")
-        asToString.append("'iPid': (\(String(describing: self.iPid))),")
-        asToString.append("'sPtName': [\(String(describing: self.sPtName))],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'sVDate': [\(String(describing: self.sVDate))],")
-        asToString.append("'sVDateStartTime': [\(String(describing: self.sVDateStartTime))],")
-        asToString.append("'sVDateStartTime24h': [\(String(describing: self.sVDateStartTime24h))],")
-        asToString.append("'iVDateStartTime24h': (\(String(describing: self.iVDateStartTime24h))),")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'sLastVDate': [\(String(describing: self.sLastVDate))],")
-        asToString.append("'sLastVDateType': [\(String(describing: self.sLastVDateType))],")
-        asToString.append("'iLastVDateType': (\(String(describing: self.iLastVDateType))),")
-        asToString.append("'sLastVDateAddress': [\(String(describing: self.sLastVDateAddress))],")
-        asToString.append("'sLastVDateLatitude': [\(String(describing: self.sLastVDateLatitude))],")
-        asToString.append("'sLastVDateLongitude': [\(String(describing: self.sLastVDateLongitude))],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor)],")
-        asToString.append("],")
-        asToString.append("]")
-
-        let sContents:String = "{"+(asToString.joined(separator: ""))+"}"
-
-        return sContents
-
-    }   // End of public func toString().
-
-    public func displayScheduledPatientLocationItemToLog()
-    {
-
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-
-        // Display the various field(s) of this object...
-
-        self.xcgLogMsg("\(sCurrMethodDisp) 'self'                  is [\(String(describing: self))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'id'                    is [\(String(describing: self.id))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'schedPatLocClonedFrom' is [\(String(describing: self.schedPatLocClonedFrom))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'schedPatLocClonedTo'   is [\(String(describing: self.schedPatLocClonedTo))]...")
-
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sTid'                is [\(String(describing: self.sTid))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'iTid'                is (\(String(describing: self.iTid)))...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sTName'              is [\(String(describing: self.sTName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sTherapistName'      is [\(String(describing: self.sTherapistName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPid'                is [\(String(describing: self.sPid))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'iPid'                is (\(String(describing: self.iPid)))...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPtName'             is [\(String(describing: self.sPtName))]...")
-
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sVDate'              is [\(String(describing: self.sVDate))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sVDateStartTime'     is [\(String(describing: self.sVDateStartTime))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sVDateStartTime24h'  is [\(String(describing: self.sVDateStartTime24h))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'iVDateStartTime24h'  is (\(String(describing: self.iVDateStartTime24h)))...")
-
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDate'          is [\(String(describing: self.sLastVDate))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateType'      is [\(String(describing: self.sLastVDateType))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'iLastVDateType'      is (\(String(describing: self.iLastVDateType)))...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateAddress'   is [\(String(describing: self.sLastVDateAddress))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateLatitude'  is [\(String(describing: self.sLastVDateLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateLongitude' is [\(String(describing: self.sLastVDateLongitude))]...")
-
-        // Exit:
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
-
-        return
-
-    }   // End of public func displayScheduledPatientLocationItemToLog().
-    
     public func convertVDateStartTimeTo24Hour(sVDateStartTime:String)->(String, Int)
     {
 

@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2703"
+        static let sClsVers      = "v1.2801"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -588,7 +588,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
 //
 //                      let pfTherapistFileItem:ParsePFTherapistFileItem      = ParsePFTherapistFileItem()
 //
-//                      pfTherapistFileItem.constructParsePFTherapistFileItemFromPFObject(pfTherapistFileObject:pfTherapistObject)
+//                      pfTherapistFileItem.constructParsePFTherapistFileItemFromPFObject(idPFTherapistFileObject:cPFTherapistObjects, pfTherapistFileObject:pfTherapistObject)
 //
 //                      self.dictPFTherapistFileItems[iPFTherapistParseTID]   = pfTherapistFileItem
 //

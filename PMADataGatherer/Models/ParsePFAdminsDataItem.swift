@@ -17,7 +17,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFAdminsDataItem"
-        static let sClsVers      = "v1.0302"
+        static let sClsVers      = "v1.0402"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -199,9 +199,9 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
         asToString.append("'sPFAdminsParsePassword': [\(String(describing: self.sPFAdminsParsePassword))],")
         asToString.append("'sPFAdminsParseNewLvl': [\(String(describing: self.sPFAdminsParseNewLvl))],")
         asToString.append("'sPFAdminsParseLevel': [\(String(describing: self.sPFAdminsParseLevel))],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
+    //  asToString.append("],")
+    //  asToString.append("[")
+    //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
         asToString.append("],")
         asToString.append("]")
 
@@ -223,6 +223,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
 
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'id'                            is [\(String(describing: self.id))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'idPFAdminsObject'              is [\(String(describing: self.idPFAdminsObject))]...")
+
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'pfAdminsObject'                is [\(String(describing: self.pfAdminsObject))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'sPFAdminsParseClassName'       is [\(String(describing: self.sPFAdminsParseClassName))]...")

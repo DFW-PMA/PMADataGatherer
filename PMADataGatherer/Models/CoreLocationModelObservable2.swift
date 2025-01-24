@@ -17,7 +17,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     {
         
         static let sClsId        = "CoreLocationModelObservable2"
-        static let sClsVers      = "v1.0303"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -611,7 +611,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
                 
             default:
                 
-                self.xcgLogMsg("Unknown 'location manager' error: \(clErr.localizedDescription)...")
+                self.xcgLogMsg("Unknown 'location manager' request failed with error: \(clErr.localizedDescription)...")
                 
             }
             
@@ -619,7 +619,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         else
         {
             
-            self.xcgLogMsg("Unknown error occurred while handling the 'location manager' error: \(error.localizedDescription)...")
+            self.xcgLogMsg("Unknown error occurred while handling the 'location manager' request failed with error: \(error.localizedDescription)...")
             
         }
         

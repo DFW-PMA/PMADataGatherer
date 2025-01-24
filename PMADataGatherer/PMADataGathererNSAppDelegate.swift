@@ -18,7 +18,7 @@ class PMADataGathererNSAppDelegate: NSObject, NSApplicationDelegate, ObservableO
     {
         
         static let sClsId        = "PMADataGathererNSAppDelegate"
-        static let sClsVers      = "v1.1401"
+        static let sClsVers      = "v1.1501"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true

@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0609"
+        static let sClsVers      = "v1.0801"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -300,10 +300,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
             }
 
-        //  self.xcgLogMsg("\(sCurrMethodDisp) Copying the item(s) from the dictionary of 'parsePFAdminsDataItem' to SwiftData...")
-        //
-        //  self.copyJmAppParsePFAdminsToSwiftData()
-
             // ----------------------------------------------------------------------------------------------
             // var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem] = [:]
             //                                                            // [String:ParsePFAdminsDataItem]
@@ -317,49 +313,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
             {
 
                 let _ = self.deepCopyDictPFAdminsDataItems()
-            
-        //      self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the dictionary 'dictPFAdminsDataItems' of (\(self.dictPFAdminsDataItems.count)) 'parsePFAdminsDataItem' item(s)...")
-        //
-        //      var cDeepCopyPFAdminsDataItems:Int                               = 0 
-        //      var dictDeepCopyPFAdminsDataItems:[String:ParsePFAdminsDataItem] = [String:ParsePFAdminsDataItem]()
-        //
-        //      for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
-        //      {
-        //
-        //          cDeepCopyPFAdminsDataItems                    += 1
-        //          let newPFAdminsDataItem:ParsePFAdminsDataItem  = ParsePFAdminsDataItem(pfAdminsDataItem:parsePFAdminsDataItem)
-        //
-        //          let sPFAdminsParseTID:String = parsePFAdminsDataItem.sPFAdminsParseTID
-        //
-        //          if (sPFAdminsParseTID.count  < 1 ||
-        //              sPFAdminsParseTID       == "-N/A-")
-        //          {
-        //
-        //              self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Skipping object #(\(cDeepCopyPFAdminsDataItems)) 'parsePFAdminsDataItem' - the 'tid' field is nil or '-N/A-' - Warning!")
-        //
-        //              continue
-        //
-        //          }
-        //
-        //          dictDeepCopyPFAdminsDataItems[sPFAdminsParseTID] = newPFAdminsDataItem
-        //
-        //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Added object #(\(cDeepCopyPFAdminsDataItems)) 'newPFAdminsDataItem' keyed by 'sPFAdminsParseTID' of [\(sPFAdminsParseTID)] to the 'deep copy' dictionary of item(s)...")
-        //
-        //      }
-        //
-        //      if (dictDeepCopyPFAdminsDataItems.count > 0)
-        //      {
-        //      
-        //          DispatchQueue.main.async
-        //          {
-        //
-        //              self.jmAppParseCoreManager.dictPFAdminsDataItems = dictDeepCopyPFAdminsDataItems
-        //
-        //              self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' replaced #(\(dictDeepCopyPFAdminsDataItems.count)) item(s) in the ParseCoreManager 'dictPFAdminsDataItems'...")
-        //
-        //          }
-        //      
-        //      }
             
             }
 
@@ -397,68 +350,54 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 listPFAdminsObjects!.count > 0)
             {
                 
-            //  DispatchQueue.main.async
-            //  {
+                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryAdmins' returned a count of #(\(listPFAdminsObjects!.count)) PFObject(s)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryAdmins'...")
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryAdmins' returned a count of #(\(listPFAdminsObjects!.count)) PFObject(s)...")
-                    self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryAdmins'...")
+                var cPFAdminsObjects:Int   = 0
+                self.dictPFAdminsDataItems = [:]
 
-                    var cPFAdminsObjects:Int   = 0
-                    self.dictPFAdminsDataItems = [:]
+                for pfAdminsObject in listPFAdminsObjects!
+                {
 
-                    for pfAdminsObject in listPFAdminsObjects!
+                    cPFAdminsObjects += 1
+
+                    let parsePFAdminsDataItem:ParsePFAdminsDataItem = ParsePFAdminsDataItem()
+
+                    parsePFAdminsDataItem.constructParsePFAdminsDataItemFromPFObject(idPFAdminsObject:cPFAdminsObjects, pfAdminsObject:pfAdminsObject)
+
+                    let sPFAdminsParseTID:String = parsePFAdminsDataItem.sPFAdminsParseTID
+
+                    if (sPFAdminsParseTID.count  < 1 ||
+                        sPFAdminsParseTID       == "-N/A-")
                     {
 
-                        cPFAdminsObjects += 1
+                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' - the 'tid' field is nil or '-N/A-' - Warning!")
 
-                        let parsePFAdminsDataItem:ParsePFAdminsDataItem = ParsePFAdminsDataItem()
-
-                        parsePFAdminsDataItem.constructParsePFAdminsDataItemFromPFObject(idPFAdminsObject:cPFAdminsObjects, pfAdminsObject:pfAdminsObject)
-
-                        let sPFAdminsParseTID:String = parsePFAdminsDataItem.sPFAdminsParseTID
-
-                        if (sPFAdminsParseTID.count  < 1 ||
-                            sPFAdminsParseTID       == "-N/A-")
-                        {
-
-                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' - the 'tid' field is nil or '-N/A-' - Warning!")
-
-                            continue
-
-                        }
-
-                        self.dictPFAdminsDataItems[sPFAdminsParseTID] = parsePFAdminsDataItem
-
-                        self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' keyed by 'sPFAdminsParseTID' of [\(sPFAdminsParseTID)] to the dictionary of item(s)...")
-
-                    }
-                    
-                    if (self.dictPFAdminsDataItems.count > 0)
-                    {
-
-                        self.xcgLogMsg("\(sCurrMethodDisp) Adding the 'TherapistFile' query data to the dictionary of 'parsePFAdminsDataItem' item(s)...")
-
-                        self.getJmAppParsePFQueryForTherapistFileToAddToAdmins()
-                        self.displayDictPFAdminsDataItems()
-
-                    //  self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of 'parsePFAdminsDataItem' item(s)...")
-                    //
-                    //  for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
-                    //  {
-                    //
-                    //      parsePFAdminsDataItem.displayParsePFAdminsDataItemToLog()
-                    //
-                    //  }
-
-                        // Copy back to self.dictPFAdminsDataItems[] and to SwiftData...
-
-                        self.xcgLogMsg("\(sCurrMethodDisp) Copying the item(s) from the dictionary of 'parsePFAdminsDataItem' to SwiftData...")
-
-                        self.copyJmAppParsePFAdminsToSwiftData()
+                        continue
 
                     }
 
-            //  }
+                    self.dictPFAdminsDataItems[sPFAdminsParseTID] = parsePFAdminsDataItem
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFAdminsObjects)) 'parsePFAdminsDataItem' keyed by 'sPFAdminsParseTID' of [\(sPFAdminsParseTID)] to the dictionary of item(s)...")
+
+                }
+                
+                if (self.dictPFAdminsDataItems.count > 0)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Adding the 'TherapistFile' query data to the dictionary of 'parsePFAdminsDataItem' item(s)...")
+
+                    self.getJmAppParsePFQueryForTherapistFileToAddToAdmins()
+                    self.displayDictPFAdminsDataItems()
+
+                    // Copy back to self.dictPFAdminsDataItems[] and to SwiftData...
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Copying the item(s) from the dictionary of 'parsePFAdminsDataItem' to SwiftData...")
+
+                    self.copyJmAppParsePFAdminsToSwiftData()
+
+                }
 
             }
             
@@ -561,53 +500,48 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                     }
 
-                //  DispatchQueue.main.async
-                //  {
-                    
-                        // Build the Tid/TherapistName Xref dictionary...
+                    // Build the Tid/TherapistName Xref dictionary...
 
-                        let sPFTherapistParseNameLower:String = sPFTherapistParseName.lowercased()
+                    let sPFTherapistParseNameLower:String = sPFTherapistParseName.lowercased()
 
-                        self.dictTherapistTidXref[sPFTherapistParseTID]       = sPFTherapistParseName
-                        self.dictTherapistTidXref[sPFTherapistParseName]      = sPFTherapistParseTID
-                        self.dictTherapistTidXref[sPFTherapistParseNameLower] = sPFTherapistParseTID
+                    self.dictTherapistTidXref[sPFTherapistParseTID]       = sPFTherapistParseName
+                    self.dictTherapistTidXref[sPFTherapistParseName]      = sPFTherapistParseTID
+                    self.dictTherapistTidXref[sPFTherapistParseNameLower] = sPFTherapistParseTID
 
-                        // Track the Therapist in the dictionary of TherapistFile item(s)...
+                    // Track the Therapist in the dictionary of TherapistFile item(s)...
 
-                        let pfTherapistFileItem:ParsePFTherapistFileItem      = ParsePFTherapistFileItem()
+                    let pfTherapistFileItem:ParsePFTherapistFileItem      = ParsePFTherapistFileItem()
 
-                        pfTherapistFileItem.constructParsePFTherapistFileItemFromPFObject(pfTherapistFileObject:pfTherapistObject)
+                    pfTherapistFileItem.constructParsePFTherapistFileItemFromPFObject(idPFTherapistFileObject:cPFTherapistObjects, pfTherapistFileObject:pfTherapistObject)
 
-                        self.dictPFTherapistFileItems[iPFTherapistParseTID]   = pfTherapistFileItem
+                    self.dictPFTherapistFileItems[iPFTherapistParseTID]   = pfTherapistFileItem
 
-                        self.xcgLogMsg("\(sCurrMethodDisp) Added an Item keyed by 'iPFTherapistParseTID' of [\(iPFTherapistParseTID)] added an Item 'pfTherapistFileItem' of [\(pfTherapistFileItem.toString())] to the dictionary of 'dictPFTherapistFileItems' item(s)...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) Added an Item keyed by 'iPFTherapistParseTID' of [\(iPFTherapistParseTID)] added an Item 'pfTherapistFileItem' of [\(pfTherapistFileItem.toString())] to the dictionary of 'dictPFTherapistFileItems' item(s)...")
 
-                        // Track the Therapist in the dictionary of Scheduled Patient 'location' item(s)...
+                    // Track the Therapist in the dictionary of Scheduled Patient 'location' item(s)...
 
-                        if (self.dictSchedPatientLocItems[sPFTherapistParseTID] == nil)
-                        {
+                    if (self.dictSchedPatientLocItems[sPFTherapistParseTID] == nil)
+                    {
                     
-                            let scheduledPatientLocationItem:ScheduledPatientLocationItem =
-                                    ScheduledPatientLocationItem(pfTherapistFileItem:pfTherapistObject)
+                        let scheduledPatientLocationItem:ScheduledPatientLocationItem =
+                                ScheduledPatientLocationItem(pfTherapistFileItem:pfTherapistObject)
                     
-                            var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = [ScheduledPatientLocationItem]()
+                        var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = [ScheduledPatientLocationItem]()
                     
-                            listScheduledPatientLocationItems.append(scheduledPatientLocationItem)
+                        listScheduledPatientLocationItems.append(scheduledPatientLocationItem)
                     
-                            self.dictSchedPatientLocItems[sPFTherapistParseTID] = listScheduledPatientLocationItems
+                        self.dictSchedPatientLocItems[sPFTherapistParseTID] = listScheduledPatientLocationItems
                     
-                            self.xcgLogMsg("\(sCurrMethodDisp) Added an initial Item 'listScheduledPatientLocationItems' of [\(listScheduledPatientLocationItems)] (in a List) to the dictionary of 'dictSchedPatientLocItems' item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] as a 'placeholder'...")
+                        self.xcgLogMsg("\(sCurrMethodDisp) Added an initial Item 'listScheduledPatientLocationItems' of [\(listScheduledPatientLocationItems)] (in a List) to the dictionary of 'dictSchedPatientLocItems' item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] as a 'placeholder'...")
                     
-                        }
-                        else
-                        {
+                    }
+                    else
+                    {
                     
-                            self.xcgLogMsg("\(sCurrMethodDisp) Skipped adding an initial Item 'ScheduledPatientLocationItem' (in a List) to the dictionary of 'dictSchedPatientLocItems' item(s) - key 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] already exists...")
+                        self.xcgLogMsg("\(sCurrMethodDisp) Skipped adding an initial Item 'ScheduledPatientLocationItem' (in a List) to the dictionary of 'dictSchedPatientLocItems' item(s) - key 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] already exists...")
                     
-                        }
+                    }
                     
-                //  }
-
                     // Track the Therapist 'name' in the PFAdminsDataItem(s) dictionary...
                 
                     if let parsePFAdminsDataItem:ParsePFAdminsDataItem = self.dictPFAdminsDataItems[sPFTherapistParseTID]
@@ -654,61 +588,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
             self.displayDictSchedPatientLocItems()
 
-        //  if (self.dictSchedPatientLocItems.count > 0)
-        //  {
-        //
-        //      self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictSchedPatientLocItems.count)) 'dictSchedPatientLocItems' item(s)...")
-        //
-        //      let cPFTherapistTotalTIDs:Int = self.dictSchedPatientLocItems.count
-        //      var cPFTherapistParseTIDs:Int = 0
-        //
-        //      for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictSchedPatientLocItems
-        //      {
-        //
-        //          cPFTherapistParseTIDs += 1
-        //
-        //          if (sPFTherapistParseTID.count  < 1 ||
-        //              sPFTherapistParseTID       == "-N/A-")
-        //          {
-        //
-        //              self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
-        //
-        //              continue
-        //
-        //          }
-        //
-        //          if (listScheduledPatientLocationItems.count < 1)
-        //          {
-        //
-        //              self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
-        //
-        //              continue
-        //
-        //          }
-        //
-        //          var cScheduledPatientLocationItems:Int = 0
-        //
-        //          for scheduledPatientLocationItem in listScheduledPatientLocationItems
-        //          {
-        //
-        //              cScheduledPatientLocationItems += 1
-        //
-        //              self.xcgLogMsg("\(sCurrMethodDisp) Of #(\(cPFTherapistTotalTIDs)) TIDs - For TID [\(sPFTherapistParseTID)] - Displaying 'scheduledPatientLocationItem' item #(\(cPFTherapistParseTIDs).\(cScheduledPatientLocationItems)):")
-        //
-        //              scheduledPatientLocationItem.displayScheduledPatientLocationItemToLog()
-        //
-        //          }
-        //
-        //      }
-        //
-        //  }
-        //  else
-        //  {
-        //
-        //      self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictSchedPatientLocItems' item(s) - item(s) count is less than 1 - Warning!")
-        //
-        //  }
-
         }
 
         // If we created item(s) in the 'dictPFTherapistFileItems' and we haven't displayed them, then display them...
@@ -719,41 +598,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
             bHasDictTherapistFileItemsBeenDisplayed = true
 
             self.displayDictPFTherapistFileItems()
-
-        //  if (self.dictPFTherapistFileItems.count > 0)
-        //  {
-        //
-        //      self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
-        //
-        //      var cPFTherapistParseTIDs:Int = 0
-        //
-        //      for (iPFTherapistParseTID, pfTherapistFileItem) in self.dictPFTherapistFileItems
-        //      {
-        //
-        //          cPFTherapistParseTIDs += 1
-        //
-        //          if (iPFTherapistParseTID < 0)
-        //          {
-        //
-        //              self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
-        //
-        //              continue
-        //
-        //          }
-        //
-        //          self.xcgLogMsg("\(sCurrMethodDisp) For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
-        //
-        //          pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
-        //
-        //      }
-        //
-        //  }
-        //  else
-        //  {
-        //
-        //      self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
-        //
-        //  }
 
         }
 
@@ -776,47 +620,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 let _ = self.deepCopyDictTherapistTidXref()
             
-            //  self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the dictionary 'dictTherapistTidXref' of (\(self.dictTherapistTidXref.count)) 'string' item(s)...")
-            //
-            //  var cDeepCopyTherapistTidXrefItems:Int                = 0 
-            //  var dictDeepCopyTherapistTidXrefItems:[String:String] = [String:String]()
-            //
-            //  for (sTherapistTidXrefKey, sTherapistTidXrefValue) in self.dictTherapistTidXref
-            //  {
-            //
-            //      cDeepCopyTherapistTidXrefItems       += 1
-            //      let sNewTherapistTidXrefKey:String    = sTherapistTidXrefKey
-            //      let sNewTherapistTidXrefValue:String  = sTherapistTidXrefValue
-            //
-            //      if (sNewTherapistTidXrefKey.count < 1)
-            //      {
-            //
-            //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Skipping object #(\(cDeepCopyTherapistTidXrefItems)) - the 'key' field is nil - Warning!")
-            //
-            //          continue
-            //
-            //      }
-            //
-            //      dictDeepCopyTherapistTidXrefItems[sNewTherapistTidXrefKey] = sNewTherapistTidXrefValue
-            //
-            //      self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Added referance #(\(cDeepCopyTherapistTidXrefItems)) keyed by 'sNewTherapistTidXrefKey' of [\(sNewTherapistTidXrefKey)] to the 'deep copy' dictionary of item(s)...")
-            //
-            //  }
-            //
-            //  if (dictDeepCopyTherapistTidXrefItems.count > 0)
-            //  {
-            //  
-            //      DispatchQueue.main.async
-            //      {
-            //
-            //          self.jmAppParseCoreManager.dictTherapistTidXref = dictDeepCopyTherapistTidXrefItems
-            //
-            //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' replaced #(\(dictDeepCopyTherapistTidXrefItems.count)) item(s) in the ParseCoreManager 'dictTherapistTidXref'...")
-            //
-            //      }
-            //  
-            //  }
-            
             }
 
         }
@@ -838,37 +641,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 let _ = self.deepCopyDictPFTherapistFileItems()
             
-            //  self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the dictionary 'dictPFTherapistFileItems' of (\(self.dictPFTherapistFileItems.count)) 'pfTherapistFileItem' item(s)...")
-            //
-            //  var cDeepCopyPFTherapistFileItems:Int                               = 0 
-            //  var dictDeepCopyPFTherapistFileItems:[Int:ParsePFTherapistFileItem] = [Int:ParsePFTherapistFileItem]()
-            //
-            //  for (iPFTherapistFileTID, pfTherapistFileItem) in self.dictPFTherapistFileItems
-            //  {
-            //
-            //      cDeepCopyPFTherapistFileItems                            += 1
-            //      let iNewPFTherapistFileTID:Int                            = iPFTherapistFileTID
-            //      let newPFTherapistFileItem:ParsePFTherapistFileItem       = ParsePFTherapistFileItem(pfTherapistFileItem:pfTherapistFileItem)
-            //      dictDeepCopyPFTherapistFileItems[iNewPFTherapistFileTID]  = newPFTherapistFileItem
-            //
-            //      self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Added object #(\(cDeepCopyPFTherapistFileItems)) 'newPFTherapistFileItem' keyed by 'iNewPFTherapistFileTID' of (\(iNewPFTherapistFileTID)) to the 'deep copy' dictionary of item(s)...")
-            //
-            //  }
-            //
-            //  if (dictDeepCopyPFTherapistFileItems.count > 0)
-            //  {
-            //  
-            //      DispatchQueue.main.async
-            //      {
-            //
-            //          self.jmAppParseCoreManager.dictPFTherapistFileItems = dictDeepCopyPFTherapistFileItems
-            //
-            //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' replaced #(\(dictDeepCopyPFTherapistFileItems.count)) item(s) in the ParseCoreManager 'dictPFTherapistFileItems'...")
-            //
-            //      }
-            //  
-            //  }
-            
             }
 
         }
@@ -889,59 +661,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
             {
 
                 let _ = self.deepCopyDictSchedPatientLocItems()
-            
-            //  self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the dictionary 'dictSchedPatientLocItems' of (\(self.dictSchedPatientLocItems.count)) ['scheduledPatientLocationItem'] item(s)...")
-            //
-            //  var cDeepCopySchedPatientLocItems:Int                                                 = 0 
-            //  var dictDeepCopyScheduledPatientLocationItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
-            //
-            //  for (sPFTherapistTID, listScheduledPatientLocationItems) in self.dictSchedPatientLocItems
-            //  {
-            //
-            //      cDeepCopySchedPatientLocItems += 1
-            //      let sNewPFTherapistTID:String  = sPFTherapistTID
-            //
-            //      if (sNewPFTherapistTID.count < 1)
-            //      {
-            //
-            //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Skipping object #(\(cDeepCopySchedPatientLocItems)) - the 'sNewPFTherapistTID' <key> field is nil - Warning!")
-            //
-            //          continue
-            //
-            //      }
-            //
-            //      self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the list of (\(listScheduledPatientLocationItems.count)) 'listScheduledPatientLocationItems' item(s)...")
-            //
-            //      var listNewScheduledPatientLocationItems:[ScheduledPatientLocationItem] = [ScheduledPatientLocationItem]()
-            //
-            //      for scheduledPatientLocationItem in listScheduledPatientLocationItems
-            //      {
-            //
-            //          let newScheduledPatientLocationItem:ScheduledPatientLocationItem = ScheduledPatientLocationItem(scheduledPatientLocationItem:scheduledPatientLocationItem)
-            //
-            //          listNewScheduledPatientLocationItems.append(newScheduledPatientLocationItem)
-            //
-            //      }
-            //
-            //      dictDeepCopyScheduledPatientLocationItems[sNewPFTherapistTID] = listNewScheduledPatientLocationItems
-            //
-            //      self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Added list #(\(cDeepCopySchedPatientLocItems)) of (\(listScheduledPatientLocationItems.count)) 'listNewScheduledPatientLocationItems' keyed by 'sNewPFTherapistTID' of [\(sNewPFTherapistTID)] to the 'deep copy' dictionary of item(s)...")
-            //
-            //  }
-            //
-            //  if (dictDeepCopyScheduledPatientLocationItems.count > 0)
-            //  {
-            //  
-            //      DispatchQueue.main.async
-            //      {
-            //
-            //          self.jmAppParseCoreManager.dictSchedPatientLocItems = dictDeepCopyScheduledPatientLocationItems
-            //
-            //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' replaced #(\(dictDeepCopyScheduledPatientLocationItems.count)) item(s) in the ParseCoreManager 'dictSchedPatientLocItems'...")
-            //
-            //      }
-            //  
-            //  }
             
             }
 
@@ -1001,9 +720,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 var cPFCscObjects:Int = 0
                 
-            //  self.listPFCscDataItems = []
-            //  self.listPFCscNameItems = []
-
                 var dictPFCscDataItems:[String:ParsePFCscDataItem] = [String:ParsePFCscDataItem]()
                                                                      // [String:[ParsePFCscDataItem]]
 
@@ -1059,11 +775,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                         self.xcgLogMsg("\(sCurrMethodDisp) <PFQuery> Added object #(\(cPFCscObjects)) 'parsePFCscDataItem' for key 'sPFCscParseName' of [\(sPFCscParseName)] to the tracking dictionary and both lists of name(s)/item(s)...")
                     
                     }
-
-                //  self.listPFCscNameItems.append(parsePFCscDataItem.sPFCscParseName)
-                //  self.listPFCscDataItems.append(parsePFCscDataItem)
-                //
-                //  self.xcgLogMsg("\(sCurrMethodDisp) Added object #(\(cPFCscObjects)) 'parsePFCscDataItem' to the list of name(s)/item(s)...")
 
                 }
 
@@ -1165,42 +876,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 let _ = self.deepCopyListPFCscDataItems()
             
-            //  self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the list 'listPFCscDataItems' of (\(self.listPFCscDataItems.count)) ['pfCscDataItem'] item(s)...")
-            //
-            //  var cDeepCopyPFCscDataItems:Int                     = 0 
-            //  var listDeepCopyPFCscDataItems:[ParsePFCscDataItem] = [ParsePFCscDataItem]()
-            //
-            //  for pfCscDataItem in self.listPFCscDataItems
-            //  {
-            //
-            //      cDeepCopyPFCscDataItems                 += 1
-            //      let newPFCscDataItem:ParsePFCscDataItem  = ParsePFCscDataItem(pfCscDataItem:pfCscDataItem)
-            //
-            //      listDeepCopyPFCscDataItems.append(newPFCscDataItem)
-            //
-            //      self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Added object #(\(cDeepCopyPFCscDataItems)) 'newPFCscDataItem' of [\(newPFCscDataItem)] to the 'deep copy' list of item(s)...")
-            //
-            //  }
-            //
-            //  if (listDeepCopyPFCscDataItems.count > 0)
-            //  {
-            //  
-            //      DispatchQueue.main.async
-            //      {
-            //
-            //          self.jmAppParseCoreManager.listPFCscDataItems = listDeepCopyPFCscDataItems
-            //
-            //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' replaced #(\(listDeepCopyPFCscDataItems.count)) item(s) in the ParseCoreManager 'listPFCscDataItems'...")
-            //
-            //          // Kick the 'cPFCscObjectsRefresh' count to force any SwiftUI display(s) to refresh...
-            //      
-            //          self.jmAppParseCoreManager.cPFCscObjects         = listDeepCopyPFCscDataItems.count
-            //          self.jmAppParseCoreManager.cPFCscObjectsRefresh += 1
-            //      
-            //      }
-            //  
-            //  }
-            
             }
 
         }
@@ -1219,37 +894,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
             {
 
                 let _ = self.deepCopyListPFCscNameItems()
-            
-            //  self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy'ing the list 'listPFCscNameItems' of (\(self.listPFCscNameItems.count)) [String] item(s)...")
-            //
-            //  var cDeepCopyPFCscNameItems:Int         = 0 
-            //  var listDeepCopyPFCscNameItems:[String] = [String]()
-            //
-            //  for sPFCscParseName in self.listPFCscNameItems
-            //  {
-            //
-            //      cDeepCopyPFCscNameItems      += 1
-            //      let sNewPFCscNameItem:String  = sPFCscParseName
-            //
-            //      listDeepCopyPFCscNameItems.append(sNewPFCscNameItem)
-            //
-            //      self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' Added object #(\(cDeepCopyPFCscNameItems)) 'sNewPFCscNameItem' of [\(sNewPFCscNameItem)] to the 'deep copy' list of item(s)...")
-            //
-            //  }
-            //
-            //  if (listDeepCopyPFCscNameItems.count > 0)
-            //  {
-            //  
-            //      DispatchQueue.main.async
-            //      {
-            //
-            //          self.jmAppParseCoreManager.listPFCscNameItems = listDeepCopyPFCscNameItems
-            //
-            //          self.xcgLogMsg("\(sCurrMethodDisp) 'deep copy' replaced #(\(listDeepCopyPFCscNameItems.count)) item(s) in the ParseCoreManager 'listPFCscNameItems'...")
-            //
-            //      }
-            //  
-            //  }
             
             }
 
@@ -1404,63 +1048,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 self.gatherJmAppParsePFQueriesForBackupVisitInBackground()
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'BackupVisit' class...")
-
-                self.xcgLogMsg("\(sCurrMethodDisp) Invoked  background PFQueries method(s)...");
-
-                if (self.dictSchedPatientLocItems.count > 0)
-                {
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictSchedPatientLocItems.count)) 'dictSchedPatientLocItems' item(s)...")
-
-                    let cPFTherapistTotalTIDs:Int = self.dictSchedPatientLocItems.count
-                    var cPFTherapistParseTIDs:Int = 0
-
-                    for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictSchedPatientLocItems
-                    {
-
-                        cPFTherapistParseTIDs += 1
-
-                        if (sPFTherapistParseTID.count  < 1 ||
-                            sPFTherapistParseTID       == "-N/A-")
-                        {
-
-                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
-
-                            continue
-
-                        }
-
-                        if (listScheduledPatientLocationItems.count < 1)
-                        {
-
-                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
-
-                            continue
-
-                        }
-
-                        var cScheduledPatientLocationItems:Int = 0
-
-                        for scheduledPatientLocationItem in listScheduledPatientLocationItems
-                        {
-
-                            cScheduledPatientLocationItems += 1
-
-                            self.xcgLogMsg("\(sCurrMethodDisp) Of #(\(cPFTherapistTotalTIDs)) TIDs - For TID [\(sPFTherapistParseTID)] - Displaying 'scheduledPatientLocationItem' item #(\(cPFTherapistParseTIDs).\(cScheduledPatientLocationItems)):")
-
-                            scheduledPatientLocationItem.displayScheduledPatientLocationItemToLog()
-
-                        }
-
-                    }
-
-                }
-                else
-                {
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictSchedPatientLocItems' item(s) - item(s) count is less than 1 - Warning!")
-
-                }
 
             }
 
@@ -1618,14 +1205,9 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                             }
                         
-                        //  DispatchQueue.main.async
-                        //  {
+                            self.dictSchedPatientLocItems[sPFTherapistParseTID] = listScheduledPatientLocationItems
 
-                                self.dictSchedPatientLocItems[sPFTherapistParseTID] = listScheduledPatientLocationItems
-
-                                self.xcgLogMsg("\(sCurrMethodDisp) Added #(\(cPFPatientCalDayObjects)) updated Item(s) to the 'listScheduledPatientLocationItems' of [\(listScheduledPatientLocationItems)] to the dictionary of 'dictSchedPatientLocItems' item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)]...")
-
-                        //  }
+                            self.xcgLogMsg("\(sCurrMethodDisp) Added #(\(cPFPatientCalDayObjects)) updated Item(s) to the 'listScheduledPatientLocationItems' of [\(listScheduledPatientLocationItems)] to the dictionary of 'dictSchedPatientLocItems' item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)]...")
                         
                         }
 
@@ -1787,7 +1369,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                             self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryBackupVisit' returned a count of #(\(listPFBackupVisitObjects!.count)) PFObject(s)...")
                             self.xcgLogMsg("\(sCurrMethodDisp) Using the 1st returned 'pfQueryBackupVisit' item...")
-                            self.xcgLogMsg("\(sCurrMethodDisp) The entire returned #(\(listPFBackupVisitObjects!.count)) 'pfQueryBackupVisit' item(s) are [\(listPFBackupVisitObjects!)]...")
+                        //  self.xcgLogMsg("\(sCurrMethodDisp) The entire returned #(\(listPFBackupVisitObjects!.count)) 'pfQueryBackupVisit' item(s) are [\(listPFBackupVisitObjects!)]...")
 
                             // ------------------------------------------------------------------------------------------------
                             //  >>> Template 1st entry, then search for new Template

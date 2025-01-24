@@ -18,7 +18,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFCscDataItem"
-        static let sClsVers      = "v1.0807"
+        static let sClsVers      = "v1.0902"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -245,7 +245,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
   
         return
   
-    }   // End of convenience init(pfCscDataItem:ParsePFCscDataItem).
+    }   // End of convenience init(bDeepCopyIsAnOverlay:Bool, pfCscDataItem:ParsePFCscDataItem).
 
     private func xcgLogMsg(_ sMessage:String)
     {
@@ -291,7 +291,18 @@ class ParsePFCscDataItem: NSObject, Identifiable
         asToString.append("],")
         asToString.append("[")
         asToString.append("'idPFCscObject': [\(String(describing: self.idPFCscObject))],")
-        asToString.append("'pfCscObject': [\(String(describing: self.pfCscObject))],")
+
+    //  asToString.append("'pfCscObject': [\(String(describing: self.pfCscObject))],")
+
+        if (self.pfCscObject == nil)
+        {
+            asToString.append("'pfCscObject': [-nil-],")
+        }
+        else
+        {
+            asToString.append("'pfCscObject': [-available-],")
+        }
+
         asToString.append("],")
         asToString.append("[")
         asToString.append("'sPFCscParseClassName': [\(String(describing: self.sPFCscParseClassName))],")
@@ -359,7 +370,17 @@ class ParsePFCscDataItem: NSObject, Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObjectClonedTo'           is [\(String(describing: self.pfCscObjectClonedTo))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'idPFCscObject'                 is [\(String(describing: self.idPFCscObject))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObject'                   is [\(String(describing: self.pfCscObject))]...")
+
+    //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObject'                   is [\(String(describing: self.pfCscObject))]...")
+
+        if (self.pfCscObject == nil)
+        {
+            self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObject'                   is [-nil-]...")
+        }
+        else
+        {
+            self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'pfCscObject'                   is [-available-]...")
+        }
 
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseClassName'          is [\(String(describing: self.sPFCscParseClassName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(cDisplayItem).\(self.idPFCscObject)): 'sPFCscParseObjectId'           is [\(String(describing: self.sPFCscParseObjectId))]...")
@@ -474,7 +495,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
         self.idPFCscObject                  = pfCscDataItem.idPFCscObject               
 
-    //  Address update does NOT occur in an 'overlay'...
+    //  'Object' From/To update does NOT occur in an 'overlay'...
     //
     //  if (bDeepCopyIsAnOverlay == false)
     //  {
@@ -641,8 +662,6 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
             let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
 
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFCscParseName)]...")
-
             self.bCurrentAddessLookupScheduled = true
             self.bCurrentAddessLookupComplete  = false
             
@@ -650,6 +669,8 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
             DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
             {
+                self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFCscObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFCscParseName)]...")
+
                 let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFCscObject, 
                                                                    latitude:  self.dblConvertedLatitude, 
                                                                    longitude: self.dblConvertedLongitude, 
@@ -749,7 +770,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
 
         return
 
-    }   // End of public func resolveLocationAndAddress().
+    }   // End of public func handleLocationAndAddressClosureEvent(bIsDownstreamObject:Bool, requestID:Int, dictCurrentLocation:[String:Any]).
 
 }   // End of class ParsePFCscDataItem(NSObject, Identifiable).
 
