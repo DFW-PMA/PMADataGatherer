@@ -17,7 +17,7 @@ struct LogFileView: View
     {
         
         static let sClsId          = "LogFileView"
-        static let sClsVers        = "v1.1601"
+        static let sClsVers        = "v1.1701"
         static let sClsDisp        = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
@@ -116,10 +116,10 @@ struct LogFileView: View
 
                         Label("", systemImage: "text.viewfinder")
                             .help(Text("Preview the LOG file..."))
-                            .imageScale(.large)
+                            .imageScale(.medium)
 
                         Text("Preview LOG")
-                            .font(.caption)
+                            .font(.caption2)
 
                     }
 
@@ -156,10 +156,10 @@ struct LogFileView: View
 
                         Label("", systemImage: "clear")
                             .help(Text("Clear the LOG file..."))
-                            .imageScale(.large)
+                            .imageScale(.medium)
 
                         Text("Clear LOG")
-                            .font(.caption)
+                            .font(.caption2)
 
                     }
 
@@ -200,10 +200,10 @@ struct LogFileView: View
 
                         Label("", systemImage: "xmark.circle")
                             .help(Text("Dismiss this Screen"))
-                            .imageScale(.large)
+                            .imageScale(.medium)
 
                         Text("Dismiss")
-                            .font(.caption)
+                            .font(.caption2)
 
                     }
 
