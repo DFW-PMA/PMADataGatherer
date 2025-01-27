@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.0602"
+        static let sClsVers      = "v1.0701"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -646,158 +646,163 @@ struct SettingsSingleViewCore: View
                 }
       
             }
-      
-        #if os(iOS)
-      
-            Spacer()
-      
-            VStack(alignment:.center)
+
+            if (AppGlobalInfo.bEnableAppReleaseDownloads == true)
             {
-      
-                HStack(alignment:.center)
+
+            #if os(iOS)
+
+                Spacer()
+
+                VStack(alignment:.center)
                 {
-      
-                    Spacer()
-      
-                    Text(" - - - - - - - - - - - - - - - - - - - - ")
-                        .bold()
-      
-                    Spacer()
-      
-                }
-      
-                HStack(alignment:.center)
-                {
-      
-                    Spacer()
-      
-                    Button
+
+                    HStack(alignment:.center)
                     {
-      
-                        self.cAppReleaseUpdateButtonPresses += 1
-      
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Release'.#(\(self.cAppReleaseUpdateButtonPresses))...")
-      
-                        self.isAppDownloadReleaseUpdateShowing.toggle()
-      
+
+                        Spacer()
+
+                        Text(" - - - - - - - - - - - - - - - - - - - - ")
+                            .bold()
+
+                        Spacer()
+
                     }
-                    label: 
+
+                    HStack(alignment:.center)
                     {
-      
-                    if #available(iOS 14.0, *) 
-                    {
-      
-                        VStack(alignment:.center)
+
+                        Spacer()
+
+                        Button
                         {
-      
-                            Label("", systemImage: "arrow.down.app")
-                                .help(Text("App 'download' RELEASE"))
-                                .imageScale(.large)
-      
-                            Text("Download RELEASE")
-                                .font(.caption)
-      
+
+                            self.cAppReleaseUpdateButtonPresses += 1
+
+                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Release'.#(\(self.cAppReleaseUpdateButtonPresses))...")
+
+                            self.isAppDownloadReleaseUpdateShowing.toggle()
+
                         }
-      
-                    } 
-                    else
-                    {
-      
-                        Text("App 'download' RELEASE")
-      
-                    }
-      
-                    }
-                    .alert("Do you want to 'download' (and install) the App RELEASE?", isPresented:$isAppDownloadReleaseUpdateShowing)
-                    {
-                        Button("Cancel", role:.cancel)
+                        label: 
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App RELEASE - resuming...")
-                        }
-                        Button("Ok", role:.destructive)
+
+                        if #available(iOS 14.0, *) 
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App RELEASE - updating...")
-      
-                            self.downloadAppReleaseUpdate()
-      
-                        }
-                    }
-                    .padding()
-      
-                    Spacer()
-      
-                    Button
-                    {
-      
-                        self.cAppPreReleaseUpdateButtonPresses += 1
-      
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Pre-Release'.#(\(self.cAppPreReleaseUpdateButtonPresses))...")
-      
-                        self.isAppDownloadPreReleaseUpdateShowing.toggle()
-      
-                    }
-                    label: 
-                    {
-      
-                    if #available(iOS 14.0, *) 
-                    {
-      
-                        VStack(alignment:.center)
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "arrow.down.app")
+                                    .help(Text("App 'download' RELEASE"))
+                                    .imageScale(.large)
+
+                                Text("Download RELEASE")
+                                    .font(.caption)
+
+                            }
+
+                        } 
+                        else
                         {
-      
-                            Label("", systemImage: "arrow.down.app.fill")
-                                .help(Text("App 'download' Pre-Release"))
-                                .imageScale(.large)
-      
-                            Text("Download Pre-Release")
-                                .font(.caption)
-      
+
+                            Text("App 'download' RELEASE")
+
                         }
-      
-                    } 
-                    else 
-                    {
-      
-                        Text("App 'download' Pre-Release")
-      
-                    }
-      
-                    }
-                    .alert("Do you want to 'download' (and install) the App Pre-Release?", isPresented:$isAppDownloadPreReleaseUpdateShowing)
-                    {
-                        Button("Cancel", role:.cancel)
+
+                        }
+                        .alert("Do you want to 'download' (and install) the App RELEASE?", isPresented:$isAppDownloadReleaseUpdateShowing)
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App Pre-Release - resuming...")
+                            Button("Cancel", role:.cancel)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App RELEASE - resuming...")
+                            }
+                            Button("Ok", role:.destructive)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App RELEASE - updating...")
+
+                                self.downloadAppReleaseUpdate()
+
+                            }
                         }
-                        Button("Ok", role:.destructive)
+                        .padding()
+
+                        Spacer()
+
+                        Button
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App Pre-Release - updating...")
-      
-                            self.downloadAppPreReleaseUpdate()
-      
+
+                            self.cAppPreReleaseUpdateButtonPresses += 1
+
+                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Pre-Release'.#(\(self.cAppPreReleaseUpdateButtonPresses))...")
+
+                            self.isAppDownloadPreReleaseUpdateShowing.toggle()
+
                         }
+                        label: 
+                        {
+
+                        if #available(iOS 14.0, *) 
+                        {
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "arrow.down.app.fill")
+                                    .help(Text("App 'download' Pre-Release"))
+                                    .imageScale(.large)
+
+                                Text("Download Pre-Release")
+                                    .font(.caption)
+
+                            }
+
+                        } 
+                        else 
+                        {
+
+                            Text("App 'download' Pre-Release")
+
+                        }
+
+                        }
+                        .alert("Do you want to 'download' (and install) the App Pre-Release?", isPresented:$isAppDownloadPreReleaseUpdateShowing)
+                        {
+                            Button("Cancel", role:.cancel)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App Pre-Release - resuming...")
+                            }
+                            Button("Ok", role:.destructive)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App Pre-Release - updating...")
+
+                                self.downloadAppPreReleaseUpdate()
+
+                            }
+                        }
+                        .padding()
+
+                        Spacer()
+
                     }
-                    .padding()
-      
-                    Spacer()
-      
+
+                    HStack(alignment:.center)
+                    {
+
+                        Spacer()
+
+                        Text(" - - - - - - - - - - - - - - - - - - - - ")
+                            .bold()
+
+                        Spacer()
+
+                    }
+
                 }
 
-                HStack(alignment:.center)
-                {
-      
-                    Spacer()
-      
-                    Text(" - - - - - - - - - - - - - - - - - - - - ")
-                        .bold()
-      
-                    Spacer()
-      
-                }
-      
+            #endif
+
             }
-      
-        #endif
 
             Spacer()
 

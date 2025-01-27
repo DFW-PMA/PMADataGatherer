@@ -17,7 +17,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     {
         
         static let sClsId        = "CoreLocationModelObservable2"
-        static let sClsVers      = "v1.0401"
+        static let sClsVers      = "v1.0501"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -25,13 +25,21 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         
     }
 
+    // Class 'singleton' instance:
+
+    struct ClassSingleton
+    {
+        static var appCoreLocationModel:CoreLocationModelObservable2
+                                                              = CoreLocationModelObservable2()
+    }
+
     // App Data field(s):
     
                var locationManager:CLLocationManager?         = nil
-
     @Published var bCLManagerHeadingAvailable:Bool            = false
-    
+    @Published var clCurrentHeading:CLHeading?                = nil
     @Published var clCurrentLocation:CLLocation?              = nil       // Contains: Latitude, Longitude...
+
     @Published var sCurrentLocationName:String                = "-N/A-"   // This is actually the Street Address (Line #1) <# Street> (i.e. 8908 Michelle Ln)...
     @Published var sCurrentCity:String                        = "-N/A-"   // City (i.e. North Richland Hills)...
     @Published var sCurrentCountry:String                     = "-N/A-"   // Country (i.e. United States)...
@@ -59,7 +67,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
                var listPreXCGLoggerMessages:[String]          = Array()
 
-    override init()
+    private override init()
     {
         
         let sCurrMethod:String = #function
@@ -69,33 +77,13 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
         
-        self.locationManager = CLLocationManager()
-        
-        self.locationManager?.delegate = self
-        
-        self.locationManager?.desiredAccuracy = kCLLocationAccuracyBest
-        
-    //  self.locationManager?.requestWhenInUseAuthorization()
-        self.locationManager?.requestAlwaysAuthorization()
-        
-        self.requestLocationUpdate()
-
-        self.bCLManagerHeadingAvailable = CLLocationManager.headingAvailable()
-        
-        if (self.bCLManagerHeadingAvailable == true)
-        {
-
-            self.locationManager?.startUpdatingHeading()
-
-        }
-
         // Exit...
 
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
         return
         
-    }   // End of override init().
+    }   // End of private override init().
     
     private func xcgLogMsg(_ sMessage:String)
     {
@@ -151,7 +139,10 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         asToString.append("[")
         asToString.append("'locationManager': [\(String(describing: self.locationManager))]")
         asToString.append("'bCLManagerHeadingAvailable': [\(String(describing: self.bCLManagerHeadingAvailable))]")
+        asToString.append("'clCurrentHeading': [\(String(describing: self.clCurrentHeading))]")
         asToString.append("'clCurrentLocation': [\(String(describing: self.clCurrentLocation))]")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'sCurrentCity': [\(String(describing: self.sCurrentCity))]")
         asToString.append("'sCurrentCountry': [\(String(describing: self.sCurrentCountry))]")
         asToString.append("'sCurrentPostalCode': [\(String(describing: self.sCurrentPostalCode))]")
@@ -162,6 +153,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         asToString.append("'sCurrentSubThoroughfare': [\(String(describing: self.sCurrentSubThoroughfare))]")
         asToString.append("'sCurrentAdministrativeArea': [\(String(describing: self.sCurrentAdministrativeArea))]")
         asToString.append("'sCurrentSubAdministrativeArea': [\(String(describing: self.sCurrentSubAdministrativeArea))]")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'listCoreLocationSiteItems': [\(String(describing: self.listCoreLocationSiteItems))]")
         asToString.append("],")
         asToString.append("]")
@@ -203,6 +196,14 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         }
 
+        // Finish any 'initialization' work:
+
+        self.xcgLogMsg("\(sCurrMethodDisp)' CoreLocationModel Invoking 'self.runPostInitializationTasks()'...")
+    
+        self.runPostInitializationTasks()
+
+        self.xcgLogMsg("\(sCurrMethodDisp)' CoreLocationModel Invoked  'self.runPostInitializationTasks()'...")
+    
         // Exit:
 
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.jmAppDelegateVisitor' is [\(String(describing: self.jmAppDelegateVisitor))]...")
@@ -210,6 +211,44 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         return
 
     } // End of public func setJmAppDelegateVisitorInstance().
+
+    private func runPostInitializationTasks()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(self)]...")
+
+        // Finish performing any setup with the CoreLocationModel...
+
+        self.locationManager = CLLocationManager()
+        
+        self.locationManager?.delegate = self
+        
+        self.locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+        
+    //  self.locationManager?.requestWhenInUseAuthorization()
+        self.locationManager?.requestAlwaysAuthorization()
+        
+        self.requestLocationUpdate()
+
+        self.bCLManagerHeadingAvailable = CLLocationManager.headingAvailable()
+        
+        if (self.bCLManagerHeadingAvailable == true)
+        {
+
+            self.locationManager?.startUpdatingHeading()
+
+        }
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of private func runPostInitializationTasks().
 
     public func clearLastCLLocationSettings()
     {
@@ -226,7 +265,9 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         
         // Clear the 'last' CLLocation setting(s)...
 
+        self.clCurrentHeading              = nil
         self.clCurrentLocation             = nil
+
         self.sCurrentLocationName          = "-N/A-"
         self.sCurrentCity                  = "-N/A-"
         self.sCurrentCountry               = "-N/A-"
@@ -238,6 +279,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         self.sCurrentSubThoroughfare       = "-N/A-"
         self.sCurrentAdministrativeArea    = "-N/A-"
         self.sCurrentSubAdministrativeArea = "-N/A-"
+
         self.listCoreLocationSiteItems     = [CoreLocationSiteItem]()
 
         // Exit:
@@ -262,6 +304,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
         
         self.locationManager?.requestLocation()
+
+        self.clCurrentHeading = self.locationManager?.heading
         
     //  self.locationManager?.startUpdatingLocation()
 
@@ -482,7 +526,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         
         return true
         
-    }   // End of public func updateGeocoderLocations(requestID:Int, latitude:Double, longitude:Double, withCompletionHandler completionHandler:@escaping(_ requestID:Int, _ dictCurrentLocation:[String:Any])->Void) -> Bool
+    }   // END of public func updateGeocoderLocations(requestID:Int, latitude:Double, longitude:Double, withCompletionHandler completionHandler:@escaping(_ requestID:Int, _ dictCurrentLocation:[String:Any])->Void) -> Bool
 
     public func updateCoreLocationSiteItemList() -> Bool
     {
@@ -522,8 +566,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
                                                                    sCLSiteItemDesc:    "\(String(describing:self.sCurrentAdministrativeArea))"))
 
         self.listCoreLocationSiteItems.append(CoreLocationSiteItem(sCLSiteItemName:    "TimeZone",
-                                                                   sCLSiteItemDesc:    "\(String(describing:self.tzCurrentTimeZone))",
-                                                                   sCLSiteItemValue:   "\(String(describing:self.tzCurrentTimeZone))",
+                                                                   sCLSiteItemDesc:    "\(String(describing:(self.tzCurrentTimeZone ?? TimeZone(abbreviation:"CST"))))",
+                                                                   sCLSiteItemValue:   "\(String(describing:(self.tzCurrentTimeZone ?? TimeZone(abbreviation:"CST"))))",
                                                                    objCLSiteItemValue: self.tzCurrentTimeZone))
 
         self.listCoreLocationSiteItems.append(CoreLocationSiteItem(sCLSiteItemName:    "Country",
@@ -555,6 +599,29 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         return true
 
     }   // End of public func updateCoreLocationSiteItemList().
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading heading: CLHeading)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        
+//        guard let clHeading = heading
+//        else { return }
+
+        self.clCurrentHeading = heading
+        
+        self.xcgLogMsg("magneticHeading: [[\(self.clCurrentHeading!.magneticHeading)], trueHeading: [\(self.clCurrentHeading!.trueHeading)], timestamp: [\(self.clCurrentHeading!.timestamp)]...")
+        
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+        
+    }   // End of func locationManager().
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
     {
