@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0801"
+        static let sClsVers      = "v1.0901"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -459,6 +459,10 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 var cPFTherapistObjects:Int   = 0
 
+                let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor!.jmAppCLModelObservable2!
+
+                clModelObservable2.resetNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.secondary)
+
                 for pfTherapistObject in listPFTherapistObjects!
                 {
 
@@ -722,6 +726,9 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 
                 var dictPFCscDataItems:[String:ParsePFCscDataItem] = [String:ParsePFCscDataItem]()
                                                                      // [String:[ParsePFCscDataItem]]
+                let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor!.jmAppCLModelObservable2!
+
+                clModelObservable2.resetNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.primary)
 
                 for currentPFCscDataItem:ParsePFCscDataItem in self.listPFCscDataItems
                 {

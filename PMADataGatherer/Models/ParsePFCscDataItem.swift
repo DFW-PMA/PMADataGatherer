@@ -18,7 +18,7 @@ class ParsePFCscDataItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFCscDataItem"
-        static let sClsVers      = "v1.0902"
+        static let sClsVers      = "v1.0905"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -665,7 +665,10 @@ class ParsePFCscDataItem: NSObject, Identifiable
             self.bCurrentAddessLookupScheduled = true
             self.bCurrentAddessLookupComplete  = false
             
-            let dblDeadlineInterval:Double     = Double((0.5 * Double(self.idPFCscObject)))
+        //  let dblDeadlineInterval:Double     = Double((0.5 * Double(self.idPFCscObject)))
+        //  let dblDeadlineInterval:Double     = Double((1.2 * Double(self.idPFCscObject)))
+        //  let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval()
+            let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.primary)
 
             DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
             {

@@ -10,6 +10,15 @@ import Foundation
 import SwiftUI
 import CoreLocation
 
+enum CLRevLocType: String, CaseIterable
+{
+    
+    case primary   = "primary"
+    case secondary = "secondary"
+    case tertiary  = "tertiary"
+    
+}   // End of enum CLRevLocType(String, CaseIterable).
+
 class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, ObservableObject
 {
     
@@ -17,7 +26,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     {
         
         static let sClsId        = "CoreLocationModelObservable2"
-        static let sClsVers      = "v1.0501"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -34,6 +43,10 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     }
 
     // App Data field(s):
+
+               var cCoreLocationReverseLookupsPrimary:Int     = 0
+               var cCoreLocationReverseLookupsSecondary:Int   = 0
+               var cCoreLocationReverseLookupsTertiary:Int    = 0
     
                var locationManager:CLLocationManager?         = nil
     @Published var bCLManagerHeadingAvailable:Bool            = false
@@ -137,21 +150,26 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         asToString.append("'bClsFileLog': [\(ClassInfo.bClsFileLog)]")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'locationManager': [\(String(describing: self.locationManager))]")
-        asToString.append("'bCLManagerHeadingAvailable': [\(String(describing: self.bCLManagerHeadingAvailable))]")
-        asToString.append("'clCurrentHeading': [\(String(describing: self.clCurrentHeading))]")
+        asToString.append("'cCoreLocationReverseLookupsPrimary': (\(String(describing: self.cCoreLocationReverseLookupsPrimary))),")
+        asToString.append("'cCoreLocationReverseLookupsSecondary': (\(String(describing: self.cCoreLocationReverseLookupsSecondary))),")
+        asToString.append("'cCoreLocationReverseLookupsTertiary': (\(String(describing: self.cCoreLocationReverseLookupsTertiary)))")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'locationManager': [\(String(describing: self.locationManager))],")
+        asToString.append("'bCLManagerHeadingAvailable': [\(String(describing: self.bCLManagerHeadingAvailable))],")
+        asToString.append("'clCurrentHeading': [\(String(describing: self.clCurrentHeading))],")
         asToString.append("'clCurrentLocation': [\(String(describing: self.clCurrentLocation))]")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'sCurrentCity': [\(String(describing: self.sCurrentCity))]")
-        asToString.append("'sCurrentCountry': [\(String(describing: self.sCurrentCountry))]")
-        asToString.append("'sCurrentPostalCode': [\(String(describing: self.sCurrentPostalCode))]")
-        asToString.append("'tzCurrentTimeZone': [\(String(describing: self.tzCurrentTimeZone))]")
-        asToString.append("'clCurrentRegion': [\(String(describing: self.clCurrentRegion))]")
-        asToString.append("'sCurrentSubLocality': [\(String(describing: self.sCurrentSubLocality))]")
-        asToString.append("'sCurrentThoroughfare': [\(String(describing: self.sCurrentThoroughfare))]")
-        asToString.append("'sCurrentSubThoroughfare': [\(String(describing: self.sCurrentSubThoroughfare))]")
-        asToString.append("'sCurrentAdministrativeArea': [\(String(describing: self.sCurrentAdministrativeArea))]")
+        asToString.append("'sCurrentCity': [\(String(describing: self.sCurrentCity))],")
+        asToString.append("'sCurrentCountry': [\(String(describing: self.sCurrentCountry))],")
+        asToString.append("'sCurrentPostalCode': [\(String(describing: self.sCurrentPostalCode))],")
+        asToString.append("'tzCurrentTimeZone': [\(String(describing: self.tzCurrentTimeZone))],")
+        asToString.append("'clCurrentRegion': [\(String(describing: self.clCurrentRegion))],")
+        asToString.append("'sCurrentSubLocality': [\(String(describing: self.sCurrentSubLocality))],")
+        asToString.append("'sCurrentThoroughfare': [\(String(describing: self.sCurrentThoroughfare))],")
+        asToString.append("'sCurrentSubThoroughfare': [\(String(describing: self.sCurrentSubThoroughfare))],")
+        asToString.append("'sCurrentAdministrativeArea': [\(String(describing: self.sCurrentAdministrativeArea))],")
         asToString.append("'sCurrentSubAdministrativeArea': [\(String(describing: self.sCurrentSubAdministrativeArea))]")
         asToString.append("],")
         asToString.append("[")
@@ -295,6 +313,69 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
     } // End of public func clearLastCLLocationSettings().
 
+    public func requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType)->Double
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'clRevLocType' is [\(clRevLocType)]...")
+
+        // Generate a 'next' ReverseLocation Dispatch time...
+
+        var cCoreLocationReverseLookup:Int = 0
+
+        switch(clRevLocType)
+        {
+        case CLRevLocType.primary:
+            self.cCoreLocationReverseLookupsPrimary   += 1
+            cCoreLocationReverseLookup                 = self.cCoreLocationReverseLookupsPrimary
+        case CLRevLocType.secondary:
+            self.cCoreLocationReverseLookupsSecondary += 1
+            cCoreLocationReverseLookup                 = (20 * self.cCoreLocationReverseLookupsSecondary)
+        case CLRevLocType.tertiary:
+            self.cCoreLocationReverseLookupsTertiary  += 1
+            cCoreLocationReverseLookup                 = (60 * self.cCoreLocationReverseLookupsTertiary)
+        }
+
+        let dblDeadlineInterval:Double    = Double((1.3 * Double(cCoreLocationReverseLookup)))
+
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting <ReverseLocation 'lookup'> - 'dblDeadlineInterval' is (\(dblDeadlineInterval))...")
+
+        return dblDeadlineInterval
+        
+    }   // End of public func requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType)->Double.
+    
+    public func resetNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType)
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'clRevLocType' is [\(clRevLocType)]...")
+
+        // Generate a 'next' ReverseLocation Dispatch time...
+
+        switch(clRevLocType)
+        {
+        case CLRevLocType.primary:
+            self.cCoreLocationReverseLookupsPrimary   = 0
+        case CLRevLocType.secondary:
+            self.cCoreLocationReverseLookupsSecondary = 0
+        case CLRevLocType.tertiary:
+            self.cCoreLocationReverseLookupsTertiary  = 0
+        }
+
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+        
+    }   // End of public func resetNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType).
+    
     public func requestLocationUpdate()
     {
         

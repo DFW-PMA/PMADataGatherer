@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0605"
+        static let sClsVers      = "v1.0609"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -1022,7 +1022,10 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
             self.bHomeLocAddessLookupScheduled = true
             self.bHomeLocAddessLookupComplete  = false
             
-            let dblDeadlineInterval:Double     = Double((0.5 * Double(self.idPFTherapistFileObject)))
+        //  let dblDeadlineInterval:Double     = Double((0.5 * Double(self.idPFTherapistFileObject)))
+        //  let dblDeadlineInterval:Double     = Double((1.2 * Double(self.idPFTherapistFileObject)))
+        //  let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval()
+            let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.secondary)
 
             DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
             {
