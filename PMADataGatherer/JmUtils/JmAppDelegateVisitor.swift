@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.3201"
+        static let sClsVers      = "v1.3202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -878,93 +878,6 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         let appGlobalInfo:AppGlobalInfo = AppGlobalInfo.ClassSingleton.appGlobalInfo
 
         appGlobalInfo.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
-
-//      // Display the various 'settings' of the AppGlobalInfo struct:
-//
-//      appGlobalInfo.displayUIDeviceInformation()
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppId' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppId))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppVers' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppVers))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppDisp' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppDisp))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppCopyRight' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppCopyRight))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppLogFilespec' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppLogFilespec))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppCrashMarkerFilespec' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppCrashMarkerFilespec))]...")
-//                                                                                                                                                                     
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bUseApplicationShortTitle' is [\(String(describing: AppGlobalInfo.bUseApplicationShortTitle))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sApplicationTitle' is [\(String(describing: AppGlobalInfo.sApplicationTitle))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sApplicationShortTitle' is [\(String(describing: AppGlobalInfo.sApplicationShortTitle))]...")
-//                                                                                                                                                                     
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sHelpBasicFileExt' is [\(String(describing: AppGlobalInfo.sHelpBasicFileExt))]...")
-//                                                                                                                                                                     
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bPerformAppObjCSwiftBridgeTest' is [\(String(describing: AppGlobalInfo.bPerformAppObjCSwiftBridgeTest))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bInstantiateAppMetricKitManager' is [\(String(describing: AppGlobalInfo.bInstantiateAppMetricKitManager))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sAppUploadNotifyFrom' is [\(String(describing: AppGlobalInfo.sAppUploadNotifyFrom))]...")
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceType' is [\(String(describing: appGlobalInfo.sGlobalDeviceType))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsMac' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsMac))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsIPad' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsIPad))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsIPhone' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsIPhone))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsAppleWatch' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsAppleWatch))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsXcodeSimulator' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsXcodeSimulator))]...")
-//      
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceName' is [\(String(describing: appGlobalInfo.sGlobalDeviceName))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceSystemName' is [\(String(describing: appGlobalInfo.sGlobalDeviceSystemName))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceSystemVersion' is [\(String(describing: appGlobalInfo.sGlobalDeviceSystemVersion))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceModel' is [\(String(describing: appGlobalInfo.sGlobalDeviceModel))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceLocalizedModel' is [\(String(describing: appGlobalInfo.sGlobalDeviceLocalizedModel))]...")
-//      
-//  #if os(iOS)
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.idiomGlobalDeviceUserInterfaceIdiom' is [\(String(describing: appGlobalInfo.idiomGlobalDeviceUserInterfaceIdiom))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.iGlobalDeviceUserInterfaceIdiom' is [\(String(describing: appGlobalInfo.iGlobalDeviceUserInterfaceIdiom))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.uuidGlobalDeviceIdForVendor' is [\(String(describing: appGlobalInfo.uuidGlobalDeviceIdForVendor))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.fGlobalDeviceCurrentBatteryLevel' is [\(String(describing: appGlobalInfo.fGlobalDeviceCurrentBatteryLevel))]...")
-//
-//  #endif
-//      
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.fGlobalDeviceScreenSizeWidth' is [\(String(describing: appGlobalInfo.fGlobalDeviceScreenSizeWidth))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.fGlobalDeviceScreenSizeHeight' is [\(String(describing: appGlobalInfo.fGlobalDeviceScreenSizeHeight))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.iGlobalDeviceScreenSizeScale' is [\(String(describing: appGlobalInfo.iGlobalDeviceScreenSizeScale))]...")
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppCategory' is [\(String(describing: appGlobalInfo.sAppCategory))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppDisplayName' is [\(String(describing: appGlobalInfo.sAppDisplayName))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppBundleIdentifier' is [\(String(describing: appGlobalInfo.sAppBundleIdentifier))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppVersionAndBuildNumber' is [\(String(describing: appGlobalInfo.sAppVersionAndBuildNumber))]...")
-//      self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppCopyright' is [\(String(describing: appGlobalInfo.sAppCopyright))]...")
-
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceType' is [\(String(describing: appGlobalInfo.sGlobalDeviceType))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsMac' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsMac))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsIPad' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsIPad))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsIPhone' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsIPhone))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsAppleWatch' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsAppleWatch))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.bGlobalDeviceIsXcodeSimulator' is [\(String(describing: appGlobalInfo.bGlobalDeviceIsXcodeSimulator))]...")
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceName' is [\(String(describing: appGlobalInfo.sGlobalDeviceName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceSystemName' is [\(String(describing: appGlobalInfo.sGlobalDeviceSystemName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceSystemVersion' is [\(String(describing: appGlobalInfo.sGlobalDeviceSystemVersion))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceModel' is [\(String(describing: appGlobalInfo.sGlobalDeviceModel))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sGlobalDeviceLocalizedModel' is [\(String(describing: appGlobalInfo.sGlobalDeviceLocalizedModel))]...")
-        
-    #if os(iOS)
-
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.idiomGlobalDeviceUserInterfaceIdiom' is [\(String(describing: appGlobalInfo.idiomGlobalDeviceUserInterfaceIdiom))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.iGlobalDeviceUserInterfaceIdiom' is [\(String(describing: appGlobalInfo.iGlobalDeviceUserInterfaceIdiom))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.uuidGlobalDeviceIdForVendor' is [\(String(describing: appGlobalInfo.uuidGlobalDeviceIdForVendor))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.fGlobalDeviceCurrentBatteryLevel' is [\(String(describing: appGlobalInfo.fGlobalDeviceCurrentBatteryLevel))]...")
-
-    #endif
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.fGlobalDeviceScreenSizeWidth' is [\(String(describing: appGlobalInfo.fGlobalDeviceScreenSizeWidth))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.fGlobalDeviceScreenSizeHeight' is [\(String(describing: appGlobalInfo.fGlobalDeviceScreenSizeHeight))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.iGlobalDeviceScreenSizeScale' is [\(String(describing: appGlobalInfo.iGlobalDeviceScreenSizeScale))]...")
-
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppCategory' is [\(String(describing: appGlobalInfo.sAppCategory))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppDisplayName' is [\(String(describing: appGlobalInfo.sAppDisplayName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppBundleIdentifier' is [\(String(describing: appGlobalInfo.sAppBundleIdentifier))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppVersionAndBuildNumber' is [\(String(describing: appGlobalInfo.sAppVersionAndBuildNumber))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'appGlobalInfo.sAppCopyright' is [\(String(describing: appGlobalInfo.sAppCopyright))]...")
 
         // Exit:
 
