@@ -607,7 +607,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         
         return true
         
-    }   // END of public func updateGeocoderLocations(requestID:Int, latitude:Double, longitude:Double, withCompletionHandler completionHandler:@escaping(_ requestID:Int, _ dictCurrentLocation:[String:Any])->Void) -> Bool
+    }   // End of public func updateGeocoderLocations(requestID:Int, latitude:Double, longitude:Double, withCompletionHandler completionHandler:@escaping(_ requestID:Int, _ dictCurrentLocation:[String:Any])->Void) -> Bool
 
     public func updateCoreLocationSiteItemList() -> Bool
     {

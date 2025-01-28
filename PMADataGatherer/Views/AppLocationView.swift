@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.0806"
+        static let sClsVers      = "v1.0910"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -25,7 +25,7 @@ struct AppLocationView: View
     
     // App Data field(s):
 
-//  @Environment(\.dismiss) var dismiss
+//  @Environment(\.dismiss)          var dismiss
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.openWindow)       var openWindow
 
@@ -373,7 +373,57 @@ struct AppLocationView: View
                             #if os(iOS)
                                 NavigationLink
                                 {
-                                    AppLocationMapView(parsePFCscDataItem:pfCscObject).navigationBarBackButtonHidden(false)
+                                    AppLocationMapView(parsePFCscDataItem:pfCscObject)
+                                        .navigationBarBackButtonHidden(true)
+                                    //  .navigationBarBackButtonHidden(false)
+                                    //  .isDetailLink(false)
+                                    //  .toolbar
+                                    //  {
+                                    //      ToolbarItemGroup(placement:.primaryAction)
+                                    //      {
+                                    //
+                                    //          Button
+                                    //          {
+                                    //
+                                    //              let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'Dismiss' pressed...")
+                                    //
+                                    //          //  self.presentationMode.wrappedValue.dismiss()
+                                    //              presentationMode.wrappedValue.dismiss()
+                                    //
+                                    //          //  dismiss()
+                                    //
+                                    //          }
+                                    //          label:
+                                    //          {
+                                    //
+                                    //              VStack(alignment:.center)
+                                    //              {
+                                    //
+                                    //                  Label("", systemImage: "xmark.circle")
+                                    //                      .help(Text("Dismiss this Screen"))
+                                    //                      .imageScale(.large)
+                                    //
+                                    //                  Text("Dismiss <T>")
+                                    //                      .font(.caption)
+                                    //
+                                    //              }
+                                    //
+                                    //          }
+                                    //      #if os(macOS)
+                                    //          .buttonStyle(.borderedProminent)
+                                    //          .padding()
+                                    //      //  .background(???.isPressed ? .blue : .gray)
+                                    //          .cornerRadius(10)
+                                    //          .foregroundColor(Color.primary)
+                                    //      #endif
+                                    //          .padding()
+                                    //
+                                    //      }
+                                    //  }
+                                    // NOTE: This causes a 'build' failure:
+                                    //       >>> The compiler is unable to type-check this expression in reasonable time;
+                                    //           try breaking up the expression into distinct sub-expressions...
+                                    //  .isDetailLink(false)
                                 }
                                 label:
                                 {

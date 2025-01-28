@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.0701"
+        static let sClsVers      = "v1.2002"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -27,6 +27,7 @@ struct SettingsSingleViewCore: View
     
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.openWindow)       var openWindow
     
            private var bInternalZipTest:Bool                                 = false
 
@@ -59,15 +60,15 @@ struct SettingsSingleViewCore: View
            private var bIsAppUploadUsingLongMsg:Bool                         = false
 
     @State private var isAppExecutionCurrentShowing:Bool                     = false
-           private var sAppExecutionCurrentButtonText:String                 = "Share the current App Log with Developers..."
-           private var sAppExecutionCurrentAlertText:String                  = "Do you want to 'send' the current App LOG data to the Developers?"
+    @State private var sAppExecutionCurrentButtonText:String                 = "Share the current App Log with Developers..."
+    @State private var sAppExecutionCurrentAlertText:String                  = "Do you want to 'send' the current App LOG data to the Developers?"
 
-           private var bWasAppLogFilePresentAtStartup:Bool                   = false
-           private var bDidAppCrash:Bool                                     = false
-           private var sAppExecutionPreviousTypeText:String                  = "-N/A-"
-           private var sAppExecutionPreviousButtonText:String                = "App::-N/A-"
-           private var sAppExecutionPreviousAlertText:String                 = "Do you want to 'send' the App LOG data?"
-           private var sAppExecutionPreviousLogToUpload:String               = ""
+    @State private var bWasAppLogFilePresentAtStartup:Bool                   = false
+    @State private var bDidAppCrash:Bool                                     = false
+    @State private var sAppExecutionPreviousTypeText:String                  = "-N/A-"
+    @State private var sAppExecutionPreviousButtonText:String                = "App::-N/A-"
+    @State private var sAppExecutionPreviousAlertText:String                 = "Do you want to 'send' the App LOG data?"
+    @State private var sAppExecutionPreviousLogToUpload:String               = ""
     @State private var isAppExecutionPreviousShowing:Bool                    = false
 
 #endif
@@ -83,35 +84,35 @@ struct SettingsSingleViewCore: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
-    #if os(iOS)
-
-        // Get some 'internal' Dev Detail(s)...
-
-        bWasAppLogFilePresentAtStartup = checkIfAppLogWasPresent()
-        bDidAppCrash                   = checkIfAppDidCrash()
-
-        if (bDidAppCrash == false)
-        {
-
-            sAppExecutionPreviousTypeText    = "Success"
-            sAppExecutionPreviousButtonText  = "Share the App 'success' Log with Developers..."
-            sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'success' LOG data to the Developers?"
-            sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec
-
-        }
-        else
-        {
-
-            sAppExecutionPreviousTypeText    = "Crash"
-            sAppExecutionPreviousButtonText  = "Share the App CRASH Log with Developers..."
-            sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'crash' LOG data to the Developers?"
-            sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec
-
-        }
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - 'bDidAppCrash' is [\(bDidAppCrash)]...")
-
-    #endif
+//  #if os(iOS)
+//
+//      // Get some 'internal' Dev Detail(s)...
+//
+//      bWasAppLogFilePresentAtStartup = checkIfAppLogWasPresent()
+//      bDidAppCrash                   = checkIfAppDidCrash()
+//
+//      if (bDidAppCrash == false)
+//      {
+//
+//          sAppExecutionPreviousTypeText    = "Success"
+//          sAppExecutionPreviousButtonText  = "Share the App 'success' Log with Developers..."
+//          sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'success' LOG data to the Developers?"
+//          sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec
+//
+//      }
+//      else
+//      {
+//
+//          sAppExecutionPreviousTypeText    = "Crash"
+//          sAppExecutionPreviousButtonText  = "Share the App CRASH Log with Developers..."
+//          sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'crash' LOG data to the Developers?"
+//          sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec
+//
+//      }
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - 'bDidAppCrash' is [\(bDidAppCrash)]...")
+//
+//  #endif
 
         // Exit...
 
@@ -370,7 +371,7 @@ struct SettingsSingleViewCore: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'\(sAppExecutionPreviousButtonText)'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'\(sAppExecutionPreviousButtonText)'...")
 
                         self.isAppExecutionPreviousShowing.toggle()
 
@@ -415,7 +416,7 @@ struct SettingsSingleViewCore: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'\(sAppExecutionCurrentButtonText)'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'\(sAppExecutionCurrentButtonText)'...")
 
                         self.isAppExecutionCurrentShowing.toggle()
 
@@ -459,7 +460,7 @@ struct SettingsSingleViewCore: View
 
                     self.cAppViewSuspendButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'Quit'.#(\(self.cAppViewSuspendButtonPresses))...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'Quit'.#(\(self.cAppViewSuspendButtonPresses))...")
 
                     self.isAppSuspendShowing.toggle()
 
@@ -804,6 +805,16 @@ struct SettingsSingleViewCore: View
 
             }
 
+            Text("")            
+                .hidden()
+                .onAppear(
+                    perform:
+                    {
+                        // Continue App 'initialization'...
+
+                        let _ = self.finishAppInitialization()
+                    })
+
             Spacer()
 
         }
@@ -811,6 +822,46 @@ struct SettingsSingleViewCore: View
 
     }
 
+    private func finishAppInitialization()
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Finish the App 'initialization'...
+  
+        self.bWasAppLogFilePresentAtStartup = checkIfAppLogWasPresent()
+        self.bDidAppCrash                   = checkIfAppDidCrash()
+        
+        if (self.bDidAppCrash == false)
+        {
+        
+            self.sAppExecutionPreviousTypeText    = "Success"
+            self.sAppExecutionPreviousButtonText  = "Share the App 'success' Log with Developers..."
+            self.sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'success' LOG data to the Developers?"
+            self.sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec
+        
+        }
+        else
+        {
+        
+            self.sAppExecutionPreviousTypeText    = "Crash"
+            self.sAppExecutionPreviousButtonText  = "Share the App CRASH Log with Developers..."
+            self.sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'crash' LOG data to the Developers?"
+            self.sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec
+        
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of private func finishAppInitialization().
+    
     private func uploadCurrentAppLogToDevs()
     {
   
@@ -962,7 +1013,7 @@ struct SettingsSingleViewCore: View
 
 #if os(iOS)
 
-    func checkIfAppLogWasPresent() -> Bool
+    private func checkIfAppLogWasPresent() -> Bool
     {
   
         let sCurrMethod:String = #function
@@ -980,9 +1031,9 @@ struct SettingsSingleViewCore: View
   
         return bWasAppLogPresentAtStart
   
-    }   // End of checkIfAppLogWasPresent().
+    }   // End of private func checkIfAppLogWasPresent().
 
-    func checkIfAppDidCrash() -> Bool
+    private func checkIfAppDidCrash() -> Bool
     {
   
         let sCurrMethod:String = #function
@@ -1002,9 +1053,9 @@ struct SettingsSingleViewCore: View
   
         return bDidAppCrashOnLastRun
   
-    }   // End of checkIfAppDidCrash().
+    }   // End of private func checkIfAppDidCrash().
 
-    func uploadPreviousAppLogToDevs()
+    private func uploadPreviousAppLogToDevs()
     {
   
         let sCurrMethod:String = #function
@@ -1077,7 +1128,7 @@ struct SettingsSingleViewCore: View
   
         return
   
-    }   // End of uploadPreviousAppLogToDevs().
+    }   // End of private func uploadPreviousAppLogToDevs().
 
     private func downloadAppReleaseUpdate()
     {

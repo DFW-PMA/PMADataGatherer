@@ -16,7 +16,7 @@ struct AppLocationMapView: View
     {
         
         static let sClsId        = "AppLocationMapView"
-        static let sClsVers      = "v1.1204"
+        static let sClsVers      = "v1.1403"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -26,7 +26,7 @@ struct AppLocationMapView: View
     
     // App Data field(s):
 
-//  @Environment(\.dismiss) var dismiss
+//  @Environment(\.dismiss)          var dismiss
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.colorScheme)      var colorScheme
 
@@ -121,6 +121,50 @@ struct AppLocationMapView: View
                 HStack(alignment:.center)
                 {
 
+                    Button
+                    {
+
+                        self.cAppTidScheduleViewButtonPresses += 1
+
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
+
+                        self.isAppTidScheduleViewModal.toggle()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "doc.text.magnifyingglass")
+                                .help(Text("App TID/Patient Schedule Viewer"))
+                                .imageScale(.large)
+
+                            Text("Schedule")
+                                .font(.caption)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppTidScheduleViewModal, content:
+                        {
+
+                            AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+
+                        }
+                    )
+                #elseif os(iOS)
+                    .fullScreenCover(isPresented:$isAppTidScheduleViewModal)
+                    {
+
+                        AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+
+                    }
+                #endif
+                    .padding()
+
                     Spacer()
 
                     VStack
@@ -206,11 +250,11 @@ struct AppLocationMapView: View
                     Button
                     {
 
-                        self.cAppTidScheduleViewButtonPresses += 1
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'Dismiss' pressed...")
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
+                        self.presentationMode.wrappedValue.dismiss()
 
-                        self.isAppTidScheduleViewModal.toggle()
+                    //  dismiss()
 
                     }
                     label:
@@ -219,31 +263,22 @@ struct AppLocationMapView: View
                         VStack(alignment:.center)
                         {
 
-                            Label("", systemImage: "doc.text.magnifyingglass")
-                                .help(Text("App TID/Patient Schedule Viewer"))
+                            Label("", systemImage: "xmark.circle")
+                                .help(Text("Dismiss this Screen"))
                                 .imageScale(.large)
 
-                            Text("Schedule")
+                            Text("Dismiss")
                                 .font(.caption)
 
                         }
 
                     }
                 #if os(macOS)
-                    .sheet(isPresented:$isAppTidScheduleViewModal, content:
-                        {
-
-                            AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
-
-                        }
-                    )
-                #elseif os(iOS)
-                    .fullScreenCover(isPresented:$isAppTidScheduleViewModal)
-                    {
-
-                        AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
-
-                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
                 #endif
                     .padding()
 

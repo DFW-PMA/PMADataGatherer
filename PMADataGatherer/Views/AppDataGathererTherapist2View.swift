@@ -571,7 +571,7 @@ struct AppDataGathererTherapist2View: View
 
         return
 
-    }   // END of private func detailTherapistNamesList().
+    }   // End of private func detailTherapistNamesList().
 
     private func updateSelectableTherapistNamesList(sSearchValue:String = "")
     {
@@ -659,7 +659,7 @@ struct AppDataGathererTherapist2View: View
 
         return
 
-    }   // END of private func updateSelectableTherapistNamesList(sSearchValue:String).
+    }   // End of private func updateSelectableTherapistNamesList(sSearchValue:String).
 
 }   // End of struct AppDataGathererTherapist2View(View).
 
