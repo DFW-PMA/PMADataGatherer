@@ -16,7 +16,7 @@ struct AppLocationMapView: View
     {
         
         static let sClsId        = "AppLocationMapView"
-        static let sClsVers      = "v1.1403"
+        static let sClsVers      = "v1.1405"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -162,6 +162,13 @@ struct AppLocationMapView: View
                         AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
 
                     }
+                #endif
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
                 #endif
                     .padding()
 

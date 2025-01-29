@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.2002"
+        static let sClsVers      = "v1.2101"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -54,6 +54,8 @@ struct SettingsSingleViewCore: View
 
     @State private var isAppSuspendShowing:Bool                              = false
 
+#endif
+    
     @State private var isAppDownloadReleaseUpdateShowing:Bool                = false
     @State private var isAppDownloadPreReleaseUpdateShowing:Bool             = false
 
@@ -71,8 +73,6 @@ struct SettingsSingleViewCore: View
     @State private var sAppExecutionPreviousLogToUpload:String               = ""
     @State private var isAppExecutionPreviousShowing:Bool                    = false
 
-#endif
-    
                    var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
                    var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
@@ -1011,8 +1011,6 @@ struct SettingsSingleViewCore: View
   
     }   // End of private func uploadCurrentAppLogToDevs().
 
-#if os(iOS)
-
     private func checkIfAppLogWasPresent() -> Bool
     {
   
@@ -1054,6 +1052,8 @@ struct SettingsSingleViewCore: View
         return bDidAppCrashOnLastRun
   
     }   // End of private func checkIfAppDidCrash().
+
+#if os(iOS)
 
     private func uploadPreviousAppLogToDevs()
     {

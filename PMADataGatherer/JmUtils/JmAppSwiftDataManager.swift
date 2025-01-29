@@ -17,7 +17,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppSwiftDataManager"
-        static let sClsVers      = "v1.0703"
+        static let sClsVers      = "v1.0707"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2024-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -53,7 +53,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
     @Published      var sAlarmsEnabledMessage:String                   = "-N/A-"
     @Published      var sAlarmNextMessage:String                       = ""
 
-    @Published      var pfAdminsSwiftDataItems:[PFAdminsSwiftDataItem] = []
+    @Published      var pfAdminsSwiftDataItems:[PFAdminsSwiftDataItem] = [PFAdminsSwiftDataItem]()
     @Published      var bArePFAdminsSwiftDataItemsAvailable:Bool       = false
     
     // App 'delegate' Visitor:
@@ -137,20 +137,28 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         asToString.append("sClsDisp': [\(ClassInfo.sClsDisp)],")
         asToString.append("sClsCopyRight': [\(ClassInfo.sClsCopyRight)],")
         asToString.append("bClsTrace': [\(ClassInfo.bClsTrace)],")
-        asToString.append("bClsFileLog': [\(ClassInfo.bClsFileLog)],")
+        asToString.append("bClsFileLog': [\(ClassInfo.bClsFileLog)]")
         asToString.append("],")
         asToString.append("[")
         asToString.append("bInternalTest': [\(self.bInternalTest)],")
-        asToString.append("cJmAppSwiftDataManagerMethodCalls': [\(self.cJmAppSwiftDataManagerMethodCalls)],")
+        asToString.append("cJmAppSwiftDataManagerMethodCalls': (\(self.cJmAppSwiftDataManagerMethodCalls))")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("SwiftData 'schema': (\(String(describing: self.schema))),")
-        asToString.append("SwiftData 'modelConfiguration': (\(String(describing: self.modelConfiguration))),")
-        asToString.append("SwiftData 'modelContainer': (\(String(describing: self.modelContainer))),")
-        asToString.append("SwiftData 'modelContext': (\(String(describing: self.modelContext))),")
-    //  asToString.append("SwiftData 'undoManager': (\(String(describing: self.undoManager))),")
-        asToString.append("SwiftData 'alarmSwiftDataItems': (\(String(describing: self.alarmSwiftDataItems))),")
-        asToString.append("SwiftData 'bAreAlarmSwiftDataItemsAvailable': (\(String(describing: self.bAreAlarmSwiftDataItemsAvailable))),")
+        asToString.append("SwiftData 'schema': [\(String(describing: self.schema))],")
+        asToString.append("SwiftData 'modelConfiguration': [\(String(describing: self.modelConfiguration))],")
+        asToString.append("SwiftData 'modelContainer': [\(String(describing: self.modelContainer))],")
+        asToString.append("SwiftData 'modelContext': [\(String(describing: self.modelContext))]")
+    //  asToString.append("SwiftData 'undoManager': [\(String(describing: self.undoManager))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("SwiftData 'alarmSwiftDataItems': [\(String(describing: self.alarmSwiftDataItems))],")
+        asToString.append("SwiftData 'bAreAlarmSwiftDataItemsAvailable': [\(String(describing: self.bAreAlarmSwiftDataItemsAvailable))],")
+        asToString.append("SwiftData 'sAlarmsEnabledMessage': [\(String(describing: self.sAlarmsEnabledMessage))],")
+        asToString.append("SwiftData 'sAlarmNextMessage': [\(String(describing: self.sAlarmNextMessage))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("SwiftData 'pfAdminsSwiftDataItems': [\(String(describing: self.pfAdminsSwiftDataItems))[,")
+        asToString.append("SwiftData 'bArePFAdminsSwiftDataItemsAvailable': [\(String(describing: self.bArePFAdminsSwiftDataItemsAvailable)))]")
         asToString.append("],")
         asToString.append("]")
 
@@ -269,11 +277,11 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
                 // Sort the SwiftData item(s) <if any>...
 
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.sortAppSwiftDataAlarmItems()'...")
-
-                let _ = self.sortAppSwiftDataAlarmItems()
-
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.sortAppSwiftDataAlarmItems()'...")
+            //  self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.sortAppSwiftDataAlarmItems()'...")
+            //
+            //  let _ = self.sortAppSwiftDataAlarmItems()
+            //
+            //  self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.sortAppSwiftDataAlarmItems()'...")
           
             }
 
@@ -308,26 +316,28 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterAdd' is [\(bShowDetailAfterAdd)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <Add> - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterAdd' is [\(bShowDetailAfterAdd)]...")
   
-        // Add the supplied SwiftData item to the ModelContext...
+        // Add the supplied SwiftData item to the list 'pfAdminsSwiftDataItems' and the ModelContext...
   
         if (self.modelContext != nil) 
         {
 
+            self.pfAdminsSwiftDataItems.append(pfAdminsSwiftDataItem)
+
             self.modelContext!.insert(pfAdminsSwiftDataItem)
       
-            self.xcgLogMsg("\(sCurrMethodDisp) Added a supplied 'pfAdminsSwiftDataItem' of [\(String(describing: pfAdminsSwiftDataItem.toString()))] to the SwiftData 'model' Context...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.saveAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Add> - Added a supplied 'pfAdminsSwiftDataItem' of [\(String(describing: pfAdminsSwiftDataItem.toString()))] to the SwiftData 'model' Context...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Add> - Invoking 'self.saveAppSwiftData()'...")
 
             self.saveAppSwiftData()
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.saveAppSwiftData()'...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.fetchAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Add> - Invoked  'self.saveAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Add> - Invoking 'self.fetchAppSwiftData()'...")
 
             self.fetchAppSwiftData(bShowDetailAfterFetch:bShowDetailAfterAdd)
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.fetchAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Add> - Invoked  'self.fetchAppSwiftData()'...")
             
             DispatchQueue.main.async
             {
@@ -347,14 +357,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
             
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Add) 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Add) 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Add> - 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'admin' item(s)...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Add> - 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Add> - has failed operation - 'self.modelContext' is nil - Error!")
 
         }
         
         // Exit:
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterAdd' is [\(bShowDetailAfterAdd)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <Add> - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterAdd' is [\(bShowDetailAfterAdd)]...")
   
         return
   
@@ -366,7 +382,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bShowDetailAfterFetch' is [\(bShowDetailAfterFetch)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <Fetch> - 'bShowDetailAfterFetch' is [\(bShowDetailAfterFetch)]...")
 
         // Fetch (or re-fetch) the SwiftData 'model' Container's ModelContext...
         
@@ -390,11 +406,11 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
                         if (bShowDetailAfterFetch == true)
                         {
                         
-                            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.detailAppSwiftDataToLog()'...")
+                            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Fetch> - Invoking 'self.detailAppSwiftDataToLog()'...")
                             
                             self.detailAppSwiftDataToLog()
                         
-                            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.detailAppSwiftDataToLog()'...")
+                            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Fetch> - Invoked  'self.detailAppSwiftDataToLog()'...")
                             
                         }
                         
@@ -408,8 +424,14 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
                     }
 
-                    self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-                    self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+                    self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager <Fetch> - 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'admin' item(s)...")
+                    self.xcgLogMsg("\(ClassInfo.sClsDisp) #1 SwiftDataManager <Fetch> - 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+
+                }
+                else
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Fetch> - has failed operation - 'self.modelContext' is nil - Error!")
 
                 }
 
@@ -417,14 +439,14 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
             catch
             {
                 
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext 'fetch' has failed - Details: \(error) - Error!")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Fetch> - operation has failed - Details: \(error) - Error!")
 
                 self.bArePFAdminsSwiftDataItemsAvailable = false
-                self.modelContext                     = nil
-                self.modelContainer                   = nil
+                self.modelContext                        = nil
+                self.modelContainer                      = nil
 
-                self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager 'self.pfAdminsSwiftDataItems' has #(\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-                self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+                self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager <Fetch> - 'self.pfAdminsSwiftDataItems' has #(\(self.pfAdminsSwiftDataItems.count)) 'admin' item(s)...")
+                self.xcgLogMsg("\(ClassInfo.sClsDisp) #2 SwiftDataManager <Fetch> - 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
                 
             }
 
@@ -432,7 +454,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bShowDetailAfterFetch' is [\(bShowDetailAfterFetch)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <Fetch> - 'bShowDetailAfterFetch' is [\(bShowDetailAfterFetch)]...")
 
         return
 
@@ -444,7 +466,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'offsets' is [\(offsets)] - 'bShowDetailAfterDeletes' is [\(bShowDetailAfterDeletes)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <Deletes> - 'offsets' is [\(offsets)] - 'bShowDetailAfterDeletes' is [\(bShowDetailAfterDeletes)]...")
   
         // Delete the supplied SwiftData item(s) from the ModelContext...
   
@@ -458,7 +480,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
             
             }
             
-            self.xcgLogMsg("\(sCurrMethodDisp) 'alarm' SwiftData 'item(s)' has been 'deleted' from the SwiftDataManager ModelContext...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Deletes> - SwiftData 'item(s)' has been 'deleted' from the SwiftDataManager ModelContext...")
 
         //  We bypass the 'save' here as each individual 'delete' does a 'save'...
         //
@@ -468,11 +490,11 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         //
         //  self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.saveAppSwiftData()'...")
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.fetchAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Deletes> - Invoking 'self.fetchAppSwiftData()'...")
 
             self.fetchAppSwiftData(bShowDetailAfterFetch:bShowDetailAfterDeletes)
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.fetchAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Deletes> - Invoked  'self.fetchAppSwiftData()'...")
 
             if (self.pfAdminsSwiftDataItems.count > 0)
             {
@@ -487,14 +509,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
 
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Deletes) 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Deletes) 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Deletes> - 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'admin' item(s)...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Deletes> - 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Deletes> - operation has failed - 'self.modelContext' is nil - Error!")
 
         }
         
         // Exit:
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'offsets' is [\(offsets)] - 'bShowDetailAfterDeletes' is [\(bShowDetailAfterDeletes)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <Deletes> - 'offsets' is [\(offsets)] - 'bShowDetailAfterDeletes' is [\(bShowDetailAfterDeletes)]...")
   
         return
   
@@ -506,7 +534,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterDelete' is [\(bShowDetailAfterDelete)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <Delete> - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterDelete' is [\(bShowDetailAfterDelete)]...")
   
         // Delete the supplied SwiftData item from the ModelContext...
   
@@ -515,17 +543,17 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             self.modelContext!.delete(pfAdminsSwiftDataItem)
       
-            self.xcgLogMsg("\(sCurrMethodDisp) Deleted a supplied 'pfAdminsSwiftDataItem' of [\(String(describing: pfAdminsSwiftDataItem.toString()))] to the SwiftData 'model' Context...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.saveAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Delete> - Deleted a supplied 'pfAdminsSwiftDataItem' of [\(String(describing: pfAdminsSwiftDataItem.toString()))] to the SwiftData 'model' Context...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Delete> - Invoking 'self.saveAppSwiftData()'...")
 
             self.saveAppSwiftData()
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.saveAppSwiftData()'...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.fetchAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Delete> - Invoked  'self.saveAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Delete> - Invoking 'self.fetchAppSwiftData()'...")
 
             self.fetchAppSwiftData(bShowDetailAfterFetch:bShowDetailAfterDelete)
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.fetchAppSwiftData()'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Delete> - Invoked  'self.fetchAppSwiftData()'...")
 
             if (self.pfAdminsSwiftDataItems.count > 0)
             {
@@ -540,14 +568,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
 
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Delete) 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Delete) 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Delete> - 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'admin' item(s)...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Delete> - 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Delete> - has failed operation - 'self.modelContext' is nil - Error!")
 
         }
         
         // Exit:
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterDelete' is [\(bShowDetailAfterDelete)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <Delete> - 'pfAdminsSwiftDataItem' is [\(pfAdminsSwiftDataItem)] - 'bShowDetailAfterDelete' is [\(bShowDetailAfterDelete)]...")
   
         return
   
@@ -559,7 +593,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <Detail>...")
 
         // Detail the SwiftData 'model' Container's ModelContext to the Log...
         
@@ -611,14 +645,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
 
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Details) 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager (Details) 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Detail> - 'self.pfAdminsSwiftDataItems' has (\(self.pfAdminsSwiftDataItems.count)) 'admin' item(s)...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Detail> - 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Detail> - operation has failed operation - 'self.modelContext' is nil - Error!")
 
         }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <Detail>...")
 
         return
 
@@ -630,7 +670,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <CreateDefaults>...")
 
         // NOTE: If necessary, the block below generates a 'default' SwiftData item (if there are NONE)...
         
@@ -645,25 +685,31 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
       
                 self.modelContext!.insert(newPFAdminsSwiftDataItem)
       
-                self.xcgLogMsg("\(sCurrMethodDisp) There were NO SwiftData 'item(s)' - Added a default 'newPFAdminsSwiftDataItem' of [\(String(describing: newPFAdminsSwiftDataItem.toString()))] to the SwiftData 'model' Context...")
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.saveAppSwiftData()'...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <CreateDefaults> - There were NO SwiftData 'item(s)' - Added a default 'newPFAdminsSwiftDataItem' of [\(String(describing: newPFAdminsSwiftDataItem.toString()))] to the SwiftData 'model' Context...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <CreateDefaults> - Invoking 'self.saveAppSwiftData()'...")
 
                 self.saveAppSwiftData()
 
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.saveAppSwiftData()'...")
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.detailAppSwiftDataToLog()'...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <CreateDefaults> - Invoked  'self.saveAppSwiftData()'...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <CreateDefaults> - Invoking 'self.detailAppSwiftDataToLog()'...")
 
                 self.detailAppSwiftDataToLog()
 
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.detailAppSwiftDataToLog()'...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <CreateDefaults> - Invoked  'self.detailAppSwiftDataToLog()'...")
 
             }
       
         }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <CreateDefaults> - operation has failed - 'self.modelContext' is nil - Error!")
+
+        }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <CreateDefaults>...")
 
         return
 
@@ -675,7 +721,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <Undo>...")
 
         // Undo the SwiftData item(s) (if there are any)...
         
@@ -688,13 +734,13 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
       
                 self.modelContext!.undoManager!.undo()
 
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext has been 'undone' - 'self.alarmSwiftDataItems' had #(\(self.alarmSwiftDataItems.count)) item(s)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Undo> - SwiftData ModelContext has been 'undone' - 'self.alarmSwiftDataItems' had #(\(self.alarmSwiftDataItems.count)) item(s)...")
 
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoking 'self.saveAppSwiftData()'...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Undo> - Invoking 'self.saveAppSwiftData()'...")
 
                 self.saveAppSwiftData()
 
-                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager Invoked  'self.saveAppSwiftData()'...")
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Undo> - Invoked  'self.saveAppSwiftData()'...")
 
             }
 
@@ -711,14 +757,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Undo> - 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Undo> - 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
       
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Undo> - operation has failed - 'self.modelContext' is nil - Error!")
+
         }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <Undo>...")
 
         return
 
@@ -730,7 +782,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <BeginUndoGroup>...")
 
         // 'begin' the 'undo' grouping...
         
@@ -740,7 +792,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             self.modelContext!.undoManager!.beginUndoGrouping()
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext has 'begun' an 'undo' grouping...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <BeginUndoGroup> - SwiftData ModelContext has 'begun' an 'undo' grouping...")
 
             if (self.alarmSwiftDataItems.count < 1)
             {
@@ -755,14 +807,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <BeginUndoGroup> - 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <BeginUndoGroup> - 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
       
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <BeginUndoGroup> - operation has failed - 'self.modelContext' and/or 'self.modelContext!.undoManager' is nil - Error!")
+
         }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <BeginUndoGroup>...")
 
         return
 
@@ -774,7 +832,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <EndUndoGroup>...")
 
         // 'end' the 'undo' grouping...
         
@@ -784,7 +842,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             self.modelContext!.undoManager!.endUndoGrouping()
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext has 'ended' an 'undo' grouping...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <EndUndoGroup> - SwiftData ModelContext has 'ended' an 'undo' grouping...")
 
             if (self.alarmSwiftDataItems.count < 1)
             {
@@ -799,14 +857,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <EndUndoGroup> - 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <EndUndoGroup> - 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
       
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <EndUndoGroup> - operation has failed - 'self.modelContext' and/or 'self.modelContext!.undoManager' is nil - Error!")
+
         }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <EndUndoGroup>...")
 
         return
 
@@ -818,7 +882,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <UndoNestedGrouping>...")
 
         // 'undo' the 'nested' group...
         
@@ -828,7 +892,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             self.modelContext!.undoManager!.undoNestedGroup()
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext has 'undone' a 'nested' group...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <UndoNestedGrouping> - SwiftData ModelContext has 'undone' a 'nested' group...")
 
             if (self.alarmSwiftDataItems.count < 1)
             {
@@ -843,14 +907,20 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
 
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <UndoNestedGrouping> - 'self.alarmSwiftDataItems' has #(\(self.alarmSwiftDataItems.count)) 'alarm' item(s)...")
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <UndoNestedGrouping> - 'self.bAreAlarmSwiftDataItemsAvailable' is [\(self.bAreAlarmSwiftDataItemsAvailable)]...")
       
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <UndoNestedGrouping> - operation has failed - 'self.modelContext' and/or 'self.modelContext!.undoManager' is nil - Error!")
+
         }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <UndoNestedGrouping>...")
 
         return
 
@@ -862,7 +932,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - SwiftDataManager <Save>...")
 
         // Save the SwiftData item(s) (if there are any)...
         
@@ -877,15 +947,21 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
                     try self.modelContext!.save()
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext has been saved - 'self.pfAdminsSwiftDataItems' had #(\(self.pfAdminsSwiftDataItems.count)) item(s)...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Save> - operation has been completed - 'self.pfAdminsSwiftDataItems' had #(\(self.pfAdminsSwiftDataItems.count)) item(s)...")
 
                 }
                 catch
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext has failed to save - Details: \(error) - Error!")
+                    self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Save> - operation has failed - Details: \(error) - Error!")
 
                 }
+
+            }
+            else
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Save> - operation has failed - 'self.pfAdminsSwiftDataItems.count' of (\(self.pfAdminsSwiftDataItems.count)) is less than 1 - nothing to save - Warning!")
 
             }
             
@@ -907,22 +983,28 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
 
             }
             
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager 'self.pfAdminsSwiftDataItems' has #(\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
-            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Save> - 'self.pfAdminsSwiftDataItems' has #(\(self.pfAdminsSwiftDataItems.count)) 'alarm' item(s)...")
+            self.xcgLogMsg("\(ClassInfo.sClsDisp) SwiftDataManager <Save> - 'self.bArePFAdminsSwiftDataItemsAvailable' is [\(self.bArePFAdminsSwiftDataItemsAvailable)]...")
       
         }
+        else
+        {
 
-        // Sort the SwiftData item(s)...
+            self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager <Save> - operation has failed - 'self.modelContext' is nil - Error!")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager ('save') Invoking 'self.sortAppSwiftDataAlarmItems()'...")
+        }
 
-        let _ = self.sortAppSwiftDataAlarmItems()
-
-        self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager ('save') Invoked  'self.sortAppSwiftDataAlarmItems()'...")
+    //  // Sort the SwiftData item(s)...
+    //
+    //  self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext <Save> Invoking 'self.sortAppSwiftDataAlarmItems()'...")
+    //
+    //  let _ = self.sortAppSwiftDataAlarmItems()
+    //
+    //  self.xcgLogMsg("\(sCurrMethodDisp) SwiftData ModelContext <Save> Invoked  'self.sortAppSwiftDataAlarmItems()'...")
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - SwiftDataManager <Save>...")
 
         return
 

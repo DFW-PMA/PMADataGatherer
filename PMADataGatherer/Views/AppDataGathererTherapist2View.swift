@@ -17,7 +17,7 @@ struct AppDataGathererTherapist2View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.0505"
+        static let sClsVers      = "v1.0604"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -103,7 +103,8 @@ struct AppDataGathererTherapist2View: View
         
         let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) \(ClassInfo.sClsCopyRight)...")
         
-        NavigationStack
+    //  NavigationStack
+        ScrollView
         {
 
             VStack
@@ -250,6 +251,8 @@ struct AppDataGathererTherapist2View: View
                             self.sTherapistTID = ""
                         }
 
+                    Spacer()
+
                     if (self.sTherapistTID.count    > 0 &&
                         (self.sTherapistName.count  > 0 &&
                          self.sTherapistName       != "-N/A-"))
@@ -314,12 +317,12 @@ struct AppDataGathererTherapist2View: View
                         .padding()
                     
                     }
-                    else
-                    {
-
-                        Spacer()
-
-                    }
+                //  else
+                //  {
+                //
+                //      Spacer()
+                //
+                //  }
 
                 }
 
@@ -478,7 +481,8 @@ struct AppDataGathererTherapist2View: View
                         }
 
                 }
-                .frame(maxHeight:250)
+                .scaledToFill()
+            //  .frame(maxHeight:250)
 
             }
 
