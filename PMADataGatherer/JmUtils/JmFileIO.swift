@@ -17,7 +17,7 @@ public class JmFileIO
     {
 
         static let sClsId        = "JmFileIO"
-        static let sClsVers      = "v8.0101"
+        static let sClsVers      = "v9.0102"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2015-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -48,14 +48,28 @@ public class JmFileIO
     class public func fileExists(sFilespec:String)->Bool
     {
 
-        let sTestFilespec:String = JmFileIO.stripQuotesFromFile(sFilespec: sFilespec)
+        if (sFilespec.count < 1)
+        {
+        
+            return false
+        
+        }
 
-        return FileManager().fileExists(atPath: sTestFilespec)
+        let sTestFilespec:String = JmFileIO.stripQuotesFromFile(sFilespec:sFilespec)
 
-    }   // End of class public func fileExists().
+        return FileManager().fileExists(atPath:sTestFilespec)
+
+    }   // End of class public func fileExists()->Bool.
 
     class public func stripQuotesFromFile(sFilespec:String)->String
     {
+
+        if (sFilespec.count < 1)
+        {
+        
+            return ""
+        
+        }
 
         var sTestFilespec:String = sFilespec
 
@@ -76,17 +90,24 @@ public class JmFileIO
 
         return sTestFilespec
 
-    }   // End of class public func stripQuotesFromFile().
+    }   // End of class public func stripQuotesFromFile()->String.
 
     class public func readFile(sFilespec:String, nsEncoding:String.Encoding = String.Encoding.utf8)->String?
     {
+
+        if (sFilespec.count < 1)
+        {
+        
+            return nil
+        
+        }
 
         var sCurrFilespec:String = sFilespec
 
         if (sCurrFilespec.hasPrefix("~/") == true)
         {
 
-            sCurrFilespec = NSString(string: sCurrFilespec).expandingTildeInPath as String
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
 
         }
 
@@ -99,25 +120,32 @@ public class JmFileIO
 
         return nil
 
-    }   // End of class public func readFile().
+    }   // End of class public func readFile()->String?.
 
     class public func readFileLines(sFilespec:String, nsEncoding:String.Encoding = String.Encoding.utf8)->[String]?
     {
+
+        if (sFilespec.count < 1)
+        {
+        
+            return nil
+        
+        }
 
         var sCurrFilespec:String = sFilespec
 
         if (sCurrFilespec.hasPrefix("~/") == true)
         {
 
-            sCurrFilespec = NSString(string: sCurrFilespec).expandingTildeInPath as String
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
 
         }
 
-        if JmFileIO.fileExists(sFilespec: sCurrFilespec)
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
         {
 
             let sDataRead           = (try? String(contentsOfFile:sCurrFilespec, encoding:nsEncoding)) ?? ""
-            let asDataRead:[String] = sDataRead.components(separatedBy: "\n")
+            let asDataRead:[String] = sDataRead.components(separatedBy:"\n")
 
             return asDataRead
 
@@ -125,17 +153,24 @@ public class JmFileIO
 
         return nil
 
-    }   // End of class public func readFileLines().
+    }   // End of class public func readFileLines()->[String]?.
 
     class public func writeFile(sFilespec:String, sContents:String, bAppendToFile:Bool = true, nsEncoding:String.Encoding = String.Encoding.utf8)->Bool
     {
+
+        if (sFilespec.count < 1)
+        {
+        
+            return false
+        
+        }
 
         var sCurrFilespec:String = sFilespec
 
         if (sCurrFilespec.hasPrefix("~/") == true)
         {
 
-            sCurrFilespec = NSString(string: sCurrFilespec).expandingTildeInPath as String
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
 
         }
 
@@ -144,7 +179,7 @@ public class JmFileIO
         do
         {
 
-            try FileManager.default.createDirectory(atPath: sCurrFilepath, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(atPath:sCurrFilepath, withIntermediateDirectories:true, attributes:nil)
 
         }
         catch
@@ -160,7 +195,7 @@ public class JmFileIO
             do
             {
 
-                try sContents.write(toFile: sCurrFilespec, atomically:true, encoding:nsEncoding)
+                try sContents.write(toFile:sCurrFilespec, atomically:true, encoding:nsEncoding)
 
                 return true
 
@@ -185,23 +220,30 @@ public class JmFileIO
 
         nsOutputStream?.open()
 
-        nsOutputStream?.write(sContents, maxLength:sContents.lengthOfBytes(using: nsEncoding))
+        nsOutputStream?.write(sContents, maxLength:sContents.lengthOfBytes(using:nsEncoding))
 
         nsOutputStream?.close()
 
         return true
 
-    }   // End of class public func writeFile().
+    }   // End of class public func writeFile()->Bool.
 
     class public func writeFileLines(sFilespec:String, asContents:[String], bAppendToFile:Bool = true, nsEncoding:String.Encoding = String.Encoding.utf8)->Bool
     {
+
+        if (sFilespec.count < 1)
+        {
+        
+            return false
+        
+        }
 
         var sCurrFilespec:String = sFilespec
 
         if (sCurrFilespec.hasPrefix("~/") == true)
         {
 
-            sCurrFilespec = NSString(string: sCurrFilespec).expandingTildeInPath as String
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
 
         }
 
@@ -210,7 +252,7 @@ public class JmFileIO
         do
         {
 
-            try FileManager.default.createDirectory(atPath: sCurrFilepath, withIntermediateDirectories: true, attributes: nil)
+            try FileManager.default.createDirectory(atPath:sCurrFilepath, withIntermediateDirectories:true, attributes:nil)
 
         }
         catch
@@ -220,7 +262,7 @@ public class JmFileIO
 
         }
 
-        let sContents:String = asContents.joined(separator: "\n")
+        let sContents:String = asContents.joined(separator:"\n")
 
         if (bAppendToFile == false)
         {
@@ -228,7 +270,7 @@ public class JmFileIO
             do
             {
 
-                try sContents.write(toFile: sCurrFilespec, atomically:true, encoding:nsEncoding)
+                try sContents.write(toFile:sCurrFilespec, atomically:true, encoding:nsEncoding)
 
                 return true
 
@@ -253,29 +295,391 @@ public class JmFileIO
 
         nsOutputStream?.open()
 
-        nsOutputStream?.write(sContents, maxLength:sContents.lengthOfBytes(using: nsEncoding))
+        nsOutputStream?.write(sContents, maxLength:sContents.lengthOfBytes(using:nsEncoding))
 
         nsOutputStream?.close()
 
         return true
 
-    }   // End of class public func writeFileLines().
+    }   // End of class public func writeFileLines()->Bool.
 
     class public func convertHFSFilespecToUnix(sHFSFilespec:String? = nil)->String?
     {
 
-        if (sHFSFilespec == nil)
+        if (sHFSFilespec        == nil ||
+            sHFSFilespec!.count  < 1)
         {
 
             return nil
 
         }
 
-        let sStdFilespec = sHFSFilespec!.replacingOccurrences(of: ":", with: "/", options: String.CompareOptions.literal, range: nil)
+        let sStdFilespec = sHFSFilespec!.replacingOccurrences(of:":", with:"/", options:String.CompareOptions.literal, range:nil)
 
         return ("/Volumes/\(sStdFilespec)")
 
-    }   // End of public func convertHFSFilespecToUnix().
+    }   // End of public func convertHFSFilespecToUnix()->String?.
+
+    class public func getFilespecComponents(sFilespec:String)->[String]?
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return nil
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        return FileManager().componentsToDisplay(forPath:sCurrFilespec)
+
+    }   // End of class public func fgetFilespecComponents(sFilespec:String)->[String]?.
+
+    class public func getFilespecType(sFilespec:String)->String
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return "unknown"
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let nsDictItemAttributes:NSDictionary? = try? FileManager.default.attributesOfItem(atPath:sCurrFilespec) as NSDictionary
+
+            if (nsDictItemAttributes        != nil &&
+                nsDictItemAttributes!.count  > 0)
+            {
+
+                return (nsDictItemAttributes!.fileType() ?? "unknown")
+
+            }
+
+        }
+
+        return "unknown"
+
+    }   // End of class public func getFilespecType(sFilespec:String)->String.
+
+    class public func getFilespecIsImmutable(sFilespec:String)->Bool
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return false
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let nsDictItemAttributes:NSDictionary? = try? FileManager.default.attributesOfItem(atPath:sCurrFilespec) as NSDictionary
+
+            if (nsDictItemAttributes        != nil &&
+                nsDictItemAttributes!.count  > 0)
+            {
+
+                return nsDictItemAttributes!.fileIsImmutable()
+
+            }
+
+        }
+
+        return false
+
+    }   // End of class public func getFilespecIsImmutable(sFilespec:String)->Bool.
+
+    class public func getFilespecIsAppendOnly(sFilespec:String)->Bool
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return false
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let nsDictItemAttributes:NSDictionary? = try? FileManager.default.attributesOfItem(atPath:sCurrFilespec) as NSDictionary
+
+            if (nsDictItemAttributes        != nil &&
+                nsDictItemAttributes!.count  > 0)
+            {
+
+                return nsDictItemAttributes!.fileIsAppendOnly()
+
+            }
+
+        }
+
+        return false
+
+    }   // End of class public func getFilespecIsImmutable(sFilespec:String)->Bool.
+
+    class public func getFilespecCreatedAtDate(sFilespec:String)->Date?
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return nil
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let nsDictItemAttributes:NSDictionary? = try? FileManager.default.attributesOfItem(atPath:sCurrFilespec) as NSDictionary
+
+            if (nsDictItemAttributes        != nil &&
+                nsDictItemAttributes!.count  > 0)
+            {
+
+                return (nsDictItemAttributes!.fileCreationDate() ?? Date())
+
+            }
+
+        }
+
+        return nil
+
+    }   // End of class public func getFilespecCreatedAtDate(sFilespec:String)->Date?.
+
+    class public func getFilespecCreatedAtDateAsLocalizedString(sFilespec:String)->String?
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return nil
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let dateCurrFilespecCreated:Date   = JmFileIO.getFilespecCreatedAtDate(sFilespec:sCurrFilespec) ?? Date()
+            let dtFormatterDate:DateFormatter  = DateFormatter()
+
+            dtFormatterDate.locale             = Locale(identifier: "en_US")
+            dtFormatterDate.timeZone           = TimeZone.current
+            dtFormatterDate.dateFormat         = "EEEE MMMM dd, yyyy hh:mm:ss a zzz"
+
+            return (dtFormatterDate.string(from:dateCurrFilespecCreated))
+
+        }
+
+        return nil
+
+    }   // End of class public func getFilespecCreatedAtDateAsLocalizedString(sFilespec:String)->String?.
+
+    class public func getFilespecModifiedOnDate(sFilespec:String)->Date?
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return nil
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let nsDictItemAttributes:NSDictionary? = try? FileManager.default.attributesOfItem(atPath:sCurrFilespec) as NSDictionary
+
+            if (nsDictItemAttributes        != nil &&
+                nsDictItemAttributes!.count  > 0)
+            {
+
+                return (nsDictItemAttributes!.fileModificationDate() ?? Date())
+
+            }
+
+        }
+
+        return nil
+
+    }   // End of class public func getFilespecModifiedOnDate(sFilespec:String)->Date?.
+
+    class public func getFilespecModifiedOnDateAsLocalizedString(sFilespec:String)->String?
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return nil
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let dateCurrFilespecModified:Date  = JmFileIO.getFilespecModifiedOnDate(sFilespec:sCurrFilespec) ?? Date()
+            let dtFormatterDate:DateFormatter  = DateFormatter()
+
+            dtFormatterDate.locale             = Locale(identifier: "en_US")
+            dtFormatterDate.timeZone           = TimeZone.current
+            dtFormatterDate.dateFormat         = "EEEE MMMM dd, yyyy hh:mm:ss a zzz"
+
+            return (dtFormatterDate.string(from:dateCurrFilespecModified))
+
+        }
+
+        return nil
+
+    }   // End of class public func getFilespecModifiedOnDateAsLocalizedString(sFilespec:String)->String?.
+
+    class public func getFilespecSize(sFilespec:String)->Int64
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return 0
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let nsDictItemAttributes:NSDictionary? = try? FileManager.default.attributesOfItem(atPath:sCurrFilespec) as NSDictionary
+
+            if (nsDictItemAttributes        != nil &&
+                nsDictItemAttributes!.count  > 0)
+            {
+
+                return Int64(nsDictItemAttributes!.fileSize())
+
+            }
+
+        }
+
+        return 0
+
+    }   // End of class public func getFilespecSize(sFilespec:String)->Int64.
+
+    class public func getFilespecSizeAsDisplayableMB(sFilespec:String)->String
+    {
+
+        if (sFilespec.count < 1)
+        {
+
+            return "0 MB"
+
+        }
+
+        var sCurrFilespec:String = sFilespec
+
+        if (sCurrFilespec.hasPrefix("~/") == true)
+        {
+
+            sCurrFilespec = NSString(string:sCurrFilespec).expandingTildeInPath as String
+
+        }
+
+        if JmFileIO.fileExists(sFilespec:sCurrFilespec)
+        {
+
+            let cTestFilespecSize:Int64               = JmFileIO.getFilespecSize(sFilespec:sCurrFilespec)
+            let byteCountFormatter:ByteCountFormatter = ByteCountFormatter()
+
+            byteCountFormatter.allowedUnits = [.useMB]
+            byteCountFormatter.countStyle   = .file
+
+            return (byteCountFormatter.string(fromByteCount:Int64(cTestFilespecSize)))
+
+        }
+
+        return "0 MB"
+
+    }   // End of class public func getFilespecSizeAsDisplayableMB(sFilespec:String)->String.
 
 }   // End of public class JmFileIO.
 

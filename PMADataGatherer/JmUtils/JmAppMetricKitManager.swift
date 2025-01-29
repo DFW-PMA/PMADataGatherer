@@ -18,7 +18,7 @@ public class JmAppMetricKitManager: NSObject, MXMetricManagerSubscriber
     {
 
         static let sClsId        = "JmAppMetricKitManager"
-        static let sClsVers      = "v1.0501"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -227,36 +227,41 @@ public class JmAppMetricKitManager: NSObject, MXMetricManagerSubscriber
 
         // Handle the payload list by looping to convert the item(s) into string(s) to be able to 'upload'...
 
-        var listPayloadAttachmentsJSON:[String]   = []
-        var listPayloadAttachmentsBase64:[String] = []
-
-        if (payloads.count > 0)
+        if (AppGlobalInfo.bAppMetricKitManagerSendMetrics == true)
         {
+        
+            var listPayloadAttachmentsJSON:[String]   = []
+            var listPayloadAttachmentsBase64:[String] = []
 
-            for payload in payloads
+            if (payloads.count > 0)
             {
 
-                let sPayloadAttachmentJSON:String   = String(decoding:payload.jsonRepresentation(), as:UTF8.self)
-                let sPayloadAttachmentBase64:String = payload.jsonRepresentation().base64EncodedString()
+                for payload in payloads
+                {
 
-                listPayloadAttachmentsJSON.append(sPayloadAttachmentJSON)
-                listPayloadAttachmentsBase64.append(sPayloadAttachmentBase64)
+                    let sPayloadAttachmentJSON:String   = String(decoding:payload.jsonRepresentation(), as:UTF8.self)
+                    let sPayloadAttachmentBase64:String = payload.jsonRepresentation().base64EncodedString()
+
+                    listPayloadAttachmentsJSON.append(sPayloadAttachmentJSON)
+                    listPayloadAttachmentsBase64.append(sPayloadAttachmentBase64)
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to JSON 'data' string(s) as [\(listPayloadAttachmentsJSON)]...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to Base64 'upload' string(s) as [\(listPayloadAttachmentsBase64)]...")
+
+                // ...this is where we'd 'upload' this data and email it...
+
+                self.sendMXPayloadViaEmail(listPayloadAttachments:listPayloadAttachmentsJSON, sPayloadTag:"MXMetricPayload")
 
             }
+            else
+            {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to JSON 'data' string(s) as [\(listPayloadAttachmentsJSON)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to Base64 'upload' string(s) as [\(listPayloadAttachmentsBase64)]...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was Empty - no action was taken...")
 
-            // ...this is where we'd 'upload' this data and email it...
-
-            self.sendMXPayloadViaEmail(listPayloadAttachments:listPayloadAttachmentsJSON, sPayloadTag:"MXMetricPayload")
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was Empty - no action was taken...")
-
+            }
+        
         }
 
         // Exit:
@@ -279,36 +284,41 @@ public class JmAppMetricKitManager: NSObject, MXMetricManagerSubscriber
 
         // Handle the payload list by looping to convert the item(s) into string(s) to be able to 'upload'...
 
-        var listPayloadAttachmentsJSON:[String]   = []
-        var listPayloadAttachmentsBase64:[String] = []
-
-        if (payloads.count > 0)
+        if (AppGlobalInfo.bAppMetricKitManagerSendDiagnostics == true)
         {
+        
+            var listPayloadAttachmentsJSON:[String]   = []
+            var listPayloadAttachmentsBase64:[String] = []
 
-            for payload in payloads
+            if (payloads.count > 0)
             {
 
-                let sPayloadAttachmentJSON:String   = String(decoding:payload.jsonRepresentation(), as:UTF8.self)
-                let sPayloadAttachmentBase64:String = payload.jsonRepresentation().base64EncodedString()
+                for payload in payloads
+                {
 
-                listPayloadAttachmentsJSON.append(sPayloadAttachmentJSON)
-                listPayloadAttachmentsBase64.append(sPayloadAttachmentBase64)
+                    let sPayloadAttachmentJSON:String   = String(decoding:payload.jsonRepresentation(), as:UTF8.self)
+                    let sPayloadAttachmentBase64:String = payload.jsonRepresentation().base64EncodedString()
+
+                    listPayloadAttachmentsJSON.append(sPayloadAttachmentJSON)
+                    listPayloadAttachmentsBase64.append(sPayloadAttachmentBase64)
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to JSON 'data' string(s) as [\(listPayloadAttachmentsJSON)]...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to Base64 'upload' string(s) as [\(listPayloadAttachmentsBase64)]...")
+
+                // ...this is where we'd 'upload' this data and email it...
+
+                self.sendMXPayloadViaEmail(listPayloadAttachments:listPayloadAttachmentsJSON, sPayloadTag:"MXDiagnosticPayload")
 
             }
+            else
+            {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to JSON 'data' string(s) as [\(listPayloadAttachmentsJSON)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was converted to Base64 'upload' string(s) as [\(listPayloadAttachmentsBase64)]...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was Empty - no action was taken...")
 
-            // ...this is where we'd 'upload' this data and email it...
-
-            self.sendMXPayloadViaEmail(listPayloadAttachments:listPayloadAttachmentsJSON, sPayloadTag:"MXDiagnosticPayload")
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Supplied 'payload' list was Empty - no action was taken...")
-
+            }
+        
         }
 
         // Exit:

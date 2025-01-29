@@ -23,7 +23,7 @@ class HelpBasicLoader: NSObject
     {
         
         static let sClsId        = "HelpBasicLoader"
-        static let sClsVers      = "v1.0801"
+        static let sClsVers      = "v1.0901"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -84,9 +84,9 @@ class HelpBasicLoader: NSObject
         asToString.append("'sHelpBasicFileExt': [\(self.sHelpBasicFileExt)],")
         asToString.append("'sHelpBasicContents': [\(self.sHelpBasicContents)],")
         asToString.append("'helpBasicMode': [\(self.helpBasicMode)],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor)],")
+    //  asToString.append("],")
+    //  asToString.append("[")
+    //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor)],")
         asToString.append("],")
         asToString.append("]")
 

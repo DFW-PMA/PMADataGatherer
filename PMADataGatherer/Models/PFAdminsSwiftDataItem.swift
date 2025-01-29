@@ -77,7 +77,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
 
         return
 
-    }   // END of init(idPFAdminsObject:Int, timestamp:Date, sCreatedBy).
+    }   // End of init(idPFAdminsObject:Int, timestamp:Date, sCreatedBy).
 
     convenience init(timestamp:Date, sCreatedBy:String="-N/A-", pfAdminsItem:ParsePFAdminsDataItem)
     {
@@ -104,7 +104,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
 
         return
 
-    }   // END of convenience init(timestamp:Date, sCreatedBy:String, pfAdminsItem:ParsePFAdminsDataItem).
+    }   // End of convenience init(timestamp:Date, sCreatedBy:String, pfAdminsItem:ParsePFAdminsDataItem).
 
     private func xcgLogMsg(_ sMessage:String)
     {
@@ -206,6 +206,6 @@ public final class PFAdminsSwiftDataItem: Identifiable
 
         return
 
-    }   // END of public func displayPFAdminsSwiftDataItemWithLocalStore(bShowLocalStore:Bool).
+    }   // End of public func displayPFAdminsSwiftDataItemWithLocalStore(bShowLocalStore:Bool).
     
-}   // END of final class PFAdminsSwiftDataItem(NSObject, Identifiable).
+}   // End of final class PFAdminsSwiftDataItem(NSObject, Identifiable).

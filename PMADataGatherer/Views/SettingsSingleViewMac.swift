@@ -78,7 +78,7 @@ struct SettingsSingleViewMac: View
         
     }
     
-}   // END of struct SettingsSingleViewMac(View). 
+}   // End of struct SettingsSingleViewMac(View). 
 
 #Preview 
 {

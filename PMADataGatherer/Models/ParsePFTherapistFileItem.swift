@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0403"
+        static let sClsVers      = "v1.0609"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -26,9 +26,18 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         
     }
 
+    // 'Internal' Trace flag:
+
+    private 
+    var bInternalTraceFlag:Bool                                   = false
+
     // Item Data field(s):
     
-    var id                                               = UUID()
+    var id                                                        = UUID()
+    var idPFTherapistFileObject:Int                               = 0
+
+    var pfTherapistFileObjectClonedFrom:ParsePFTherapistFileItem? = nil 
+    var pfTherapistFileObjectClonedTo:ParsePFTherapistFileItem?   = nil 
 
     // ------------------------------------------------------------------------------------------
     //  'pfTherapistFileObject' is [<CSC: 0x301e16700, objectId: qpp1fxx68P, localId: (null)> 
@@ -36,7 +45,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     //  }]...
     // ------------------------------------------------------------------------------------------
 
-    var pfTherapistFileObject:PFObject?                  = nil
+    var pfTherapistFileObject:PFObject?                           = nil
 
     // ----------------------------------------------------------------------------------------------------------------
     //  TYPE of 'pfTherapistFileObject'                 is [PFObject]         - value is [<CSC: 0x302ee1080, objectId: ...
@@ -52,14 +61,14 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     // Item 'discrete' field(s):
 
-    var sPFTherapistFileClassName:String                 = ""
-    var sPFTherapistFileObjectId:String?                 = nil
-    var datePFTherapistFileCreatedAt:Date?               = nil
-    var datePFTherapistFileUpdatedAt:Date?               = nil
-    var aclPFTherapistFile:PFACL?                        = nil
-    var bPFTherapistFileIsDataAvailable:Bool             = false
-    var bPFTherapistFileIdDirty:Bool                     = false
-    var listPFTherapistFileAllKeys:[String]              = []
+    var sPFTherapistFileClassName:String                          = ""
+    var sPFTherapistFileObjectId:String?                          = nil
+    var datePFTherapistFileCreatedAt:Date?                        = nil
+    var datePFTherapistFileUpdatedAt:Date?                        = nil
+    var aclPFTherapistFile:PFACL?                                 = nil
+    var bPFTherapistFileIsDataAvailable:Bool                      = false
+    var bPFTherapistFileIdDirty:Bool                              = false
+    var listPFTherapistFileAllKeys:[String]                       = []
 
     // ----------------------------------------------------------------------------------------------------------
     // "ID"                 : NumberInt(277),
@@ -74,14 +83,14 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     // Item 'keyed' field(s):
 
-    var iPFTherapistFileTID:Int                          = -1         // 'pfTherapistFileObject[ID]'
-    var sPFTherapistFileName:String                      = "-N/A-"    // 'pfTherapistFileObject[name]'
-    var sPFTherapistFilePhone:String                     = "-N/A-"    // 'pfTherapistFileObject[phone]'
-    var sPFTherapistFileEmail:String                     = "-N/A-"    // 'pfTherapistFileObject[email]'
-    var sPFTherapistFileUsername:String                  = "-N/A-"    // 'pfTherapistFileObject[username]'
-    var sPFTherapistFilePassword:String                  = "-N/A-"    // 'pfTherapistFileObject[password]'
-    var sPFTherapistFileHomeLoc:String                   = ""         // 'pfTherapistFileObject[homeLoc]' [latitude,longitude]
-    var iPFTherapistFileLicenseNumber:Int                = -1         // 'pfTherapistFileObject[licenseNum]'
+    var iPFTherapistFileTID:Int                                   = -1         // 'pfTherapistFileObject[ID]'
+    var sPFTherapistFileName:String                               = "-N/A-"    // 'pfTherapistFileObject[name]'
+    var sPFTherapistFilePhone:String                              = "-N/A-"    // 'pfTherapistFileObject[phone]'
+    var sPFTherapistFileEmail:String                              = "-N/A-"    // 'pfTherapistFileObject[email]'
+    var sPFTherapistFileUsername:String                           = "-N/A-"    // 'pfTherapistFileObject[username]'
+    var sPFTherapistFilePassword:String                           = "-N/A-"    // 'pfTherapistFileObject[password]'
+    var sPFTherapistFileHomeLoc:String                            = ""         // 'pfTherapistFileObject[homeLoc]' [latitude,longitude]
+    var iPFTherapistFileLicenseNumber:Int                         = -1         // 'pfTherapistFileObject[licenseNum]'
 
     // ----------------------------------------------------------------------------------------------------------
     // "notActive"          : Bool,
@@ -95,13 +104,13 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     // Item 'keyed' field(s):
 
-    var bPFTherapistFileNotActive:Bool                   = false      // 'pfTherapistFileObject[notActive]'
-    var bPFTherapistFileOffice:Bool                      = false      // 'pfTherapistFileObject[office]'
-    var bPFTherapistFileIsSupervisor:Bool                = false      // 'pfTherapistFileObject[isSupervisor]'
-    var bPFTherapistFileHaveAssistants:Bool              = false      // 'pfTherapistFileObject[haveAssts]'
-    var iPFTherapistFileType:Int                         = -1         // 'pfTherapistFileObject[type]'
-    var iPFTherapistFileSuperID:Int                      = -1         // 'pfTherapistFileObject[superID]'
-    var iPFTherapistFileMentorID:Int                     = -1         // 'pfTherapistFileObject[mentorID]'
+    var bPFTherapistFileNotActive:Bool                            = false      // 'pfTherapistFileObject[notActive]'
+    var bPFTherapistFileOffice:Bool                               = false      // 'pfTherapistFileObject[office]'
+    var bPFTherapistFileIsSupervisor:Bool                         = false      // 'pfTherapistFileObject[isSupervisor]'
+    var bPFTherapistFileHaveAssistants:Bool                       = false      // 'pfTherapistFileObject[haveAssts]'
+    var iPFTherapistFileType:Int                                  = -1         // 'pfTherapistFileObject[type]'
+    var iPFTherapistFileSuperID:Int                               = -1         // 'pfTherapistFileObject[superID]'
+    var iPFTherapistFileMentorID:Int                              = -1         // 'pfTherapistFileObject[mentorID]'
 
     // ----------------------------------------------------------------------------------------------------------
     // "lastSync"           : "Dec 26,2024 at 11:18 AM",
@@ -111,9 +120,9 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     // Item 'keyed' field(s):
 
-    var sPFTherapistFileLastSync:String                  = "-N/A"     // 'pfTherapistFileObject[lastSync]'
-    var iPFTherapistFileIpadUpdate:Int                   = -1         // 'pfTherapistFileObject[iPadUpdate]'
-    var iPFTherapistFileIphoneUpdate:Int                 = -1         // 'pfTherapistFileObject[iPhoneUpdate]'
+    var sPFTherapistFileLastSync:String                           = "-N/A"     // 'pfTherapistFileObject[lastSync]'
+    var iPFTherapistFileIpadUpdate:Int                            = -1         // 'pfTherapistFileObject[iPadUpdate]'
+    var iPFTherapistFileIphoneUpdate:Int                          = -1         // 'pfTherapistFileObject[iPhoneUpdate]'
 
     // ----------------------------------------------------------------------------------------------------------
     // "startWk"            : "12/21/24",
@@ -131,18 +140,18 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     // Item 'keyed' field(s):
 
-    var sPFTherapistFileStartWeek:String                 = "-N/A-"    // 'pfTherapistFileObject[startWk]'
-    var sPFTherapistFileWeekStartInvoice:String          = "-N/A-"    // 'pfTherapistFileObject[wkStartInvoice]'
-    var iPFTherapistFileExpectedWeekVisits:Int           = -1         // 'pfTherapistFileObject[expectedWkVisits]'
-    var iPFTherapistFileLateWeekVisits:Int               = -1         // 'pfTherapistFileObject[lateWkVisits]'
-    var iPFTherapistFilePreviousWeekVoids2:Int           = -1         // 'pfTherapistFileObject[prevWkVoids2]'
-    var bPFTherapistFileMakeupsAllowed:Bool              = false      // 'pfTherapistFileObject[makeupsAllowed]'
-    var bPFTherapistFileOver50Allowed:Bool               = false      // 'pfTherapistFileObject[over50Allowed]'
+    var sPFTherapistFileStartWeek:String                          = "-N/A-"    // 'pfTherapistFileObject[startWk]'
+    var sPFTherapistFileWeekStartInvoice:String                   = "-N/A-"    // 'pfTherapistFileObject[wkStartInvoice]'
+    var iPFTherapistFileExpectedWeekVisits:Int                    = -1         // 'pfTherapistFileObject[expectedWkVisits]'
+    var iPFTherapistFileLateWeekVisits:Int                        = -1         // 'pfTherapistFileObject[lateWkVisits]'
+    var iPFTherapistFilePreviousWeekVoids2:Int                    = -1         // 'pfTherapistFileObject[prevWkVoids2]'
+    var bPFTherapistFileMakeupsAllowed:Bool                       = false      // 'pfTherapistFileObject[makeupsAllowed]'
+    var bPFTherapistFileOver50Allowed:Bool                        = false      // 'pfTherapistFileObject[over50Allowed]'
 
-    var listPFTherapistFileFinalSyncRatios:[String]      = []         // 'pfTherapistFileObject[finalSyncRatios]'
-    var listPFTherapistFileWeekPtMissingVisits:[String]  = []         // 'pfTherapistFileObject[wkPtsMissingVisits]'
-    var listPFTherapistFilePidsForFriday:[String]        = []         // 'pfTherapistFileObject[pidsForFriday]'
-    var listPFTherapistFileParentIDs:[String]            = []         // 'pfTherapistFileObject[parentIDs]'
+    var listPFTherapistFileFinalSyncRatios:[String]               = []         // 'pfTherapistFileObject[finalSyncRatios]'
+    var listPFTherapistFileWeekPtMissingVisits:[String]           = []         // 'pfTherapistFileObject[wkPtsMissingVisits]'
+    var listPFTherapistFilePidsForFriday:[String]                 = []         // 'pfTherapistFileObject[pidsForFriday]'
+    var listPFTherapistFileParentIDs:[String]                     = []         // 'pfTherapistFileObject[parentIDs]'
 
     // ----------------------------------------------------------------------------------------------------------------
     //  TYPE of 'pfTherapistFileObjectLatitude'     is [Optional<Any>] - value is [Optional(32.77201080322266)]...
@@ -159,23 +168,28 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     // Item 'calculated'/'converted'/'looked'-up/'computed' field(s):
 
-    var pfTherapistFileObjectLatitude:Any?               = nil
-    var pfTherapistFileObjectLongitude:Any?              = nil
+    var pfTherapistFileObjectLatitude:Any?                        = nil
+    var pfTherapistFileObjectLongitude:Any?                       = nil
 
-    var sPFTherapistFileObjectLatitude:String            = "0.0"
-    var sPFTherapistFileObjectLongitude:String           = "0.0"
+    var sPFTherapistFileObjectLatitude:String                     = "0.0"
+    var sPFTherapistFileObjectLongitude:String                    = "0.0"
 
-    var dblPFTherapistFileObjectLatitude:Double          = 0.0
-    var dblPFTherapistFileObjectLongitude:Double         = 0.0
+    var dblPFTherapistFileObjectLatitude:Double                   = 0.0
+    var dblPFTherapistFileObjectLongitude:Double                  = 0.0
 
-    var dblConvertedLatitude:Double                      = 0.0
-    var dblConvertedLongitude:Double                     = 0.0
+    var dblConvertedLatitude:Double                               = 0.0
+    var dblConvertedLongitude:Double                              = 0.0
 
-    var sHomeLocLocationName:String                      = ""
-    var sHomeLocCity:String                              = ""
-    var sHomeLocCountry:String                           = ""
-    var sHomeLocPostalCode:String                        = ""
-    var sHomeLocTimeZone:String                          = ""
+    // Item address 'lookup'/'reverseLocation' (address) field(s):
+
+    var bHomeLocAddessLookupScheduled:Bool                        = false
+    var bHomeLocAddessLookupComplete:Bool                         = false
+
+    var sHomeLocLocationName:String                               = ""
+    var sHomeLocCity:String                                       = ""
+    var sHomeLocCountry:String                                    = ""
+    var sHomeLocPostalCode:String                                 = ""
+    var sHomeLocTimeZone:String                                   = ""
 
     var clLocationCoordinate2D:CLLocationCoordinate2D
     {
@@ -199,13 +213,9 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     }
 
-    // Item address 'lookup' completed flag:
-
-    var bHomeLocAddessLookupComplete:Bool                = false
-
     // App Data field(s):
 
-    var jmAppDelegateVisitor:JmAppDelegateVisitor        = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    var jmAppDelegateVisitor:JmAppDelegateVisitor                 = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
     override init()
     {
@@ -215,15 +225,84 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         super.init()
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'jmAppDelegateVisitor' is [\(self.jmAppDelegateVisitor)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'jmAppDelegateVisitor' is [\(self.jmAppDelegateVisitor)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
         return
 
     }   // End of override init().
+
+    convenience init(pfTherapistFileItem:ParsePFTherapistFileItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.init()
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'pfTherapistFileItem' is [\(pfTherapistFileItem)]...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.init(bDeepCopyIsAnOverlay:false, pfTherapistFileItem:pfTherapistFileItem)
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of convenience init(pfTherapistFileItem:ParsePFTherapistFileItem).
+
+    convenience init(bDeepCopyIsAnOverlay:Bool, pfTherapistFileItem:ParsePFTherapistFileItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.init()
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfTherapistFileItem' is [\(pfTherapistFileItem)]...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.overlayPFTherapistFileDataItemWithAnotherPFTherapistFileDataItem(pfTherapistFileItem:pfTherapistFileItem)
+
+        if (bDeepCopyIsAnOverlay == false)
+        {
+        
+            self.pfTherapistFileObjectClonedFrom                = pfTherapistFileItem 
+            self.pfTherapistFileObjectClonedTo                  = self 
+
+        //  pfTherapistFileItem.pfTherapistFileObjectClonedFrom = nil
+            pfTherapistFileItem.pfTherapistFileObjectClonedTo   = self
+        
+        }
+
+        // Check if the 'current' Location data copied was 'blank'...
+
+        if (self.sHomeLocLocationName.count < 1 ||
+            self.sHomeLocCity.count         < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <PFTherapistFile> - Copied 'self.sHomeLocLocationName' is [\(self.sHomeLocLocationName)] and 'self.sHomeLocCity' is [\(self.sHomeLocCity)] - 1 or both are 'blank' - 'pfTherapistFileItem.sHomeLocLocationName' is [\(pfTherapistFileItem.sHomeLocLocationName)] and 'pfTherapistFileItem.sHomeLocCity' is [\(pfTherapistFileItem.sHomeLocCity)] - Warning!")
+        
+        }
+
+        // Trace the 'clone' From/To fields in both objects...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <PFTherapistFile> - From/To 'self.pfTherapistFileObjectClonedFrom' is [\(String(describing: self.pfTherapistFileObjectClonedFrom))] and 'self.pfTherapistFileObjectClonedTo' is [\(String(describing: self.pfTherapistFileObjectClonedTo))] - 'pfTherapistFileItem.pfTherapistFileObjectClonedFrom' is [\(String(describing: pfTherapistFileItem.pfTherapistFileObjectClonedFrom))] and 'pfTherapistFileItem.pfTherapistFileObjectClonedTo' is [\(String(describing: pfTherapistFileItem.pfTherapistFileObjectClonedTo))]...")
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of convenience init(bDeepCopyIsAnOverlay:Bool, pfTherapistFileItem:ParsePFTherapistFileItem).
 
     private func xcgLogMsg(_ sMessage:String)
     {
@@ -262,7 +341,14 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         asToString.append("'bClsFileLog': [\(ClassInfo.bClsFileLog)],")
         asToString.append("],")
         asToString.append("[")
+        asToString.append("'self': [\(String(describing: self))],")
+        asToString.append("'bInternalTraceFlag': [\(String(describing: self.bInternalTraceFlag))],")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'id': [\(String(describing: self.id))],")
+        asToString.append("'idPFTherapistFileObject': [\(String(describing: self.idPFTherapistFileObject))],")
+        asToString.append("'pfTherapistFileObjectClonedFrom': [\(String(describing: self.pfTherapistFileObjectClonedFrom))],")
+        asToString.append("'pfTherapistFileObjectClonedTo': [\(String(describing: self.pfTherapistFileObjectClonedTo))],")
 
         if (pfTherapistFileObject == nil)
         {
@@ -332,15 +418,18 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         asToString.append("'dblPFTherapistFileObjectLongitude': [\(String(describing: self.dblPFTherapistFileObjectLongitude))],")
         asToString.append("'dblConvertedLatitude': [\(String(describing: self.dblConvertedLatitude))],")
         asToString.append("'dblConvertedLongitude': [\(String(describing: self.dblConvertedLongitude))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'bHomeLocAddessLookupScheduled': [\(String(describing: self.bHomeLocAddessLookupScheduled))],")
+        asToString.append("'bHomeLocAddessLookupComplete': [\(String(describing: self.bHomeLocAddessLookupComplete))],")
         asToString.append("'sHomeLocLocationName': [\(String(describing: self.sHomeLocLocationName))],")
         asToString.append("'sHomeLocCity': [\(String(describing: self.sHomeLocCity))],")
         asToString.append("'sHomeLocCountry': [\(String(describing: self.sHomeLocCountry))],")
         asToString.append("'sHomeLocPostalCode': [\(String(describing: self.sHomeLocPostalCode))],")
         asToString.append("'sHomeLocTimeZone': [\(String(describing: self.sHomeLocTimeZone))],")
-        asToString.append("'bHomeLocAddessLookupComplete': [\(String(describing: self.bHomeLocAddessLookupComplete))],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
+    //  asToString.append("],")
+    //  asToString.append("[")
+    //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
         asToString.append("],")
         asToString.append("]")
 
@@ -360,8 +449,24 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         // Display the various field(s) of this object in the Log...
 
+        self.xcgLogMsg("\(sCurrMethodDisp) 'self'                                   is [\(String(describing: self))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bInternalTraceFlag'                     is [\(String(describing: self.bInternalTraceFlag))]...")
+
         self.xcgLogMsg("\(sCurrMethodDisp) 'id'                                     is [\(String(describing: self.id))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObject'                  is [\(String(describing: self.pfTherapistFileObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'idPFTherapistFileObject'                is [\(String(describing: self.idPFTherapistFileObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObjectClonedFrom'        is [\(String(describing: self.pfTherapistFileObjectClonedFrom))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObjectClonedTo'          is [\(String(describing: self.pfTherapistFileObjectClonedTo))]...")
+
+    //  self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObject'                  is [\(String(describing: self.pfTherapistFileObject))]...")
+
+        if (self.pfTherapistFileObject == nil)
+        {
+            self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObject'                  is [-nil-]...")
+        }
+        else
+        {
+            self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObject'                  is [-available-]...")
+        }
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileClassName'              is [\(String(describing: self.sPFTherapistFileClassName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileObjectId'               is [\(String(describing: self.sPFTherapistFileObjectId))]...")
@@ -415,12 +520,13 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLatitude'                   is [\(String(describing: self.dblConvertedLatitude))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLongitude'                  is [\(String(describing: self.dblConvertedLongitude))]...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bHomeLocAddessLookupScheduled'          is [\(String(describing: self.bHomeLocAddessLookupScheduled))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bHomeLocAddessLookupComplete'           is [\(String(describing: self.bHomeLocAddessLookupComplete))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocLocationName'                   is [\(String(describing: self.sHomeLocLocationName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocCity'                           is [\(String(describing: self.sHomeLocCity))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocCountry'                        is [\(String(describing: self.sHomeLocCountry))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocPostalCode'                     is [\(String(describing: self.sHomeLocPostalCode))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocTimeZone'                       is [\(String(describing: self.sHomeLocTimeZone))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bHomeLocAddessLookupComplete'           is [\(String(describing: self.bHomeLocAddessLookupComplete))]...")
 
         // Exit:
 
@@ -430,15 +536,21 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     }   // End of public func displayParsePFTherapistFileItemToLog().
 
-    public func constructParsePFTherapistFileItemFromPFObject(pfTherapistFileObject:PFObject)
+    public func constructParsePFTherapistFileItemFromPFObject(idPFTherapistFileObject:Int = 1, pfTherapistFileObject:PFObject)
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'pfTherapistFileObject' is [\(String(describing: pfTherapistFileObject))]...")
+    //  self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'idPFTherapistFileObject' is (\(idPFTherapistFileObject)) - 'pfTherapistFileObject' is [\(pfTherapistFileObject)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'idPFTherapistFileObject' is (\(idPFTherapistFileObject)) - 'pfTherapistFileObject'...")
 
         // Assign the various field(s) of this object from the supplied PFObject...
+
+        self.idPFTherapistFileObject                = idPFTherapistFileObject
+
+        self.pfTherapistFileObjectClonedFrom        = nil 
+        self.pfTherapistFileObjectClonedTo          = nil 
 
         self.pfTherapistFileObject                  = pfTherapistFileObject                                                             
         
@@ -488,6 +600,8 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     //  self.listPFTherapistFileWeekPtMissingVisits = pfTherapistFileObject[wkPtsMissingVisits]!
     //  self.listPFTherapistFilePidsForFriday       = pfTherapistFileObject[pidsForFriday]!
     //  self.listPFTherapistFileParentIDs           = pfTherapistFileObject[parentIDs]!
+
+    //  The Latitude/Longitude field(s) below are set by the call to 'self.convertPFTherapistFileHomeLocToLatitudeLongitude()'...
         
     //  self.pfTherapistFileObjectLatitude          = (pfTherapistFileObject.object(forKey:"latitude"))  != nil ? pfTherapistFileObject.object(forKey:"latitude")  : nil
     //  self.pfTherapistFileObjectLongitude         = (pfTherapistFileObject.object(forKey:"longitude")) != nil ? pfTherapistFileObject.object(forKey:"longitude") : nil
@@ -500,46 +614,50 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         self.convertPFTherapistFileHomeLocToLatitudeLongitude()
 
+        self.bHomeLocAddessLookupScheduled          = false
+        self.bHomeLocAddessLookupComplete           = false
+      
         self.sHomeLocLocationName                   = ""
         self.sHomeLocCity                           = ""
         self.sHomeLocCountry                        = ""
         self.sHomeLocPostalCode                     = ""
         self.sHomeLocTimeZone                       = ""
+
+        self.resolveLocationAndAddress()
       
-        self.bHomeLocAddessLookupComplete           = false
-      
-        if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
-        {
-      
-            let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
-      
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.id)): Calling 'updateGeocoderLocation()' for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)]...")
-      
-            let _ = clModelObservable2.updateGeocoderLocations(requestID: 1, 
-                                                               latitude:  self.dblConvertedLatitude, 
-                                                               longitude: self.dblConvertedLongitude, 
-                                                               withCompletionHandler:
-                                                                   { (requestID:Int, dictCurrentLocation:[String:Any]) in
-                                                               
-                                                                       self.sHomeLocLocationName         = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
-                                                                       self.sHomeLocCity                 = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
-                                                                       self.sHomeLocCountry              = String(describing: (dictCurrentLocation["sCurrentCountry"]      ?? ""))
-                                                                       self.sHomeLocPostalCode           = String(describing: (dictCurrentLocation["sCurrentPostalCode"]   ?? ""))
-                                                                       self.sHomeLocTimeZone             = String(describing: (dictCurrentLocation["tzCurrentTimeZone"]    ?? ""))
-                                                                       self.bHomeLocAddessLookupComplete = true
-                                                               
-                                                                   }
-                                                              )
-      
-        }
-        else
-        {
-      
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.id)): CoreLocation (service) is NOT available...")
-      
-            self.bHomeLocAddessLookupComplete = false
-      
-        }
+    //  if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
+    //  {
+    //
+    //      let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.id)): Calling 'updateGeocoderLocation()' for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)]...")
+    //
+    //      let _ = clModelObservable2.updateGeocoderLocations(requestID: 1, 
+    //                                                         latitude:  self.dblConvertedLatitude, 
+    //                                                         longitude: self.dblConvertedLongitude, 
+    //                                                         withCompletionHandler:
+    //                                                             { (requestID:Int, dictCurrentLocation:[String:Any]) in
+    //                                                         
+    //                                                                 self.sHomeLocLocationName         = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
+    //                                                                 self.sHomeLocCity                 = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
+    //                                                                 self.sHomeLocCountry              = String(describing: (dictCurrentLocation["sCurrentCountry"]      ?? ""))
+    //                                                                 self.sHomeLocPostalCode           = String(describing: (dictCurrentLocation["sCurrentPostalCode"]   ?? ""))
+    //                                                                 self.sHomeLocTimeZone             = String(describing: (dictCurrentLocation["tzCurrentTimeZone"]    ?? ""))
+    //                                                                 self.bHomeLocAddessLookupComplete = true
+    //                                                         
+    //                                                             }
+    //                                                        )
+    //
+    //  }
+    //  else
+    //  {
+    //
+    //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.id)): CoreLocation (service) is NOT available...")
+    //
+    //      self.bHomeLocAddessLookupScheduled = false
+    //      self.bHomeLocAddessLookupComplete  = false
+    //
+    //  }
 
         // Exit:
 
@@ -549,6 +667,178 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     }   // End of public func constructParsePFTherapistFileItemFromPFObject(pfTherapistFileObject:PFObject).
 
+    private func overlayPFTherapistFileDataItemWithAnotherPFTherapistFileDataItem(pfTherapistFileItem:ParsePFTherapistFileItem)
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Finish the 'overlay' update of field(s)...
+
+        self.idPFTherapistFileObject                = pfTherapistFileItem.idPFTherapistFileObject
+
+        // 'Object' From/To update does NOT occur in an 'overlay'...
+
+    //  self.pfTherapistFileObjectClonedFrom        = nil 
+    //  self.pfTherapistFileObjectClonedTo          = nil 
+
+        self.pfTherapistFileObject                  = pfTherapistFileItem.pfTherapistFileObject
+
+        self.sPFTherapistFileClassName              = pfTherapistFileItem.sPFTherapistFileClassName
+        self.sPFTherapistFileObjectId               = pfTherapistFileItem.sPFTherapistFileObjectId
+        self.datePFTherapistFileCreatedAt           = pfTherapistFileItem.datePFTherapistFileCreatedAt
+        self.datePFTherapistFileUpdatedAt           = pfTherapistFileItem.datePFTherapistFileUpdatedAt
+        self.aclPFTherapistFile                     = pfTherapistFileItem.aclPFTherapistFile
+        self.bPFTherapistFileIsDataAvailable        = pfTherapistFileItem.bPFTherapistFileIsDataAvailable
+        self.bPFTherapistFileIdDirty                = pfTherapistFileItem.bPFTherapistFileIdDirty
+        self.listPFTherapistFileAllKeys             = pfTherapistFileItem.listPFTherapistFileAllKeys
+        
+        self.iPFTherapistFileTID                    = pfTherapistFileItem.iPFTherapistFileTID
+        self.sPFTherapistFileName                   = pfTherapistFileItem.sPFTherapistFileName
+        self.sPFTherapistFilePhone                  = pfTherapistFileItem.sPFTherapistFilePhone
+        self.sPFTherapistFileEmail                  = pfTherapistFileItem.sPFTherapistFileEmail
+        self.sPFTherapistFileUsername               = pfTherapistFileItem.sPFTherapistFileUsername
+        self.sPFTherapistFilePassword               = pfTherapistFileItem.sPFTherapistFilePassword
+        self.sPFTherapistFileHomeLoc                = pfTherapistFileItem.sPFTherapistFileHomeLoc
+        self.iPFTherapistFileLicenseNumber          = pfTherapistFileItem.iPFTherapistFileLicenseNumber
+        
+        self.bPFTherapistFileNotActive              = pfTherapistFileItem.bPFTherapistFileNotActive
+        self.bPFTherapistFileOffice                 = pfTherapistFileItem.bPFTherapistFileOffice
+        self.bPFTherapistFileIsSupervisor           = pfTherapistFileItem.bPFTherapistFileIsSupervisor
+        self.bPFTherapistFileHaveAssistants         = pfTherapistFileItem.bPFTherapistFileHaveAssistants
+        self.iPFTherapistFileType                   = pfTherapistFileItem.iPFTherapistFileType
+        self.iPFTherapistFileSuperID                = pfTherapistFileItem.iPFTherapistFileSuperID
+        self.iPFTherapistFileMentorID               = pfTherapistFileItem.iPFTherapistFileMentorID
+        
+        self.sPFTherapistFileLastSync               = pfTherapistFileItem.sPFTherapistFileLastSync
+        self.iPFTherapistFileIpadUpdate             = pfTherapistFileItem.iPFTherapistFileIpadUpdate
+        self.iPFTherapistFileIphoneUpdate           = pfTherapistFileItem.iPFTherapistFileIphoneUpdate
+        
+        self.sPFTherapistFileStartWeek              = pfTherapistFileItem.sPFTherapistFileStartWeek
+        self.sPFTherapistFileWeekStartInvoice       = pfTherapistFileItem.sPFTherapistFileWeekStartInvoice
+        self.iPFTherapistFileExpectedWeekVisits     = pfTherapistFileItem.iPFTherapistFileExpectedWeekVisits
+        self.iPFTherapistFileLateWeekVisits         = pfTherapistFileItem.iPFTherapistFileLateWeekVisits
+        self.iPFTherapistFilePreviousWeekVoids2     = pfTherapistFileItem.iPFTherapistFilePreviousWeekVoids2
+        self.bPFTherapistFileMakeupsAllowed         = pfTherapistFileItem.bPFTherapistFileMakeupsAllowed
+        self.bPFTherapistFileOver50Allowed          = pfTherapistFileItem.bPFTherapistFileOver50Allowed
+        
+        self.listPFTherapistFileFinalSyncRatios     = pfTherapistFileItem.listPFTherapistFileFinalSyncRatios
+        self.listPFTherapistFileWeekPtMissingVisits = pfTherapistFileItem.listPFTherapistFileWeekPtMissingVisits
+        self.listPFTherapistFilePidsForFriday       = pfTherapistFileItem.listPFTherapistFilePidsForFriday
+        self.listPFTherapistFileParentIDs           = pfTherapistFileItem.listPFTherapistFileParentIDs
+        
+        self.pfTherapistFileObjectLatitude          = pfTherapistFileItem.pfTherapistFileObjectLatitude
+        self.pfTherapistFileObjectLongitude         = pfTherapistFileItem.pfTherapistFileObjectLongitude
+        self.sPFTherapistFileObjectLatitude         = pfTherapistFileItem.sPFTherapistFileObjectLatitude
+        self.sPFTherapistFileObjectLongitude        = pfTherapistFileItem.sPFTherapistFileObjectLongitude
+        self.dblPFTherapistFileObjectLatitude       = pfTherapistFileItem.dblPFTherapistFileObjectLatitude
+        self.dblPFTherapistFileObjectLongitude      = pfTherapistFileItem.dblPFTherapistFileObjectLongitude
+
+        let dblPreviousLatitude:Double              = self.dblConvertedLatitude
+        let dblPreviousLongitude:Double             = self.dblConvertedLongitude
+        let dblHomeLocLatitude:Double               = pfTherapistFileItem.dblConvertedLatitude
+        let dblHomeLocLongitude:Double              = pfTherapistFileItem.dblConvertedLongitude
+
+        self.dblConvertedLatitude                   = pfTherapistFileItem.dblConvertedLatitude
+        self.dblConvertedLongitude                  = pfTherapistFileItem.dblConvertedLongitude
+        
+    //  self.bHomeLocAddessLookupScheduled          = pfTherapistFileItem.bHomeLocAddessLookupScheduled
+    //  self.bHomeLocAddessLookupComplete           = pfTherapistFileItem.bHomeLocAddessLookupComplete
+    //
+    //  self.sHomeLocLocationName                   = pfTherapistFileItem.sHomeLocLocationName
+    //  self.sHomeLocCity                           = pfTherapistFileItem.sHomeLocCity
+    //  self.sHomeLocCountry                        = pfTherapistFileItem.sHomeLocCountry
+    //  self.sHomeLocPostalCode                     = pfTherapistFileItem.sHomeLocPostalCode
+    //  self.sHomeLocTimeZone                       = pfTherapistFileItem.sHomeLocTimeZone
+        
+        // If 'self' (current) does NOT have 'important' location data, then copy all of it...
+
+        if (self.sHomeLocLocationName.count < 1 ||
+            self.sHomeLocCity.count         < 1)
+        {
+        
+            self.sHomeLocLocationName           = pfTherapistFileItem.sHomeLocLocationName        
+            self.sHomeLocCity                   = pfTherapistFileItem.sHomeLocCity                
+            self.sHomeLocCountry                = pfTherapistFileItem.sHomeLocCountry             
+            self.sHomeLocPostalCode             = pfTherapistFileItem.sHomeLocPostalCode          
+            self.sHomeLocTimeZone               = pfTherapistFileItem.sHomeLocTimeZone            
+
+            self.bHomeLocAddessLookupScheduled  = pfTherapistFileItem.bHomeLocAddessLookupScheduled
+            self.bHomeLocAddessLookupComplete   = pfTherapistFileItem.bHomeLocAddessLookupComplete
+        
+        }
+        else
+        {
+
+            // 'self' (HomeLoc) has location data, then use latitude/longitude changes to determine the update...
+
+        //  let bLocationLatitudeHasChanged:Bool  = (abs(self.dblConvertedLatitude  - pfTherapistFileItem.dblConvertedLatitude)  <= .ulpOfOne)
+        //  let bLocationLongitudeHasChanged:Bool = (abs(self.dblConvertedLongitude - pfTherapistFileItem.dblConvertedLongitude) <= .ulpOfOne)
+
+            let bLocationLatitudeHasChanged:Bool  = (abs(dblPreviousLatitude  - dblHomeLocLatitude)  > (3 * .ulpOfOne))
+            let bLocationLongitudeHasChanged:Bool = (abs(dblPreviousLongitude - dblHomeLocLongitude) > (3 * .ulpOfOne))
+
+            if (bLocationLatitudeHasChanged  == true ||
+                bLocationLongitudeHasChanged == true)
+            {
+            
+                self.sHomeLocLocationName           = pfTherapistFileItem.sHomeLocLocationName        
+                self.sHomeLocCity                   = pfTherapistFileItem.sHomeLocCity                
+                self.sHomeLocCountry                = pfTherapistFileItem.sHomeLocCountry             
+                self.sHomeLocPostalCode             = pfTherapistFileItem.sHomeLocPostalCode          
+                self.sHomeLocTimeZone               = pfTherapistFileItem.sHomeLocTimeZone            
+
+                self.bHomeLocAddessLookupScheduled  = pfTherapistFileItem.bHomeLocAddessLookupScheduled
+                self.bHomeLocAddessLookupComplete   = pfTherapistFileItem.bHomeLocAddessLookupComplete
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFTherapistFile> <location check> - Copied address data since 'bLocationLatitudeHasChanged' is [\(bLocationLatitudeHasChanged)] and/or 'bLocationLongitudeHasChanged' is [\(bLocationLongitudeHasChanged)] <location changed>...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFTherapistFile> <location check> - Location is [\(dblHomeLocLatitude),\(dblHomeLocLongitude)] and was [\(dblPreviousLatitude),\(dblPreviousLongitude)]...")
+
+                if (self.sHomeLocLocationName.count < 1 ||
+                    self.sHomeLocCity.count         < 1)
+                {
+                
+                    self.bHomeLocAddessLookupScheduled  = false
+                    self.bHomeLocAddessLookupComplete   = false
+                
+                }
+            
+            }
+            else
+            {
+            
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> <location check> - Skipped copying address data since 'bLocationLatitudeHasChanged' is [\(bLocationLatitudeHasChanged)] and 'bLocationLongitudeHasChanged' is [\(bLocationLongitudeHasChanged)] <location has NOT changed>...")
+            
+            }
+
+        }
+        
+        // Check if the 'HomeLoc' Location data copied was 'blank'...
+
+        if (self.sHomeLocLocationName.count < 1 ||
+            self.sHomeLocCity.count         < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> - Copied 'self.sHomeLocLocationName' is [\(self.sHomeLocLocationName)] and 'self.sHomeLocCity' is [\(self.sHomeLocCity)] - 1 or both are 'blank' - 'pfTherapistFileItem.sHomeLocLocationName' is [\(pfTherapistFileItem.sHomeLocLocationName)] and 'pfTherapistFileItem.sHomeLocCity' is [\(pfTherapistFileItem.sHomeLocCity)] - Warning!")
+
+            self.resolveLocationAndAddress()
+
+        }
+
+        // Trace the 'clone' From/To fields in both objects...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFTherapistFile> - From/To 'self.pfTherapistFileObjectClonedFrom' is [\(String(describing: self.pfTherapistFileObjectClonedFrom))] and 'self.pfTherapistFileObjectClonedTo' is [\(String(describing: self.pfTherapistFileObjectClonedTo))] - 'pfTherapistFileItem.pfTherapistFileObjectClonedFrom' is [\(String(describing: pfTherapistFileItem.pfTherapistFileObjectClonedFrom))] and 'pfTherapistFileItem.pfTherapistFileObjectClonedTo' is [\(String(describing: pfTherapistFileItem.pfTherapistFileObjectClonedTo))]...")
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of private func overlayPFTherapistFileDataItemWithAnotherPFTherapistFileDataItem(pfTherapistFileItem:ParsePFTherapistFileItem)
+
     private func convertPFTherapistFileHomeLocToLatitudeLongitude()
     {
 
@@ -557,17 +847,21 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
+        var asToString:[String] = Array()
+
+        asToString.append("[")
+
         // Convert the 'HomeLoc' field into Latitude/Longitude...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'self.sPFTherapistFileHomeLoc' is [\(self.sPFTherapistFileHomeLoc)]...")
+        asToString.append("\(sCurrMethodDisp) 'self.sPFTherapistFileHomeLoc' is [\(self.sPFTherapistFileHomeLoc)]...")
 
         let listHomeLocNoWS:[String]  = self.sPFTherapistFileHomeLoc.components(separatedBy:CharacterSet.whitespacesAndNewlines)
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'listHomeLocNoWS' is [\(listHomeLocNoWS)]...")
+        asToString.append("\(sCurrMethodDisp) 'listHomeLocNoWS' is [\(listHomeLocNoWS)]...")
 
         let sHomeLocNoWS:String = listHomeLocNoWS.joined(separator:"")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocNoWS' is [\(sHomeLocNoWS)]...")
+        asToString.append("\(sCurrMethodDisp) 'sHomeLocNoWS' is [\(sHomeLocNoWS)]...")
 
         var csHomeLocDelimiters1:CharacterSet = CharacterSet()
 
@@ -575,11 +869,11 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         let listHomeLocCleaned1:[String] = sHomeLocNoWS.components(separatedBy:csHomeLocDelimiters1)
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'listHomeLocCleaned1' is [\(listHomeLocCleaned1)]...")
+        asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned1' is [\(listHomeLocCleaned1)]...")
 
         let sHomeLocCleaned1:String = listHomeLocCleaned1.joined(separator:"")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocCleaned1' is [\(sHomeLocCleaned1)]...")
+        asToString.append("\(sCurrMethodDisp) 'sHomeLocCleaned1' is [\(sHomeLocCleaned1)]...")
 
         var csHomeLocDelimiters2:CharacterSet = CharacterSet()
 
@@ -587,7 +881,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         let listHomeLocCleaned2:[String] = sHomeLocCleaned1.components(separatedBy:csHomeLocDelimiters2)
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'listHomeLocCleaned2' is [\(listHomeLocCleaned2)]...")
+        asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned2' is [\(listHomeLocCleaned2)]...")
 
         var csHomeLocDelimiters3:CharacterSet = CharacterSet()
 
@@ -596,13 +890,13 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         if (listHomeLocCleaned2.count < 1)
         {
             
-            self.xcgLogMsg("\(sCurrMethodDisp) 'listHomeLocCleaned2' has a count of (\(listHomeLocCleaned2.count)) which is less than 1 - Error!")
+            asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned2' has a count of (\(listHomeLocCleaned2.count)) which is less than 1 - Error!")
             
         }
         else
         {
             
-            self.xcgLogMsg("\(sCurrMethodDisp) 'listHomeLocCleaned2' has a count of (\(listHomeLocCleaned2.count)) which is equal to or greater than 1 - continuing...")
+            asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned2' has a count of (\(listHomeLocCleaned2.count)) which is equal to or greater than 1 - continuing...")
             
             var dictHomeLocCleaned2:[String:String] = [String:String]()
             var cHomeLocWork:Int                     = 0
@@ -619,28 +913,28 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
                 
                 cHomeLocWork += 1
                 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cHomeLocWork)): 'sHomeLocWork' is [\(sHomeLocWork)]...")
+                asToString.append("\(sCurrMethodDisp) #(\(cHomeLocWork)): 'sHomeLocWork' is [\(sHomeLocWork)]...")
                 
                 let listHomeLocWorkCleaned:[String] = sHomeLocWork.components(separatedBy:csHomeLocDelimiters3)
 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cHomeLocWork)): 'listHomeLocWorkCleaned' is [\(listHomeLocWorkCleaned)]...")
+                asToString.append("\(sCurrMethodDisp) #(\(cHomeLocWork)): 'listHomeLocWorkCleaned' is [\(listHomeLocWorkCleaned)]...")
                 
                 let sHomeLocKey:String   = listHomeLocWorkCleaned[0]
                 let sHomeLocValue:String = listHomeLocWorkCleaned[1]
                 
                 dictHomeLocCleaned2[sHomeLocKey] = sHomeLocValue
                 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cHomeLocWork)): Added a key 'sHomeLocKey' of [\(sHomeLocKey)] with a value 'sHomeLocValue' of [\(sHomeLocValue)] to the dictionary 'dictHomeLocCleaned2'...")
+                asToString.append("\(sCurrMethodDisp) #(\(cHomeLocWork)): Added a key 'sHomeLocKey' of [\(sHomeLocKey)] with a value 'sHomeLocValue' of [\(sHomeLocValue)] to the dictionary 'dictHomeLocCleaned2'...")
                 
             }
                  
-            self.xcgLogMsg("\(sCurrMethodDisp) The dictionary 'dictHomeLocCleaned2' is [\(dictHomeLocCleaned2)]...")
+            asToString.append("\(sCurrMethodDisp) The dictionary 'dictHomeLocCleaned2' is [\(dictHomeLocCleaned2)]...")
             
             let sHomeLocLatitude:String  = dictHomeLocCleaned2["latitude"]  ?? "0.0000"
             let sHomeLocLongitude:String = dictHomeLocCleaned2["longitude"] ?? "0.0000"
             
-            self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocLatitude'  is [\(sHomeLocLatitude)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocLongitude' is [\(sHomeLocLongitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'sHomeLocLatitude'  is [\(sHomeLocLatitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'sHomeLocLongitude' is [\(sHomeLocLongitude)]...")
 
             self.pfTherapistFileObjectLatitude     = sHomeLocLatitude
             self.pfTherapistFileObjectLongitude    = sHomeLocLongitude
@@ -651,15 +945,26 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
             self.dblConvertedLatitude              = Double(String(describing: sHomeLocLatitude))  ?? 0.0000
             self.dblConvertedLongitude             = Double(String(describing: sHomeLocLongitude)) ?? 0.0000
             
-            self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObjectLatitude'     is [\(String(describing: pfTherapistFileObjectLatitude))]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'pfTherapistFileObjectLongitude'    is [\(String(describing: pfTherapistFileObjectLongitude))]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileObjectLatitude'    is [\(sPFTherapistFileObjectLatitude)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileObjectLongitude'   is [\(sPFTherapistFileObjectLongitude)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFTherapistFileObjectLatitude'  is [\(dblPFTherapistFileObjectLatitude)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFTherapistFileObjectLongitude' is [\(dblPFTherapistFileObjectLongitude)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLatitude'              is [\(dblConvertedLatitude)]...")
-            self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLongitude'             is [\(dblConvertedLongitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'pfTherapistFileObjectLatitude'     is [\(String(describing: pfTherapistFileObjectLatitude))]...")
+            asToString.append("\(sCurrMethodDisp) 'pfTherapistFileObjectLongitude'    is [\(String(describing: pfTherapistFileObjectLongitude))]...")
+            asToString.append("\(sCurrMethodDisp) 'sPFTherapistFileObjectLatitude'    is [\(sPFTherapistFileObjectLatitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'sPFTherapistFileObjectLongitude'   is [\(sPFTherapistFileObjectLongitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'dblPFTherapistFileObjectLatitude'  is [\(dblPFTherapistFileObjectLatitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'dblPFTherapistFileObjectLongitude' is [\(dblPFTherapistFileObjectLongitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'dblConvertedLatitude'              is [\(dblConvertedLatitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'dblConvertedLongitude'             is [\(dblConvertedLongitude)]...")
             
+        }
+
+        // If we have an 'Internal' Trace flag, then output all the captured log messages...
+
+        if (bInternalTraceFlag == true)
+        {
+
+            let sContents:String = "{"+(asToString.joined(separator: ""))+"}"
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Accumulated 'sContents' is [\(sContents)]...")
+
         }
 
         // Exit:
@@ -669,6 +974,163 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         return
 
     }   // End of private func convertPFTherapistFileHomeLocToLatitudeLongitude().
+
+    public func resolveLocationAndAddress()
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Check if the Therapist is 'NOT Active', if so, bypass address/location resolve...
+
+        if (self.bPFTherapistFileNotActive == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - bypassing the address 'resolve' - 'self.bPFTherapistFileNotActive' is [\(self.bPFTherapistFileNotActive)]...")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        }
+
+        // Check if address 'lookup' has already been scheduled, if so, bypass address/location resolve...
+
+        if (self.bHomeLocAddessLookupScheduled == true)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - bypassing the address 'resolve' - 'self.bHomeLocAddessLookupScheduled' is [\(self.bHomeLocAddessLookupScheduled)]...")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        
+        }
+
+        // Use the Latitude/Longitude values to resolve address...
+
+        if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
+        {
+
+            let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
+
+            self.bHomeLocAddessLookupScheduled = true
+            self.bHomeLocAddessLookupComplete  = false
+            
+        //  let dblDeadlineInterval:Double     = Double((0.5 * Double(self.idPFTherapistFileObject)))
+        //  let dblDeadlineInterval:Double     = Double((1.2 * Double(self.idPFTherapistFileObject)))
+        //  let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval()
+            let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.secondary)
+
+            DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
+            {
+                self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFTherapistFileObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFTherapistFileName)]...")
+
+                let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFTherapistFileObject, 
+                                                                   latitude:  self.dblConvertedLatitude, 
+                                                                   longitude: self.dblConvertedLongitude, 
+                                                                   withCompletionHandler:
+                                                                       { (requestID:Int, dictCurrentLocation:[String:Any]) in
+                                                                           self.handleLocationAndAddressClosureEvent(bIsDownstreamObject:false, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
+                                                                       }
+                                                                  )
+            }
+
+        }
+        else
+        {
+
+            self.bHomeLocAddessLookupScheduled = false
+            self.bHomeLocAddessLookupComplete  = false
+
+            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFTherapistFileObject)): CoreLocation (service) is NOT available...")
+
+        }
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of public func resolveLocationAndAddress().
+
+    public func handleLocationAndAddressClosureEvent(bIsDownstreamObject:Bool = false, requestID:Int, dictCurrentLocation:[String:Any])
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] for Therapist [\(self.idPFTherapistFileObject)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)] - 'requestID' is [\(requestID)] - 'dictCurrentLocation' is [\(String(describing: dictCurrentLocation))]...")
+
+        // Update the address info for BOTH 'self' and (possibly 'from'/'to')...
+
+        if (dictCurrentLocation.count > 0)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFTherapistFileName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
+
+            self.sHomeLocLocationName = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
+            self.sHomeLocCity         = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
+            self.sHomeLocCountry      = String(describing: (dictCurrentLocation["sCurrentCountry"]      ?? ""))
+            self.sHomeLocPostalCode   = String(describing: (dictCurrentLocation["sCurrentPostalCode"]   ?? ""))
+            self.sHomeLocTimeZone     = String(describing: (dictCurrentLocation["tzCurrentTimeZone"]    ?? ""))
+
+            self.bHomeLocAddessLookupComplete = true
+
+            if (bIsDownstreamObject == false)
+            {
+            
+                if (self.pfTherapistFileObjectClonedFrom != nil &&
+                    self.pfTherapistFileObjectClonedFrom != self)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfTherapistFileObjectClonedFrom' of [\(String(describing: self.pfTherapistFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+
+                    self.pfTherapistFileObjectClonedFrom!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfTherapistFileObjectClonedFrom' of [\(String(describing: self.pfTherapistFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+
+                }
+
+                if (self.pfTherapistFileObjectClonedTo != nil &&
+                    self.pfTherapistFileObjectClonedTo != self)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfTherapistFileObjectClonedTo' of [\(String(describing: self.pfTherapistFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+
+                    self.pfTherapistFileObjectClonedTo!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfTherapistFileObjectClonedTo' of [\(String(describing: self.pfTherapistFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+
+                }
+            
+            }
+        
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): Dictionary 'dictCurrentLocation' is 'empty' - bypassing update - Warning!")
+
+            self.bHomeLocAddessLookupComplete = false
+
+        }
+
+        self.bHomeLocAddessLookupScheduled = false
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of public func handleLocationAndAddressClosureEvent(bIsDownstreamObject:Bool, requestID:Int, dictCurrentLocation:[String:Any]).
 
 }   // End of class ParsePFTherapistFileItem(NSObject, Identifiable).
 

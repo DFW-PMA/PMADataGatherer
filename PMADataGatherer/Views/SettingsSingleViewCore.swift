@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.0301"
+        static let sClsVers      = "v1.2002"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -27,34 +27,54 @@ struct SettingsSingleViewCore: View
     
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.openWindow)       var openWindow
     
-           private var bInternalZipTest:Bool                     = false
+           private var bInternalZipTest:Bool                                 = false
 
-    @State private var cAppZipFileButtonPresses:Int              = 0
-    @State private var cAppCrashButtonPresses:Int                = 0
+    @State private var cAppZipFileButtonPresses:Int                          = 0
+    @State private var cAppCrashButtonPresses:Int                            = 0
 
-    @State private var isAppZipFileShowing:Bool                  = false
-    @State private var isAppCrashShowing:Bool                    = false
+    @State private var isAppZipFileShowing:Bool                              = false
+    @State private var isAppCrashShowing:Bool                                = false
 
 #if os(iOS)
 
-    @State private var cAppAboutButtonPresses:Int                = 0
-    @State private var cAppHelpViewButtonPresses:Int             = 0
-    @State private var cAppLogViewButtonPresses:Int              = 0
+    @State private var cAppAboutButtonPresses:Int                            = 0
+    @State private var cAppHelpViewButtonPresses:Int                         = 0
+    @State private var cAppLogViewButtonPresses:Int                          = 0
 
-    @State private var cAppReleaseUpdateButtonPresses:Int        = 0
-    @State private var cAppPreReleaseUpdateButtonPresses:Int     = 0
+    @State private var cAppViewSuspendButtonPresses:Int                      = 0
 
-    @State private var isAppAboutViewModal:Bool                  = false
-    @State private var isAppHelpViewModal:Bool                   = false
-    @State private var isAppLogViewModal:Bool                    = false
+    @State private var cAppReleaseUpdateButtonPresses:Int                    = 0
+    @State private var cAppPreReleaseUpdateButtonPresses:Int                 = 0
 
-    @State private var isAppDownloadReleaseUpdateShowing:Bool    = false
-    @State private var isAppDownloadPreReleaseUpdateShowing:Bool = false
+    @State private var isAppAboutViewModal:Bool                              = false
+    @State private var isAppHelpViewModal:Bool                               = false
+    @State private var isAppLogViewModal:Bool                                = false
+
+    @State private var isAppSuspendShowing:Bool                              = false
+
+    @State private var isAppDownloadReleaseUpdateShowing:Bool                = false
+    @State private var isAppDownloadPreReleaseUpdateShowing:Bool             = false
+
+           private var bIsAppUploadUsingLongMsg:Bool                         = false
+
+    @State private var isAppExecutionCurrentShowing:Bool                     = false
+    @State private var sAppExecutionCurrentButtonText:String                 = "Share the current App Log with Developers..."
+    @State private var sAppExecutionCurrentAlertText:String                  = "Do you want to 'send' the current App LOG data to the Developers?"
+
+    @State private var bWasAppLogFilePresentAtStartup:Bool                   = false
+    @State private var bDidAppCrash:Bool                                     = false
+    @State private var sAppExecutionPreviousTypeText:String                  = "-N/A-"
+    @State private var sAppExecutionPreviousButtonText:String                = "App::-N/A-"
+    @State private var sAppExecutionPreviousAlertText:String                 = "Do you want to 'send' the App LOG data?"
+    @State private var sAppExecutionPreviousLogToUpload:String               = ""
+    @State private var isAppExecutionPreviousShowing:Bool                    = false
 
 #endif
     
-                   var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                   var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                   var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
     init()
     {
@@ -63,6 +83,36 @@ struct SettingsSingleViewCore: View
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+//  #if os(iOS)
+//
+//      // Get some 'internal' Dev Detail(s)...
+//
+//      bWasAppLogFilePresentAtStartup = checkIfAppLogWasPresent()
+//      bDidAppCrash                   = checkIfAppDidCrash()
+//
+//      if (bDidAppCrash == false)
+//      {
+//
+//          sAppExecutionPreviousTypeText    = "Success"
+//          sAppExecutionPreviousButtonText  = "Share the App 'success' Log with Developers..."
+//          sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'success' LOG data to the Developers?"
+//          sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec
+//
+//      }
+//      else
+//      {
+//
+//          sAppExecutionPreviousTypeText    = "Crash"
+//          sAppExecutionPreviousButtonText  = "Share the App CRASH Log with Developers..."
+//          sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'crash' LOG data to the Developers?"
+//          sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec
+//
+//      }
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - 'bDidAppCrash' is [\(bDidAppCrash)]...")
+//
+//  #endif
 
         // Exit...
 
@@ -117,7 +167,7 @@ struct SettingsSingleViewCore: View
       
                     self.cAppAboutButtonPresses += 1
       
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
       
                     self.isAppAboutViewModal.toggle()
       
@@ -152,7 +202,7 @@ struct SettingsSingleViewCore: View
       
                     self.cAppHelpViewButtonPresses += 1
       
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App HelpView'.#(\(self.cAppHelpViewButtonPresses))...")
+                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App HelpView'.#(\(self.cAppHelpViewButtonPresses))...")
       
                     self.isAppHelpViewModal.toggle()
       
@@ -188,7 +238,7 @@ struct SettingsSingleViewCore: View
       
                     self.cAppLogViewButtonPresses += 1
       
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App LogView'.#(\(self.cAppLogViewButtonPresses))...")
+                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App LogView'.#(\(self.cAppLogViewButtonPresses))...")
       
                     self.isAppLogViewModal.toggle()
       
@@ -279,25 +329,11 @@ struct SettingsSingleViewCore: View
                             Text("Application Setting(s):")
                                 .bold()
                                 .dynamicTypeSize(.small)
-                        //
-                        //  Text("\(JmXcodeBuildSettings.jmAppVersionAndBuildNumber)")     // <=== Version...
-                        //      .italic()
-                        //      .dynamicTypeSize(.small)
-                        //
-                        //  Text("\(JmXcodeBuildSettings.jmAppCopyright)")
-                        //      .italic()
-                        //      .dynamicTypeSize(.small)
                         }
                         else
                         {
                             Text("Application Setting(s):")
                                 .bold()
-                        //
-                        //  Text("\(JmXcodeBuildSettings.jmAppVersionAndBuildNumber)")     // <=== Version...
-                        //      .italic()
-                        //
-                        //  Text("\(JmXcodeBuildSettings.jmAppCopyright)")
-                        //      .italic()
                         }
       
                     }
@@ -321,7 +357,150 @@ struct SettingsSingleViewCore: View
             }
       
             Spacer()
-      
+
+        #if os(iOS)
+
+            HStack
+            {
+
+                Spacer()
+
+                if (bWasAppLogFilePresentAtStartup == true)
+                {
+
+                    Button
+                    {
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'\(sAppExecutionPreviousButtonText)'...")
+
+                        self.isAppExecutionPreviousShowing.toggle()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "arrow.up.message")
+                                .help(Text("'Send' \(sAppExecutionPreviousTypeText) App LOG"))
+                                .imageScale(.large)
+
+                            Text("\(sAppExecutionPreviousTypeText) LOG")
+                                .font(.caption)
+
+                        }
+
+                    }
+                    .alert(sAppExecutionPreviousAlertText, isPresented:$isAppExecutionPreviousShowing)
+                    {
+                        Button("Cancel", role:.cancel)
+                        {
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'send' the \(sAppExecutionPreviousTypeText) App LOG - resuming...")
+                        }
+                        Button("Ok", role:.destructive)
+                        {
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'send' the \(sAppExecutionPreviousTypeText) App LOG - sending...")
+
+                            self.uploadPreviousAppLogToDevs()
+                        }
+                    }
+
+                    Spacer()
+
+                }
+
+                if (jmAppDelegateVisitor.bAppDelegateVisitorLogFilespecIsUsable == true)
+                {
+
+                    Button
+                    {
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'\(sAppExecutionCurrentButtonText)'...")
+
+                        self.isAppExecutionCurrentShowing.toggle()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "arrow.up.message")
+                                .help(Text("'Send' current App LOG"))
+                                .imageScale(.large)
+
+                            Text("Current LOG")
+                                .font(.caption)
+
+                        }
+
+                    }
+                    .alert(sAppExecutionCurrentAlertText, isPresented:$isAppExecutionCurrentShowing)
+                    {
+                        Button("Cancel", role:.cancel)
+                        {
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'send' the current App LOG - resuming...")
+                        }
+                        Button("Ok", role:.destructive)
+                        {
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'send' the current App LOG - sending...")
+
+                            self.uploadCurrentAppLogToDevs()
+                        }
+                    }
+
+                    Spacer()
+
+                }
+
+                Button
+                {
+
+                    self.cAppViewSuspendButtonPresses += 1
+
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'Quit'.#(\(self.cAppViewSuspendButtonPresses))...")
+
+                    self.isAppSuspendShowing.toggle()
+
+                }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "xmark.circle")
+                            .help(Text("Suspend this App"))
+                            .imageScale(.large)
+
+                        Text("Suspend App")
+                            .font(.caption)
+
+                    }
+
+                }
+                .alert("Are you sure you want to 'suspend' this App?", isPresented:$isAppSuspendShowing)
+                {
+                    Button("Cancel", role:.cancel)
+                    {
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'suspend' the App - resuming...")
+                    }
+                    Button("Ok", role:.destructive)
+                    {
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'suspend' the App - suspending...")
+
+                        UIApplication.shared.perform(#selector(NSXPCConnection.suspend))
+                    }
+                }
+
+                Spacer()
+
+            }
+
+        #endif
+
             if (AppGlobalInfo.bPerformAppDevTesting == true)
             {
       
@@ -337,7 +516,7 @@ struct SettingsSingleViewCore: View
       
                         self.cAppZipFileButtonPresses += 1
       
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore in Button(Xcode).'App ZipFile'.#(\(self.cAppZipFileButtonPresses))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'App ZipFile'.#(\(self.cAppZipFileButtonPresses))...")
       
                         self.isAppZipFileShowing.toggle()
       
@@ -371,6 +550,13 @@ struct SettingsSingleViewCore: View
                             self.uploadCurrentAppLogToDevs()
                         }
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
       
                     Spacer()
       
@@ -398,6 +584,13 @@ struct SettingsSingleViewCore: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                     Spacer()
@@ -407,7 +600,7 @@ struct SettingsSingleViewCore: View
       
                         self.cAppCrashButtonPresses += 1
       
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore in Button(Xcode).'App Crash'.#(\(self.cAppCrashButtonPresses))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)SettingsSingleViewCore.Button(Xcode).'App Crash'.#(\(self.cAppCrashButtonPresses))...")
       
                         self.isAppCrashShowing.toggle()
       
@@ -441,164 +634,186 @@ struct SettingsSingleViewCore: View
                             fatalError("The User pressed 'Ok' to force an App 'crash'!")
                         }
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
       
                     Spacer()
       
                 }
       
             }
-      
-        #if os(iOS)
-      
-            Spacer()
-      
-            VStack(alignment:.center)
+
+            if (AppGlobalInfo.bEnableAppReleaseDownloads == true)
             {
-      
-                HStack(alignment:.center)
+
+            #if os(iOS)
+
+                Spacer()
+
+                VStack(alignment:.center)
                 {
-      
-                    Spacer()
-      
-                    Text(" - - - - - - - - - - - - - - - - - - - - ")
-                        .bold()
-      
-                    Spacer()
-      
-                }
-      
-                HStack(alignment:.center)
-                {
-      
-                    Spacer()
-      
-                    Button
+
+                    HStack(alignment:.center)
                     {
-      
-                        self.cAppReleaseUpdateButtonPresses += 1
-      
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App 'download' Release'.#(\(self.cAppReleaseUpdateButtonPresses))...")
-      
-                        self.isAppDownloadReleaseUpdateShowing.toggle()
-      
+
+                        Spacer()
+
+                        Text(" - - - - - - - - - - - - - - - - - - - - ")
+                            .bold()
+
+                        Spacer()
+
                     }
-                    label: 
+
+                    HStack(alignment:.center)
                     {
-      
-                    if #available(iOS 14.0, *) 
-                    {
-      
-                        VStack(alignment:.center)
+
+                        Spacer()
+
+                        Button
                         {
-      
-                            Label("", systemImage: "arrow.down.app")
-                                .help(Text("App 'download' RELEASE"))
-                                .imageScale(.large)
-      
-                            Text("Download RELEASE")
-                                .font(.caption)
-      
+
+                            self.cAppReleaseUpdateButtonPresses += 1
+
+                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Release'.#(\(self.cAppReleaseUpdateButtonPresses))...")
+
+                            self.isAppDownloadReleaseUpdateShowing.toggle()
+
                         }
-      
-                    } 
-                    else
-                    {
-      
-                        Text("App 'download' RELEASE")
-      
-                    }
-      
-                    }
-                    .alert("Do you want to 'download' (and install) the App RELEASE?", isPresented:$isAppDownloadReleaseUpdateShowing)
-                    {
-                        Button("Cancel", role:.cancel)
+                        label: 
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App RELEASE - resuming...")
-                        }
-                        Button("Ok", role:.destructive)
+
+                        if #available(iOS 14.0, *) 
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App RELEASE - updating...")
-      
-                            self.downloadAppReleaseUpdate()
-      
-                        }
-                    }
-                    .padding()
-      
-                    Spacer()
-      
-                    Button
-                    {
-      
-                        self.cAppPreReleaseUpdateButtonPresses += 1
-      
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore in Button(Xcode).'App 'download' Pre-Release'.#(\(self.cAppPreReleaseUpdateButtonPresses))...")
-      
-                        self.isAppDownloadPreReleaseUpdateShowing.toggle()
-      
-                    }
-                    label: 
-                    {
-      
-                    if #available(iOS 14.0, *) 
-                    {
-      
-                        VStack(alignment:.center)
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "arrow.down.app")
+                                    .help(Text("App 'download' RELEASE"))
+                                    .imageScale(.large)
+
+                                Text("Download RELEASE")
+                                    .font(.caption)
+
+                            }
+
+                        } 
+                        else
                         {
-      
-                            Label("", systemImage: "arrow.down.app.fill")
-                                .help(Text("App 'download' Pre-Release"))
-                                .imageScale(.large)
-      
-                            Text("Download Pre-Release")
-                                .font(.caption)
-      
+
+                            Text("App 'download' RELEASE")
+
                         }
-      
-                    } 
-                    else 
-                    {
-      
-                        Text("App 'download' Pre-Release")
-      
-                    }
-      
-                    }
-                    .alert("Do you want to 'download' (and install) the App Pre-Release?", isPresented:$isAppDownloadPreReleaseUpdateShowing)
-                    {
-                        Button("Cancel", role:.cancel)
+
+                        }
+                        .alert("Do you want to 'download' (and install) the App RELEASE?", isPresented:$isAppDownloadReleaseUpdateShowing)
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App Pre-Release - resuming...")
+                            Button("Cancel", role:.cancel)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App RELEASE - resuming...")
+                            }
+                            Button("Ok", role:.destructive)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App RELEASE - updating...")
+
+                                self.downloadAppReleaseUpdate()
+
+                            }
                         }
-                        Button("Ok", role:.destructive)
+                        .padding()
+
+                        Spacer()
+
+                        Button
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App Pre-Release - updating...")
-      
-                            self.downloadAppPreReleaseUpdate()
-      
+
+                            self.cAppPreReleaseUpdateButtonPresses += 1
+
+                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App 'download' Pre-Release'.#(\(self.cAppPreReleaseUpdateButtonPresses))...")
+
+                            self.isAppDownloadPreReleaseUpdateShowing.toggle()
+
                         }
+                        label: 
+                        {
+
+                        if #available(iOS 14.0, *) 
+                        {
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "arrow.down.app.fill")
+                                    .help(Text("App 'download' Pre-Release"))
+                                    .imageScale(.large)
+
+                                Text("Download Pre-Release")
+                                    .font(.caption)
+
+                            }
+
+                        } 
+                        else 
+                        {
+
+                            Text("App 'download' Pre-Release")
+
+                        }
+
+                        }
+                        .alert("Do you want to 'download' (and install) the App Pre-Release?", isPresented:$isAppDownloadPreReleaseUpdateShowing)
+                        {
+                            Button("Cancel", role:.cancel)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Cancel' to 'download' the App Pre-Release - resuming...")
+                            }
+                            Button("Ok", role:.destructive)
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'download' the App Pre-Release - updating...")
+
+                                self.downloadAppPreReleaseUpdate()
+
+                            }
+                        }
+                        .padding()
+
+                        Spacer()
+
                     }
-                    .padding()
-      
-                    Spacer()
-      
+
+                    HStack(alignment:.center)
+                    {
+
+                        Spacer()
+
+                        Text(" - - - - - - - - - - - - - - - - - - - - ")
+                            .bold()
+
+                        Spacer()
+
+                    }
+
                 }
 
-                HStack(alignment:.center)
-                {
-      
-                    Spacer()
-      
-                    Text(" - - - - - - - - - - - - - - - - - - - - ")
-                        .bold()
-      
-                    Spacer()
-      
-                }
-      
+            #endif
+
             }
-      
-        #endif
+
+            Text("")            
+                .hidden()
+                .onAppear(
+                    perform:
+                    {
+                        // Continue App 'initialization'...
+
+                        let _ = self.finishAppInitialization()
+                    })
 
             Spacer()
 
@@ -607,6 +822,46 @@ struct SettingsSingleViewCore: View
 
     }
 
+    private func finishAppInitialization()
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Finish the App 'initialization'...
+  
+        self.bWasAppLogFilePresentAtStartup = checkIfAppLogWasPresent()
+        self.bDidAppCrash                   = checkIfAppDidCrash()
+        
+        if (self.bDidAppCrash == false)
+        {
+        
+            self.sAppExecutionPreviousTypeText    = "Success"
+            self.sAppExecutionPreviousButtonText  = "Share the App 'success' Log with Developers..."
+            self.sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'success' LOG data to the Developers?"
+            self.sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec
+        
+        }
+        else
+        {
+        
+            self.sAppExecutionPreviousTypeText    = "Crash"
+            self.sAppExecutionPreviousButtonText  = "Share the App CRASH Log with Developers..."
+            self.sAppExecutionPreviousAlertText   = "Do you want to 'send' the App execution 'crash' LOG data to the Developers?"
+            self.sAppExecutionPreviousLogToUpload = AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec
+        
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of private func finishAppInitialization().
+    
     private func uploadCurrentAppLogToDevs()
     {
   
@@ -754,9 +1009,126 @@ struct SettingsSingleViewCore: View
   
         return
   
-    }   // END of private func uploadCurrentAppLogToDevs().
+    }   // End of private func uploadCurrentAppLogToDevs().
 
 #if os(iOS)
+
+    private func checkIfAppLogWasPresent() -> Bool
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' is [\(String(describing: jmAppDelegateVisitor))] - details are [\(jmAppDelegateVisitor.toString())]...")
+  
+        let bWasAppLogPresentAtStart:Bool = jmAppDelegateVisitor.bWasAppLogFilePresentAtStartup
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppLogPresentAtStart' is [\(String(describing: bWasAppLogPresentAtStart))]...")
+  
+        return bWasAppLogPresentAtStart
+  
+    }   // End of private func checkIfAppLogWasPresent().
+
+    private func checkIfAppDidCrash() -> Bool
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' is [\(String(describing: jmAppDelegateVisitor))] - details are [\(jmAppDelegateVisitor.toString())]...")
+  
+        let bDidAppCrashOnLastRun:Bool = jmAppDelegateVisitor.bWasAppCrashFilePresentAtStartup
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bDidAppCrashOnLastRun' is [\(String(describing: bDidAppCrashOnLastRun))]...")
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bDidAppCrashOnLastRun' is [\(String(describing: bDidAppCrashOnLastRun))]...")
+  
+        return bDidAppCrashOnLastRun
+  
+    }   // End of private func checkIfAppDidCrash().
+
+    private func uploadPreviousAppLogToDevs()
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Prepare specifics to 'upload' the AppLog file...
+
+        var urlAppDelegateVisitorLogFilepath:URL?     = nil
+        var urlAppDelegateVisitorLogFilespec:URL?     = nil
+        var sAppDelegateVisitorLogFilespec:String!    = nil
+        var sAppDelegateVisitorLogFilepath:String!    = nil
+        var sAppDelegateVisitorLogFilenameExt:String! = nil
+
+        do 
+        {
+
+            urlAppDelegateVisitorLogFilepath  = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask ,appropriateFor: nil, create: true)
+            urlAppDelegateVisitorLogFilespec  = urlAppDelegateVisitorLogFilepath?.appendingPathComponent(sAppExecutionPreviousLogToUpload)
+            sAppDelegateVisitorLogFilespec    = urlAppDelegateVisitorLogFilespec?.path
+            sAppDelegateVisitorLogFilepath    = urlAppDelegateVisitorLogFilepath?.path
+            sAppDelegateVisitorLogFilenameExt = urlAppDelegateVisitorLogFilespec?.lastPathComponent
+
+            self.xcgLogMsg("[\(sCurrMethodDisp)] 'sAppDelegateVisitorLogFilespec'    (computed) is [\(String(describing: sAppDelegateVisitorLogFilespec))]...")
+            self.xcgLogMsg("[\(sCurrMethodDisp)] 'sAppDelegateVisitorLogFilepath'    (resolved #2) is [\(String(describing: sAppDelegateVisitorLogFilepath))]...")
+            self.xcgLogMsg("[\(sCurrMethodDisp)] 'sAppDelegateVisitorLogFilenameExt' (computed) is [\(String(describing: sAppDelegateVisitorLogFilenameExt))]...")
+
+        }
+        catch
+        {
+
+            self.xcgLogMsg("[\(sCurrMethodDisp)] Failed to 'stat' item(s) in the 'path' of [.documentDirectory] - Error: \(error)...")
+
+        }
+
+        // Create the AppLog's 'multipartRequestInfo' object (but WITHOUT any Data (yet))...
+
+        let multipartRequestInfo:MultipartRequestInfo = MultipartRequestInfo()
+
+        multipartRequestInfo.bAppZipSourceToUpload    = false
+        multipartRequestInfo.sAppUploadURL            = ""          // "" takes the Upload URL 'default'...
+        multipartRequestInfo.sAppUploadNotifyTo       = ""          // This is email notification - "" defaults to all Dev(s)...
+        multipartRequestInfo.sAppUploadNotifyCc       = ""          // This is email notification - "" defaults to 'none'...
+        multipartRequestInfo.sAppSourceFilespec       = sAppDelegateVisitorLogFilespec
+        multipartRequestInfo.sAppSourceFilename       = sAppDelegateVisitorLogFilenameExt
+        multipartRequestInfo.sAppZipFilename          = sAppDelegateVisitorLogFilenameExt
+        multipartRequestInfo.sAppSaveAsFilename       = sAppDelegateVisitorLogFilenameExt
+        multipartRequestInfo.sAppFileMimeType         = "text/plain"
+
+        // Create the AppLog's 'multipartRequestInfo.dataAppFile' object...
+
+        multipartRequestInfo.dataAppFile              = FileManager.default.contents(atPath: sAppDelegateVisitorLogFilespec)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) The 'upload' is using 'multipartRequestInfo' of [\(String(describing: multipartRequestInfo.toString()))]...")
+
+        // Send the AppLog as an 'upload' to the Server...
+
+        let multipartRequestDriver:MultipartRequestDriver = MultipartRequestDriver(bGenerateResponseLongMsg:self.bIsAppUploadUsingLongMsg)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
+
+        multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:multipartRequestInfo)
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of private func uploadPreviousAppLogToDevs().
 
     private func downloadAppReleaseUpdate()
     {
@@ -868,7 +1240,7 @@ struct SettingsSingleViewCore: View
             if (self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count > 0)
             {
 
-                self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreManager' dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
 
                 var cPFTherapistParseTIDs:Int = 0
 
@@ -880,13 +1252,13 @@ struct SettingsSingleViewCore: View
                     if (iPFTherapistParseTID < 0)
                     {
 
-                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+                        self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
 
                         continue
 
                     }
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
 
                     pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
 
@@ -896,7 +1268,7 @@ struct SettingsSingleViewCore: View
             else
             {
 
-                self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
+                self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the 'jmAppParseCoreManager' dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
 
             }
 
@@ -908,15 +1280,52 @@ struct SettingsSingleViewCore: View
 
         }
 
+        // Detail all TherapistFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
+
+        if (self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreBkgdDataRepo' dictionary of #(\(self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+
+            var cPFTherapistParseTIDs:Int = 0
+
+            for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems
+            {
+
+                cPFTherapistParseTIDs += 1
+
+                if (iPFTherapistParseTID < 0)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+
+                    continue
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+
+                pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
+
+            }
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+
         // Exit:
 
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
         return
 
-    }   // END of private func detailTherapistFileItems().
+    }   // End of private func detailTherapistFileItems().
 
-}   // END of struct SettingsSingleViewCore(View). 
+}   // End of struct SettingsSingleViewCore(View). 
 
 #Preview 
 {

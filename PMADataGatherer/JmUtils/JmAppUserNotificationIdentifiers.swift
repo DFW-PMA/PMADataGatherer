@@ -17,7 +17,7 @@ struct JmAppUserNotificationIdentifiers
     {
 
         static let sClsId        = "JmAppUserNotificationIdentifiers"
-        static let sClsVers      = "v1.0101"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -27,10 +27,12 @@ struct JmAppUserNotificationIdentifiers
 
     // App Data field(s):
 
-    static let sAppNotificationIdentifierActionStop     = "APP_NOTIFICATION_ACTION_ALARM_STOP"
-    static let sAppNotificationIdentifierActionSnooze   = "APP_NOTIFICATION_ACTION_ALARM_SNOOZE"
-    static let sAppNotificationIdentifierCategoryAlarm  = "APP_NOTIFICATION_CATEGORY_ALARM_SINGLE"
-    static let sAppNotificationIdentifierCategorySnooze = "APP_NOTIFICATION_CATEGORY_ALARM_SNOOZE"
+    static let sAppNotificationIdentifierActionAlarm:String    = "APP_NOTIFICATION_ACTION_ALARM"
+    static let sAppNotificationIdentifierActionStop:String     = "APP_NOTIFICATION_ACTION_ALARM_STOP"
+    static let sAppNotificationIdentifierActionSnooze:String   = "APP_NOTIFICATION_ACTION_ALARM_SNOOZE"
+    static let sAppNotificationIdentifierCategoryAlarm:String  = "APP_NOTIFICATION_CATEGORY_ALARM"
+    static let sAppNotificationIdentifierCategoryStop:String   = "APP_NOTIFICATION_CATEGORY_ALARM_STOP"
+    static let sAppNotificationIdentifierCategorySnooze:String = "APP_NOTIFICATION_CATEGORY_ALARM_SNOOZE"
 
 }   // End of struct JmAppUserNotificationIdentifiers.
 
