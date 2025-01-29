@@ -10,6 +10,15 @@ import Foundation
 import SwiftUI
 import Combine
 
+enum TIDType: String, CaseIterable
+{
+    
+    case therapist  = "therapist"
+    case supervisor = "supervisor"
+    case mentor     = "mentor"
+    
+}   // End of enum TIDType(String, CaseIterable).
+
 struct AppDataGathererTherapist1DetailsView: View 
 {
     
@@ -17,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0409"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -41,6 +50,7 @@ struct AppDataGathererTherapist1DetailsView: View
     @State       private var isAppSupervisorDetailsByTIDShowing:Bool       = false
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor     = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager   = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
     init(sTherapistTID:Binding<String>)
     {
@@ -126,6 +136,13 @@ struct AppDataGathererTherapist1DetailsView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -151,7 +168,7 @@ struct AppDataGathererTherapist1DetailsView: View
                         .onAppear
                         {
 
-                            self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:self.sTherapistTID)
+                            self.sTherapistName = self.locateAppTherapistNamebyTid(tidType:TIDType.therapist, sTherapistTID:self.sTherapistTID)
 
                         }
 
@@ -333,7 +350,7 @@ struct AppDataGathererTherapist1DetailsView: View
                                     {
 
                                         self.sSupervisorTID  = "\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)"
-                                        self.sSupervisorName = self.locateAppTherapistNamebyTid(sTherapistTID:"\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)")
+                                        self.sSupervisorName = self.locateAppTherapistNamebyTid(tidType:TIDType.supervisor, sTherapistTID:"\(self.pfTherapistFileItem!.iPFTherapistFileSuperID)")
 
                                     }
 
@@ -345,7 +362,7 @@ struct AppDataGathererTherapist1DetailsView: View
                                     Button
                                     {
 
-                                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1DetailsView in Button(Xcode).'Supervisor Detail(s) by TID'...")
+                                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1DetailsView.Button(Xcode).'Supervisor Detail(s) by TID'...")
 
                                         self.isAppSupervisorDetailsByTIDShowing.toggle()
 
@@ -391,6 +408,13 @@ struct AppDataGathererTherapist1DetailsView: View
 
                                     }
                                 #endif
+                                #if os(macOS)
+                                    .buttonStyle(.borderedProminent)
+                                    .padding()
+                                //  .background(???.isPressed ? .blue : .gray)
+                                    .cornerRadius(10)
+                                    .foregroundColor(Color.primary)
+                                #endif
                                     .padding()
 
                                 }
@@ -412,7 +436,7 @@ struct AppDataGathererTherapist1DetailsView: View
                             Text("Therapists' Mentor TID #")
 
                             let sMentorTID:String  = "\(self.pfTherapistFileItem!.iPFTherapistFileMentorID)"
-                            var sMentorName:String = (self.pfTherapistFileItem!.iPFTherapistFileMentorID == 9) ? "-unassigned-" : self.locateAppTherapistNamebyTid(sTherapistTID:sMentorTID)
+                            let sMentorName:String = (self.pfTherapistFileItem!.iPFTherapistFileMentorID == 9) ? "-unassigned-" : self.locateAppTherapistNamebyTid(tidType:TIDType.mentor, sTherapistTID:sMentorTID)
 
                             Text("\(sMentorTID) <\(sMentorName)>")
 
@@ -584,28 +608,51 @@ struct AppDataGathererTherapist1DetailsView: View
         
     }
     
-    private func locateAppTherapistNamebyTid(sTherapistTID:String = "")->String
+    private func locateAppTherapistNamebyTid(tidType:TIDType, sTherapistTID:String = "")->String
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistTID' is [\(sTherapistTID)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'tidType' is [\(tidType)] - 'sTherapistTID' is [\(sTherapistTID)]...")
 
         // Locate the Therapist 'name' by TID...
 
         var sTherapistName:String = ""
 
-        if (sTherapistTID.count                              > 0 &&
-            self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+        if (sTherapistTID.count > 0)
         {
         
-            sTherapistName = self.jmAppDelegateVisitor.jmAppParseCoreManager!.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
+            sTherapistName = self.jmAppParseCoreManager.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
 
             let iTherapistTID:Int = Int(sTherapistTID)!
 
-            self.pfTherapistFileItem = self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems[iTherapistTID]
-        
+            if (iTherapistTID >= 0)
+            {
+
+                if (tidType == TIDType.therapist)
+                {
+                
+                    self.pfTherapistFileItem = self.jmAppParseCoreManager.dictPFTherapistFileItems[iTherapistTID]
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - 'self.pfTherapistFileItem' is [\(String(describing: self.pfTherapistFileItem))]...")
+                
+                }
+                else
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - bypassing the setting of 'self.pfTherapistFileItem' - 'tidType' of [\(tidType)] is NOT TIDType.therapist...")
+
+                }
+
+            }
+            else
+            {
+            
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate - bypassing the setting of 'self.pfTherapistFileItem' - 'iTherapistTID' of (\(iTherapistTID)) is less than Zero...")
+
+            }
+
         }
 
         if (sTherapistName.count < 1)
@@ -617,7 +664,7 @@ struct AppDataGathererTherapist1DetailsView: View
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistName' is [\(sTherapistName)] - 'sTherapistTID' is [\(sTherapistTID)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistTID' is [\(sTherapistTID)] - 'sTherapistName' is [\(sTherapistName)]...")
   
         return sTherapistName
   

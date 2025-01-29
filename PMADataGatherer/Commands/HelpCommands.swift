@@ -212,7 +212,7 @@ struct HelpCommands: Commands
         jmAppDelegateVisitor.sAppDelegateVisitorGlobalAlertMessage    = "Alert::App Log has been 'Cleared'..."
         jmAppDelegateVisitor.isAppDelegateVisitorShowingAlert         = true
 
-        self.xcgLogMsg("\(ClassInfo.sClsDisp):Commands(Help) in Button(Xcode).'App Log 'Clear'.#(\(self.cHelpCommandsAppLogClearButtonPresses))'...")
+        self.xcgLogMsg("\(ClassInfo.sClsDisp):Commands(Help).Button(Xcode).'App Log 'Clear'.#(\(self.cHelpCommandsAppLogClearButtonPresses))'...")
 
         // Exit:
 

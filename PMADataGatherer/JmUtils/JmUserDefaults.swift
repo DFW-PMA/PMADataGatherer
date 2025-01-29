@@ -25,7 +25,7 @@ class JmUserDefaults: NSObject
     {
         
         static let sClsId        = "JmUserDefaults"
-        static let sClsVers      = "v1.0704"
+        static let sClsVers      = "v1.0801"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -102,7 +102,7 @@ class JmUserDefaults: NSObject
         asToString.append("],")
         asToString.append("[")
         asToString.append("'bClsTraceInternal': [\(self.bClsTraceInternal)],")
-        asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
+    //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
         asToString.append("],")
         asToString.append("]")
 

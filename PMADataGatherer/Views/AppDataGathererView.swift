@@ -16,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0301"
+        static let sClsVers      = "v1.0403"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -29,25 +29,27 @@ struct AppDataGathererView: View
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
     
-    @StateObject   var jmAppParseCoreManager:JmAppParseCoreManager
+//  @StateObject    var jmAppParseCoreManager:JmAppParseCoreManager
     
-    @State private var cAppDataGathererViewRefreshButtonPresses:Int   = 0
-    @State private var cAppDataGathererViewTherapistButtonPresses:Int = 0
+    @State private  var cAppDataGathererViewRefreshButtonPresses:Int   = 0
+    @State private  var cAppDataGathererViewTherapistButtonPresses:Int = 0
 
-    @State private var isAppDataTherapist1ViewModal:Bool              = false
-    @State private var isAppDataTherapist2ViewModal:Bool              = false
+    @State private  var isAppDataTherapist1ViewModal:Bool              = false
+    @State private  var isAppDataTherapist2ViewModal:Bool              = false
 
-                   var jmAppDelegateVisitor:JmAppDelegateVisitor      = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                    var jmAppDelegateVisitor:JmAppDelegateVisitor      = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager    = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
-    init(jmAppParseCoreManager:JmAppParseCoreManager)
+//  init(jmAppParseCoreManager:JmAppParseCoreManager)
+    init()
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        // Handle the 'jmAppParseCoreManager' parameter...
-
-        self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
+    //  // Handle the 'jmAppParseCoreManager' parameter...
+    //
+    //  self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
@@ -102,7 +104,7 @@ struct AppDataGathererView: View
 
                         self.cAppDataGathererViewRefreshButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Refresh'.#(\(self.cAppDataGathererViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Refresh'.#(\(self.cAppDataGathererViewRefreshButtonPresses))...")
 
                     }
                     label:
@@ -121,6 +123,13 @@ struct AppDataGathererView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
 
                     Spacer()
 
@@ -150,6 +159,13 @@ struct AppDataGathererView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -175,7 +191,7 @@ struct AppDataGathererView: View
 
                                 self.cAppDataGathererViewTherapistButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by TID'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by TID'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
 
                                 self.isAppDataTherapist1ViewModal.toggle()
 
@@ -200,7 +216,7 @@ struct AppDataGathererView: View
                             .sheet(isPresented:$isAppDataTherapist1ViewModal, content:
                                 {
 
-                                    AppDataGathererTherapist1View(jmAppParseCoreManager:jmAppParseCoreManager)
+                                    AppDataGathererTherapist1View()
 
                                 }
                             )
@@ -209,9 +225,16 @@ struct AppDataGathererView: View
                             .fullScreenCover(isPresented:$isAppDataTherapist1ViewModal)
                             {
 
-                                AppDataGathererTherapist1View(jmAppParseCoreManager:jmAppParseCoreManager)
+                                AppDataGathererTherapist1View()
 
                             }
+                        #endif
+                        #if os(macOS)
+                            .buttonStyle(.borderedProminent)
+                            .padding()
+                        //  .background(???.isPressed ? .blue : .gray)
+                            .cornerRadius(10)
+                            .foregroundColor(Color.primary)
                         #endif
 
                             Spacer()
@@ -228,7 +251,7 @@ struct AppDataGathererView: View
 
                                 self.cAppDataGathererViewTherapistButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView in Button(Xcode).'Therapist Gatherer by tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
 
                                 self.isAppDataTherapist2ViewModal.toggle()
 
@@ -253,7 +276,7 @@ struct AppDataGathererView: View
                             .sheet(isPresented:$isAppDataTherapist2ViewModal, content:
                                 {
 
-                                    AppDataGathererTherapist2View(jmAppParseCoreManager:jmAppParseCoreManager)
+                                    AppDataGathererTherapist2View()
 
                                 }
                             )
@@ -262,9 +285,16 @@ struct AppDataGathererView: View
                             .fullScreenCover(isPresented:$isAppDataTherapist2ViewModal)
                             {
 
-                                AppDataGathererTherapist2View(jmAppParseCoreManager:jmAppParseCoreManager)
+                                AppDataGathererTherapist2View()
 
                             }
+                        #endif
+                        #if os(macOS)
+                            .buttonStyle(.borderedProminent)
+                            .padding()
+                        //  .background(???.isPressed ? .blue : .gray)
+                            .cornerRadius(10)
+                            .foregroundColor(Color.primary)
                         #endif
 
                             Spacer()
@@ -356,7 +386,7 @@ struct AppDataGathererView: View
 #Preview 
 {
     
-    AppDataGathererView(jmAppParseCoreManager:JmAppParseCoreManager())
+    AppDataGathererView()
     
 }
 

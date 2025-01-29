@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1View"
-        static let sClsVers      = "v1.0203"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -40,25 +40,27 @@ struct AppDataGathererTherapist1View: View
     @State       private var sTherapistTID:String                                   = ""
     @State       private var sTherapistName:String                                  = ""
 
-    @StateObject         var jmAppParseCoreManager:JmAppParseCoreManager
+//  @StateObject         var jmAppParseCoreManager:JmAppParseCoreManager
     
     @State       private var cAppDataGathererTherapist1ViewRefreshButtonPresses:Int = 0
 
     @State       private var isAppRunTherapistLocateByTidShowing:Bool               = false
-//  @State       private var isAppRunTherapistLocateByTidSuccessful:Bool            = false
     @State       private var isAppTherapistDetailsByTidShowing:Bool                 = false
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor              = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                         var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo  = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
-    init(jmAppParseCoreManager:JmAppParseCoreManager)
+//  init(jmAppParseCoreManager:JmAppParseCoreManager)
+    init()
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        // Handle the 'jmAppParseCoreManager' parameter...
-
-        self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
+    //  // Handle the 'jmAppParseCoreManager' parameter...
+    //
+    //  self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
@@ -113,7 +115,7 @@ struct AppDataGathererTherapist1View: View
 
                         self.cAppDataGathererTherapist1ViewRefreshButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererTherapist1View in Button(Xcode).'Refresh'.#(\(self.cAppDataGathererTherapist1ViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Refresh'.#(\(self.cAppDataGathererTherapist1ViewRefreshButtonPresses))...")
 
                     }
                     label:
@@ -132,6 +134,13 @@ struct AppDataGathererTherapist1View: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
 
                     Spacer()
 
@@ -161,6 +170,13 @@ struct AppDataGathererTherapist1View: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -189,6 +205,11 @@ struct AppDataGathererTherapist1View: View
                     #if os(iOS)
                         .keyboardType(.numberPad)
                     #endif
+                        .onSubmit
+                        {
+                            self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
+                            focusedField        = .therapistTID
+                        }
                         .onReceive(Just(sTherapistTID))
                         { newValue in
                             let filteredValue = newValue.filter { "0123456789".contains($0) }
@@ -224,7 +245,7 @@ struct AppDataGathererTherapist1View: View
                         Button
                         {
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View in Button(Xcode).'Therapist Detail(s) by TID'...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Therapist Detail(s) by TID'...")
 
                             self.isAppTherapistDetailsByTidShowing.toggle()
 
@@ -270,6 +291,13 @@ struct AppDataGathererTherapist1View: View
 
                         }
                     #endif
+                    #if os(macOS)
+                        .buttonStyle(.borderedProminent)
+                        .padding()
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
                         .padding()
                     
                     }
@@ -284,7 +312,7 @@ struct AppDataGathererTherapist1View: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View in Button(Xcode).'Locate the Therapist by TID'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Locate the Therapist by TID'...")
 
                         self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
 
@@ -307,6 +335,7 @@ struct AppDataGathererTherapist1View: View
                                 Spacer()
 
                                 Text("=> Locate the Therapist by TID...")
+                                    .bold()
                                     .font(.caption)
                                     .foregroundColor(.red)
 
@@ -325,6 +354,13 @@ struct AppDataGathererTherapist1View: View
                 //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'locate' the Therapist by TID...")
                 //      }
                 //  }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
                     .padding()
 
                 }
@@ -350,7 +386,7 @@ struct AppDataGathererTherapist1View: View
 
         // Locate the Therapist 'name' by TID...
 
-        var sTherapistName:String = self.jmAppParseCoreManager.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
+        var sTherapistName:String = self.jmAppParseCoreBkgdDataRepo.convertTidToTherapistName(sPFTherapistParseTID:sTherapistTID)
 
         if (sTherapistName.count < 1)
         {
@@ -372,7 +408,7 @@ struct AppDataGathererTherapist1View: View
 #Preview 
 {
     
-    AppDataGathererTherapist1View(jmAppParseCoreManager:JmAppParseCoreManager())
+    AppDataGathererTherapist1View()
     
 }
 

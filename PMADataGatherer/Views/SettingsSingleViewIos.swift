@@ -78,7 +78,7 @@ struct SettingsSingleViewIos: View
         
     }
     
-}   // END of struct SettingsSingleViewIos(View). 
+}   // End of struct SettingsSingleViewIos(View). 
 
 #Preview 
 {

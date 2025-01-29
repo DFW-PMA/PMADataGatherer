@@ -1,6 +1,6 @@
 //
 //  AppAboutView.swift
-//  VisitVerify
+//  PMADataGatherer
 //
 //  Created by Daryl Cox on 08/24/2024.
 //  Copyright © JustMacApps 2023-2025. All rights reserved.
@@ -17,7 +17,7 @@ struct AppAboutView: View
     {
         
         static let sClsId        = "AppAboutView"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.1001"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -111,6 +111,13 @@ struct AppAboutView: View
                     }
 
                 }
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
                 .padding()
 
             }

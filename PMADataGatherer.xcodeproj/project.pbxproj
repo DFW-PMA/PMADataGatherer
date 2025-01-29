@@ -47,6 +47,8 @@
 		F029E0B62C82386D00FC96B9 /* SettingsSingleViewIos.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029E0B32C82386D00FC96B9 /* SettingsSingleViewIos.swift */; };
 		F029E0B72C82386D00FC96B9 /* SettingsSingleViewMac.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029E0B42C82386D00FC96B9 /* SettingsSingleViewMac.swift */; };
 		F029E0BB2C823ACB00FC96B9 /* AppAboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F029E0B92C823ACB00FC96B9 /* AppAboutView.swift */; };
+		F02C7A1C2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02C7A1B2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift */; };
+		F02C7A1D2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02C7A1B2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift */; };
 		F03240302C49672900ED9508 /* PMADataGathererNSAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F032402F2C49672900ED9508 /* PMADataGathererNSAppDelegate.swift */; };
 		F042521C2C59356600EA22D8 /* CalledObjCModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F04252192C59356600EA22D8 /* CalledObjCModule.m */; };
 		F0474E592CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0474E582CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift */; };
@@ -61,6 +63,10 @@
 		F05B51562CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05B51542CE7D8B5008A0EEE /* ParsePFCscDataItem.swift */; };
 		F05EBBB12D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
 		F05EBBB22D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
+		F05EE1D22D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */; };
+		F05EE1D32D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */; };
+		F05EE1D52D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */; };
+		F05EE1D62D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */; };
 		F0601D932C77C73C00443D72 /* JmXcodeBuildSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0601D922C77C73C00443D72 /* JmXcodeBuildSettings.swift */; };
 		F069E2AC2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069E2AB2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift */; };
 		F069E2AD2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F069E2AB2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift */; };
@@ -96,6 +102,8 @@
 		F091A2892C8F73DD00FB85D5 /* RestURLEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A2822C8F6FEF00FB85D5 /* RestURLEndpoint.swift */; };
 		F091A28A2C8F73DD00FB85D5 /* RestURLProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A2832C8F6FEF00FB85D5 /* RestURLProcessor.swift */; };
 		F091A28B2C8F73DD00FB85D5 /* RestURLResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A2812C8F6FEF00FB85D5 /* RestURLResponse.swift */; };
+		F091A6662D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */; };
+		F091A6672D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */; };
 		F0981DB42C52C5AE0054CE7C /* PMADataGathererAppGlobalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0981DB32C52C5AD0054CE7C /* PMADataGathererAppGlobalInfo.swift */; };
 		F0A443392C498ED6005EEE81 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		F0A59E052C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A59E032C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift */; };
@@ -188,6 +196,7 @@
 		F029E0B32C82386D00FC96B9 /* SettingsSingleViewIos.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSingleViewIos.swift; sourceTree = "<group>"; };
 		F029E0B42C82386D00FC96B9 /* SettingsSingleViewMac.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSingleViewMac.swift; sourceTree = "<group>"; };
 		F029E0B92C823ACB00FC96B9 /* AppAboutView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppAboutView.swift; sourceTree = "<group>"; };
+		F02C7A1B2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JmAppParseCoreBkgdDataRepo.swift; sourceTree = "<group>"; };
 		F032402F2C49672900ED9508 /* PMADataGathererNSAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMADataGathererNSAppDelegate.swift; sourceTree = "<group>"; };
 		F04252192C59356600EA22D8 /* CalledObjCModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CalledObjCModule.m; sourceTree = "<group>"; };
 		F042521A2C59356600EA22D8 /* CalledObjCModule-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CalledObjCModule-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -198,6 +207,8 @@
 		F04D88A12CDAA8A00002AA0B /* MultipartZipFileCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartZipFileCreator.swift; sourceTree = "<group>"; };
 		F05B51542CE7D8B5008A0EEE /* ParsePFCscDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFCscDataItem.swift; sourceTree = "<group>"; };
 		F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererTherapist2View.swift; sourceTree = "<group>"; };
+		F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSwiftDataItem.swift; sourceTree = "<group>"; };
+		F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JmAppAlarmSoundManager.swift; sourceTree = "<group>"; };
 		F0601D922C77C73C00443D72 /* JmXcodeBuildSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmXcodeBuildSettings.swift; sourceTree = "<group>"; };
 		F069E2AB2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFAdminsDataItem.swift; sourceTree = "<group>"; };
 		F069E2AE2CEFADE5001F0A5E /* AppAuthenticateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthenticateView.swift; sourceTree = "<group>"; };
@@ -219,6 +230,7 @@
 		F091A2922C8F849C00FB85D5 /* PMADataGatherer-Mac-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "PMADataGatherer-Mac-Info.plist"; sourceTree = "<group>"; };
 		F091A2932C8F84E600FB85D5 /* PMADataGatherer-iOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "PMADataGatherer-iOS-Info.plist"; sourceTree = "<group>"; };
 		F091A2942C8F865700FB85D5 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSearchableTherapistName.swift; sourceTree = "<group>"; };
 		F0981DB32C52C5AD0054CE7C /* PMADataGathererAppGlobalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMADataGathererAppGlobalInfo.swift; sourceTree = "<group>"; };
 		F0A59E032C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmObjCSwiftEnvBridge.swift; sourceTree = "<group>"; };
 		F0A59E042C5962E900302BA8 /* JmObjCSwiftEnvBridge-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JmObjCSwiftEnvBridge-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -282,6 +294,8 @@
 		F0289D2C2C53D920001B19CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */,
+				F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */,
 				F048393D2D2733430060D765 /* ParsePFTherapistFileItem.swift */,
 				F0EF09D22D00B6CC0088D819 /* ScheduledPatientLocationItem.swift */,
 				F06C01B82CFE0A16007703E2 /* PFAdminsSwiftDataItem.swift */,
@@ -401,6 +415,8 @@
 		F0D17B862C52E3D5000E5A52 /* JmUtils */ = {
 			isa = PBXGroup;
 			children = (
+				F02C7A1B2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift */,
+				F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */,
 				F06BB2932D0B6D7200E524E5 /* JmAppSwiftDataManager.swift */,
 				F0D473972C7AD2960027F651 /* JmAppDelegateVisitor.swift */,
 				F0EEDD842CADC38400E437E8 /* JmAppDelegateVisitor-Bridging-Header.h */,
@@ -555,6 +571,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F0D17B8F2C52E942000E5A52 /* HelpCommands.swift in Sources */,
+				F02C7A1D2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift in Sources */,
 				F069E2AD2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift in Sources */,
 				F029E0B72C82386D00FC96B9 /* SettingsSingleViewMac.swift in Sources */,
 				F0EEDD882CADC38400E437E8 /* JmAppMetricKitManager.swift in Sources */,
@@ -568,12 +585,14 @@
 				F0F1277E2CEB944D00656B7E /* AppLocationView.swift in Sources */,
 				F0289D332C53D98D001B19CD /* HelpBasicMode.swift in Sources */,
 				F08C86B02D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */,
+				F05EE1D52D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */,
 				F00619A62C94A8060094614E /* MultipartRequestInfo.swift in Sources */,
 				F091A2862C8F6FEF00FB85D5 /* RestURLEndpoint.swift in Sources */,
 				F00619A02C94A8060094614E /* MultipartRequestDriver.swift in Sources */,
 				F0981DB42C52C5AE0054CE7C /* PMADataGathererAppGlobalInfo.swift in Sources */,
 				F00619A42C94A8060094614E /* MultipartRequest.swift in Sources */,
 				F05B51552CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */,
+				F091A6672D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */,
 				F048393F2D2733430060D765 /* ParsePFTherapistFileItem.swift in Sources */,
 				F00619A22C94A8060094614E /* MultipartDataExtension.swift in Sources */,
 				F0EF09D32D00B6CC0088D819 /* ScheduledPatientLocationItem.swift in Sources */,
@@ -590,6 +609,7 @@
 				F0CBE9012CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */,
 				F0786E472CE68E9E0052A534 /* CoreLocationSiteItem.swift in Sources */,
 				F07F7B952C94DB2D0094AE18 /* DefinesObjCOverrides.m in Sources */,
+				F05EE1D22D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */,
 				F0289D2B2C53D863001B19CD /* HelpBasicView.swift in Sources */,
 				F0D17B922C52E951000E5A52 /* SettingsSingleView.swift in Sources */,
 				F03240302C49672900ED9508 /* PMADataGathererNSAppDelegate.swift in Sources */,
@@ -625,6 +645,7 @@
 				F0BCCC582C820EF1007EA382 /* HelpBasicMode.swift in Sources */,
 				F0BCCC592C820EF1007EA382 /* PMADataGathererUIAppDelegate.swift in Sources */,
 				F08C86B72D1DF34600D5B19A /* AppDataGathererTherapist1DetailsView.swift in Sources */,
+				F091A6662D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */,
 				F0BCCC5A2C820EF1007EA382 /* PMADataGathererAppGlobalInfo.swift in Sources */,
 				F08A94762D11F1A900B69C3C /* AppTidScheduleView.swift in Sources */,
 				F0BCCC5B2C820EF1007EA382 /* CalledObjCModule.m in Sources */,
@@ -639,6 +660,7 @@
 				F0CBE9002CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */,
 				F0F1277D2CEB944D00656B7E /* AppLocationView.swift in Sources */,
 				F0474E5B2CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift in Sources */,
+				F05EE1D32D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */,
 				F0474E5C2CDAA54A0079B1E0 /* JmAppUserNotificationIdentifiers.swift in Sources */,
 				F00619A52C94A8060094614E /* MultipartRequest.swift in Sources */,
 				F05B51562CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */,
@@ -661,7 +683,9 @@
 				F0DC5D322CDBCE7A009F0090 /* MultipartZipFileService.swift in Sources */,
 				F0BCCC662C820EF1007EA382 /* JmObjCSwiftEnvBridge.swift in Sources */,
 				F0BB63FE2CF4DB6900B22F9D /* SettingsSingleViewCore.swift in Sources */,
+				F05EE1D62D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */,
 				F04D88A32CDAA8A00002AA0B /* MultipartZipFileCreator.swift in Sources */,
+				F02C7A1C2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift in Sources */,
 				F0BCCC672C820EF1007EA382 /* HelpBasicLoader.swift in Sources */,
 				F0BCCC682C820EF1007EA382 /* JmStringExtensions.swift in Sources */,
 			);
@@ -821,7 +845,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.01.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -865,7 +889,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.01.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -908,7 +932,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.07.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -936,7 +960,7 @@
 				MARKETING_VERSION = 1.01;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGathererEnterprise1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGatherer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -958,7 +982,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.07.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -986,7 +1010,7 @@
 				MARKETING_VERSION = 1.01;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGathererEnterprise1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGatherer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

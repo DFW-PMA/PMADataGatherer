@@ -17,7 +17,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFAdminsDataItem"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0402"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -104,6 +104,44 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
 
     }   // End of override init().
 
+    convenience init(pfAdminsDataItem:ParsePFAdminsDataItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.init()
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfAdminsDataItem' is [\(pfAdminsDataItem)]...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.idPFAdminsObject              = pfAdminsDataItem.idPFAdminsObject             
+        self.pfAdminsObject                = pfAdminsDataItem.pfAdminsObject               
+        
+        self.sPFAdminsParseClassName       = pfAdminsDataItem.sPFAdminsParseClassName      
+        self.sPFAdminsParseObjectId        = pfAdminsDataItem.sPFAdminsParseObjectId       
+        self.datePFAdminsParseCreatedAt    = pfAdminsDataItem.datePFAdminsParseCreatedAt   
+        self.datePFAdminsParseUpdatedAt    = pfAdminsDataItem.datePFAdminsParseUpdatedAt   
+        self.aclPFAdminsParse              = pfAdminsDataItem.aclPFAdminsParse             
+        self.bPFAdminsParseIsDataAvailable = pfAdminsDataItem.bPFAdminsParseIsDataAvailable
+        self.bPFAdminsParseIdDirty         = pfAdminsDataItem.bPFAdminsParseIdDirty        
+        self.sPFAdminsParseAllKeys         = pfAdminsDataItem.sPFAdminsParseAllKeys        
+        
+        self.sPFAdminsParseName            = pfAdminsDataItem.sPFAdminsParseName           
+        self.sPFAdminsParseTID             = pfAdminsDataItem.sPFAdminsParseTID            
+        self.sPFAdminsParsePassword        = pfAdminsDataItem.sPFAdminsParsePassword       
+        self.sPFAdminsParseNewLvl          = pfAdminsDataItem.sPFAdminsParseNewLvl         
+        self.sPFAdminsParseLevel           = pfAdminsDataItem.sPFAdminsParseLevel          
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of convenience init(pfAdminsDataItem:ParsePFAdminsDataItem).
+
     private func xcgLogMsg(_ sMessage:String)
     {
 
@@ -161,9 +199,9 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
         asToString.append("'sPFAdminsParsePassword': [\(String(describing: self.sPFAdminsParsePassword))],")
         asToString.append("'sPFAdminsParseNewLvl': [\(String(describing: self.sPFAdminsParseNewLvl))],")
         asToString.append("'sPFAdminsParseLevel': [\(String(describing: self.sPFAdminsParseLevel))],")
-        asToString.append("],")
-        asToString.append("[")
-        asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
+    //  asToString.append("],")
+    //  asToString.append("[")
+    //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
         asToString.append("],")
         asToString.append("]")
 
@@ -185,6 +223,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
 
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'id'                            is [\(String(describing: self.id))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'idPFAdminsObject'              is [\(String(describing: self.idPFAdminsObject))]...")
+
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'pfAdminsObject'                is [\(String(describing: self.pfAdminsObject))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'sPFAdminsParseClassName'       is [\(String(describing: self.sPFAdminsParseClassName))]...")
@@ -208,7 +247,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
 
         return
 
-    }   // END of public func displayParsePFAdminsDataItemToLog().
+    }   // End of public func displayParsePFAdminsDataItemToLog().
 
     public func constructParsePFAdminsDataItemFromPFObject(idPFAdminsObject:Int = 0, pfAdminsObject:PFObject)
     {
@@ -244,7 +283,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
 
         return
 
-    }   // END of public func constructParsePFAdminsDataItemFromPFObject(idPFAdminsObject:Int, pfAdminsObject:PFObject).
+    }   // End of public func constructParsePFAdminsDataItemFromPFObject(idPFAdminsObject:Int, pfAdminsObject:PFObject).
 
 }   // End of class ParsePFAdminsDataItem(NSObject, Identifiable).
 

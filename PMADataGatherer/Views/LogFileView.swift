@@ -17,7 +17,7 @@ struct LogFileView: View
     {
         
         static let sClsId          = "LogFileView"
-        static let sClsVers        = "v1.1501"
+        static let sClsVers        = "v1.1801"
         static let sClsDisp        = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
@@ -105,7 +105,7 @@ struct LogFileView: View
 
                     self.logFileUrl = self.jmAppDelegateVisitor.urlAppDelegateVisitorLogFilespec
 
-                    xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView.Button('Preview Log file') performed for the URL of [\(String(describing: self.logFileUrl))]...")
+                    self.xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView.Button('Preview Log file') performed for the URL of [\(String(describing: self.logFileUrl))]...")
 
                 }
                 label:
@@ -116,15 +116,22 @@ struct LogFileView: View
 
                         Label("", systemImage: "text.viewfinder")
                             .help(Text("Preview the LOG file..."))
-                            .imageScale(.large)
+                            .imageScale(.medium)
 
                         Text("Preview LOG")
-                            .font(.caption)
+                            .font(.caption2)
 
                     }
 
                 }
                 .quickLookPreview($logFileUrl)
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
                 .padding()
 
                 Spacer()
@@ -134,7 +141,7 @@ struct LogFileView: View
 
                     self.cLogFileViewAppLogClearButtonPresses += 1
 
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView in Button(Xcode).'App Log 'Clear'.#(\(self.cLogFileViewAppLogClearButtonPresses))'...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView.Button(Xcode).'App Log 'Clear'.#(\(self.cLogFileViewAppLogClearButtonPresses))'...")
 
                     self.jmAppDelegateVisitor.clearAppDelegateVisitorTraceLogFile()
 
@@ -149,10 +156,10 @@ struct LogFileView: View
 
                         Label("", systemImage: "clear")
                             .help(Text("Clear the LOG file..."))
-                            .imageScale(.large)
+                            .imageScale(.medium)
 
                         Text("Clear LOG")
-                            .font(.caption)
+                            .font(.caption2)
 
                     }
 
@@ -163,6 +170,13 @@ struct LogFileView: View
                     Button("Ok", role:.cancel) { }
 
                 }
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
 
                 Spacer()
 
@@ -171,7 +185,7 @@ struct LogFileView: View
                 Button
                 {
 
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppAboutView.Button(Xcode).'Dismiss' pressed...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView.Button(Xcode).'Dismiss' pressed...")
 
                     self.presentationMode.wrappedValue.dismiss()
 
@@ -186,10 +200,10 @@ struct LogFileView: View
 
                         Label("", systemImage: "xmark.circle")
                             .help(Text("Dismiss this Screen"))
-                            .imageScale(.large)
+                            .imageScale(.medium)
 
                         Text("Dismiss")
-                            .font(.caption)
+                            .font(.caption2)
 
                     }
 
@@ -210,7 +224,7 @@ struct LogFileView: View
                     Button
                     {
                         
-                        let _ = xcgLogMsg("...\(ClassInfo.sClsDisp):ContentView in Text.contextMenu.'copy' button #1...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp):LogFileView in Text.contextMenu.'copy' button #1...")
                         
                         copyLogFilespecToClipboard()
                         
@@ -233,7 +247,7 @@ struct LogFileView: View
                     Button
                     {
                         
-                        let _ = xcgLogMsg("...\(ClassInfo.sClsDisp):ContentView in Text.contextMenu.'copy' button #2...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp):LogFileView in Text.contextMenu.'copy' button #2...")
                         
                         copyLogFilespecToClipboard()
                         
@@ -247,21 +261,28 @@ struct LogFileView: View
                 
                 }
 
+            Text("")
+
+            Text("Log file 'size' is: [\(self.getLogFilespecFileSizeDisplayableMB())]")
+
             Spacer()
 
         }
         
     }
     
-    func copyLogFilespecToClipboard()
+    private func copyLogFilespecToClipboard()
     {
         
-        xcgLogMsg("...\(ClassInfo.sClsDisp):ContentView in ContextMenu.copyLogFilespecToClipboard() for text of [\(jmAppDelegateVisitor.sAppDelegateVisitorLogFilespec!)]...")
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+          
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - for text of [\(jmAppDelegateVisitor.sAppDelegateVisitorLogFilespec!)]...")
         
     #if os(macOS)
 
         pasteboard.prepareForNewContents()
-        pasteboard.setString(jmAppDelegateVisitor.sAppDelegateVisitorLogFilespec!, forType: .string)
+        pasteboard.setString(jmAppDelegateVisitor.sAppDelegateVisitorLogFilespec!, forType:.string)
 
     #elseif os(iOS)
 
@@ -269,11 +290,35 @@ struct LogFileView: View
 
     #endif
 
+        // Exit...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+    
         return
         
-    }   // End of func copyLogFilespecToClipboard().
+    }   // End of private func copyLogFilespecToClipboard().
     
-}   // END of struct LogFileView(View). 
+    private func getLogFilespecFileSizeDisplayableMB()->String
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+          
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'sAppDelegateVisitorLogFilespec' is [\(jmAppDelegateVisitor.sAppDelegateVisitorLogFilespec!)]...")
+
+        // Get the size of the LogFilespec in a displayable MB string...
+
+        let sLogFilespecSizeInMB:String = JmFileIO.getFilespecSizeAsDisplayableMB(sFilespec:self.jmAppDelegateVisitor.sAppDelegateVisitorLogFilespec)
+
+        // Exit...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sLogFilespecSizeInMB' is [\(sLogFilespecSizeInMB)] for 'sAppDelegateVisitorLogFilespec' of [\(jmAppDelegateVisitor.sAppDelegateVisitorLogFilespec!)]...")
+    
+        return sLogFilespecSizeInMB
+        
+    }   // End of private func getLogFilespecFileSizeDisplayableMB()->String.
+    
+}   // End of struct LogFileView(View). 
 
 #Preview 
 {
