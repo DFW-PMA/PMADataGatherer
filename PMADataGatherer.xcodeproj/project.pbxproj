@@ -821,7 +821,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.01.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -846,7 +846,7 @@
 				MARKETING_VERSION = 1.01;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGathererEnterprise1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGatherer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "PMADataGatherer/Objective-C/CalledObjCModule-Bridging-Header.h";
@@ -865,7 +865,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.01.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -890,7 +890,7 @@
 				MARKETING_VERSION = 1.01;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGathererEnterprise1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PreferredMobileApplications.PMADataGatherer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "PMADataGatherer/Objective-C/CalledObjCModule-Bridging-Header.h";
@@ -908,7 +908,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.07.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -958,7 +958,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 06.07.25C007;
+				CURRENT_PROJECT_VERSION = 19.01.25C029;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
