@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.0902"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -989,6 +989,10 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                     }
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Added #(\(cPFAdminsDataItemsAdded)) PFQuery 'Admins' item(s) to SwiftData from #(\(self.dictPFAdminsDataItems.count)) available item(s)...")
+
+                    self.jmAppSwiftDataManager.saveAppSwiftData()
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) SwiftDataManager has been signalled to 'save' SwiftData for PFQuery 'Admins' item(s)...")
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'self.jmAppSwiftDataManager.detailAppSwiftDataToLog()'...")
 
