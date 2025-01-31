@@ -34,6 +34,8 @@
 		F00619A62C94A8060094614E /* MultipartRequestInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006199D2C94A8060094614E /* MultipartRequestInfo.swift */; };
 		F00619A72C94A8060094614E /* MultipartRequestInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006199D2C94A8060094614E /* MultipartRequestInfo.swift */; };
 		F00619A82C94AEBE0094614E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F091A2942C8F865700FB85D5 /* LaunchScreen.storyboard */; };
+		F02204B12D4D670E00C5B182 /* ParsePFPatientFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */; };
+		F02204B22D4D670E00C5B182 /* ParsePFPatientFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */; };
 		F0289D292C53D85B001B19CD /* JmUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0289D282C53D85B001B19CD /* JmUserDefaults.swift */; };
 		F0289D2B2C53D863001B19CD /* HelpBasicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0289D2A2C53D863001B19CD /* HelpBasicView.swift */; };
 		F0289D2F2C53D933001B19CD /* HelpBasic.html in Resources */ = {isa = PBXBuildFile; fileRef = F0289D2D2C53D933001B19CD /* HelpBasic.html */; };
@@ -181,6 +183,7 @@
 		F006199B2C94A8060094614E /* MultipartDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartDataExtension.swift; sourceTree = "<group>"; };
 		F006199C2C94A8060094614E /* MultipartRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartRequest.swift; sourceTree = "<group>"; };
 		F006199D2C94A8060094614E /* MultipartRequestInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartRequestInfo.swift; sourceTree = "<group>"; };
+		F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFPatientFileItem.swift; sourceTree = "<group>"; };
 		F0289D282C53D85B001B19CD /* JmUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmUserDefaults.swift; sourceTree = "<group>"; };
 		F0289D2A2C53D863001B19CD /* HelpBasicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpBasicView.swift; sourceTree = "<group>"; };
 		F0289D2D2C53D933001B19CD /* HelpBasic.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = HelpBasic.html; sourceTree = "<group>"; };
@@ -294,6 +297,7 @@
 		F0289D2C2C53D920001B19CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */,
 				F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */,
 				F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */,
 				F048393D2D2733430060D765 /* ParsePFTherapistFileItem.swift */,
@@ -578,6 +582,7 @@
 				F05EBBB22D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */,
 				F0474E592CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift in Sources */,
 				F0474E5A2CDAA54A0079B1E0 /* JmAppUserNotificationIdentifiers.swift in Sources */,
+				F02204B22D4D670E00C5B182 /* ParsePFPatientFileItem.swift in Sources */,
 				F06BB2952D0B6D7200E524E5 /* JmAppSwiftDataManager.swift in Sources */,
 				F08C00C72CE536430045A5CD /* JmAppParseCoreManager.swift in Sources */,
 				F091A2872C8F6FEF00FB85D5 /* RestURLProcessor.swift in Sources */,
@@ -677,6 +682,7 @@
 				F0786E482CE68E9E0052A534 /* CoreLocationModelObservable2.swift in Sources */,
 				F0786E492CE68E9E0052A534 /* CoreLocationSiteItem.swift in Sources */,
 				F00619A12C94A8060094614E /* MultipartRequestDriver.swift in Sources */,
+				F02204B12D4D670E00C5B182 /* ParsePFPatientFileItem.swift in Sources */,
 				F0EF09D42D00B6CC0088D819 /* ScheduledPatientLocationItem.swift in Sources */,
 				F0BCCC642C820EF1007EA382 /* JmXcodeBuildSettings.swift in Sources */,
 				F0BCCC652C820EF1007EA382 /* JmAppDelegateVisitor.swift in Sources */,
@@ -845,7 +851,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20.01.25C030;
+				CURRENT_PROJECT_VERSION = 21.01.25C031;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -889,7 +895,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20.01.25C030;
+				CURRENT_PROJECT_VERSION = 21.01.25C031;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -932,7 +938,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20.01.25C030;
+				CURRENT_PROJECT_VERSION = 21.01.25C031;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -982,7 +988,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 20.01.25C030;
+				CURRENT_PROJECT_VERSION = 21.01.25C031;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";

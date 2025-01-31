@@ -16,7 +16,7 @@ class MultipartZipFileCreator: NSObject
     {
         
         static let sClsId          = "MultipartZipFileCreator"
-        static let sClsVers        = "v1.0301"
+        static let sClsVers        = "v1.0401"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
@@ -204,8 +204,8 @@ class MultipartZipFileCreator: NSObject
         {
 
             let urlForSourceFilespec:URL?                       = urlForZipOperationsSource
-            let urlForTargetZipFile:URL?                        = FileManager.default.temporaryDirectory
-                                                                      .appendingPathComponent(sForZipOperationsTargetFilename)
+        //  let urlForTargetZipFile:URL?                        = FileManager.default.temporaryDirectory
+        //                                                            .appendingPathComponent(sForZipOperationsTargetFilename)
             let multipartZipFileService:MultipartZipFileService = MultipartZipFileService()
 
             let urlForTmpZipFile:URL = 
