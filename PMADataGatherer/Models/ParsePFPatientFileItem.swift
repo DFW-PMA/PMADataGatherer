@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0102"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -663,28 +663,44 @@ class ParsePFPatientFileItem: NSObject, Identifiable
             asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned2' has a count of (\(listHomeLocCleaned2.count)) which is equal to or greater than 1 - continuing...")
             
             var dictHomeLocCleaned2:[String:String] = [String:String]()
-            var cHomeLocWork:Int                     = 0
+            var cHomeLocWork:Int                    = 0
             
             for sHomeLocWork:String in listHomeLocCleaned2
             {
                 
-                if (sHomeLocWork.count < 1)
-                {
-                    
-                    continue
-                    
-                }
+            //  if (sHomeLocWork.count < 1)
+            //  {
+            //      
+            //      continue
+            //      
+            //  }
                 
                 cHomeLocWork += 1
                 
                 asToString.append("\(sCurrMethodDisp) #(\(cHomeLocWork)): 'sHomeLocWork' is [\(sHomeLocWork)]...")
                 
-                let listHomeLocWorkCleaned:[String] = sHomeLocWork.components(separatedBy:csHomeLocDelimiters3)
+            //  let listHomeLocWorkCleaned:[String] = sHomeLocWork.components(separatedBy:csHomeLocDelimiters3)
+            //
+            //  asToString.append("\(sCurrMethodDisp) #(\(cHomeLocWork)): 'listHomeLocWorkCleaned' is [\(listHomeLocWorkCleaned)]...")
 
-                asToString.append("\(sCurrMethodDisp) #(\(cHomeLocWork)): 'listHomeLocWorkCleaned' is [\(listHomeLocWorkCleaned)]...")
+                var sHomeLocKey:String   = ""
+                var sHomeLocValue:String = ""
                 
-                let sHomeLocKey:String   = listHomeLocWorkCleaned[0]
-                let sHomeLocValue:String = listHomeLocWorkCleaned[1]
+                if (cHomeLocWork == 1)
+                {
+                
+                    sHomeLocKey   = "latitude"
+                    sHomeLocValue = sHomeLocWork
+                
+                }
+                
+                if (cHomeLocWork == 2)
+                {
+                
+                    sHomeLocKey   = "longitude"
+                    sHomeLocValue = sHomeLocWork
+                
+                }
                 
                 dictHomeLocCleaned2[sHomeLocKey] = sHomeLocValue
                 
@@ -706,8 +722,8 @@ class ParsePFPatientFileItem: NSObject, Identifiable
             self.sPFPatientFileObjectLongitude   = String(describing: pfPatientFileObjectLongitude!)
             self.dblPFPatientFileObjectLatitude  = Double(sPFPatientFileObjectLatitude)        ?? 0.0000
             self.dblPFPatientFileObjectLongitude = Double(sPFPatientFileObjectLongitude)       ?? 0.0000
-            self.dblConvertedLatitude              = Double(String(describing: sHomeLocLatitude))  ?? 0.0000
-            self.dblConvertedLongitude             = Double(String(describing: sHomeLocLongitude)) ?? 0.0000
+            self.dblConvertedLatitude            = Double(String(describing: sHomeLocLatitude))  ?? 0.0000
+            self.dblConvertedLongitude           = Double(String(describing: sHomeLocLongitude)) ?? 0.0000
             
             asToString.append("\(sCurrMethodDisp) 'pfPatientFileObjectLatitude'     is [\(String(describing: pfPatientFileObjectLatitude))]...")
             asToString.append("\(sCurrMethodDisp) 'pfPatientFileObjectLongitude'    is [\(String(describing: pfPatientFileObjectLongitude))]...")
@@ -715,8 +731,8 @@ class ParsePFPatientFileItem: NSObject, Identifiable
             asToString.append("\(sCurrMethodDisp) 'sPFPatientFileObjectLongitude'   is [\(sPFPatientFileObjectLongitude)]...")
             asToString.append("\(sCurrMethodDisp) 'dblPFPatientFileObjectLatitude'  is [\(dblPFPatientFileObjectLatitude)]...")
             asToString.append("\(sCurrMethodDisp) 'dblPFPatientFileObjectLongitude' is [\(dblPFPatientFileObjectLongitude)]...")
-            asToString.append("\(sCurrMethodDisp) 'dblConvertedLatitude'              is [\(dblConvertedLatitude)]...")
-            asToString.append("\(sCurrMethodDisp) 'dblConvertedLongitude'             is [\(dblConvertedLongitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'dblConvertedLatitude'            is [\(dblConvertedLatitude)]...")
+            asToString.append("\(sCurrMethodDisp) 'dblConvertedLongitude'           is [\(dblConvertedLongitude)]...")
             
         }
 
