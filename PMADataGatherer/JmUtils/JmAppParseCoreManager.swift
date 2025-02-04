@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.2901"
+        static let sClsVers      = "v1.3001"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -620,6 +620,48 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return
 
     } // End of func displayListPFCscDataItems().
+    
+    public func displayDictTherapistTidXfef()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the dictionary 'self.dictTherapistTidXref'...
+
+        if (self.dictTherapistTidXref.count > 0)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of 'dictTherapistTidXref' item(s)...")
+
+            var cTherapistTidXrefItems:Int = 0
+
+            for (sPFTherapistXrefKey, sPFTherapistXrefItem) in self.dictTherapistTidXref
+            {
+
+                cTherapistTidXrefItems += 1
+
+                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistTidXrefItems)): 'sPFTherapistXrefKey' is [\(sPFTherapistXrefKey)] - 'sPFTherapistXrefItem' is [\(sPFTherapistXrefItem)]...")
+
+            }
+        
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictTherapistTidXref' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictTherapistTidXfef().
     
 }   // End of public class JmAppParseCoreManager.
 

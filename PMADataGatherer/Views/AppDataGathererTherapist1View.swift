@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1View"
-        static let sClsVers      = "v1.0401"
+        static let sClsVers      = "v1.0501"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -35,33 +35,28 @@ struct AppDataGathererTherapist1View: View
        case therapistTID
     }
     
-    @FocusState  private var focusedField:FocusedFields?
+    @FocusState private var focusedField:FocusedFields?
 
-    @State       private var sTherapistTID:String                                   = ""
-    @State       private var sTherapistName:String                                  = ""
+    @State      private var sTherapistTID:String                                   = ""
+    @State      private var sTherapistName:String                                  = ""
 
-//  @StateObject         var jmAppParseCoreManager:JmAppParseCoreManager
+    @State      private var cAppLocationViewLogPFDataButtonPresses:Int             = 0
+    @State      private var cAppDataGathererTherapist1ViewRefreshButtonPresses:Int = 0
+
+    @State      private var isAppLogPFDataViewModal:Bool                           = false
+    @State      private var isAppRunTherapistLocateByTidShowing:Bool               = false
+    @State      private var isAppTherapistDetailsByTidShowing:Bool                 = false
+
+                        var jmAppDelegateVisitor:JmAppDelegateVisitor              = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject     var jmAppParseCoreManager:JmAppParseCoreManager            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                        var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo  = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
-    @State       private var cAppDataGathererTherapist1ViewRefreshButtonPresses:Int = 0
-
-    @State       private var isAppRunTherapistLocateByTidShowing:Bool               = false
-    @State       private var isAppTherapistDetailsByTidShowing:Bool                 = false
-
-                         var jmAppDelegateVisitor:JmAppDelegateVisitor              = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
-                         var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo  = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
-    
-//  init(jmAppParseCoreManager:JmAppParseCoreManager)
     init()
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-    //  // Handle the 'jmAppParseCoreManager' parameter...
-    //
-    //  self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
-
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Exit...
@@ -107,6 +102,64 @@ struct AppDataGathererTherapist1View: View
 
                 HStack(alignment:.center)
                 {
+
+                    if (AppGlobalInfo.bPerformAppDevTesting == true)
+                    {
+
+                        Button
+                        {
+
+                            self.cAppLocationViewLogPFDataButtonPresses += 1
+
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+
+                            self.isAppLogPFDataViewModal.toggle()
+
+                        //  self.detailPFCscDataItems()
+
+                        }
+                        label:
+                        {
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "doc.text.magnifyingglass")
+                                    .help(Text("Log PFXxxDataItem(s)..."))
+                                    .imageScale(.small)
+
+                                Text("Log PFData")
+                                    .font(.caption2)
+
+                            }
+
+                        }
+                    #if os(macOS)
+                        .sheet(isPresented:$isAppLogPFDataViewModal, content:
+                            {
+
+                                AppLogPFDataView()
+
+                            }
+                        )
+                    #endif
+                    #if os(iOS)
+                        .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
+                        {
+
+                            AppLogPFDataView()
+
+                        }
+                    #endif
+                        .padding()
+                    #if os(macOS)
+                        .buttonStyle(.borderedProminent)
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
+
+                    }
 
                     Spacer()
 

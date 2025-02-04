@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.1001"
+        static let sClsVers      = "v1.1108"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -32,6 +32,10 @@ struct AppLocationView: View
     static          var timerOnDemand90Sec                                    = Timer()
     static          var timerOnDemand3Sec                                     = Timer()
     
+    @State private  var cAppLocationViewLogPFDataButtonPresses:Int            = 0
+
+    @State private  var isAppLogPFDataViewModal:Bool                          = false
+
     @State private  var cAppLocationViewRefreshButtonPresses:Int              = 0
     @State private  var cAppLocationViewRefreshAutoTimer:Int                  = 0
     @State private  var cAppScheduleViewRefreshAutoTimer:Int                  = 0
@@ -40,7 +44,6 @@ struct AppLocationView: View
     @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
                     var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
-//  init(jmAppParseCoreManager:JmAppParseCoreManager)
     init()
     {
 
@@ -48,7 +51,6 @@ struct AppLocationView: View
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
     //  // Handle the 'jmAppParseCoreManager' parameter...
-    //
     //  self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
@@ -103,9 +105,13 @@ struct AppLocationView: View
                         Button
                         {
 
-                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFCsc' pressed...")
+                            self.cAppLocationViewLogPFDataButtonPresses += 1
 
-                            self.detailPFCscDataItems()
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+
+                            self.isAppLogPFDataViewModal.toggle()
+
+                        //  self.detailPFCscDataItems()
 
                         }
                         label:
@@ -115,15 +121,32 @@ struct AppLocationView: View
                             {
 
                                 Label("", systemImage: "doc.text.magnifyingglass")
-                                    .help(Text("Log PFCscDataItem(s)..."))
+                                    .help(Text("Log PFXxxDataItem(s)..."))
                                     .imageScale(.small)
 
-                                Text("Log PFCsc")
+                                Text("Log PFData")
                                     .font(.caption2)
 
                             }
 
                         }
+                    #if os(macOS)
+                        .sheet(isPresented:$isAppLogPFDataViewModal, content:
+                            {
+
+                                AppLogPFDataView()
+
+                            }
+                        )
+                    #endif
+                    #if os(iOS)
+                        .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
+                        {
+
+                            AppLogPFDataView()
+
+                        }
+                    #endif
                         .padding()
                     #if os(macOS)
                         .buttonStyle(.borderedProminent)
@@ -481,21 +504,12 @@ struct AppLocationView: View
 
                             let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:false)
 
-                        //  self.syncPFDataItems()
-
                             AppLocationView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
                             { _ in
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
                                 self.syncPFDataItems()
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
                             }
-
-                        //  AppLocationView.timerOnDemand3Sec = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
-                        //  { _ in
-                        //      let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
-                        //      self.syncPFDataItems()
-                        //      let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
-                        //  }
 
                         })
 
@@ -650,11 +664,26 @@ struct AppLocationView: View
 
             sPFTherapistParseTID = jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
 
+            if (sPFTherapistParseTID.count < 1)
+            {
+
+                sPFTherapistParseTID = jmAppParseCoreBkgdDataRepo.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
+
+                if (sPFTherapistParseTID.count < 1)
+                {
+
+                    let _ = jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
+                    let _ = jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
+
+                }
+
+            }
+
         }
-        
+
         // Exit...
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)] for Name 'pfCscDataItem.sPFCscParseName' of [\(pfCscDataItem.sPFCscParseName)]...")
   
         return sPFTherapistParseTID
   
@@ -735,12 +764,16 @@ struct AppLocationView: View
         
             cScheduledPatientLocationItems = listScheduledPatientLocationItems.count
         
+            self.xcgLogMsg("\(sCurrMethodDisp) <Checking> There are #(\(cScheduledPatientLocationItems)) Patient 'visit'(s) for 'sPFTherapistParseTID' of [\(pfCscDataItem.sPFTherapistParseTID)] with 'sPFCscParseName' of [\(pfCscDataItem.sPFCscParseName)]...")
+        
         }
         else
         {
         
             cScheduledPatientLocationItems = 0
         
+            self.xcgLogMsg("\(sCurrMethodDisp) <Checking> There are NO Patient 'visit'(s) for 'sPFTherapistParseTID' of [\(pfCscDataItem.sPFTherapistParseTID)] with 'sPFCscParseName' of [\(pfCscDataItem.sPFCscParseName)] and NO 'placeholder' object - Error!")
+
         }
 
         if (cScheduledPatientLocationItems == 1)
@@ -779,32 +812,6 @@ struct AppLocationView: View
         return cScheduledPatientLocationItems
   
     }   // End of private func getScheduledPatientLocationItemsCountForPFCscDataItem(pfCscDataItem:ParsePFCscDataItem)->Int.
-
-    private func detailPFCscDataItems()
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-
-        // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFCscDataItem(s)...
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreManager' #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) PFCscDataItem(s)...")
-
-        self.jmAppParseCoreManager.displayListPFCscDataItems()
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreBkgdDataRepo' #(\(self.jmAppParseCoreBkgdDataRepo.listPFCscDataItems.count)) PFCscDataItem(s)...")
-
-        self.jmAppParseCoreBkgdDataRepo.displayListPFCscDataItems()
-
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
-  
-        return
-  
-    }   // End of private func detailPFCscDataItems()
 
     private func syncPFDataItems()
     {
@@ -865,6 +872,32 @@ struct AppLocationView: View
         return
   
     }   // End of private func syncPFDataItems()
+
+    private func detailPFCscDataItems()
+    {
+    
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+    
+        // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFCscDataItem(s)...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreManager' #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) PFCscDataItem(s)...")
+    
+        self.jmAppParseCoreManager.displayListPFCscDataItems()
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreBkgdDataRepo' #(\(self.jmAppParseCoreBkgdDataRepo.listPFCscDataItems.count)) PFCscDataItem(s)...")
+    
+        self.jmAppParseCoreBkgdDataRepo.displayListPFCscDataItems()
+    
+        // Exit...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+    
+        return
+    
+    }   // End of private func detailPFCscDataItems()
 
 }   // End of struct AppLocationView(View).
 

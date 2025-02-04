@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0301"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -804,19 +804,19 @@ class ParsePFPatientFileItem: NSObject, Identifiable
             
             let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.tertiary)
 
-            DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
-            {
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFPatientFileObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFPatientFileName)]...")
-
-                let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFPatientFileObject, 
-                                                                   latitude:  self.dblConvertedLatitude, 
-                                                                   longitude: self.dblConvertedLongitude, 
-                                                                   withCompletionHandler:
-                                                                       { (requestID:Int, dictCurrentLocation:[String:Any]) in
-                                                                           self.handleLocationAndAddressClosureEvent(bIsDownstreamObject:false, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
-                                                                       }
-                                                                  )
-            }
+        //  DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
+        //  {
+        //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFPatientFileObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFPatientFileName)]...")
+        //
+        //      let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFPatientFileObject, 
+        //                                                         latitude:  self.dblConvertedLatitude, 
+        //                                                         longitude: self.dblConvertedLongitude, 
+        //                                                         withCompletionHandler:
+        //                                                             { (requestID:Int, dictCurrentLocation:[String:Any]) in
+        //                                                                 self.handleLocationAndAddressClosureEvent(bIsDownstreamObject:false, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
+        //                                                             }
+        //                                                        )
+        //  }
 
         }
         else
