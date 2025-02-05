@@ -80,7 +80,7 @@ extension ZipFileDetails
 
             let filename                      = existingFileURL.lastPathComponent
             let newFileURL                    = directoryURL.appendingPathComponent(filename)
-            var sTargetFilespec:String        = newFileURL.path
+            let sTargetFilespec:String        = newFileURL.path
             let bIsTargetFilespecPresent:Bool = JmFileIO.fileExists(sFilespec:sTargetFilespec)
 
             if (bIsTargetFilespecPresent == true)
@@ -127,7 +127,7 @@ class MultipartZipFileService: NSObject
     {
         
         static let sClsId          = "MultipartZipFileService"
-        static let sClsVers        = "v1.0205"
+        static let sClsVers        = "v1.0301"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true

@@ -1,8 +1,8 @@
 //
-//  AppSearchableTherapistName.swift
+//  AppSearchablePatientName.swift
 //  SearchableListMPApp1
 //
-//  Created by Daryl Cox on 01/10/2025.
+//  Created by Daryl Cox on 02/05/2025.
 //  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
@@ -10,14 +10,14 @@ import Foundation
 import SwiftUI
 
 @available(iOS 14.0, *)
-final class AppSearchableTherapistName: Identifiable
+final class AppSearchablePatientName: Identifiable
 {
     
     struct ClassInfo
     {
         
-        static let sClsId        = "AppSearchableTherapistName"
-        static let sClsVers      = "v1.0401"
+        static let sClsId        = "AppSearchablePatientName"
+        static let sClsVers      = "v1.0101"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -27,10 +27,10 @@ final class AppSearchableTherapistName: Identifiable
 
     // App Data field(s):
 
-    var id:UUID                = UUID()
-    var sTherapistTName:String = ""
+    var id:UUID             = UUID()
+    var sPatientName:String = ""
 
-    init(id:UUID? = nil, sTherapistTName:String)
+    init(id:UUID? = nil, sPatientName:String)
     {
 
         if (id != nil)
@@ -46,9 +46,9 @@ final class AppSearchableTherapistName: Identifiable
         
         }
 
-        self.sTherapistTName = sTherapistTName
+        self.sPatientName = sPatientName
 
-    }   // End of init(id:UUID, sTherapistTName:String).
+    }   // End of init(id:UUID, sPatientName:String).
 
-}   // End of final class AppSearchableTherapistName(Identifiable).
+}   // End of final class AppSearchablePatientName(Identifiable).
 

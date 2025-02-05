@@ -16,7 +16,7 @@ struct AppLocationMapView: View
     {
         
         static let sClsId        = "AppLocationMapView"
-        static let sClsVers      = "v1.1405"
+        static let sClsVers      = "v1.1407"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -415,6 +415,21 @@ struct AppLocationMapView: View
         {
 
             sPFTherapistParseTID = jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
+
+            if (sPFTherapistParseTID.count < 1)
+            {
+
+                sPFTherapistParseTID = jmAppParseCoreBkgdDataRepo.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
+
+                if (sPFTherapistParseTID.count < 1)
+                {
+
+                    let _ = jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
+                    let _ = jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
+
+                }
+
+            }
 
         }
         

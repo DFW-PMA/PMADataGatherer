@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0609"
+        static let sClsVers      = "v1.0702"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -85,6 +85,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     var iPFTherapistFileTID:Int                                   = -1         // 'pfTherapistFileObject[ID]'
     var sPFTherapistFileName:String                               = "-N/A-"    // 'pfTherapistFileObject[name]'
+    var sPFTherapistFileNameNoWS:String                           = "-N/A-"    // name (lowercased - no whitespace/newline/illegal/punc.
     var sPFTherapistFilePhone:String                              = "-N/A-"    // 'pfTherapistFileObject[phone]'
     var sPFTherapistFileEmail:String                              = "-N/A-"    // 'pfTherapistFileObject[email]'
     var sPFTherapistFileUsername:String                           = "-N/A-"    // 'pfTherapistFileObject[username]'
@@ -373,6 +374,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         asToString.append("[")
         asToString.append("'iPFTherapistFileTID': (\(String(describing: self.iPFTherapistFileTID))),")
         asToString.append("'sPFTherapistFileName': [\(String(describing: self.sPFTherapistFileName))],")
+        asToString.append("'sPFTherapistFileNameNoWS': [\(String(describing: self.sPFTherapistFileNameNoWS))],")
         asToString.append("'sPFTherapistFilePhone': [\(String(describing: self.sPFTherapistFilePhone))],")
         asToString.append("'sPFTherapistFileEmail': [\(String(describing: self.sPFTherapistFileEmail))],")
         asToString.append("'sPFTherapistFileUsername': [\(String(describing: self.sPFTherapistFileUsername))],")
@@ -479,6 +481,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileTID'                    is (\(String(describing: self.iPFTherapistFileTID)))...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileName'                   is [\(String(describing: self.sPFTherapistFileName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileNameNoWS'               is [\(String(describing: self.sPFTherapistFileNameNoWS))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFilePhone'                  is [\(String(describing: self.sPFTherapistFilePhone))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileEmail'                  is [\(String(describing: self.sPFTherapistFileEmail))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileUsername'               is [\(String(describing: self.sPFTherapistFileUsername))]...")
@@ -547,81 +550,93 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         // Assign the various field(s) of this object from the supplied PFObject...
 
-        self.idPFTherapistFileObject                = idPFTherapistFileObject
+        self.idPFTherapistFileObject                  = idPFTherapistFileObject
 
-        self.pfTherapistFileObjectClonedFrom        = nil 
-        self.pfTherapistFileObjectClonedTo          = nil 
+        self.pfTherapistFileObjectClonedFrom          = nil 
+        self.pfTherapistFileObjectClonedTo            = nil 
 
-        self.pfTherapistFileObject                  = pfTherapistFileObject                                                             
+        self.pfTherapistFileObject                    = pfTherapistFileObject                                                             
         
-        self.sPFTherapistFileClassName              = pfTherapistFileObject.parseClassName
-        self.sPFTherapistFileObjectId               = pfTherapistFileObject.objectId  != nil ? pfTherapistFileObject.objectId!  : ""
-        self.datePFTherapistFileCreatedAt           = pfTherapistFileObject.createdAt != nil ? pfTherapistFileObject.createdAt! : nil
-        self.datePFTherapistFileUpdatedAt           = pfTherapistFileObject.updatedAt != nil ? pfTherapistFileObject.updatedAt! : nil
-        self.aclPFTherapistFile                     = pfTherapistFileObject.acl
-        self.bPFTherapistFileIsDataAvailable        = pfTherapistFileObject.isDataAvailable
-        self.bPFTherapistFileIdDirty                = pfTherapistFileObject.isDirty
-        self.listPFTherapistFileAllKeys             = pfTherapistFileObject.allKeys
+        self.sPFTherapistFileClassName                = pfTherapistFileObject.parseClassName
+        self.sPFTherapistFileObjectId                 = pfTherapistFileObject.objectId  != nil ? pfTherapistFileObject.objectId!  : ""
+        self.datePFTherapistFileCreatedAt             = pfTherapistFileObject.createdAt != nil ? pfTherapistFileObject.createdAt! : nil
+        self.datePFTherapistFileUpdatedAt             = pfTherapistFileObject.updatedAt != nil ? pfTherapistFileObject.updatedAt! : nil
+        self.aclPFTherapistFile                       = pfTherapistFileObject.acl
+        self.bPFTherapistFileIsDataAvailable          = pfTherapistFileObject.isDataAvailable
+        self.bPFTherapistFileIdDirty                  = pfTherapistFileObject.isDirty
+        self.listPFTherapistFileAllKeys               = pfTherapistFileObject.allKeys
 
-        self.iPFTherapistFileTID                    = Int(String(describing: (pfTherapistFileObject.object(forKey:"ID")          ?? "-1"))) ?? -2
-        self.sPFTherapistFileName                   = String(describing: (pfTherapistFileObject.object(forKey:"name")            ?? ""))
-        self.sPFTherapistFilePhone                  = String(describing: (pfTherapistFileObject.object(forKey:"phone")           ?? ""))
-        self.sPFTherapistFileEmail                  = String(describing: (pfTherapistFileObject.object(forKey:"email")           ?? ""))
-        self.sPFTherapistFileUsername               = String(describing: (pfTherapistFileObject.object(forKey:"username")        ?? ""))
-        self.sPFTherapistFilePassword               = String(describing: (pfTherapistFileObject.object(forKey:"password")        ?? ""))
-        self.sPFTherapistFileHomeLoc                = String(describing: (pfTherapistFileObject.object(forKey:"homeLoc")         ?? ""))
-        self.iPFTherapistFileLicenseNumber          = Int(String(describing: (pfTherapistFileObject.object(forKey:"licenseNum")  ?? "-1"))) ?? -2
+        self.iPFTherapistFileTID                      = Int(String(describing: (pfTherapistFileObject.object(forKey:"ID") ?? "-1"))) ?? -2
+        self.sPFTherapistFileName                     = String(describing: (pfTherapistFileObject.object(forKey:"name")   ?? ""))
 
-        self.bPFTherapistFileNotActive              = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
-        self.bPFTherapistFileOffice                 = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"office")       ?? "0")))  ?? 0) as NSNumber)
-        self.bPFTherapistFileIsSupervisor           = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"isSupervisor") ?? "0")))  ?? 0) as NSNumber)
-        self.bPFTherapistFileHaveAssistants         = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"haveAssts")    ?? "0")))  ?? 0) as NSNumber)
-        self.iPFTherapistFileType                   = Int(String(describing: (pfTherapistFileObject.object(forKey:"type")                           ?? "-1"))) ?? -2
-        self.iPFTherapistFileSuperID                = Int(String(describing: (pfTherapistFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
-        self.iPFTherapistFileMentorID               = Int(String(describing: (pfTherapistFileObject.object(forKey:"mentorID")                       ?? "-1"))) ?? -2
+        var csUnwantedDelimiters:CharacterSet         = CharacterSet()
 
-        self.sPFTherapistFileLastSync               = String(describing: (pfTherapistFileObject.object(forKey:"lastSync")              ?? ""))
-        self.iPFTherapistFileIpadUpdate             = Int(String(describing: (pfTherapistFileObject.object(forKey:"iPadUpdate")        ?? "-1"))) ?? -2
-        self.iPFTherapistFileIphoneUpdate           = Int(String(describing: (pfTherapistFileObject.object(forKey:"iPhoneUpdate")      ?? "-1"))) ?? -2
+        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
 
-        self.sPFTherapistFileStartWeek              = String(describing: (pfTherapistFileObject.object(forKey:"startWk")               ?? ""))
-        self.sPFTherapistFileWeekStartInvoice       = String(describing: (pfTherapistFileObject.object(forKey:"wkStartInvoice")        ?? ""))
-        self.iPFTherapistFileExpectedWeekVisits     = Int(String(describing: (pfTherapistFileObject.object(forKey:"expectedWkVisits")  ?? "-1"))) ?? -2
-        self.iPFTherapistFileLateWeekVisits         = Int(String(describing: (pfTherapistFileObject.object(forKey:"lateWkVisits")      ?? "-1"))) ?? -2
-    //  self.iPFTherapistFilePreviousWeekVoids2     = pfTherapistFileObject.object(forKey:"prevWkVoids2")!     as! Int
-        self.iPFTherapistFilePreviousWeekVoids2     = 0
-    //  self.bPFTherapistFileMakeupsAllowed         = Bool(String(describing: pfTherapistFileObject.object(forKey:"makeupsAllowed")))  ?? false
-    //  self.bPFTherapistFileMakeupsAllowed         = Bool(String(describing: (pfTherapistFileObject.object(forKey:"makeupsAllowed")   ?? "0"))) ?? false
-    //  self.bPFTherapistFileMakeupsAllowed         = (Int(String(describing: (pfTherapistFileObject.object(forKey:"makeupsAllowed")   ?? "0"))) ?? 0).boolValue
-        self.bPFTherapistFileMakeupsAllowed         = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"makeupsAllowed") ?? "0"))) ?? 0) as NSNumber)
-        self.bPFTherapistFileOver50Allowed          = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"over50Allowed")  ?? "0"))) ?? 0) as NSNumber)
+        let sPFTherapistFileNameLower:String          = self.sPFTherapistFileName.lowercased()
+        let listPFTherapistFileNameLowerNoWS:[String] = sPFTherapistFileNameLower.components(separatedBy:csUnwantedDelimiters)
+        let sPFTherapistFileNameLowerNoWS:String      = listPFTherapistFileNameLowerNoWS.joined(separator:"")
 
-    //  self.listPFTherapistFileFinalSyncRatios     = pfTherapistFileObject[finalSyncRatios]!
-    //  self.listPFTherapistFileWeekPtMissingVisits = pfTherapistFileObject[wkPtsMissingVisits]!
-    //  self.listPFTherapistFilePidsForFriday       = pfTherapistFileObject[pidsForFriday]!
-    //  self.listPFTherapistFileParentIDs           = pfTherapistFileObject[parentIDs]!
+        self.sPFTherapistFileNameNoWS                 = sPFTherapistFileNameLowerNoWS
+        self.sPFTherapistFilePhone                    = String(describing: (pfTherapistFileObject.object(forKey:"phone")          ?? ""))
+        self.sPFTherapistFileEmail                    = String(describing: (pfTherapistFileObject.object(forKey:"email")          ?? ""))
+        self.sPFTherapistFileUsername                 = String(describing: (pfTherapistFileObject.object(forKey:"username")       ?? ""))
+        self.sPFTherapistFilePassword                 = String(describing: (pfTherapistFileObject.object(forKey:"password")       ?? ""))
+        self.sPFTherapistFileHomeLoc                  = String(describing: (pfTherapistFileObject.object(forKey:"homeLoc")        ?? ""))
+        self.iPFTherapistFileLicenseNumber            = Int(String(describing: (pfTherapistFileObject.object(forKey:"licenseNum") ?? "-1"))) ?? -2
+
+        self.bPFTherapistFileNotActive                = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
+        self.bPFTherapistFileOffice                   = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"office")       ?? "0")))  ?? 0) as NSNumber)
+        self.bPFTherapistFileIsSupervisor             = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"isSupervisor") ?? "0")))  ?? 0) as NSNumber)
+        self.bPFTherapistFileHaveAssistants           = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"haveAssts")    ?? "0")))  ?? 0) as NSNumber)
+        self.iPFTherapistFileType                     = Int(String(describing: (pfTherapistFileObject.object(forKey:"type")                           ?? "-1"))) ?? -2
+        self.iPFTherapistFileSuperID                  = Int(String(describing: (pfTherapistFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
+        self.iPFTherapistFileMentorID                 = Int(String(describing: (pfTherapistFileObject.object(forKey:"mentorID")                       ?? "-1"))) ?? -2
+
+        self.sPFTherapistFileLastSync                 = String(describing: (pfTherapistFileObject.object(forKey:"lastSync")              ?? ""))
+        self.iPFTherapistFileIpadUpdate               = Int(String(describing: (pfTherapistFileObject.object(forKey:"iPadUpdate")        ?? "-1"))) ?? -2
+        self.iPFTherapistFileIphoneUpdate             = Int(String(describing: (pfTherapistFileObject.object(forKey:"iPhoneUpdate")      ?? "-1"))) ?? -2
+
+        self.sPFTherapistFileStartWeek                = String(describing: (pfTherapistFileObject.object(forKey:"startWk")               ?? ""))
+        self.sPFTherapistFileWeekStartInvoice         = String(describing: (pfTherapistFileObject.object(forKey:"wkStartInvoice")        ?? ""))
+        self.iPFTherapistFileExpectedWeekVisits       = Int(String(describing: (pfTherapistFileObject.object(forKey:"expectedWkVisits")  ?? "-1"))) ?? -2
+        self.iPFTherapistFileLateWeekVisits           = Int(String(describing: (pfTherapistFileObject.object(forKey:"lateWkVisits")      ?? "-1"))) ?? -2
+    //  self.iPFTherapistFilePreviousWeekVoids2       = pfTherapistFileObject.object(forKey:"prevWkVoids2")!     as! Int
+        self.iPFTherapistFilePreviousWeekVoids2       = 0
+    //  self.bPFTherapistFileMakeupsAllowed           = Bool(String(describing: pfTherapistFileObject.object(forKey:"makeupsAllowed")))  ?? false
+    //  self.bPFTherapistFileMakeupsAllowed           = Bool(String(describing: (pfTherapistFileObject.object(forKey:"makeupsAllowed")   ?? "0"))) ?? false
+    //  self.bPFTherapistFileMakeupsAllowed           = (Int(String(describing: (pfTherapistFileObject.object(forKey:"makeupsAllowed")   ?? "0"))) ?? 0).boolValue
+        self.bPFTherapistFileMakeupsAllowed           = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"makeupsAllowed") ?? "0"))) ?? 0) as NSNumber)
+        self.bPFTherapistFileOver50Allowed            = Bool(truncating: (Int(String(describing: (pfTherapistFileObject.object(forKey:"over50Allowed")  ?? "0"))) ?? 0) as NSNumber)
+
+    //  self.listPFTherapistFileFinalSyncRatios       = pfTherapistFileObject[finalSyncRatios]!
+    //  self.listPFTherapistFileWeekPtMissingVisits   = pfTherapistFileObject[wkPtsMissingVisits]!
+    //  self.listPFTherapistFilePidsForFriday         = pfTherapistFileObject[pidsForFriday]!
+    //  self.listPFTherapistFileParentIDs             = pfTherapistFileObject[parentIDs]!
 
     //  The Latitude/Longitude field(s) below are set by the call to 'self.convertPFTherapistFileHomeLocToLatitudeLongitude()'...
         
-    //  self.pfTherapistFileObjectLatitude          = (pfTherapistFileObject.object(forKey:"latitude"))  != nil ? pfTherapistFileObject.object(forKey:"latitude")  : nil
-    //  self.pfTherapistFileObjectLongitude         = (pfTherapistFileObject.object(forKey:"longitude")) != nil ? pfTherapistFileObject.object(forKey:"longitude") : nil
-    //  self.sPFTherapistFileObjectLatitude         = String(describing: self.pfTherapistFileObjectLatitude!)
-    //  self.sPFTherapistFileObjectLongitude        = String(describing: self.pfTherapistFileObjectLongitude!)
-    //  self.dblPFTherapistFileObjectLatitude       = Double(self.sPFTherapistFileObjectLatitude)  ?? 0.0
-    //  self.dblPFTherapistFileObjectLongitude      = Double(self.sPFTherapistFileObjectLongitude) ?? 0.0
-    //  self.dblConvertedLatitude                   = Double(String(describing: pfTherapistFileObject.object(forKey:"latitude")!))  ?? 0.0
-    //  self.dblConvertedLongitude                  = Double(String(describing: pfTherapistFileObject.object(forKey:"longitude")!)) ?? 0.0
+    //  self.pfTherapistFileObjectLatitude            = (pfTherapistFileObject.object(forKey:"latitude"))  != nil ? pfTherapistFileObject.object(forKey:"latitude")  : nil
+    //  self.pfTherapistFileObjectLongitude           = (pfTherapistFileObject.object(forKey:"longitude")) != nil ? pfTherapistFileObject.object(forKey:"longitude") : nil
+    //  self.sPFTherapistFileObjectLatitude           = String(describing: self.pfTherapistFileObjectLatitude!)
+    //  self.sPFTherapistFileObjectLongitude          = String(describing: self.pfTherapistFileObjectLongitude!)
+    //  self.dblPFTherapistFileObjectLatitude         = Double(self.sPFTherapistFileObjectLatitude)  ?? 0.0
+    //  self.dblPFTherapistFileObjectLongitude        = Double(self.sPFTherapistFileObjectLongitude) ?? 0.0
+    //  self.dblConvertedLatitude                     = Double(String(describing: pfTherapistFileObject.object(forKey:"latitude")!))  ?? 0.0
+    //  self.dblConvertedLongitude                    = Double(String(describing: pfTherapistFileObject.object(forKey:"longitude")!)) ?? 0.0
 
         self.convertPFTherapistFileHomeLocToLatitudeLongitude()
 
-        self.bHomeLocAddessLookupScheduled          = false
-        self.bHomeLocAddessLookupComplete           = false
+        self.bHomeLocAddessLookupScheduled            = false
+        self.bHomeLocAddessLookupComplete             = false
       
-        self.sHomeLocLocationName                   = ""
-        self.sHomeLocCity                           = ""
-        self.sHomeLocCountry                        = ""
-        self.sHomeLocPostalCode                     = ""
-        self.sHomeLocTimeZone                       = ""
+        self.sHomeLocLocationName                     = ""
+        self.sHomeLocCity                             = ""
+        self.sHomeLocCountry                          = ""
+        self.sHomeLocPostalCode                       = ""
+        self.sHomeLocTimeZone                         = ""
 
         self.resolveLocationAndAddress()
       
@@ -697,6 +712,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         
         self.iPFTherapistFileTID                    = pfTherapistFileItem.iPFTherapistFileTID
         self.sPFTherapistFileName                   = pfTherapistFileItem.sPFTherapistFileName
+        self.sPFTherapistFileNameNoWS               = pfTherapistFileItem.sPFTherapistFileNameNoWS
         self.sPFTherapistFilePhone                  = pfTherapistFileItem.sPFTherapistFilePhone
         self.sPFTherapistFileEmail                  = pfTherapistFileItem.sPFTherapistFileEmail
         self.sPFTherapistFileUsername               = pfTherapistFileItem.sPFTherapistFileUsername
@@ -809,7 +825,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
             else
             {
             
-                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> <location check> - Skipped copying address data since 'bLocationLatitudeHasChanged' is [\(bLocationLatitudeHasChanged)] and 'bLocationLongitudeHasChanged' is [\(bLocationLongitudeHasChanged)] <location has NOT changed>...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFTherapistFile> <location check> - Skipped copying address data since 'bLocationLatitudeHasChanged' is [\(bLocationLatitudeHasChanged)] and 'bLocationLongitudeHasChanged' is [\(bLocationLongitudeHasChanged)] <location has NOT changed>...")
             
             }
 
@@ -821,7 +837,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
             self.sHomeLocCity.count         < 1)
         {
         
-            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFCsc> - Copied 'self.sHomeLocLocationName' is [\(self.sHomeLocLocationName)] and 'self.sHomeLocCity' is [\(self.sHomeLocCity)] - 1 or both are 'blank' - 'pfTherapistFileItem.sHomeLocLocationName' is [\(pfTherapistFileItem.sHomeLocLocationName)] and 'pfTherapistFileItem.sHomeLocCity' is [\(pfTherapistFileItem.sHomeLocCity)] - Warning!")
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFTherapistFile> - Copied 'self.sHomeLocLocationName' is [\(self.sHomeLocLocationName)] and 'self.sHomeLocCity' is [\(self.sHomeLocCity)] - 1 or both are 'blank' - 'pfTherapistFileItem.sHomeLocLocationName' is [\(pfTherapistFileItem.sHomeLocLocationName)] and 'pfTherapistFileItem.sHomeLocCity' is [\(pfTherapistFileItem.sHomeLocCity)] - Warning!")
 
             self.resolveLocationAndAddress()
 

@@ -17,7 +17,7 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppSwiftDataManager"
-        static let sClsVers      = "v1.0707"
+        static let sClsVers      = "v1.0709"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2024-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -49,12 +49,48 @@ public class JmAppSwiftDataManager: NSObject, ObservableObject
     //     public   var undoManager:UndoManager?                       = nil
 
     @Published      var alarmSwiftDataItems:[AlarmSwiftDataItem]       = []
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
     @Published      var bAreAlarmSwiftDataItemsAvailable:Bool          = false
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
     @Published      var sAlarmsEnabledMessage:String                   = "-N/A-"
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
     @Published      var sAlarmNextMessage:String                       = ""
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
     @Published      var pfAdminsSwiftDataItems:[PFAdminsSwiftDataItem] = [PFAdminsSwiftDataItem]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
     @Published      var bArePFAdminsSwiftDataItemsAvailable:Bool       = false
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
     
     // App 'delegate' Visitor:
 

@@ -16,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0403"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -31,26 +31,26 @@ struct AppDataGathererView: View
     
 //  @StateObject    var jmAppParseCoreManager:JmAppParseCoreManager
     
+    @State private  var cAppLocationViewLogPFDataButtonPresses:Int     = 0
     @State private  var cAppDataGathererViewRefreshButtonPresses:Int   = 0
     @State private  var cAppDataGathererViewTherapistButtonPresses:Int = 0
+    @State private  var cAppDataGathererViewPatientButtonPresses:Int   = 0
 
+    @State private  var isAppLogPFDataViewModal:Bool                   = false
     @State private  var isAppDataTherapist1ViewModal:Bool              = false
     @State private  var isAppDataTherapist2ViewModal:Bool              = false
+    @State private  var isAppDataPatient1ViewModal:Bool                = false
+    @State private  var isAppDataPatient2ViewModal:Bool                = false
 
                     var jmAppDelegateVisitor:JmAppDelegateVisitor      = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager    = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
-//  init(jmAppParseCoreManager:JmAppParseCoreManager)
     init()
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-    //  // Handle the 'jmAppParseCoreManager' parameter...
-    //
-    //  self._jmAppParseCoreManager = StateObject(wrappedValue: jmAppParseCoreManager)
-
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Exit...
@@ -96,6 +96,64 @@ struct AppDataGathererView: View
 
                 HStack(alignment:.center)
                 {
+
+                    if (AppGlobalInfo.bPerformAppDevTesting == true)
+                    {
+
+                        Button
+                        {
+
+                            self.cAppLocationViewLogPFDataButtonPresses += 1
+
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+
+                            self.isAppLogPFDataViewModal.toggle()
+
+                        //  self.detailPFCscDataItems()
+
+                        }
+                        label:
+                        {
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "doc.text.magnifyingglass")
+                                    .help(Text("Log PFXxxDataItem(s)..."))
+                                    .imageScale(.small)
+
+                                Text("Log PFData")
+                                    .font(.caption2)
+
+                            }
+
+                        }
+                    #if os(macOS)
+                        .sheet(isPresented:$isAppLogPFDataViewModal, content:
+                            {
+
+                                AppLogPFDataView()
+
+                            }
+                        )
+                    #endif
+                    #if os(iOS)
+                        .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
+                        {
+
+                            AppLogPFDataView()
+
+                        }
+                    #endif
+                        .padding()
+                    #if os(macOS)
+                        .buttonStyle(.borderedProminent)
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
+
+                    }
 
                     Spacer()
 
@@ -204,10 +262,10 @@ struct AppDataGathererView: View
 
                                     Label("", systemImage: "bed.double")
                                         .help(Text("Therapist Data Gatherer #1 by TID Screen..."))
-                                        .imageScale(.large)
+                                        .imageScale(.medium)
 
                                     Text("Therapist - Data Gatherer by TID - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
-                                        .font(.caption)
+                                        .font(.caption2)
 
                                 }
 
@@ -264,10 +322,10 @@ struct AppDataGathererView: View
 
                                     Label("", systemImage: "bed.double")
                                         .help(Text("Therapist Data Gatherer #2 by tName Screen..."))
-                                        .imageScale(.large)
+                                        .imageScale(.medium)
 
                                     Text("Therapist - Data Gatherer by tName - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
-                                        .font(.caption)
+                                        .font(.caption2)
 
                                 }
 
@@ -309,6 +367,7 @@ struct AppDataGathererView: View
                             .bold()
                             .italic()
                             .underline()
+                            .font(.caption)
 
                     }
 
@@ -320,11 +379,116 @@ struct AppDataGathererView: View
 
                             Spacer()
 
-                            Text("<under-construction>")
-                                .bold()
-                                .italic()
-                                .underline()
-                            Text(" => DATA Gatherer #2...")
+                            Button
+                            {
+
+                                self.cAppDataGathererViewPatientButtonPresses += 1
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Patient Gatherer by PID'.#(\(self.cAppDataGathererViewPatientButtonPresses))...")
+
+                                self.isAppDataPatient1ViewModal.toggle()
+
+                            }
+                            label:
+                            {
+
+                                VStack(alignment:.center)
+                                {
+
+                                    Label("", systemImage: "person.text.rectangle")
+                                        .help(Text("Patient Data Gatherer #1 by PID Screen..."))
+                                        .imageScale(.medium)
+
+                                    Text("Patient - Data Gatherer by PID - #(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                                        .font(.caption2)
+
+                                }
+
+                            }
+                        #if os(macOS)
+                            .sheet(isPresented:$isAppDataPatient1ViewModal, content:
+                                {
+
+                                    AppDataGathererPatient1View()
+
+                                }
+                            )
+                        #endif
+                        #if os(iOS)
+                            .fullScreenCover(isPresented:$isAppDataPatient1ViewModal)
+                            {
+
+                                AppDataGathererPatient1View()
+
+                            }
+                        #endif
+                        #if os(macOS)
+                            .buttonStyle(.borderedProminent)
+                            .padding()
+                        //  .background(???.isPressed ? .blue : .gray)
+                            .cornerRadius(10)
+                            .foregroundColor(Color.primary)
+                        #endif
+
+                            Spacer()
+
+                        }
+
+                        HStack(alignment:.center)
+                        {
+
+                            Spacer()
+
+                            Button
+                            {
+
+                                self.cAppDataGathererViewPatientButtonPresses += 1
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Patient Gatherer by Name'.#(\(self.cAppDataGathererViewPatientButtonPresses))...")
+
+                                self.isAppDataPatient2ViewModal.toggle()
+
+                            }
+                            label:
+                            {
+
+                                VStack(alignment:.center)
+                                {
+
+                                    Label("", systemImage: "person.text.rectangle")
+                                        .help(Text("Patient Data Gatherer #2 by Name Screen..."))
+                                        .imageScale(.medium)
+
+                                    Text("Patient - Data Gatherer by Name - #(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                                        .font(.caption2)
+
+                                }
+
+                            }
+                        #if os(macOS)
+                            .sheet(isPresented:$isAppDataPatient2ViewModal, content:
+                                {
+
+                                    AppDataGathererPatient2View()
+
+                                }
+                            )
+                        #endif
+                        #if os(iOS)
+                            .fullScreenCover(isPresented:$isAppDataPatient2ViewModal)
+                            {
+
+                                AppDataGathererPatient2View()
+
+                            }
+                        #endif
+                        #if os(macOS)
+                            .buttonStyle(.borderedProminent)
+                            .padding()
+                        //  .background(???.isPressed ? .blue : .gray)
+                            .cornerRadius(10)
+                            .foregroundColor(Color.primary)
+                        #endif
 
                             Spacer()
 
@@ -338,6 +502,7 @@ struct AppDataGathererView: View
                             .bold()
                             .italic()
                             .underline()
+                            .font(.caption)
 
                     }
 
@@ -353,7 +518,9 @@ struct AppDataGathererView: View
                                 .bold()
                                 .italic()
                                 .underline()
+                                .font(.caption)
                             Text(" => DATA Gatherer #3...")
+                                .font(.caption)
 
                             Spacer()
 
@@ -367,6 +534,7 @@ struct AppDataGathererView: View
                             .bold()
                             .italic()
                             .underline()
+                            .font(.caption)
 
                     }
 
