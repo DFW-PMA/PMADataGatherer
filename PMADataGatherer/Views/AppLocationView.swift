@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.1108"
+        static let sClsVers      = "v1.1201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -628,9 +628,9 @@ struct AppLocationView: View
 
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictTherapistTidXref()
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFTherapistFileItems()
-            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictSchedPatientLocItems()
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPatientPidXref()
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFPatientFileItems()
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictSchedPatientLocItems()
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
 
@@ -840,6 +840,18 @@ struct AppLocationView: View
         let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFTherapistFileItems()
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPFTherapistFileItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPatientPidXref()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPatientPidXref()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPatientPidXref()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPFPatientFileItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFPatientFileItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictPFPatientFileItems()'...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyDictSchedPatientLocItems()'...")
 

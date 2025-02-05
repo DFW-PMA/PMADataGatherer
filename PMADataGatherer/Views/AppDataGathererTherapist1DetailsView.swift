@@ -26,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0601"
+        static let sClsVers      = "v1.0803"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -147,24 +147,29 @@ struct AppDataGathererTherapist1DetailsView: View
 
                 }
 
-                Text("")
+                VStack(alignment:.center)
+                {
 
-                Text(" - - - - - - - - - - - - - - - - - - - - ")
-                    .frame(maxWidth:.infinity, alignment:.center)
+                    Text(" - - - - - - - - - - - - - - - - - - - - ")
+                        .font(.caption2) 
+                        .frame(maxWidth:.infinity, alignment:.center)
 
-                Text("DATA Gatherer - Therapist Details by TID")
-                    .bold()
-                    .frame(maxWidth:.infinity, alignment:.center)
+                    Text("DATA Gatherer - Therapist Details by TID")
+                        .bold()
+                        .font(.caption2) 
+                        .frame(maxWidth:.infinity, alignment:.center)
 
-                Text(" - - - - - - - - - - - - - - - - - - - - ")
-                    .frame(maxWidth:.infinity, alignment:.center)
+                    Text(" - - - - - - - - - - - - - - - - - - - - ")
+                        .font(.caption2) 
+                        .frame(maxWidth:.infinity, alignment:.center)
 
-                Text("")
+                }
 
                 HStack()
                 {
 
                     Text(":: Therapists' TID: ")
+                        .font(.caption) 
                         .onAppear
                         {
 
@@ -174,6 +179,7 @@ struct AppDataGathererTherapist1DetailsView: View
 
                     Text("\(self.sTherapistTID)")
                         .italic()
+                        .font(.caption) 
 
                     Spacer()
 
@@ -183,9 +189,11 @@ struct AppDataGathererTherapist1DetailsView: View
                 {
 
                     Text("Therapists' Name: ")
+                        .font(.caption) 
 
                     Text("\(self.sTherapistName)")
                         .italic()
+                        .font(.caption) 
 
                     Spacer()
 

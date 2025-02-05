@@ -17,7 +17,7 @@ struct AppDataGathererTherapist2View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.0701"
+        static let sClsVers      = "v1.0805"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -164,39 +164,6 @@ struct AppDataGathererTherapist2View: View
                         .foregroundColor(Color.primary)
                     #endif
 
-                //      Button
-                //      {
-                //
-                //          let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'Log Therapist Names' list pressed...")
-                //
-                //          self.detailTherapistNamesList()
-                //
-                //      }
-                //      label:
-                //      {
-                //
-                //          VStack(alignment:.center)
-                //          {
-                //
-                //              Label("", systemImage: "doc.text.magnifyingglass")
-                //                  .help(Text("Log Therapist 'name(s)' list..."))
-                //                  .imageScale(.large)
-                //
-                //              Text("Log Therapists")
-                //                  .font(.caption)
-                //
-                //          }
-                //
-                //      }
-                //  #if os(macOS)
-                //      .buttonStyle(.borderedProminent)
-                //      .padding()
-                //  //  .background(???.isPressed ? .blue : .gray)
-                //      .cornerRadius(10)
-                //      .foregroundColor(Color.primary)
-                //  #endif
-                //      .padding()
-
                     }
 
                     Spacer()
@@ -272,26 +239,73 @@ struct AppDataGathererTherapist2View: View
 
                 }
 
-                Text("")
+                VStack(alignment:.center)
+                {
 
-                Text(" - - - - - - - - - - - - - - - - - - - - ")
-                    .frame(maxWidth:.infinity, alignment:.center)
+                    Text(" - - - - - - - - - - - - - - - - - - - - ")
+                        .font(.caption2) 
+                        .frame(maxWidth:.infinity, alignment:.center)
 
-                Text("DATA Gatherer - Therapist by tName")
-                    .bold()
-                    .frame(maxWidth:.infinity, alignment:.center)
+                    HStack
+                    {
 
-                Text(" - - - - - - - - - - - - - - - - - - - - ")
-                    .frame(maxWidth:.infinity, alignment:.center)
+                        Button
+                        {
 
-                Spacer()
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Locate the Therapist by tName'...")
+
+                            self.sTherapistTID = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
+
+                            self.isAppRunTherapistLocateByTNameShowing.toggle()
+
+                        }
+                        label:
+                        {
+
+                            HStack(alignment:.center)
+                            {
+
+                                Spacer()
+
+                                Label("", systemImage: "figure.run.circle")
+                                    .help(Text("Locate the Therapist by tName..."))
+                                    .imageScale(.small)
+
+                                Text("=> Locate Therapist by tName")
+                                    .bold()
+                                    .font(.caption2)
+                                    .foregroundColor(.red)
+
+                                Spacer()
+
+                            }
+
+                        }
+                    #if os(macOS)
+                        .buttonStyle(.borderedProminent)
+                        .padding()
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
+                    //  .padding()
+
+                    }
+
+                    Text(" - - - - - - - - - - - - - - - - - - - - ")
+                        .font(.caption2) 
+                        .frame(maxWidth:.infinity, alignment:.center)
+
+                }
 
                 HStack()
                 {
 
                     Text("===> Therapists' TID: ")
+                        .font(.caption) 
 
                     Text("\(sTherapistTID)")
+                        .font(.caption) 
                         .onChange(of:self.sTherapistName)
                         {
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - 'self.sTherapistName' is [\(self.sTherapistName)] - clearing the 'sTherapistTID' field...")
@@ -365,12 +379,6 @@ struct AppDataGathererTherapist2View: View
                         .padding()
                     
                     }
-                //  else
-                //  {
-                //
-                //      Spacer()
-                //
-                //  }
 
                 }
 
@@ -378,10 +386,12 @@ struct AppDataGathererTherapist2View: View
                 {
 
                     Text("=> Enter the Therapists' Name: ")
+                        .font(.caption) 
                         .foregroundColor(.red)
 
                     TextField("Therapist tName...", text:$sTherapistName)
                         .italic()
+                        .font(.caption) 
                         .focused($focusedField, equals:.therapistName)
                         .onAppear
                         {
@@ -453,60 +463,58 @@ struct AppDataGathererTherapist2View: View
 
                 }
 
-                Text("")
-
-                HStack
-                {
-
-                    Button
-                    {
-
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Locate the Therapist by tName'...")
-
-                        self.sTherapistTID = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
-
-                        self.isAppRunTherapistLocateByTNameShowing.toggle()
-
-                    }
-                    label:
-                    {
-
-                        VStack(alignment:.center)
-                        {
-
-                            Label("", systemImage: "figure.run.circle")
-                                .help(Text("Locate the Therapist by tName..."))
-                                .imageScale(.large)
-
-                            HStack(alignment:.center)
-                            {
-
-                                Spacer()
-
-                                Text("=> Locate the Therapist by tName...")
-                                    .bold()
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-
-                                Spacer()
-
-                            }
-
-                        }
-
-                    }
-                #if os(macOS)
-                    .buttonStyle(.borderedProminent)
-                    .padding()
-                //  .background(???.isPressed ? .blue : .gray)
-                    .cornerRadius(10)
-                    .foregroundColor(Color.primary)
-                #endif
-                    .padding()
-
-                }
-
-                Spacer()
+            //  HStack
+            //  {
+            //
+            //      Button
+            //      {
+            //
+            //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Locate the Therapist by tName'...")
+            //
+            //          self.sTherapistTID = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
+            //
+            //          self.isAppRunTherapistLocateByTNameShowing.toggle()
+            //
+            //      }
+            //      label:
+            //      {
+            //
+            //          VStack(alignment:.center)
+            //          {
+            //
+            //              Label("", systemImage: "figure.run.circle")
+            //                  .help(Text("Locate the Therapist by tName..."))
+            //                  .imageScale(.large)
+            //
+            //              HStack(alignment:.center)
+            //              {
+            //
+            //                  Spacer()
+            //
+            //                  Text("=> Locate the Therapist by tName...")
+            //                      .bold()
+            //                      .font(.caption)
+            //                      .foregroundColor(.red)
+            //
+            //                  Spacer()
+            //
+            //              }
+            //
+            //          }
+            //
+            //      }
+            //  #if os(macOS)
+            //      .buttonStyle(.borderedProminent)
+            //      .padding()
+            //  //  .background(???.isPressed ? .blue : .gray)
+            //      .cornerRadius(10)
+            //      .foregroundColor(Color.primary)
+            //  #endif
+            //      .padding()
+            //
+            //  }
+            //
+            //  Spacer()
 
                 Text("")
                     .font(.caption2)
@@ -530,6 +538,7 @@ struct AppDataGathererTherapist2View: View
 
                 }
                 .scaledToFill()
+                .font(.caption) 
             //  .frame(maxHeight:250)
 
             }
@@ -567,63 +576,6 @@ struct AppDataGathererTherapist2View: View
         return sTherapistTID
   
     }   // End of private func locateAppTherapistNameByTName(sTherapistName:String)->String.
-
-//  private func detailTherapistNamesList()
-//  {
-//      
-//      let sCurrMethod:String = #function
-//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-//
-//      // Detail all Therapist 'name(s)' in the dictionary...
-//
-//      if (self.jmAppParseCoreManager.dictPFTherapistFileItems.count < 1)
-//      {
-//      
-//          self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #1 - 'self.jmAppParseCoreManager.dictPFTherapistFileItems' is an empty 'dictionary' - unable to detail the item(s) - Warning!")
-//          
-//          // Exit:
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
-//
-//          return
-//      
-//      }
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #2 - 'self.jmAppParseCoreManager.dictPFTherapistFileItems' contains (\(self.jmAppParseCoreManager.dictPFTherapistFileItems.count)) item(s)...")
-//
-//      var cTherapistNames:Int = 0
-//      
-//      for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppParseCoreManager.dictPFTherapistFileItems
-//      {
-//
-//          if (iPFTherapistParseTID < 0)
-//          {
-//
-//              self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cTherapistNames)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
-//
-//              continue
-//
-//          }
-//
-//          cTherapistNames += 1
-//          
-//          let sTherapistTName:String = pfTherapistFileItem.sPFTherapistFileName
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'iPFTherapistParseTID' is (\(iPFTherapistParseTID)) - 'sTherapistTName' is [\(sTherapistTName)] - 'pfTherapistFileItem' is [\(pfTherapistFileItem)]...")
-//
-//      }
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - detailed (\(cTherapistNames)) names(s) in a dictionary of (\(self.jmAppParseCoreManager.dictPFTherapistFileItems.count)) item(s)...")
-//
-//      // Exit:
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
-//
-//      return
-//
-//  }   // End of private func detailTherapistNamesList().
 
     private func updateSelectableTherapistNamesList(sSearchValue:String = "")
     {

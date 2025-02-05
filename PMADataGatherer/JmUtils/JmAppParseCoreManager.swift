@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.3001"
+        static let sClsVers      = "v1.3201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -70,9 +70,8 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
             objectWillChange.send()
         }
     }
+
     @Published      var cPFCscObjects:Int                                                = 0
-                    var listPFCscNameItems:[String]                                      = [String]()
-    @Published      var listPFCscDataItems:[ParsePFCscDataItem]                          = [ParsePFCscDataItem]()
     {
         didSet
         {
@@ -88,30 +87,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         }
     }
 
-                                                                                           // [String:String]
-                                                                                           // Key:Tid(String)                       -> TherapistName (String)
-                                                                                           // Key:TherapistName(String)             -> Tid (String)
-                                                                                           // Key:TherapistName(String)<lowercased> -> Tid (String)
-    @Published      var dictTherapistTidXref:[String:String]                             = [String:String]()
-    {
-        didSet
-        {
-            objectWillChange.send()
-        }
-    }
-
-                                                                                           // [String:[ScheduledPatientLocationItem]]
-                                                                                           // Key:sPFTherapistParseTID(String)
-    @Published      var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
-    {
-        didSet
-        {
-            objectWillChange.send()
-        }
-    }
-
-       private      var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                   = false
-
+       private      var bHasDictTherapistFileItemsBeenDisplayed:Bool                     = false
                                                                                            // [Int:ParsePFTherapistFileItem]
                                                                                            // Key:Tid(Int) -> TherapistID (Int)
     @Published      var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]          = [Int:ParsePFTherapistFileItem]()
@@ -122,7 +98,62 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         }
     }
 
-       private      var bHasDictTherapistFileItemsBeenDisplayed:Bool                     = false
+       private      var bHasDictPatientFileItemsBeenDisplayed:Bool                       = false
+                                                                                           // [String:String]
+                                                                                           // Key:Tid(String)                               -> TherapistName (String)
+                                                                                           // Key:TherapistName(String)                     -> Tid (String)
+                                                                                           // Key:TherapistName(String)<lowercased>         -> Tid (String)
+                                                                                           // Key:TherapistName(String)<lowercased & NO WS> -> Tid (String)
+    @Published      var dictTherapistTidXref:[String:String]                             = [String:String]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
+
+                                                                                           // [Int:ParsePFPatientFileItem]
+                                                                                           // Key:Pid(Int) -> PatientPid (Int)
+    @Published      var dictPFPatientFileItems:[Int:ParsePFPatientFileItem]              = [Int:ParsePFPatientFileItem]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
+
+                                                                                           // [String:String]
+                                                                                           // Key:Pid(String)                             -> PatientName (String)
+                                                                                           // Key:PatientName(String)                     -> Pid (String)
+                                                                                           // Key:PatientName(String)<lowercased>         -> Pid (String)
+                                                                                           // Key:PatientName(String)<lowercased & NO WS> -> Pid (String)
+    @Published      var dictPatientPidXref:[String:String]                               = [String:String]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
+
+       private      var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                   = false
+                                                                                           // [String:[ScheduledPatientLocationItem]]
+                                                                                           // Key:sPFTherapistParseTID(String)
+    @Published      var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
+
+                    var listPFCscNameItems:[String]                                      = [String]()
+    @Published      var listPFCscDataItems:[ParsePFCscDataItem]                          = [ParsePFCscDataItem]()
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
                     var jmAppDelegateVisitor:JmAppDelegateVisitor?                       = nil
                                                                                            // 'jmAppDelegateVisitor' MUST remain declared this way
@@ -221,19 +252,27 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         asToString.append("[")
         asToString.append("'cPFCscObjectsRefresh': (\(String(describing: self.cPFCscObjectsRefresh)))")
         asToString.append("'cPFCscObjects': (\(String(describing: self.cPFCscObjects)))")
-        asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))]")
-        asToString.append("'listPFCscNameItems': [\(String(describing: self.listPFCscNameItems))]")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'dictPFAdminsDataItems': [\(String(describing: self.dictPFAdminsDataItems))]")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'dictSchedPatientLocItems': [\(String(describing: self.dictSchedPatientLocItems))]")
-        asToString.append("'bHasDictSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictSchedPatientLocItemsBeenDisplayed))]")
+        asToString.append("'bHasDictTherapistFileItemsBeenDisplayed': [\(String(describing: self.bHasDictTherapistFileItemsBeenDisplayed))]")
+        asToString.append("'dictPFTherapistFileItems': [\(String(describing: self.dictPFTherapistFileItems))]")
+        asToString.append("'dictTherapistTidXref': [\(String(describing: self.dictTherapistTidXref))]")
         asToString.append("],")
         asToString.append("[")
-        asToString.append("'dictPFTherapistFileItems': [\(String(describing: self.dictPFTherapistFileItems))]")
-        asToString.append("'bHasDictTherapistFileItemsBeenDisplayed': [\(String(describing: self.bHasDictTherapistFileItemsBeenDisplayed))]")
+        asToString.append("'bHasDictPatientFileItemsBeenDisplayed': [\(String(describing: self.bHasDictPatientFileItemsBeenDisplayed))]")
+        asToString.append("'dictPFPatientFileItems': [\(String(describing: self.dictPFPatientFileItems))]")
+        asToString.append("'dictPatientPidXref': [\(String(describing: self.dictPatientPidXref))]")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'bHasDictSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictSchedPatientLocItemsBeenDisplayed))]")
+        asToString.append("'dictSchedPatientLocItems': [\(String(describing: self.dictSchedPatientLocItems))]")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))]")
+        asToString.append("'listPFCscNameItems': [\(String(describing: self.listPFCscNameItems))]")
         asToString.append("],")
         asToString.append("]")
 
@@ -357,15 +396,45 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
             self.dictTherapistTidXref.count > 0)
         {
   
-            let sPFTherapistParseNameLower:String = sPFTherapistParseName.lowercased()
-        
+            let sPFTherapistParseNameLower:String           = sPFTherapistParseName.lowercased()
+
+        //  let listPFTherapistParseNameLowerBase:[String]  = sPFTherapistParseNameLower.components(separatedBy:CharacterSet.illegalCharacters)
+        //  let sPFTherapistParseNameLowerBaseJoined:String = listPFTherapistParseNameLowerBase.joined(separator:"")
+        //  let listPFTherapistParseNameLowerNoWS:[String]  = sPFTherapistParseNameLowerBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+        //  let sPFTherapistParseNameLowerNoWS:String       = listPFTherapistParseNameLowerNoWS.joined(separator:"")
+
+            var csUnwantedDelimiters:CharacterSet = CharacterSet()
+
+            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+
+            let listPFTherapistParseNameLowerNoWS:[String]  = sPFTherapistParseNameLower.components(separatedBy:csUnwantedDelimiters)
+            let sPFTherapistParseNameLowerNoWS:String       = listPFTherapistParseNameLowerNoWS.joined(separator:"")
+
             if (self.dictTherapistTidXref[sPFTherapistParseNameLower] != nil)
             {
-  
+
                 sPFTherapistParseTID = self.dictTherapistTidXref[sPFTherapistParseNameLower] ?? ""
-  
+
             }
         
+            if (sPFTherapistParseTID.count < 1)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <Convert Name to TID> - 'sPFTherapistParseNameLower' of [\(sPFTherapistParseNameLower)] did NOT 'match' - trying without WhiteSpace using 'sPFTherapistParseNameLowerNoWS' of [\(sPFTherapistParseNameLowerNoWS)]...")
+
+                sPFTherapistParseTID = self.dictTherapistTidXref[sPFTherapistParseNameLowerNoWS] ?? ""
+
+                if (sPFTherapistParseTID.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Convert Name to TID> - 'sPFTherapistParseNameLowerNoWS' of [\(sPFTherapistParseNameLowerNoWS)] did NOT 'match' - unable to convert Name to TID - Error!")
+
+                }
+
+            }
+
         }
         
         // Exit...
@@ -375,6 +444,104 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return sPFTherapistParseTID
   
     } // End of public func convertTherapistNameToTid(sPFTherapistParseName:String)->String.
+
+    public func convertPidToPatientName(sPFPatientParsePID:String = "")->String
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFPatientParsePID' is [\(sPFPatientParsePID)]...")
+
+        // Lookup and convert the 'sPFPatientParsePID' to 'sPFPatientParseName'...
+
+        var sPFPatientParseName:String = ""
+
+        if (sPFPatientParsePID.count      > 0 &&
+            self.dictPatientPidXref.count > 0)
+        {
+        
+            if (self.dictPatientPidXref[sPFPatientParsePID] != nil)
+            {
+
+                sPFPatientParseName = self.dictPatientPidXref[sPFPatientParsePID] ?? ""
+
+            }
+        
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPFPatientParseName' is [\(sPFPatientParseName)]...")
+  
+        return sPFPatientParseName
+
+    } // End of public func convertPidToPatientName(sPFPatientParsePID:String)->String.
+    
+    public func convertPatientNameToPid(sPFPatientParseName:String = "")->String
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFPatientParseName' is [\(sPFPatientParseName)]...")
+
+        // Lookup and convert the 'sPFPatientParseName' to 'sPFPatientParsePID'...
+
+        var sPFPatientParsePID:String = ""
+
+        if (sPFPatientParseName.count     > 0 &&
+            self.dictPatientPidXref.count > 0)
+        {
+
+            let sPFPatientParseNameLower:String           = sPFPatientParseName.lowercased()
+
+        //  let listPFPatientParseNameLowerBase:[String]  = sPFPatientParseNameLower.components(separatedBy:CharacterSet.illegalCharacters)
+        //  let sPFPatientParseNameLowerBaseJoined:String = listPFPatientParseNameLowerBase.joined(separator:"")
+        //  let listPFPatientParseNameLowerNoWS:[String]  = sPFPatientParseNameLowerBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+        //  let sPFPatientParseNameLowerNoWS:String       = listPFPatientParseNameLowerNoWS.joined(separator:"")
+
+            var csUnwantedDelimiters:CharacterSet = CharacterSet()
+
+            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+
+            let listPFPatientParseNameLowerNoWS:[String]  = sPFPatientParseNameLower.components(separatedBy:csUnwantedDelimiters)
+            let sPFPatientParseNameLowerNoWS:String       = listPFPatientParseNameLowerNoWS.joined(separator:"")
+
+            if (self.dictPatientPidXref[sPFPatientParseNameLower] != nil)
+            {
+
+                sPFPatientParsePID = self.dictPatientPidXref[sPFPatientParseNameLower] ?? ""
+
+            }
+        
+            if (sPFPatientParsePID.count < 1)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <Convert Name to PID> - 'sPFPatientParseNameLower' of [\(sPFPatientParseNameLower)] did NOT 'match' - trying without WhiteSpace using 'sPFPatientParseNameLowerNoWS' of [\(sPFPatientParseNameLowerNoWS)]...")
+
+                sPFPatientParsePID = self.dictPatientPidXref[sPFPatientParseNameLowerNoWS] ?? ""
+
+                if (sPFPatientParsePID.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Convert Name to PID> - 'sPFPatientParseNameLowerNoWS' of [\(sPFPatientParseNameLowerNoWS)] did NOT 'match' - unable to convert Name to PID - Error!")
+
+                }
+
+            }
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPFPatientParsePID' is [\(sPFPatientParsePID)]...")
+  
+        return sPFPatientParsePID
+
+    } // End of public func convertPatientNameToPid(sPFPatientParseName:String)->String.
     
     func locatePFCscDataItemByID(id:UUID)->ParsePFCscDataItem
     {
@@ -505,6 +672,59 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return
 
     } // End of func displayDictPFTherapistFileItems().
+    
+    public func displayDictPFPatientFileItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the dictionary of 'dictPFPatientFileItems'...
+      
+        if (self.dictPFPatientFileItems.count > 0)
+        {
+      
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictPFPatientFileItems.count)) 'dictPFPatientFileItems' item(s)...")
+      
+            var cPFPatientParsePIDs:Int = 0
+      
+            for (iPFPatientParsePID, pfPatientFileItem) in self.dictPFPatientFileItems
+            {
+      
+                cPFPatientParsePIDs += 1
+      
+                if (iPFPatientParsePID < 0)
+                {
+      
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFPatientParsePIDs)) 'iPFPatientParsePID' - the 'pid' field is less than 0 - Warning!")
+      
+                    continue
+      
+                }
+      
+                self.xcgLogMsg("\(sCurrMethodDisp) For PID [\(iPFPatientParsePID)] - Displaying 'pfPatientFileItem' item #(\(cPFPatientParsePIDs)):")
+      
+                pfPatientFileItem.displayParsePFPatientFileItemToLog()
+      
+            }
+      
+        }
+        else
+        {
+      
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictPFPatientFileItems' item(s) - item(s) count is less than 1 - Warning!")
+      
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictPFPatientFileItems().
     
     public func displayDictSchedPatientLocItems()
     {
@@ -662,6 +882,48 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return
 
     } // End of func displayDictTherapistTidXfef().
+    
+    public func displayDictPatientPidXfef()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the dictionary 'self.dictPatientPidXref'...
+
+        if (self.dictPatientPidXref.count > 0)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of 'dictPatientPidXref' item(s)...")
+
+            var cPatientPidXrefItems:Int = 0
+
+            for (sPFPatientXrefKey, sPFPatientXrefItem) in self.dictPatientPidXref
+            {
+
+                cPatientPidXrefItems += 1
+
+                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientPidXrefItems)): 'sPFPatientXrefKey' is [\(sPFPatientXrefKey)] - 'sPFPatientXrefItem' is [\(sPFPatientXrefItem)]...")
+
+            }
+        
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictPatientPidXref' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictPatientPidXfef().
     
 }   // End of public class JmAppParseCoreManager.
 

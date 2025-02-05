@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.2101"
+        static let sClsVers      = "v1.2201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -560,40 +560,40 @@ struct SettingsSingleViewCore: View
       
                     Spacer()
       
-                    Button
-                    {
-
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'Log TherapistFile' pressed...")
-
-                        self.detailTherapistFileItems()
-
-                    }
-                    label:
-                    {
-
-                        VStack(alignment:.center)
-                        {
-
-                            Label("", systemImage: "doc.text.magnifyingglass")
-                                .help(Text("Log TherapistFile Item(s)..."))
-                                .imageScale(.large)
-
-                            Text("Log TherapistFile")
-                                .font(.caption)
-
-                        }
-
-                    }
-                #if os(macOS)
-                    .buttonStyle(.borderedProminent)
-                    .padding()
-                //  .background(???.isPressed ? .blue : .gray)
-                    .cornerRadius(10)
-                    .foregroundColor(Color.primary)
-                #endif
-                    .padding()
-
-                    Spacer()
+            //      Button
+            //      {
+            //
+            //          let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'Log TherapistFile' pressed...")
+            //
+            //          self.detailTherapistFileItems()
+            //
+            //      }
+            //      label:
+            //      {
+            //
+            //          VStack(alignment:.center)
+            //          {
+            //
+            //              Label("", systemImage: "doc.text.magnifyingglass")
+            //                  .help(Text("Log TherapistFile Item(s)..."))
+            //                  .imageScale(.large)
+            //
+            //              Text("Log TherapistFile")
+            //                  .font(.caption)
+            //
+            //          }
+            //
+            //      }
+            //  #if os(macOS)
+            //      .buttonStyle(.borderedProminent)
+            //      .padding()
+            //  //  .background(???.isPressed ? .blue : .gray)
+            //      .cornerRadius(10)
+            //      .foregroundColor(Color.primary)
+            //  #endif
+            //      .padding()
+            //
+            //      Spacer()
 
                     Button
                     {
@@ -1224,106 +1224,106 @@ struct SettingsSingleViewCore: View
 
     }   // End of private func openAppSuppliedURL(urlToOpen:URL).
 
-    private func detailTherapistFileItems()
-    {
-        
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-
-        // Detail all TherapistFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
-
-        if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-        {
-
-            if (self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count > 0)
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreManager' dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
-
-                var cPFTherapistParseTIDs:Int = 0
-
-                for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems
-                {
-
-                    cPFTherapistParseTIDs += 1
-
-                    if (iPFTherapistParseTID < 0)
-                    {
-
-                        self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
-
-                        continue
-
-                    }
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
-
-                    pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
-
-                }
-
-            }
-            else
-            {
-
-                self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the 'jmAppParseCoreManager' dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
-
-            }
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' is nil - unable to get the dictionary 'dictPFTherapistFileItems' - Error!")
-
-        }
-
-        // Detail all TherapistFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
-
-        if (self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count > 0)
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreBkgdDataRepo' dictionary of #(\(self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
-
-            var cPFTherapistParseTIDs:Int = 0
-
-            for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems
-            {
-
-                cPFTherapistParseTIDs += 1
-
-                if (iPFTherapistParseTID < 0)
-                {
-
-                    self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
-
-                    continue
-
-                }
-
-                self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
-
-                pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
-
-            }
-
-        }
-        else
-        {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
-
-        }
-
-        // Exit:
-
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
-
-        return
-
-    }   // End of private func detailTherapistFileItems().
+//  private func detailTherapistFileItems()
+//  {
+//      
+//      let sCurrMethod:String = #function
+//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+//
+//      // Detail all TherapistFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
+//
+//      if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
+//      {
+//
+//          if (self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count > 0)
+//          {
+//
+//              self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreManager' dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+//
+//              var cPFTherapistParseTIDs:Int = 0
+//
+//              for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems
+//              {
+//
+//                  cPFTherapistParseTIDs += 1
+//
+//                  if (iPFTherapistParseTID < 0)
+//                  {
+//
+//                      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+//
+//                      continue
+//
+//                  }
+//
+//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+//
+//                  pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
+//
+//              }
+//
+//          }
+//          else
+//          {
+//
+//              self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the 'jmAppParseCoreManager' dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
+//
+//          }
+//
+//      }
+//      else
+//      {
+//
+//          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' is nil - unable to get the dictionary 'dictPFTherapistFileItems' - Error!")
+//
+//      }
+//
+//      // Detail all TherapistFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
+//
+//      if (self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count > 0)
+//      {
+//
+//          self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreBkgdDataRepo' dictionary of #(\(self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
+//
+//          var cPFTherapistParseTIDs:Int = 0
+//
+//          for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems
+//          {
+//
+//              cPFTherapistParseTIDs += 1
+//
+//              if (iPFTherapistParseTID < 0)
+//              {
+//
+//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+//
+//                  continue
+//
+//              }
+//
+//              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
+//
+//              pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
+//
+//          }
+//
+//      }
+//      else
+//      {
+//
+//          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
+//
+//      }
+//
+//      // Exit:
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+//
+//      return
+//
+//  }   // End of private func detailTherapistFileItems().
 
 }   // End of struct SettingsSingleViewCore(View). 
 

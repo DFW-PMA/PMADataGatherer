@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0301"
+        static let sClsVers      = "v1.0402"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -83,6 +83,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
     var iPFPatientFilePID:Int                                   = -1         // 'pfPatientFileObject[ID]'
     var sPFPatientFileName:String                               = "-N/A-"    // 'pfPatientFileObject[name]' (last, first middle)
+    var sPFPatientFileNameNoWS:String                           = "-N/A-"    // Name: (lastfirstmiddle)
     var sPFPatientFileFirstName:String                          = "-N/A-"    // 'pfPatientFileObject[firstName]' (first)
     var sPFPatientFileLastName:String                           = "-N/A-"    // 'pfPatientFileObject[lastName]' (<middle> last)
     var sPFPatientFileEmerContacts:String                       = ""         // 'pfPatientFileObject[emerContacts]' <list>
@@ -308,6 +309,8 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         asToString.append("[")
         asToString.append("'iPFPatientFilePID': (\(String(describing: self.iPFPatientFilePID))),")
         asToString.append("'sPFPatientFileName': [\(String(describing: self.sPFPatientFileName))],")
+        asToString.append("'sPFPatientFileNameNoWS': [\(String(describing: self.sPFPatientFileNameNoWS))],")
+        asToString.append("'sPFPatientFileFIrstName': [\(String(describing: self.sPFPatientFileFirstName))],")
         asToString.append("'sPFPatientFileLastName': [\(String(describing: self.sPFPatientFileLastName))],")
         asToString.append("'sPFPatientFileEmerContacts': [\(String(describing: self.sPFPatientFileEmerContacts))],")
         asToString.append("'sPFPatientFileHomeLoc': [\(String(describing: self.sPFPatientFileHomeLoc))],")
@@ -364,11 +367,11 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         if (self.pfPatientFileObject == nil)
         {
-            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'         is [-nil-]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'             is [-nil-]...")
         }
         else
         {
-            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'         is [-available-]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'             is [-available-]...")
         }
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileClassName'         is [\(String(describing: self.sPFPatientFileClassName))]...")
@@ -382,6 +385,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFilePID'               is (\(String(describing: self.iPFPatientFilePID)))...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileName'              is [\(String(describing: self.sPFPatientFileName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileNameNoWS'          is [\(String(describing: self.sPFPatientFileNameNoWS))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileFirstName'         is [\(String(describing: self.sPFPatientFileFirstName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLastName'          is [\(String(describing: self.sPFPatientFileLastName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileEmerContacts'      is [\(String(describing: self.sPFPatientFileEmerContacts))]...")
@@ -423,42 +427,54 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         // Assign the various field(s) of this object from the supplied PFObject...
 
-        self.idPFPatientFileObject                = idPFPatientFileObject
+        self.idPFPatientFileObject                  = idPFPatientFileObject
 
-        self.pfPatientFileObjectClonedFrom        = nil 
-        self.pfPatientFileObjectClonedTo          = nil 
+        self.pfPatientFileObjectClonedFrom          = nil 
+        self.pfPatientFileObjectClonedTo            = nil 
 
-        self.pfPatientFileObject                  = pfPatientFileObject                                                             
+        self.pfPatientFileObject                    = pfPatientFileObject                                                             
         
-        self.sPFPatientFileClassName              = pfPatientFileObject.parseClassName
-        self.sPFPatientFileObjectId               = pfPatientFileObject.objectId  != nil ? pfPatientFileObject.objectId!  : ""
-        self.datePFPatientFileCreatedAt           = pfPatientFileObject.createdAt != nil ? pfPatientFileObject.createdAt! : nil
-        self.datePFPatientFileUpdatedAt           = pfPatientFileObject.updatedAt != nil ? pfPatientFileObject.updatedAt! : nil
-        self.aclPFPatientFile                     = pfPatientFileObject.acl
-        self.bPFPatientFileIsDataAvailable        = pfPatientFileObject.isDataAvailable
-        self.bPFPatientFileIdDirty                = pfPatientFileObject.isDirty
-        self.listPFPatientFileAllKeys             = pfPatientFileObject.allKeys
+        self.sPFPatientFileClassName                = pfPatientFileObject.parseClassName
+        self.sPFPatientFileObjectId                 = pfPatientFileObject.objectId  != nil ? pfPatientFileObject.objectId!  : ""
+        self.datePFPatientFileCreatedAt             = pfPatientFileObject.createdAt != nil ? pfPatientFileObject.createdAt! : nil
+        self.datePFPatientFileUpdatedAt             = pfPatientFileObject.updatedAt != nil ? pfPatientFileObject.updatedAt! : nil
+        self.aclPFPatientFile                       = pfPatientFileObject.acl
+        self.bPFPatientFileIsDataAvailable          = pfPatientFileObject.isDataAvailable
+        self.bPFPatientFileIdDirty                  = pfPatientFileObject.isDirty
+        self.listPFPatientFileAllKeys               = pfPatientFileObject.allKeys
 
-        self.iPFPatientFilePID                    = Int(String(describing: (pfPatientFileObject.object(forKey:"ID")       ?? "-1"))) ?? -2
-        self.sPFPatientFileName                   = String(describing: (pfPatientFileObject.object(forKey:"name")         ?? ""))
-        self.sPFPatientFileFirstName              = String(describing: (pfPatientFileObject.object(forKey:"firstName")    ?? ""))
-        self.sPFPatientFileLastName               = String(describing: (pfPatientFileObject.object(forKey:"lastName")     ?? ""))
-        self.sPFPatientFileEmerContacts           = String(describing: (pfPatientFileObject.object(forKey:"emerContacts") ?? ""))
-        self.sPFPatientFileHomeLoc                = String(describing: (pfPatientFileObject.object(forKey:"histLoc1")     ?? ""))
+        self.iPFPatientFilePID                      = Int(String(describing: (pfPatientFileObject.object(forKey:"ID")       ?? "-1"))) ?? -2
+        self.sPFPatientFileName                     = String(describing: (pfPatientFileObject.object(forKey:"name")         ?? ""))
 
-    //  self.bPFPatientFileNotActive              = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
-    //  self.iPFPatientFileSuperID                = Int(String(describing: (pfPatientFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
+        var csUnwantedDelimiters:CharacterSet       = CharacterSet()
+
+        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+
+        let sPFPatientFileNameLower:String          = self.sPFPatientFileName.lowercased()
+        let listPFPatientFileNameLowerNoWS:[String] = sPFPatientFileNameLower.components(separatedBy:csUnwantedDelimiters)
+        let sPFPatientFileNameLowerNoWS:String      = listPFPatientFileNameLowerNoWS.joined(separator:"")
+
+        self.sPFPatientFileNameNoWS                 = sPFPatientFileNameLowerNoWS
+        self.sPFPatientFileFirstName                = String(describing: (pfPatientFileObject.object(forKey:"firstName")    ?? ""))
+        self.sPFPatientFileLastName                 = String(describing: (pfPatientFileObject.object(forKey:"lastName")     ?? ""))
+        self.sPFPatientFileEmerContacts             = String(describing: (pfPatientFileObject.object(forKey:"emerContacts") ?? ""))
+        self.sPFPatientFileHomeLoc                  = String(describing: (pfPatientFileObject.object(forKey:"histLoc1")     ?? ""))
+
+    //  self.bPFPatientFileNotActive                = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
+    //  self.iPFPatientFileSuperID                  = Int(String(describing: (pfPatientFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
 
         self.convertPFPatientFileHomeLocToLatitudeLongitude()
 
-        self.bHomeLocAddessLookupScheduled        = false
-        self.bHomeLocAddessLookupComplete         = false
+        self.bHomeLocAddessLookupScheduled          = false
+        self.bHomeLocAddessLookupComplete           = false
       
-        self.sHomeLocLocationName                 = ""
-        self.sHomeLocCity                         = ""
-        self.sHomeLocCountry                      = ""
-        self.sHomeLocPostalCode                   = ""
-        self.sHomeLocTimeZone                     = ""
+        self.sHomeLocLocationName                   = ""
+        self.sHomeLocCity                           = ""
+        self.sHomeLocCountry                        = ""
+        self.sHomeLocPostalCode                     = ""
+        self.sHomeLocTimeZone                       = ""
 
         self.resolveLocationAndAddress()
       
@@ -500,6 +516,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         
         self.iPFPatientFilePID                    = pfPatientFileItem.iPFPatientFilePID
         self.sPFPatientFileName                   = pfPatientFileItem.sPFPatientFileName
+        self.sPFPatientFileNameNoWS               = pfPatientFileItem.sPFPatientFileNameNoWS
         self.sPFPatientFileFirstName              = pfPatientFileItem.sPFPatientFileFirstName
         self.sPFPatientFileLastName               = pfPatientFileItem.sPFPatientFileLastName
         self.sPFPatientFileEmerContacts           = pfPatientFileItem.sPFPatientFileEmerContacts
@@ -797,13 +814,13 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         if (self.jmAppDelegateVisitor.jmAppCLModelObservable2 != nil)
         {
 
-            let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
+        //  let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor.jmAppCLModelObservable2!
 
             self.bHomeLocAddessLookupScheduled = true
             self.bHomeLocAddessLookupComplete  = false
             
-            let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.tertiary)
-
+        //  let dblDeadlineInterval:Double     = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.tertiary)
+        //
         //  DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
         //  {
         //      self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFPatientFileObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFPatientFileName)]...")

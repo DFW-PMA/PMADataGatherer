@@ -17,7 +17,7 @@ struct AppDataGathererTherapist1View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1View"
-        static let sClsVers      = "v1.0501"
+        static let sClsVers      = "v1.0805"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -234,27 +234,82 @@ struct AppDataGathererTherapist1View: View
 
                 }
 
-                Text("")
+                VStack(alignment:.center)
+                {
 
-                Text(" - - - - - - - - - - - - - - - - - - - - ")
-                    .frame(maxWidth:.infinity, alignment:.center)
+                    Text(" - - - - - - - - - - - - - - - - - - - - ")
+                        .font(.caption2) 
+                        .frame(maxWidth:.infinity, alignment:.center)
 
-                Text("DATA Gatherer - Therapist by TID")
-                    .bold()
-                    .frame(maxWidth:.infinity, alignment:.center)
+                    HStack
+                    {
 
-                Text(" - - - - - - - - - - - - - - - - - - - - ")
-                    .frame(maxWidth:.infinity, alignment:.center)
+                        Button
+                        {
 
-                Spacer()
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Locate the Therapist by TID'...")
+
+                            self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
+
+                            self.isAppRunTherapistLocateByTidShowing.toggle()
+
+                        }
+                        label:
+                        {
+
+                            HStack(alignment:.center)
+                            {
+
+                                Spacer()
+
+                                Label("", systemImage: "figure.run.circle")
+                                    .help(Text("Locate the Therapist by TID..."))
+                                    .imageScale(.small)
+
+                                Text("=> Locate Therapist by TID")
+                                    .bold()
+                                    .font(.caption2)
+                                    .foregroundColor(.red)
+
+                                Spacer()
+
+                            }
+
+                        }
+                    //  .alert("TID #(\(sTherapistTID)) is Therapist 'named' [\(sTherapistName)]...", 
+                    //         isPresented:$isAppRunTherapistLocateByTidShowing)
+                    //  {
+                    //      Button("Ok", role:.cancel)
+                    //      {
+                    //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'locate' the Therapist by TID...")
+                    //      }
+                    //  }
+                    #if os(macOS)
+                        .buttonStyle(.borderedProminent)
+                        .padding()
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
+                    //  .padding()
+
+                    }
+
+                    Text(" - - - - - - - - - - - - - - - - - - - - ")
+                        .font(.caption2) 
+                        .frame(maxWidth:.infinity, alignment:.center)
+
+                }
 
                 HStack()
                 {
 
                     Text("=> Enter the Therapists' TID: ")
+                        .font(.caption) 
                         .foregroundColor(.red)
 
                     TextField("Therapist TID...", text:$sTherapistTID)
+                        .font(.caption) 
                     #if os(iOS)
                         .keyboardType(.numberPad)
                     #endif
@@ -265,7 +320,7 @@ struct AppDataGathererTherapist1View: View
                         }
                         .onReceive(Just(sTherapistTID))
                         { newValue in
-                            let filteredValue = newValue.filter { "0123456789".contains($0) }
+                            let filteredValue = newValue.filter { "-0123456789".contains($0) }
                             if (filteredValue != newValue)
                             {
                                 self.sTherapistTID = filteredValue
@@ -278,15 +333,63 @@ struct AppDataGathererTherapist1View: View
                             focusedField        = .therapistTID
                         }
 
+                    Spacer()
+
+                    Button
+                    {
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Therapist TID delete'...")
+
+                        self.sTherapistName = ""
+                        self.sTherapistTID  = ""
+                        focusedField        = .therapistTID
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "delete.left")
+                                .help(Text("Delete the Therapist TID..."))
+                                .imageScale(.medium)
+
+                            HStack(alignment:.center)
+                            {
+
+                                Spacer()
+
+                                Text("Delete Therapist TID")
+                                    .font(.caption2)
+
+                                Spacer()
+
+                            }
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+                    .padding()
+
                 }
 
                 HStack()
                 {
 
                     Text("===> Therapists' Name: ")
+                        .font(.caption) 
 
                     Text("\(self.sTherapistName)")
                         .italic()
+                        .font(.caption) 
 
                     Spacer()
 
@@ -359,66 +462,66 @@ struct AppDataGathererTherapist1View: View
 
                 Spacer()
 
-                HStack
-                {
-
-                    Button
-                    {
-
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Locate the Therapist by TID'...")
-
-                        self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
-
-                        self.isAppRunTherapistLocateByTidShowing.toggle()
-
-                    }
-                    label:
-                    {
-
-                        VStack(alignment:.center)
-                        {
-
-                            Label("", systemImage: "figure.run.circle")
-                                .help(Text("Locate the Therapist by TID..."))
-                                .imageScale(.large)
-
-                            HStack(alignment:.center)
-                            {
-
-                                Spacer()
-
-                                Text("=> Locate the Therapist by TID...")
-                                    .bold()
-                                    .font(.caption)
-                                    .foregroundColor(.red)
-
-                                Spacer()
-
-                            }
-
-                        }
-
-                    }
-                //  .alert("TID #(\(sTherapistTID)) is Therapist 'named' [\(sTherapistName)]...", 
-                //         isPresented:$isAppRunTherapistLocateByTidShowing)
-                //  {
-                //      Button("Ok", role:.cancel)
-                //      {
-                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'locate' the Therapist by TID...")
-                //      }
-                //  }
-                #if os(macOS)
-                    .buttonStyle(.borderedProminent)
-                    .padding()
-                //  .background(???.isPressed ? .blue : .gray)
-                    .cornerRadius(10)
-                    .foregroundColor(Color.primary)
-                #endif
-                    .padding()
-
-                }
-
-                Spacer()
+            //  HStack
+            //  {
+            //
+            //      Button
+            //      {
+            //
+            //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Locate the Therapist by TID'...")
+            //
+            //          self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
+            //
+            //          self.isAppRunTherapistLocateByTidShowing.toggle()
+            //
+            //      }
+            //      label:
+            //      {
+            //
+            //          VStack(alignment:.center)
+            //          {
+            //
+            //              Label("", systemImage: "figure.run.circle")
+            //                  .help(Text("Locate the Therapist by TID..."))
+            //                  .imageScale(.large)
+            //
+            //              HStack(alignment:.center)
+            //              {
+            //
+            //                  Spacer()
+            //
+            //                  Text("=> Locate the Therapist by TID...")
+            //                      .bold()
+            //                      .font(.caption)
+            //                      .foregroundColor(.red)
+            //
+            //                  Spacer()
+            //
+            //              }
+            //
+            //          }
+            //
+            //      }
+            //  //  .alert("TID #(\(sTherapistTID)) is Therapist 'named' [\(sTherapistName)]...", 
+            //  //         isPresented:$isAppRunTherapistLocateByTidShowing)
+            //  //  {
+            //  //      Button("Ok", role:.cancel)
+            //  //      {
+            //  //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'locate' the Therapist by TID...")
+            //  //      }
+            //  //  }
+            //  #if os(macOS)
+            //      .buttonStyle(.borderedProminent)
+            //      .padding()
+            //  //  .background(???.isPressed ? .blue : .gray)
+            //      .cornerRadius(10)
+            //      .foregroundColor(Color.primary)
+            //  #endif
+            //      .padding()
+            //
+            //  }
+            //
+            //  Spacer()
 
             }
 
