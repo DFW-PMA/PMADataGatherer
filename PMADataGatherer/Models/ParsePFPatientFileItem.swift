@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0402"
+        static let sClsVers      = "v1.0407"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -88,6 +88,56 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     var sPFPatientFileLastName:String                           = "-N/A-"    // 'pfPatientFileObject[lastName]' (<middle> last)
     var sPFPatientFileEmerContacts:String                       = ""         // 'pfPatientFileObject[emerContacts]' <list>
     var sPFPatientFileHomeLoc:String                            = ""         // 'pfPatientFileObject[histLoc1]' [latitude,longitude]
+
+    // ----------------------------------------------------------------------------------------------------------
+    //  --- Pass #2 ---
+    //
+    //  "realPatient": 1,
+    //  "langPreference": "english",
+    //  "onHold": 0,
+    //  "onHoldDate": "",
+    //  "parent": "Ophelia Vargas ",
+    //  "parentID": 238,
+    //
+    // ----------------------------------------------------------------------------------------------------------
+
+
+
+    // ----------------------------------------------------------------------------------------------------------
+    //  --- Pass #2 ---
+    //
+    //  "sid": 31,
+    //  "sidName": "Rebecca Hill",
+    //  "supervisedVisits": " 4/30/24  5/2/24 ",
+    //  "toSuper": 0,
+    //
+    // ----------------------------------------------------------------------------------------------------------
+
+
+
+    // ----------------------------------------------------------------------------------------------------------
+    //  --- Pass #2 ---
+    //
+    //  "authBegin": "9/16/24",
+    //  "authEnd": "3/14/25",
+    //  "startAuthBegin": "9/16/24",
+    //  "startAuthEnd": "3/14/25",
+    //  "currentAuthBegin": "9/16/24",
+    //  "currentAuthEnd": "3/14/25",
+    //  "expectedFreq": 2,
+    //  "expectedVisits": 40,
+    //  "firstVisitDate": "7/7/17",
+    //  "lastDrVisit": "11/19/22",
+    //  "lastEvalDate": "8/21/24",
+    //  "lastVisitDate": "1/28/25",
+    //  "newVisitCount": 35,
+    //  "numVisitsDone": 2,
+    //  "totalAuthdVisits": 52,
+    //  "totalNumMVs": 97,
+    //  "visitCount": 35,
+    //  "visitCount2": 0,
+    // ----------------------------------------------------------------------------------------------------------
+
 
     // ----------------------------------------------------------------------------------------------------------------
     //  TYPE of 'pfPatientFileObjectLatitude'     is [Optional<Any>] - value is [Optional(32.77201080322266)]...
@@ -458,14 +508,68 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         self.sPFPatientFileNameNoWS                 = sPFPatientFileNameLowerNoWS
         self.sPFPatientFileFirstName                = String(describing: (pfPatientFileObject.object(forKey:"firstName")    ?? ""))
+
         self.sPFPatientFileLastName                 = String(describing: (pfPatientFileObject.object(forKey:"lastName")     ?? ""))
-        self.sPFPatientFileEmerContacts             = String(describing: (pfPatientFileObject.object(forKey:"emerContacts") ?? ""))
+
+        let objPFPatientFileLastName                = pfPatientFileObject.object(forKey:"lastName")
+        let typeOfObjPFPatientFileLastName          = type(of:objPFPatientFileLastName)
+        let sTypeOfObjPFPatientFileLastName         = self.getMetaTypeStringForObject(object:objPFPatientFileLastName as Any)
+      
+        self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileLastName' is [\(typeOfObjPFPatientFileLastName)] and 'sTypeOfObjPFPatientFileLastName' is [\(sTypeOfObjPFPatientFileLastName)] for 'objPFPatientFileLastName' is [\(String(describing: objPFPatientFileLastName))]...")
+
         self.sPFPatientFileHomeLoc                  = String(describing: (pfPatientFileObject.object(forKey:"histLoc1")     ?? ""))
 
-    //  self.bPFPatientFileNotActive                = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
-    //  self.iPFPatientFileSuperID                  = Int(String(describing: (pfPatientFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
+        let objPFPatientFileHomeLoc                 = pfPatientFileObject.object(forKey:"histLoc1")
+        let typeOfObjPFPatientFileHomeLoc           = type(of:objPFPatientFileHomeLoc)
+        let sTypeOfObjPFPatientFileHomeLoc          = self.getMetaTypeStringForObject(object:objPFPatientFileHomeLoc as Any)
+      
+        self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileHomeLoc' is [\(typeOfObjPFPatientFileHomeLoc)] and 'sTypeOfObjPFPatientFileHomeLoc' is [\(sTypeOfObjPFPatientFileHomeLoc)] for 'objPFPatientFileHomeLoc' is [\(String(describing: objPFPatientFileHomeLoc))]...")
 
         self.convertPFPatientFileHomeLocToLatitudeLongitude()
+
+        self.sPFPatientFileEmerContacts             = String(describing: (pfPatientFileObject.object(forKey:"emerContacts") ?? ""))
+
+        let objPFPatientFileEmerContacts            = pfPatientFileObject.object(forKey:"emerContacts")
+        let typeOfObjPFPatientFileEmerContacts      = type(of:objPFPatientFileEmerContacts)
+        let sTypeOfObjPFPatientFileEmerContacts     = self.getMetaTypeStringForObject(object:objPFPatientFileEmerContacts as Any)
+      
+        self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileEmerContacts' is [\(typeOfObjPFPatientFileEmerContacts)] and 'sTypeOfObjPFPatientFileEmerContacts' is [\(sTypeOfObjPFPatientFileEmerContacts)] for 'objPFPatientFileEmerContacts' is [\(String(describing: objPFPatientFileEmerContacts))]...")
+
+        if (sTypeOfObjPFPatientFileEmerContacts == "List")
+        {
+
+            let listObjPFPatientFileEmerContacts:[String] = objPFPatientFileEmerContacts as! [String]
+            var listPatFileEmerContacts:[String]          = [String]()
+        
+            for sCurrPatientFileEmerContact in listObjPFPatientFileEmerContacts
+            {
+
+                if (sCurrPatientFileEmerContact.count > 1)
+                {
+
+                    if (Double(sCurrPatientFileEmerContact) != nil)
+                    {
+                    
+                        listPatFileEmerContacts.append(self.formatPhoneNumber(sPhoneNumber:sCurrPatientFileEmerContact))
+                    
+                    }
+                    else
+                    {
+
+                        listPatFileEmerContacts.append(sCurrPatientFileEmerContact)
+
+                    }
+                
+                }
+
+            }
+
+            self.sPFPatientFileEmerContacts = listPatFileEmerContacts.joined(separator:",")
+        
+        }
+
+        //  self.bPFPatientFileNotActive            = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
+        //  self.iPFPatientFileSuperID              = Int(String(describing: (pfPatientFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
 
         self.bHomeLocAddessLookupScheduled          = false
         self.bHomeLocAddessLookupComplete           = false
@@ -925,6 +1029,98 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         return
 
     }   // End of public func handleLocationAndAddressClosureEvent(bIsDownstreamObject:Bool, requestID:Int, dictCurrentLocation:[String:Any]).
+
+    private func getMetaTypeStringForObject(object:Any)->String
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'object' is [\(object)]...")
+
+        var sValueTypeOf:String = "-undefined-"
+
+        switch (object)
+        {
+            case is Int:
+                sValueTypeOf = "Int"
+            case is Double:
+                sValueTypeOf = "Double"
+            case is String:
+                sValueTypeOf = "String"
+            case is NSArray, is [AnyObject]:
+                sValueTypeOf = "List"
+            case is NSDictionary, is Dictionary<AnyHashable, Any>:
+                sValueTypeOf = "Dictionary"
+            default:
+                sValueTypeOf = "-unmatched-"
+        }
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Supplied object is 'typeOf' [\(String(describing: type(of: object)))]/[\(sValueTypeOf)]...")
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sValueTypeOf' is [\(sValueTypeOf)]...")
+
+        return sValueTypeOf
+
+    } // End of private func getMetaTypeStringForObject(object:Any)->String.
+
+    private func formatPhoneNumber(sPhoneNumber:String = "")->String
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPhoneNumber' is [\(sPhoneNumber)]...")
+
+        // Format the supplied Phone #...
+
+        var sPhoneNumberFormatted:String = ""
+        
+        if (sPhoneNumber.count < 1)
+        {
+            
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+
+            return sPhoneNumberFormatted
+            
+        }
+        
+        let sPhoneNumberMask:String              = "(XXX) XXX-XXXX"
+        let sPhoneNumberCleaned:String           = sPhoneNumber.components(separatedBy:CharacterSet.decimalDigits.inverted).joined()
+        var siPhoneNumberStartIndex:String.Index = sPhoneNumberCleaned.startIndex
+        let eiPhoneNumberEndIndex:String.Index   = sPhoneNumberCleaned.endIndex
+        
+        for chCurrentNumber in sPhoneNumberMask where siPhoneNumberStartIndex < eiPhoneNumberEndIndex
+        {
+            
+            if chCurrentNumber == "X"
+            {
+                
+                sPhoneNumberFormatted.append(sPhoneNumberCleaned[siPhoneNumberStartIndex])
+                
+                siPhoneNumberStartIndex = sPhoneNumberCleaned.index(after:siPhoneNumberStartIndex)
+                
+            }
+            else
+            {
+                
+                sPhoneNumberFormatted.append(chCurrentNumber)
+                
+            }
+            
+        }
+
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+  
+        return sPhoneNumberFormatted
+        
+    }   // End of private func formatPhoneNumber(sPhoneNumber:String)->String
 
 }   // End of class ParsePFPatientFileItem(NSObject, Identifiable).
 
