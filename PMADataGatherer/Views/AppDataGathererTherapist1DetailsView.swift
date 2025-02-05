@@ -26,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0803"
+        static let sClsVers      = "v1.0804"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -289,6 +289,15 @@ struct AppDataGathererTherapist1DetailsView: View
 
                             Text("Therapists' License #")
                             Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileLicenseNumber)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' Name (No Whitespace)")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileNameNoWS)")
 
                         }
                         .font(.caption2) 

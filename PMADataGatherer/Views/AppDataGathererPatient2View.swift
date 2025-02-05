@@ -1,8 +1,8 @@
 //
-//  AppDataGathererTherapist2View.swift
+//  AppDataGathererPatient2View.swift
 //  PMADataGatherer
 //
-//  Created by Daryl Cox on 12/26/2024.
+//  Created by Daryl Cox on 02/05/2025.
 //  Copyright © JustMacApps 2023-2025. All rights reserved.
 //
 
@@ -10,14 +10,14 @@ import Foundation
 import SwiftUI
 import Combine
 
-struct AppDataGathererTherapist2View: View 
+struct AppDataGathererPatient2View: View 
 {
     
     struct ClassInfo
     {
         
-        static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.0807"
+        static let sClsId        = "AppDataGathererPatient2View"
+        static let sClsVers      = "v1.0102"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -34,26 +34,25 @@ struct AppDataGathererTherapist2View: View
 
     enum FocusedFields
     {
-       case therapistName
+       case patientName
     }
     
     @FocusState  private var focusedField:FocusedFields?
 
-    @State       private var sTherapistTID:String                                   = ""
-    @State       private var sTherapistName:String                                  = ""
+    @State       private var sPatientPID:String                                    = ""
+    @State       private var sPatientName:String                                   = ""
 
-    @State       private var listSelectableTherapistNames:[AppSearchableTherapistName] 
-                                                                                    = [AppSearchableTherapistName]()
+    @State       private var listSelectablePatientNames:[AppSearchablePatientName] = [AppSearchablePatientName]()
 
-    @State       private var cAppLocationViewLogPFDataButtonPresses:Int             = 0
-    @State       private var cAppDataGathererTherapist2ViewRefreshButtonPresses:Int = 0
+    @State       private var cAppLocationViewLogPFDataButtonPresses:Int            = 0
+    @State       private var cAppDataGathererPatient2ViewRefreshButtonPresses:Int  = 0
 
-    @State       private var isAppLogPFDataViewModal:Bool                           = false
-    @State       private var isAppRunTherapistLocateByTNameShowing:Bool             = false
-    @State       private var isAppTherapistDetailsByTNameShowing:Bool               = false
+    @State       private var isAppLogPFDataViewModal:Bool                          = false
+    @State       private var isAppRunPatientLocateByNameShowing:Bool               = false
+    @State       private var isAppPatientDetailsByNameShowing:Bool                 = false
 
-                         var jmAppDelegateVisitor:JmAppDelegateVisitor              = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                         var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
     
     init()
     {
@@ -116,7 +115,7 @@ struct AppDataGathererTherapist2View: View
 
                             self.cAppLocationViewLogPFDataButtonPresses += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererTherapist2View.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererPatient2View.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
 
                             self.isAppLogPFDataViewModal.toggle()
 
@@ -171,9 +170,9 @@ struct AppDataGathererTherapist2View: View
                     Button
                     {
 
-                        self.cAppDataGathererTherapist2ViewRefreshButtonPresses += 1
+                        self.cAppDataGathererPatient2ViewRefreshButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Refresh'.#(\(self.cAppDataGathererTherapist2ViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererPatient2View.Button(Xcode).'Refresh'.#(\(self.cAppDataGathererPatient2ViewRefreshButtonPresses))...")
 
                     }
                     label:
@@ -183,10 +182,10 @@ struct AppDataGathererTherapist2View: View
                         {
 
                             Label("", systemImage: "arrow.clockwise")
-                                .help(Text("'Refresh' App Data Gatherer Therapist by tName Screen..."))
+                                .help(Text("'Refresh' App Data Gatherer Patient by Name Screen..."))
                                 .imageScale(.large)
 
-                            Text("Refresh - #(\(self.cAppDataGathererTherapist2ViewRefreshButtonPresses))...")
+                            Text("Refresh - #(\(self.cAppDataGathererPatient2ViewRefreshButtonPresses))...")
                                 .font(.caption)
 
                         }
@@ -205,7 +204,7 @@ struct AppDataGathererTherapist2View: View
                     Button
                     {
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererTherapist2View.Button(Xcode).'Dismiss' pressed...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererPatient2View.Button(Xcode).'Dismiss' pressed...")
 
                         self.presentationMode.wrappedValue.dismiss()
 
@@ -252,11 +251,11 @@ struct AppDataGathererTherapist2View: View
                         Button
                         {
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Locate the Therapist by tName'...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient2View.Button(Xcode).'Locate the Patient by Name'...")
 
-                            self.sTherapistTID = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
+                            self.sPatientPID = self.locateAppPatientNameByName(sPatientName:sPatientName)
 
-                            self.isAppRunTherapistLocateByTNameShowing.toggle()
+                            self.isAppRunPatientLocateByNameShowing.toggle()
 
                         }
                         label:
@@ -268,10 +267,10 @@ struct AppDataGathererTherapist2View: View
                                 Spacer()
 
                                 Label("", systemImage: "figure.run.circle")
-                                    .help(Text("Locate the Therapist by tName..."))
+                                    .help(Text("Locate the Patient by Name..."))
                                     .imageScale(.small)
 
-                                Text("=> Locate Therapist by tName")
+                                Text("=> Locate Patient by Name")
                                     .bold()
                                     .font(.caption2)
                                     .foregroundColor(.red)
@@ -301,31 +300,31 @@ struct AppDataGathererTherapist2View: View
                 HStack()
                 {
 
-                    Text("===> Therapists' TID: ")
+                    Text("===> Patients' PID: ")
                         .font(.caption) 
 
-                    Text("\(sTherapistTID)")
+                    Text("\(sPatientPID)")
                         .font(.caption) 
-                        .onChange(of:self.sTherapistName)
+                        .onChange(of:self.sPatientName)
                         {
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - 'self.sTherapistName' is [\(self.sTherapistName)] - clearing the 'sTherapistTID' field...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - 'self.sPatientName' is [\(self.sPatientName)] - clearing the 'sPatientPID' field...")
 
-                            self.sTherapistTID = ""
+                            self.sPatientPID = ""
                         }
 
                     Spacer()
 
-                    if (self.sTherapistTID.count    > 0 &&
-                        (self.sTherapistName.count  > 0 &&
-                         self.sTherapistName       != "-N/A-"))
+                    if (self.sPatientPID.count    > 0 &&
+                        (self.sPatientName.count  > 0 &&
+                         self.sPatientName       != "-N/A-"))
                     {
 
                         Button
                         {
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Therapist Detail(s) by tName'...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient2View.Button(Xcode).'Patient Detail(s) by Name'...")
 
-                            self.isAppTherapistDetailsByTNameShowing.toggle()
+                            self.isAppPatientDetailsByNameShowing.toggle()
 
                         }
                         label:
@@ -335,7 +334,7 @@ struct AppDataGathererTherapist2View: View
                             {
 
                                 Label("", systemImage: "doc.questionmark")
-                                    .help(Text("Show Therapist Detail(s) by tName..."))
+                                    .help(Text("Show Patient Detail(s) by Name..."))
                                     .imageScale(.medium)
 
                                 HStack(alignment:.center)
@@ -343,7 +342,7 @@ struct AppDataGathererTherapist2View: View
 
                                     Spacer()
 
-                                    Text("Therapist Details...")
+                                    Text("Patient Details...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -354,18 +353,18 @@ struct AppDataGathererTherapist2View: View
 
                         }
                     #if os(macOS)
-                        .sheet(isPresented:$isAppTherapistDetailsByTNameShowing, content:
+                        .sheet(isPresented:$isAppPatientDetailsByNameShowing, content:
                         {
 
-                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
+                            AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
 
                         })
                     #endif
                     #if os(iOS)
-                        .fullScreenCover(isPresented:$isAppTherapistDetailsByTNameShowing)
+                        .fullScreenCover(isPresented:$isAppPatientDetailsByNameShowing)
                         {
 
-                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
+                            AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
 
                         }
                     #endif
@@ -385,34 +384,34 @@ struct AppDataGathererTherapist2View: View
                 HStack()
                 {
 
-                    Text("=> Enter the Therapists' Name: ")
+                    Text("=> Enter the Patients' Name: ")
                         .font(.caption) 
                         .foregroundColor(.red)
 
-                    TextField("Therapist tName...", text:$sTherapistName)
+                    TextField("Patient Name...", text:$sPatientName)
                         .italic()
                         .font(.caption) 
-                        .focused($focusedField, equals:.therapistName)
+                        .focused($focusedField, equals:.patientName)
                         .onAppear
                         {
-                            self.sTherapistName = ""
-                            self.sTherapistTID  = ""
-                            focusedField        = .therapistName
+                            self.sPatientName = ""
+                            self.sPatientPID  = ""
+                            focusedField        = .patientName
                         }
-                        .onChange(of: self.sTherapistName)
+                        .onChange(of: self.sPatientName)
                         {
-                            self.updateSelectableTherapistNamesList(sSearchValue:self.sTherapistName)
-                            focusedField        = .therapistName
+                            self.updateSelectablePatientNamesList(sSearchValue:self.sPatientName)
+                            focusedField        = .patientName
 
-                            if (self.sTherapistName.count < 1)
+                            if (self.sPatientName.count < 1)
                             {
-                                self.sTherapistTID = ""
+                                self.sPatientPID = ""
                             }
                         }
                         .onSubmit
                         {
-                            self.sTherapistTID  = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
-                            focusedField        = .therapistName
+                            self.sPatientPID  = self.locateAppPatientNameByName(sPatientName:sPatientName)
+                            focusedField        = .patientName
                         }
 
                     Spacer()
@@ -420,11 +419,11 @@ struct AppDataGathererTherapist2View: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Therapist tName delete'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient2View.Button(Xcode).'Patient Name delete'...")
 
-                        self.sTherapistName = ""
-                        self.sTherapistTID  = ""
-                        focusedField        = .therapistName
+                        self.sPatientName = ""
+                        self.sPatientPID  = ""
+                        focusedField        = .patientName
 
                     }
                     label:
@@ -434,7 +433,7 @@ struct AppDataGathererTherapist2View: View
                         {
 
                             Label("", systemImage: "delete.left")
-                                .help(Text("Delete the Therapist tName..."))
+                                .help(Text("Delete the Patient Name..."))
                                 .imageScale(.medium)
 
                             HStack(alignment:.center)
@@ -442,7 +441,7 @@ struct AppDataGathererTherapist2View: View
 
                                 Spacer()
 
-                                Text("Delete Therapist Name")
+                                Text("Delete Patient Name")
                                     .font(.caption2)
 
                                 Spacer()
@@ -468,19 +467,19 @@ struct AppDataGathererTherapist2View: View
                     .onAppear
                     {
 
-                        listSelectableTherapistNames = [AppSearchableTherapistName]()
+                        listSelectablePatientNames = [AppSearchablePatientName]()
 
-                        listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:"...placeholder..."))
+                        listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:"...placeholder..."))
 
                     }
 
-                List(listSelectableTherapistNames, id:\.id)
-                { appSearchableTherapistName in
+                List(listSelectablePatientNames, id:\.id)
+                { appSearchablePatientName in
 
-                    Text(appSearchableTherapistName.sTherapistTName)
+                    Text(appSearchablePatientName.sPatientName)
                         .onTapGesture
                         {
-                            self.sTherapistName = appSearchableTherapistName.sTherapistTName
+                            self.sPatientName = appSearchablePatientName.sPatientName
                         }
 
                 }
@@ -497,34 +496,34 @@ struct AppDataGathererTherapist2View: View
         
     }
     
-    private func locateAppTherapistNameByTName(sTherapistName:String = "")->String
+    private func locateAppPatientNameByName(sPatientName:String = "")->String
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistName' is [\(sTherapistName)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPatientName' is [\(sPatientName)]...")
 
-        // Locate the Therapist TID by 'name'...
+        // Locate the Patient PID by 'name'...
 
-        var sTherapistTID:String = self.jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:sTherapistName)
+        var sPatientPID:String = self.jmAppParseCoreManager.convertPatientNameToPid(sPFPatientParseName:sPatientName)
 
-        if (sTherapistTID.count < 1)
+        if (sPatientPID.count < 1)
         {
         
-            sTherapistTID = "-1"
+            sPatientPID = "-1"
         
         }
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistName' is [\(sTherapistName)] - 'sTherapistTID' is [\(sTherapistTID)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPatientName' is [\(sPatientName)] - 'sPatientPID' is [\(sPatientPID)]...")
   
-        return sTherapistTID
+        return sPatientPID
   
-    }   // End of private func locateAppTherapistNameByTName(sTherapistName:String)->String.
+    }   // End of private func locateAppPatientNameByName(sPatientName:String)->String.
 
-    private func updateSelectableTherapistNamesList(sSearchValue:String = "")
+    private func updateSelectablePatientNamesList(sSearchValue:String = "")
     {
         
         let sCurrMethod:String = #function
@@ -532,7 +531,7 @@ struct AppDataGathererTherapist2View: View
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sSearchValue' is [\(sSearchValue)]...")
 
-        // Update the 'selectable' Therapist 'name(s)' list from the 'sSearchValue' criteria...
+        // Update the 'selectable' Patient 'name(s)' list from the 'sSearchValue' criteria...
 
         if (sSearchValue.isEmpty)
         {
@@ -547,12 +546,12 @@ struct AppDataGathererTherapist2View: View
         
         }
 
-        // var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem] = [Int:ParsePFTherapistFileItem]()
+        // var dictPFPatientFileItems:[Int:ParsePFPatientFileItem] = [Int:ParsePFPatientFileItem]()
 
-        if (self.jmAppParseCoreManager.dictPFTherapistFileItems.count < 1)
+        if (self.jmAppParseCoreManager.dictPFPatientFileItems.count < 1)
         {
         
-            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #2 - 'self.jmAppParseCoreManager.dictPFTherapistFileItems' is an empty 'dictionary' - unable to update the 'selectable' item(s) - Warning!")
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #2 - 'self.jmAppParseCoreManager.dictPFPatientFileItems' is an empty 'dictionary' - unable to update the 'selectable' item(s) - Warning!")
             
             // Exit:
 
@@ -562,49 +561,49 @@ struct AppDataGathererTherapist2View: View
         
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - 'sSearchValue' is [\(sSearchValue)] - 'self.jmAppParseCoreManager.dictPFTherapistFileItems' contains (\(self.jmAppParseCoreManager.dictPFTherapistFileItems.count)) item(s)...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - 'sSearchValue' is [\(sSearchValue)] - 'self.jmAppParseCoreManager.dictPFPatientFileItems' contains (\(self.jmAppParseCoreManager.dictPFPatientFileItems.count)) item(s)...")
 
-        self.listSelectableTherapistNames = [AppSearchableTherapistName]()
+        self.listSelectablePatientNames = [AppSearchablePatientName]()
 
-        var cTherapistNames:Int           = 0
-        var cSelectableTherapistNames:Int = 0
+        var cPatientNames:Int           = 0
+        var cSelectablePatientNames:Int = 0
         let sSearchValueLow:String        = sSearchValue.lowercased()
         
-        // var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem] = [Int:ParsePFTherapistFileItem]()
+        // var dictPFPatientFileItems:[Int:ParsePFPatientFileItem] = [Int:ParsePFPatientFileItem]()
 
-        for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppParseCoreManager.dictPFTherapistFileItems
+        for (iPFPatientParsePID, pfPatientFileItem) in self.jmAppParseCoreManager.dictPFPatientFileItems
         {
 
-            cTherapistNames += 1
+            cPatientNames += 1
 
-            if (iPFTherapistParseTID < 0)
+            if (iPFPatientParsePID < 0)
             {
 
-                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cTherapistNames)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
+                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPatientNames)) 'iPFPatientParsePID' - the 'pid' field is less than 0 - Warning!")
 
                 continue
 
             }
 
-            let sTherapistTName:String     = pfTherapistFileItem.sPFTherapistFileName
-            let sTherapistTNameLow:String  = sTherapistTName.lowercased()
-            let sTherapistTNameNoWS:String = pfTherapistFileItem.sPFTherapistFileNameNoWS
+            let sPatientName:String     = pfPatientFileItem.sPFPatientFileName
+            let sPatientNameLow:String  = sPatientName.lowercased()
+            let sPatientNameNoWS:String = pfPatientFileItem.sPFPatientFileNameNoWS
 
-            if (sTherapistTNameLow.contains(sSearchValueLow)  == true ||
-                sTherapistTNameNoWS.contains(sSearchValueLow) == true)
+            if (sPatientNameLow.contains(sSearchValueLow)  == true ||
+                sPatientNameNoWS.contains(sSearchValueLow) == true)
             {
             
-                self.listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:sTherapistTName))
+                self.listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:sPatientName))
 
-                cSelectableTherapistNames += 1
+                cSelectablePatientNames += 1
 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'sTherapistTName' of [\(sTherapistTName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientNames)): 'sPatientName' of [\(sPatientName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
             
             }
 
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - added (\(cSelectableTherapistNames)) names(s) to the 'selectable' list of (\(self.listSelectableTherapistNames.count)) item(s)...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - added (\(cSelectablePatientNames)) names(s) to the 'selectable' list of (\(self.listSelectablePatientNames.count)) item(s)...")
 
         // Exit:
 
@@ -612,14 +611,14 @@ struct AppDataGathererTherapist2View: View
 
         return
 
-    }   // End of private func updateSelectableTherapistNamesList(sSearchValue:String).
+    }   // End of private func updateSelectablePatientNamesList(sSearchValue:String).
 
-}   // End of struct AppDataGathererTherapist2View(View).
+}   // End of struct AppDataGathererPatient2View(View).
 
 #Preview 
 {
     
-    AppDataGathererTherapist2View()
+    AppDataGathererPatient2View()
     
 }
 

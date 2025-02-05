@@ -65,6 +65,14 @@
 		F05B51562CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05B51542CE7D8B5008A0EEE /* ParsePFCscDataItem.swift */; };
 		F05EBBB12D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
 		F05EBBB22D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
+		F05EDC312D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC2E2D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift */; };
+		F05EDC322D53FA2F00306C62 /* AppDataGathererPatient1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC2F2D53FA2F00306C62 /* AppDataGathererPatient1View.swift */; };
+		F05EDC332D53FA2F00306C62 /* AppDataGathererPatient2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC302D53FA2F00306C62 /* AppDataGathererPatient2View.swift */; };
+		F05EDC342D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC2E2D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift */; };
+		F05EDC352D53FA2F00306C62 /* AppDataGathererPatient1View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC2F2D53FA2F00306C62 /* AppDataGathererPatient1View.swift */; };
+		F05EDC362D53FA2F00306C62 /* AppDataGathererPatient2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC302D53FA2F00306C62 /* AppDataGathererPatient2View.swift */; };
+		F05EDC382D53FB7C00306C62 /* AppSearchablePatientName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC372D53FB7C00306C62 /* AppSearchablePatientName.swift */; };
+		F05EDC392D53FB7C00306C62 /* AppSearchablePatientName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC372D53FB7C00306C62 /* AppSearchablePatientName.swift */; };
 		F05EE1D22D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */; };
 		F05EE1D32D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */; };
 		F05EE1D52D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */; };
@@ -212,6 +220,10 @@
 		F04D88A12CDAA8A00002AA0B /* MultipartZipFileCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartZipFileCreator.swift; sourceTree = "<group>"; };
 		F05B51542CE7D8B5008A0EEE /* ParsePFCscDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFCscDataItem.swift; sourceTree = "<group>"; };
 		F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererTherapist2View.swift; sourceTree = "<group>"; };
+		F05EDC2E2D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererPatient1DetailsView.swift; sourceTree = "<group>"; };
+		F05EDC2F2D53FA2F00306C62 /* AppDataGathererPatient1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererPatient1View.swift; sourceTree = "<group>"; };
+		F05EDC302D53FA2F00306C62 /* AppDataGathererPatient2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererPatient2View.swift; sourceTree = "<group>"; };
+		F05EDC372D53FB7C00306C62 /* AppSearchablePatientName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSearchablePatientName.swift; sourceTree = "<group>"; };
 		F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmSwiftDataItem.swift; sourceTree = "<group>"; };
 		F05EE1D42D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JmAppAlarmSoundManager.swift; sourceTree = "<group>"; };
 		F0601D922C77C73C00443D72 /* JmXcodeBuildSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmXcodeBuildSettings.swift; sourceTree = "<group>"; };
@@ -300,6 +312,7 @@
 		F0289D2C2C53D920001B19CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F05EDC372D53FB7C00306C62 /* AppSearchablePatientName.swift */,
 				F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */,
 				F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */,
 				F05EE1D12D380E3700ABC0C5 /* AlarmSwiftDataItem.swift */,
@@ -376,6 +389,9 @@
 		F028C5BF2C486134007C459E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F05EDC2E2D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift */,
+				F05EDC2F2D53FA2F00306C62 /* AppDataGathererPatient1View.swift */,
+				F05EDC302D53FA2F00306C62 /* AppDataGathererPatient2View.swift */,
 				F06E184C2D52616700633988 /* AppLogPFDataView.swift */,
 				F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */,
 				F08C86B52D1DF34600D5B19A /* AppDataGathererTherapist1DetailsView.swift */,
@@ -595,6 +611,9 @@
 				F0289D332C53D98D001B19CD /* HelpBasicMode.swift in Sources */,
 				F08C86B02D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */,
 				F05EE1D52D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */,
+				F05EDC312D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift in Sources */,
+				F05EDC322D53FA2F00306C62 /* AppDataGathererPatient1View.swift in Sources */,
+				F05EDC332D53FA2F00306C62 /* AppDataGathererPatient2View.swift in Sources */,
 				F00619A62C94A8060094614E /* MultipartRequestInfo.swift in Sources */,
 				F091A2862C8F6FEF00FB85D5 /* RestURLEndpoint.swift in Sources */,
 				F00619A02C94A8060094614E /* MultipartRequestDriver.swift in Sources */,
@@ -603,6 +622,7 @@
 				F05B51552CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */,
 				F091A6672D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */,
 				F048393F2D2733430060D765 /* ParsePFTherapistFileItem.swift in Sources */,
+				F05EDC382D53FB7C00306C62 /* AppSearchablePatientName.swift in Sources */,
 				F00619A22C94A8060094614E /* MultipartDataExtension.swift in Sources */,
 				F0EF09D32D00B6CC0088D819 /* ScheduledPatientLocationItem.swift in Sources */,
 				F06E184D2D52616700633988 /* AppLogPFDataView.swift in Sources */,
@@ -694,11 +714,15 @@
 				F0DC5D322CDBCE7A009F0090 /* MultipartZipFileService.swift in Sources */,
 				F0BCCC662C820EF1007EA382 /* JmObjCSwiftEnvBridge.swift in Sources */,
 				F0BB63FE2CF4DB6900B22F9D /* SettingsSingleViewCore.swift in Sources */,
+				F05EDC392D53FB7C00306C62 /* AppSearchablePatientName.swift in Sources */,
 				F05EE1D62D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */,
 				F04D88A32CDAA8A00002AA0B /* MultipartZipFileCreator.swift in Sources */,
 				F06E184E2D52616700633988 /* AppLogPFDataView.swift in Sources */,
 				F02C7A1C2D3990BE00E9F92C /* JmAppParseCoreBkgdDataRepo.swift in Sources */,
 				F0BCCC672C820EF1007EA382 /* HelpBasicLoader.swift in Sources */,
+				F05EDC342D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift in Sources */,
+				F05EDC352D53FA2F00306C62 /* AppDataGathererPatient1View.swift in Sources */,
+				F05EDC362D53FA2F00306C62 /* AppDataGathererPatient2View.swift in Sources */,
 				F0BCCC682C820EF1007EA382 /* JmStringExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -944,7 +968,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 24.10.25C036;
+				CURRENT_PROJECT_VERSION = 24.11.25C036;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -994,7 +1018,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 24.10.25C036;
+				CURRENT_PROJECT_VERSION = 24.11.25C036;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
