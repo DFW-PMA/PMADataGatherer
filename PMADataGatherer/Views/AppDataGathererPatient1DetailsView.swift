@@ -26,7 +26,7 @@ struct AppDataGathererPatient1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererPatient1DetailsView"
-        static let sClsVers      = "v1.0101"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -280,6 +280,60 @@ struct AppDataGathererPatient1DetailsView: View
 
                             Text("Patients' Name (No Whitespace)")
                             Text("\(self.pfPatientFileItem!.sPFPatientFileNameNoWS)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patient is 'Real' Patient?")
+                            Text("\(self.pfPatientFileItem!.bPFPatientFileIsRealPatient)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' Languate preference")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileLanguagePref)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patient is 'On Hold'?")
+                            Text("\(self.pfPatientFileItem!.bPFPatientFileIsOnHold)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' 'On Hold' Date")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileOnHoldDate)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' Parent Name")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileParentName)")
+
+                        }
+                        .font(.caption2) 
+ 
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' Parent ID")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileParentID)")
 
                         }
                         .font(.caption2) 

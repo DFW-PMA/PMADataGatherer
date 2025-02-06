@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0702"
+        static let sClsVers      = "v1.0802"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -569,17 +569,19 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         self.iPFTherapistFileTID                      = Int(String(describing: (pfTherapistFileObject.object(forKey:"ID") ?? "-1"))) ?? -2
         self.sPFTherapistFileName                     = String(describing: (pfTherapistFileObject.object(forKey:"name")   ?? ""))
 
-        var csUnwantedDelimiters:CharacterSet         = CharacterSet()
+    //  var csUnwantedDelimiters:CharacterSet         = CharacterSet()
+    //
+    //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+    //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+    //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+    //
+    //  let sPFTherapistFileNameLower:String          = self.sPFTherapistFileName.lowercased()
+    //  let listPFTherapistFileNameLowerNoWS:[String] = sPFTherapistFileNameLower.components(separatedBy:csUnwantedDelimiters)
+    //  let sPFTherapistFileNameLowerNoWS:String      = listPFTherapistFileNameLowerNoWS.joined(separator:"")
+    //
+    //  self.sPFTherapistFileNameNoWS                 = sPFTherapistFileNameLowerNoWS
 
-        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
-        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
-        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
-
-        let sPFTherapistFileNameLower:String          = self.sPFTherapistFileName.lowercased()
-        let listPFTherapistFileNameLowerNoWS:[String] = sPFTherapistFileNameLower.components(separatedBy:csUnwantedDelimiters)
-        let sPFTherapistFileNameLowerNoWS:String      = listPFTherapistFileNameLowerNoWS.joined(separator:"")
-
-        self.sPFTherapistFileNameNoWS                 = sPFTherapistFileNameLowerNoWS
+        self.sPFTherapistFileNameNoWS                 = self.sPFTherapistFileName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
         self.sPFTherapistFilePhone                    = String(describing: (pfTherapistFileObject.object(forKey:"phone")          ?? ""))
         self.sPFTherapistFileEmail                    = String(describing: (pfTherapistFileObject.object(forKey:"email")          ?? ""))
         self.sPFTherapistFileUsername                 = String(describing: (pfTherapistFileObject.object(forKey:"username")       ?? ""))
@@ -871,28 +873,32 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
         asToString.append("\(sCurrMethodDisp) 'self.sPFTherapistFileHomeLoc' is [\(self.sPFTherapistFileHomeLoc)]...")
 
-        let listHomeLocNoWS:[String]  = self.sPFTherapistFileHomeLoc.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+    //  let listHomeLocNoWS:[String]  = self.sPFTherapistFileHomeLoc.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'listHomeLocNoWS' is [\(listHomeLocNoWS)]...")
+    //
+    //  let sHomeLocNoWS:String = listHomeLocNoWS.joined(separator:"")
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'sHomeLocNoWS' is [\(sHomeLocNoWS)]...")
+    //
+    //  var csHomeLocDelimiters1:CharacterSet = CharacterSet()
+    //
+    //  csHomeLocDelimiters1.insert(charactersIn: "<>")
+    //
+    //  let listHomeLocCleaned1:[String] = sHomeLocNoWS.components(separatedBy:csHomeLocDelimiters1)
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned1' is [\(listHomeLocCleaned1)]...")
+    //
+    //  let sHomeLocCleaned1:String = listHomeLocCleaned1.joined(separator:"")
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'sHomeLocCleaned1' is [\(sHomeLocCleaned1)]...")
 
-        asToString.append("\(sCurrMethodDisp) 'listHomeLocNoWS' is [\(listHomeLocNoWS)]...")
-
-        let sHomeLocNoWS:String = listHomeLocNoWS.joined(separator:"")
-
-        asToString.append("\(sCurrMethodDisp) 'sHomeLocNoWS' is [\(sHomeLocNoWS)]...")
-
-        var csHomeLocDelimiters1:CharacterSet = CharacterSet()
-
-        csHomeLocDelimiters1.insert(charactersIn: "<>")
-
-        let listHomeLocCleaned1:[String] = sHomeLocNoWS.components(separatedBy:csHomeLocDelimiters1)
-
-        asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned1' is [\(listHomeLocCleaned1)]...")
-
-        let sHomeLocCleaned1:String = listHomeLocCleaned1.joined(separator:"")
-
+        let sHomeLocCleaned1:String = self.sPFTherapistFileHomeLoc.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeWhitespacesAndNewlines], sExtraCharacters:"<>,", bResultIsLowerCased:true)
+        
         asToString.append("\(sCurrMethodDisp) 'sHomeLocCleaned1' is [\(sHomeLocCleaned1)]...")
-
+      
         var csHomeLocDelimiters2:CharacterSet = CharacterSet()
-
+      
         csHomeLocDelimiters2.insert(charactersIn: ",")
 
         let listHomeLocCleaned2:[String] = sHomeLocCleaned1.components(separatedBy:csHomeLocDelimiters2)

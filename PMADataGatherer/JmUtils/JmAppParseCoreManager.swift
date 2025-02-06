@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.3201"
+        static let sClsVers      = "v1.3302"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -397,20 +397,22 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         {
   
             let sPFTherapistParseNameLower:String           = sPFTherapistParseName.lowercased()
-
-        //  let listPFTherapistParseNameLowerBase:[String]  = sPFTherapistParseNameLower.components(separatedBy:CharacterSet.illegalCharacters)
-        //  let sPFTherapistParseNameLowerBaseJoined:String = listPFTherapistParseNameLowerBase.joined(separator:"")
-        //  let listPFTherapistParseNameLowerNoWS:[String]  = sPFTherapistParseNameLowerBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
-        //  let sPFTherapistParseNameLowerNoWS:String       = listPFTherapistParseNameLowerNoWS.joined(separator:"")
-
-            var csUnwantedDelimiters:CharacterSet = CharacterSet()
-
-            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
-            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
-            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
-
-            let listPFTherapistParseNameLowerNoWS:[String]  = sPFTherapistParseNameLower.components(separatedBy:csUnwantedDelimiters)
-            let sPFTherapistParseNameLowerNoWS:String       = listPFTherapistParseNameLowerNoWS.joined(separator:"")
+    
+    //  //  let listPFTherapistParseNameLowerBase:[String]  = sPFTherapistParseNameLower.components(separatedBy:CharacterSet.illegalCharacters)
+    //  //  let sPFTherapistParseNameLowerBaseJoined:String = listPFTherapistParseNameLowerBase.joined(separator:"")
+    //  //  let listPFTherapistParseNameLowerNoWS:[String]  = sPFTherapistParseNameLowerBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+    //  //  let sPFTherapistParseNameLowerNoWS:String       = listPFTherapistParseNameLowerNoWS.joined(separator:"")
+    //
+    //      var csUnwantedDelimiters:CharacterSet = CharacterSet()
+    //
+    //      csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+    //      csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+    //      csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+    //
+    //      let listPFTherapistParseNameLowerNoWS:[String]  = sPFTherapistParseNameLower.components(separatedBy:csUnwantedDelimiters)
+    //      let sPFTherapistParseNameLowerNoWS:String       = listPFTherapistParseNameLowerNoWS.joined(separator:"")
+            
+            let sPFTherapistParseNameLowerNoWS:String       = sPFTherapistParseName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
 
             if (self.dictTherapistTidXref[sPFTherapistParseNameLower] != nil)
             {
@@ -495,20 +497,22 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         {
 
             let sPFPatientParseNameLower:String           = sPFPatientParseName.lowercased()
+    
+    //  //  let listPFPatientParseNameLowerBase:[String]  = sPFPatientParseNameLower.components(separatedBy:CharacterSet.illegalCharacters)
+    //  //  let sPFPatientParseNameLowerBaseJoined:String = listPFPatientParseNameLowerBase.joined(separator:"")
+    //  //  let listPFPatientParseNameLowerNoWS:[String]  = sPFPatientParseNameLowerBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+    //  //  let sPFPatientParseNameLowerNoWS:String       = listPFPatientParseNameLowerNoWS.joined(separator:"")
+    //
+    //      var csUnwantedDelimiters:CharacterSet = CharacterSet()
+    //
+    //      csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+    //      csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+    //      csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+    //
+    //      let listPFPatientParseNameLowerNoWS:[String]  = sPFPatientParseNameLower.components(separatedBy:csUnwantedDelimiters)
+    //      let sPFPatientParseNameLowerNoWS:String       = listPFPatientParseNameLowerNoWS.joined(separator:"")
 
-        //  let listPFPatientParseNameLowerBase:[String]  = sPFPatientParseNameLower.components(separatedBy:CharacterSet.illegalCharacters)
-        //  let sPFPatientParseNameLowerBaseJoined:String = listPFPatientParseNameLowerBase.joined(separator:"")
-        //  let listPFPatientParseNameLowerNoWS:[String]  = sPFPatientParseNameLowerBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
-        //  let sPFPatientParseNameLowerNoWS:String       = listPFPatientParseNameLowerNoWS.joined(separator:"")
-
-            var csUnwantedDelimiters:CharacterSet = CharacterSet()
-
-            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
-            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
-            csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
-
-            let listPFPatientParseNameLowerNoWS:[String]  = sPFPatientParseNameLower.components(separatedBy:csUnwantedDelimiters)
-            let sPFPatientParseNameLowerNoWS:String       = listPFPatientParseNameLowerNoWS.joined(separator:"")
+            let sPFPatientParseNameLowerNoWS:String       = sPFPatientParseName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
 
             if (self.dictPatientPidXref[sPFPatientParseNameLower] != nil)
             {

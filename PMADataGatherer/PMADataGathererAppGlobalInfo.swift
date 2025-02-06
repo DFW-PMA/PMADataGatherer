@@ -28,7 +28,7 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.2604"
+    static let sGlobalInfoAppVers:String                                 = "v1.2701"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
     static let sGlobalInfoAppLogFilespec:String                          = "PMADataGatherer.log"
@@ -67,6 +67,7 @@ public class AppGlobalInfo: NSObject
     static let bPerformAppDevTesting:Bool                                = true
     static let bEnableAppReleaseDownloads:Bool                           = true
     static let bInstantiateAppNWSWeatherModelObservable:Bool             = false
+    static let bTestStringManipulations:Bool                             = true
     static let sAppUploadNotifyFrom:String                               = "dcox@justmacapps.net"
 
     // Various 'device' information:
@@ -360,8 +361,54 @@ public class AppGlobalInfo: NSObject
         // Run 'post' Initialization task(s)...
 
         self.updateUIDeviceOrientation()
-
         self.displayUIDeviceInformation()
+
+        // If we're flaggedto 'test' String manipulation(s), then do so...
+
+        if (AppGlobalInfo.bTestStringManipulations == true)
+        {
+        
+            let listCharactersToRemove:[StringCleaning] = [
+                                                           StringCleaning.removeAll,
+                                                           StringCleaning.removeControl,
+                                                           StringCleaning.removeDecomposables,
+                                                           StringCleaning.removeIllegal,
+                                                           StringCleaning.removeNewlines,
+                                                           StringCleaning.removeNonBase,
+                                                           StringCleaning.removePunctuation,
+                                                           StringCleaning.removeSymbols,
+                                                           StringCleaning.removeWhitespaces,
+                                                           StringCleaning.removeWhitespacesAndNewlines,
+                                                          ]
+
+            self.xcgLogMsg("------------------------------------------------------------")
+            self.xcgLogMsg("'listCharactersToRemove' is [\(listCharactersToRemove)]...")
+
+            self.xcgLogMsg("------------------------------------------------------------")
+
+            let sTest4:String  = "<LastName>, FirstName MiddleName, Jr. \r\n"
+            let sTest5:String  = sTest4.removeUnwantedCharacters(charsetToRemove:listCharactersToRemove, bResultIsLowerCased:false)
+            let sTest6:String  = sTest4.removeUnwantedCharacters(charsetToRemove:listCharactersToRemove, bResultIsLowerCased:true)
+            let sTest7:String  = sTest4.removeUnwantedCharacters(charsetToRemove:listCharactersToRemove, sJoinCharacters:",", bResultIsLowerCased:true)
+            let sTest8:String  = sTest4.removeUnwantedCharacters(charsetToRemove:listCharactersToRemove, sExtraCharacters:"<>amp", bResultIsLowerCased:true)
+            let sTest9:String  = sTest4.removeUnwantedCharacters(charsetToRemove:listCharactersToRemove, sExtraCharacters:"<>amp", bResultIsLowerCased:false)
+            let sTest10:String = sTest4.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
+            let sTest11:String = sTest4.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeNone], bResultIsLowerCased:false)
+            let sTest12:String = sTest4.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeNone], bResultIsLowerCased:true)
+
+            self.xcgLogMsg("------------------------------------------------------------")
+            self.xcgLogMsg("'sTest4'  is [\(sTest4)]...")
+            self.xcgLogMsg("'sTest5'  is [\(sTest5)]  -> 'sTest4' cleaned (case-sensitive)...")
+            self.xcgLogMsg("'sTest6'  is [\(sTest6)]  -> 'sTest4' cleaned (lowercased)...")
+            self.xcgLogMsg("'sTest7'  is [\(sTest7)]  -> 'sTest4' cleaned (lowercased separated by ',')...")
+            self.xcgLogMsg("'sTest8'  is [\(sTest8)]  -> 'sTest4' cleaned (lowercased without '<>amp')...")
+            self.xcgLogMsg("'sTest9'  is [\(sTest9)]  -> 'sTest4' cleaned (case-sensitive without '<>amp')...")
+            self.xcgLogMsg("'sTest10' is [\(sTest10)] -> 'sTest4' cleaned (.removeAll, lowercased)...")
+            self.xcgLogMsg("'sTest11' is [\(sTest11)] -> 'sTest4' cleaned (.removeNone, case-sensitive)...")
+            self.xcgLogMsg("'sTest12' is [\(sTest12)] -> 'sTest4' cleaned (.removeNone, lowercased)...")
+            self.xcgLogMsg("------------------------------------------------------------")
+        
+        }
 
         // Exit:
 
@@ -470,6 +517,7 @@ public class AppGlobalInfo: NSObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bPerformAppDevTesting' is [\(String(describing: AppGlobalInfo.bPerformAppDevTesting))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bEnableAppReleaseDownloads' is [\(String(describing: AppGlobalInfo.bEnableAppReleaseDownloads))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bInstantiateAppNWSWeatherModelObservable' is [\(String(describing: AppGlobalInfo.bInstantiateAppNWSWeatherModelObservable))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bTestStringManipulations' is [\(String(describing: AppGlobalInfo.bTestStringManipulations))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sAppUploadNotifyFrom' is [\(String(describing: AppGlobalInfo.sAppUploadNotifyFrom))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalDeviceType' is [\(String(describing: self.sGlobalDeviceType))]...")

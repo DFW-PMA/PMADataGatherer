@@ -17,7 +17,7 @@ struct AppDataGathererPatient2View: View
     {
         
         static let sClsId        = "AppDataGathererPatient2View"
-        static let sClsVers      = "v1.0102"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -396,12 +396,12 @@ struct AppDataGathererPatient2View: View
                         {
                             self.sPatientName = ""
                             self.sPatientPID  = ""
-                            focusedField        = .patientName
+                            focusedField      = .patientName
                         }
                         .onChange(of: self.sPatientName)
                         {
                             self.updateSelectablePatientNamesList(sSearchValue:self.sPatientName)
-                            focusedField        = .patientName
+                            focusedField      = .patientName
 
                             if (self.sPatientName.count < 1)
                             {
@@ -411,7 +411,7 @@ struct AppDataGathererPatient2View: View
                         .onSubmit
                         {
                             self.sPatientPID  = self.locateAppPatientNameByName(sPatientName:sPatientName)
-                            focusedField        = .patientName
+                            focusedField      = .patientName
                         }
 
                     Spacer()
@@ -423,7 +423,7 @@ struct AppDataGathererPatient2View: View
 
                         self.sPatientName = ""
                         self.sPatientPID  = ""
-                        focusedField        = .patientName
+                        focusedField      = .patientName
 
                     }
                     label:

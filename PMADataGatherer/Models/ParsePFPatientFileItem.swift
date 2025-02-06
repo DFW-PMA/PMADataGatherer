@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0407"
+        static let sClsVers      = "v1.0511"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -101,7 +101,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     //
     // ----------------------------------------------------------------------------------------------------------
 
-
+    var bPFPatientFileIsRealPatient:Bool                        = false      // 'pfPatientFileObject[realPatient]'
+    var sPFPatientFileLanguagePref:String                       = "-N/A-"    // 'pfPatientFileObject[langPreference]'
+    var bPFPatientFileIsOnHold:Bool                             = false      // 'pfPatientFileObject[onHold]'
+    var sPFPatientFileOnHoldDate:String                         = "-N/A-"    // 'pfPatientFileObject[onHoldDate]'
+    var sPFPatientFileParentName:String                         = "-N/A-"    // 'pfPatientFileObject[parent]'
+    var sPFPatientFileParentID:String                           = "-N/A-"    // 'pfPatientFileObject[parentID]'
 
     // ----------------------------------------------------------------------------------------------------------
     //  --- Pass #2 ---
@@ -366,6 +371,14 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         asToString.append("'sPFPatientFileHomeLoc': [\(String(describing: self.sPFPatientFileHomeLoc))],")
         asToString.append("],")
         asToString.append("[")
+        asToString.append("'bPFPatientFileIsRealPatient': [\(String(describing: self.bPFPatientFileIsRealPatient))],")
+        asToString.append("'sPFPatientFileLanguagePref': [\(String(describing: self.sPFPatientFileLanguagePref))],")
+        asToString.append("'bPFPatientFileIsOnHold': [\(String(describing: self.bPFPatientFileIsOnHold))],")
+        asToString.append("'sPFPatientFileOnHoldDate': [\(String(describing: self.sPFPatientFileOnHoldDate))],")
+        asToString.append("'sPFPatientFileParentName': [\(String(describing: self.sPFPatientFileParentName))],")
+        asToString.append("'sPFPatientFileParentID': [\(String(describing: self.sPFPatientFileParentID))],")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'pfPatientFileObjectLatitude': [\(String(describing: self.pfPatientFileObjectLatitude))],")
         asToString.append("'pfPatientFileObjectLongitude': [\(String(describing: self.pfPatientFileObjectLongitude))],")
         asToString.append("'sPFPatientFileObjectLatitude': [\(String(describing: self.sPFPatientFileObjectLatitude))],")
@@ -441,6 +454,13 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileEmerContacts'      is [\(String(describing: self.sPFPatientFileEmerContacts))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileHomeLoc'           is [\(String(describing: self.sPFPatientFileHomeLoc))]...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsRealPatient'     is [\(String(describing: self.bPFPatientFileIsRealPatient))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLanguagePref'      is [\(String(describing: self.sPFPatientFileLanguagePref))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsOnHold'          is [\(String(describing: self.bPFPatientFileIsOnHold))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileOnHoldDate'        is [\(String(describing: self.sPFPatientFileOnHoldDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentName'        is [\(String(describing: self.sPFPatientFileParentName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentID'          is [\(String(describing: self.sPFPatientFileParentID))]...")
+
         self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLatitude'     is [\(String(describing: self.pfPatientFileObjectLatitude))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLongitude'    is [\(String(describing: self.pfPatientFileObjectLongitude))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileObjectLatitude'    is [\(String(describing: self.sPFPatientFileObjectLatitude))]...")
@@ -496,77 +516,104 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         self.iPFPatientFilePID                      = Int(String(describing: (pfPatientFileObject.object(forKey:"ID")       ?? "-1"))) ?? -2
         self.sPFPatientFileName                     = String(describing: (pfPatientFileObject.object(forKey:"name")         ?? ""))
 
-        var csUnwantedDelimiters:CharacterSet       = CharacterSet()
+    //  var csUnwantedDelimiters:CharacterSet       = CharacterSet()
+    //
+    //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+    //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+    //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+    //
+    //  let sPFPatientFileNameLower:String          = self.sPFPatientFileName.lowercased()
+    //  let listPFPatientFileNameLowerNoWS:[String] = sPFPatientFileNameLower.components(separatedBy:csUnwantedDelimiters)
+    //  let sPFPatientFileNameLowerNoWS:String      = listPFPatientFileNameLowerNoWS.joined(separator:"")
 
-        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
-        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
-        csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
-
-        let sPFPatientFileNameLower:String          = self.sPFPatientFileName.lowercased()
-        let listPFPatientFileNameLowerNoWS:[String] = sPFPatientFileNameLower.components(separatedBy:csUnwantedDelimiters)
-        let sPFPatientFileNameLowerNoWS:String      = listPFPatientFileNameLowerNoWS.joined(separator:"")
-
-        self.sPFPatientFileNameNoWS                 = sPFPatientFileNameLowerNoWS
+        self.sPFPatientFileNameNoWS                 = self.sPFPatientFileName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
         self.sPFPatientFileFirstName                = String(describing: (pfPatientFileObject.object(forKey:"firstName")    ?? ""))
-
         self.sPFPatientFileLastName                 = String(describing: (pfPatientFileObject.object(forKey:"lastName")     ?? ""))
 
-        let objPFPatientFileLastName                = pfPatientFileObject.object(forKey:"lastName")
-        let typeOfObjPFPatientFileLastName          = type(of:objPFPatientFileLastName)
-        let sTypeOfObjPFPatientFileLastName         = self.getMetaTypeStringForObject(object:objPFPatientFileLastName as Any)
-      
-        self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileLastName' is [\(typeOfObjPFPatientFileLastName)] and 'sTypeOfObjPFPatientFileLastName' is [\(sTypeOfObjPFPatientFileLastName)] for 'objPFPatientFileLastName' is [\(String(describing: objPFPatientFileLastName))]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            let objPFPatientFileLastName            = pfPatientFileObject.object(forKey:"lastName")
+            let typeOfObjPFPatientFileLastName      = type(of:objPFPatientFileLastName)
+            let sTypeOfObjPFPatientFileLastName     = self.getMetaTypeStringForObject(object:objPFPatientFileLastName as Any)
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileLastName' is [\(typeOfObjPFPatientFileLastName)] and 'sTypeOfObjPFPatientFileLastName' is [\(sTypeOfObjPFPatientFileLastName)] for 'objPFPatientFileLastName' is [\(String(describing: objPFPatientFileLastName))]...")
+
+        }
 
         self.sPFPatientFileHomeLoc                  = String(describing: (pfPatientFileObject.object(forKey:"histLoc1")     ?? ""))
 
-        let objPFPatientFileHomeLoc                 = pfPatientFileObject.object(forKey:"histLoc1")
-        let typeOfObjPFPatientFileHomeLoc           = type(of:objPFPatientFileHomeLoc)
-        let sTypeOfObjPFPatientFileHomeLoc          = self.getMetaTypeStringForObject(object:objPFPatientFileHomeLoc as Any)
-      
-        self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileHomeLoc' is [\(typeOfObjPFPatientFileHomeLoc)] and 'sTypeOfObjPFPatientFileHomeLoc' is [\(sTypeOfObjPFPatientFileHomeLoc)] for 'objPFPatientFileHomeLoc' is [\(String(describing: objPFPatientFileHomeLoc))]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            let objPFPatientFileHomeLoc             = pfPatientFileObject.object(forKey:"histLoc1")
+            let typeOfObjPFPatientFileHomeLoc       = type(of:objPFPatientFileHomeLoc)
+            let sTypeOfObjPFPatientFileHomeLoc      = self.getMetaTypeStringForObject(object:objPFPatientFileHomeLoc as Any)
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileHomeLoc' is [\(typeOfObjPFPatientFileHomeLoc)] and 'sTypeOfObjPFPatientFileHomeLoc' is [\(sTypeOfObjPFPatientFileHomeLoc)] for 'objPFPatientFileHomeLoc' is [\(String(describing: objPFPatientFileHomeLoc))]...")
+
+        }
 
         self.convertPFPatientFileHomeLocToLatitudeLongitude()
 
         self.sPFPatientFileEmerContacts             = String(describing: (pfPatientFileObject.object(forKey:"emerContacts") ?? ""))
 
         let objPFPatientFileEmerContacts            = pfPatientFileObject.object(forKey:"emerContacts")
-        let typeOfObjPFPatientFileEmerContacts      = type(of:objPFPatientFileEmerContacts)
         let sTypeOfObjPFPatientFileEmerContacts     = self.getMetaTypeStringForObject(object:objPFPatientFileEmerContacts as Any)
-      
-        self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileEmerContacts' is [\(typeOfObjPFPatientFileEmerContacts)] and 'sTypeOfObjPFPatientFileEmerContacts' is [\(sTypeOfObjPFPatientFileEmerContacts)] for 'objPFPatientFileEmerContacts' is [\(String(describing: objPFPatientFileEmerContacts))]...")
 
-        if (sTypeOfObjPFPatientFileEmerContacts == "List")
+        if (bInternalTraceFlag == true)
         {
 
-            let listObjPFPatientFileEmerContacts:[String] = objPFPatientFileEmerContacts as! [String]
-            var listPatFileEmerContacts:[String]          = [String]()
-        
-            for sCurrPatientFileEmerContact in listObjPFPatientFileEmerContacts
-            {
+            let typeOfObjPFPatientFileEmerContacts  = type(of:objPFPatientFileEmerContacts)
 
-                if (sCurrPatientFileEmerContact.count > 1)
-                {
+            self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileEmerContacts' is [\(typeOfObjPFPatientFileEmerContacts)] and 'sTypeOfObjPFPatientFileEmerContacts' is [\(sTypeOfObjPFPatientFileEmerContacts)] for 'objPFPatientFileEmerContacts' is [\(String(describing: objPFPatientFileEmerContacts))]...")
 
-                    if (Double(sCurrPatientFileEmerContact) != nil)
-                    {
-                    
-                        listPatFileEmerContacts.append(self.formatPhoneNumber(sPhoneNumber:sCurrPatientFileEmerContact))
-                    
-                    }
-                    else
-                    {
-
-                        listPatFileEmerContacts.append(sCurrPatientFileEmerContact)
-
-                    }
-                
-                }
-
-            }
-
-            self.sPFPatientFileEmerContacts = listPatFileEmerContacts.joined(separator:",")
-        
         }
+
+    //  if (sTypeOfObjPFPatientFileEmerContacts == "List")
+    //  {
+    //
+    //      let listObjPFPatientFileEmerContacts:[String] = objPFPatientFileEmerContacts as! [String]
+    //      var listPatFileEmerContacts:[String]          = [String]()
+    //  
+    //      for sCurrPatientFileEmerContact in listObjPFPatientFileEmerContacts
+    //      {
+    //
+    //          if (sCurrPatientFileEmerContact.count > 1)
+    //          {
+    //
+    //              if (Double(sCurrPatientFileEmerContact) != nil)
+    //              {
+    //              
+    //                  listPatFileEmerContacts.append(self.formatPhoneNumber(sPhoneNumber:sCurrPatientFileEmerContact))
+    //              
+    //              }
+    //              else
+    //              {
+    //
+    //                  listPatFileEmerContacts.append(sCurrPatientFileEmerContact)
+    //
+    //              }
+    //          
+    //          }
+    //
+    //      }
+    //
+    //      self.sPFPatientFileEmerContacts = listPatFileEmerContacts.joined(separator:",")
+    //  
+    //  }
+
+        let objPFPatientFileEmerContacts2           = pfPatientFileObject.object(forKey:"emerContacts")
+        self.sPFPatientFileEmerContacts             = self.reducePFObjectListOfStrings(object:                       objPFPatientFileEmerContacts2 as Any,
+                                                                                       listStringsToRemove:          [""],
+                                                                                       bFormatNumericsAsPhoneNumbers:true)
+
+        self.bPFPatientFileIsRealPatient            = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"realPatient") ?? "0"))) ?? 0) as NSNumber)
+        self.sPFPatientFileLanguagePref             = String(describing: (pfPatientFileObject.object(forKey:"langPreference") ?? ""))
+        self.bPFPatientFileIsOnHold                 = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"onHold")      ?? "0"))) ?? 0) as NSNumber)
+        self.sPFPatientFileOnHoldDate               = String(describing: (pfPatientFileObject.object(forKey:"onHoldDate")     ?? ""))
+        self.sPFPatientFileParentName               = String(describing: (pfPatientFileObject.object(forKey:"parent")         ?? ""))
+        self.sPFPatientFileParentID                 = String(describing: (pfPatientFileObject.object(forKey:"parentID")       ?? ""))
 
         //  self.bPFPatientFileNotActive            = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
         //  self.iPFPatientFileSuperID              = Int(String(describing: (pfPatientFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
@@ -626,6 +673,13 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         self.sPFPatientFileEmerContacts           = pfPatientFileItem.sPFPatientFileEmerContacts
         self.sPFPatientFileHomeLoc                = pfPatientFileItem.sPFPatientFileHomeLoc
         
+        self.bPFPatientFileIsRealPatient          = pfPatientFileItem.bPFPatientFileIsRealPatient
+        self.sPFPatientFileLanguagePref           = pfPatientFileItem.sPFPatientFileLanguagePref 
+        self.bPFPatientFileIsOnHold               = pfPatientFileItem.bPFPatientFileIsOnHold     
+        self.sPFPatientFileOnHoldDate             = pfPatientFileItem.sPFPatientFileOnHoldDate   
+        self.sPFPatientFileParentName             = pfPatientFileItem.sPFPatientFileParentName   
+        self.sPFPatientFileParentID               = pfPatientFileItem.sPFPatientFileParentID     
+
         self.pfPatientFileObjectLatitude          = pfPatientFileItem.pfPatientFileObjectLatitude
         self.pfPatientFileObjectLongitude         = pfPatientFileItem.pfPatientFileObjectLongitude
         self.sPFPatientFileObjectLatitude         = pfPatientFileItem.sPFPatientFileObjectLatitude
@@ -740,37 +794,41 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         asToString.append("\(sCurrMethodDisp) 'self.sPFPatientFileHomeLoc' is [\(self.sPFPatientFileHomeLoc)]...")
 
-        let listHomeLocNoWS:[String]  = self.sPFPatientFileHomeLoc.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+    //  let listHomeLocNoWS:[String]  = self.sPFPatientFileHomeLoc.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'listHomeLocNoWS' is [\(listHomeLocNoWS)]...")
+    //
+    //  let sHomeLocNoWS:String = listHomeLocNoWS.joined(separator:"")
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'sHomeLocNoWS' is [\(sHomeLocNoWS)]...")
+    //
+    //  var csHomeLocDelimiters1:CharacterSet = CharacterSet()
+    //
+    //  csHomeLocDelimiters1.insert(charactersIn: "<>")
+    //
+    //  let listHomeLocCleaned1:[String] = sHomeLocNoWS.components(separatedBy:csHomeLocDelimiters1)
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned1' is [\(listHomeLocCleaned1)]...")
+    //
+    //  let sHomeLocCleaned1:String = listHomeLocCleaned1.joined(separator:"")
+    //
+    //  asToString.append("\(sCurrMethodDisp) 'sHomeLocCleaned1' is [\(sHomeLocCleaned1)]...")
 
-        asToString.append("\(sCurrMethodDisp) 'listHomeLocNoWS' is [\(listHomeLocNoWS)]...")
-
-        let sHomeLocNoWS:String = listHomeLocNoWS.joined(separator:"")
-
-        asToString.append("\(sCurrMethodDisp) 'sHomeLocNoWS' is [\(sHomeLocNoWS)]...")
-
-        var csHomeLocDelimiters1:CharacterSet = CharacterSet()
-
-        csHomeLocDelimiters1.insert(charactersIn: "<>")
-
-        let listHomeLocCleaned1:[String] = sHomeLocNoWS.components(separatedBy:csHomeLocDelimiters1)
-
-        asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned1' is [\(listHomeLocCleaned1)]...")
-
-        let sHomeLocCleaned1:String = listHomeLocCleaned1.joined(separator:"")
-
+        let sHomeLocCleaned1:String = self.sPFPatientFileHomeLoc.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeWhitespacesAndNewlines], sExtraCharacters:"<>,", bResultIsLowerCased:true)
+        
         asToString.append("\(sCurrMethodDisp) 'sHomeLocCleaned1' is [\(sHomeLocCleaned1)]...")
-
+      
         var csHomeLocDelimiters2:CharacterSet = CharacterSet()
-
+      
         csHomeLocDelimiters2.insert(charactersIn: ",")
 
         let listHomeLocCleaned2:[String] = sHomeLocCleaned1.components(separatedBy:csHomeLocDelimiters2)
 
         asToString.append("\(sCurrMethodDisp) 'listHomeLocCleaned2' is [\(listHomeLocCleaned2)]...")
 
-        var csHomeLocDelimiters3:CharacterSet = CharacterSet()
-
-        csHomeLocDelimiters3.insert(charactersIn: ":")
+    //  var csHomeLocDelimiters3:CharacterSet = CharacterSet()
+    //
+    //  csHomeLocDelimiters3.insert(charactersIn: ":")
 
         if (listHomeLocCleaned2.count < 1)
         {
@@ -1121,6 +1179,106 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         return sPhoneNumberFormatted
         
     }   // End of private func formatPhoneNumber(sPhoneNumber:String)->String
+
+    private func reducePFObjectListOfStrings(object:Any, listStringsToRemove:[String] = [""], bFormatNumericsAsPhoneNumbers:Bool = false)->String
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'object' is [\(object)] - 'listStringsToRemove' is [\(listStringsToRemove)] - 'bFormatNumericsAsPhoneNumbers' is [\(bFormatNumericsAsPhoneNumbers)]...")
+
+        // Process the supplied 'object' as a List of String(s) to reduce...
+
+        var sReducedListOfStrings:String = ""
+        let sTypeOfObjectToReduce:String = self.getMetaTypeStringForObject(object:object as Any)
+
+        if (bInternalTraceFlag == true)
+        {
+
+            let typeOfObjectToReduce = type(of:object)
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjectToReduce' is [\(typeOfObjectToReduce)] and 'sTypeOfObjectToReduce' is [\(sTypeOfObjectToReduce)] for 'object' is [\(String(describing: object))]...")
+
+        }
+
+        if (sTypeOfObjectToReduce == "List")
+        {
+
+            guard let listObjectToReduce:[String] = (object as? [String]) else { return String(describing:object) }
+
+            var listOfReducedStrings:[String]     = [String]()
+        
+            for sCurrentStringInList:String in listObjectToReduce
+            {
+
+                if (sCurrentStringInList.count > 1)
+                {
+                    
+                    var sCurrentStringInListTrimmed:String = sCurrentStringInList.trimmingCharacters(in:.whitespacesAndNewlines)
+                    
+                //  self.xcgLogMsg("\(sCurrMethodDisp) <ListOfStrings reduction> - 'sCurrentStringInList' is [\(sCurrentStringInList)] and 'sCurrentStringInListTrimmed' is [\(sCurrentStringInListTrimmed)]...")
+ 
+                    if (sCurrentStringInListTrimmed.count < 1)
+                    {
+                    
+                        sCurrentStringInListTrimmed = ""
+                    
+                    }
+                    
+                    if (listStringsToRemove.count > 0 &&
+                        listStringsToRemove.contains(sCurrentStringInListTrimmed))
+                    {
+                    
+                        continue
+                    
+                    }
+                        
+                    if (bFormatNumericsAsPhoneNumbers == true)
+                    {
+                    
+                        if (Double(sCurrentStringInList) != nil)
+                        {
+
+                            listOfReducedStrings.append(self.formatPhoneNumber(sPhoneNumber:sCurrentStringInListTrimmed))
+
+                        }
+                        else
+                        {
+
+                            listOfReducedStrings.append(sCurrentStringInListTrimmed)
+
+                        }
+                    
+                    }
+                    else
+                    {
+
+                        listOfReducedStrings.append(sCurrentStringInListTrimmed)
+
+                    }
+                
+                }
+
+            }
+
+            sReducedListOfStrings = listOfReducedStrings.joined(separator:",")
+        
+        }
+        else
+        {
+
+            sReducedListOfStrings = String(describing:object)
+
+        }
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sReducedListOfStrings' is [\(sReducedListOfStrings)]...")
+
+        return sReducedListOfStrings
+
+    } // End of private func reducePFObjectListOfStrings(object:Any, listStringsToRemove:[String], bFormatNumericsAsPhoneNumbers:Bool)->String.
 
 }   // End of class ParsePFPatientFileItem(NSObject, Identifiable).
 
