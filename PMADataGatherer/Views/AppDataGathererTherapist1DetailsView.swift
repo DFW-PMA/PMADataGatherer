@@ -26,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0804"
+        static let sClsVers      = "v1.0902"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -307,6 +307,8 @@ struct AppDataGathererTherapist1DetailsView: View
 
                             Text("Therapists' NOT Active?")
                             Text("\(self.pfTherapistFileItem!.bPFTherapistFileNotActive)")
+                                .foregroundStyle((self.pfTherapistFileItem!.bPFTherapistFileNotActive) ? .red : .primary)
+
 
                         }
                         .font(.caption2) 
@@ -316,6 +318,7 @@ struct AppDataGathererTherapist1DetailsView: View
 
                             Text("Therapists' is OFFICE?")
                             Text("\(self.pfTherapistFileItem!.bPFTherapistFileOffice)")
+                                .foregroundStyle((self.pfTherapistFileItem!.bPFTherapistFileOffice) ? .red : .primary)
 
                         }
                         .font(.caption2) 
@@ -325,6 +328,7 @@ struct AppDataGathererTherapist1DetailsView: View
 
                             Text("Therapists' is Supervisor?")
                             Text("\(self.pfTherapistFileItem!.bPFTherapistFileIsSupervisor)")
+                                .foregroundStyle((self.pfTherapistFileItem!.bPFTherapistFileIsSupervisor) ? .red : .primary)
 
                         }
                         .font(.caption2) 
@@ -334,6 +338,7 @@ struct AppDataGathererTherapist1DetailsView: View
 
                             Text("Therapists' has Assistant(s)?")
                             Text("\(self.pfTherapistFileItem!.bPFTherapistFileHaveAssistants)")
+                                .foregroundStyle((self.pfTherapistFileItem!.bPFTherapistFileHaveAssistants) ? .red : .primary)
 
                         }
                         .font(.caption2) 

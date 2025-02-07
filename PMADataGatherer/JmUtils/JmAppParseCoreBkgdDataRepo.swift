@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1202"
+        static let sClsVers      = "v1.1204"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -469,10 +469,11 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
             
             pfQueryTherapist.whereKeyExists("ID")
             pfQueryTherapist.whereKeyExists("name")
+            pfQueryTherapist.whereKeyExists("notActive")
 
-            pfQueryTherapist.whereKey("notActive", equalTo:false)
+        //  pfQueryTherapist.whereKey("notActive", equalTo:false)
             
-            pfQueryTherapist.limit = 1000
+            pfQueryTherapist.limit = 1500
             
             let listPFTherapistObjects:[PFObject]? = try pfQueryTherapist.findObjects()
             
