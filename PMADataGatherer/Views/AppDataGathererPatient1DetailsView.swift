@@ -26,7 +26,7 @@ struct AppDataGathererPatient1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererPatient1DetailsView"
-        static let sClsVers      = "v1.0301"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -289,6 +289,7 @@ struct AppDataGathererPatient1DetailsView: View
 
                             Text("Patient is 'Real' Patient?")
                             Text("\(self.pfPatientFileItem!.bPFPatientFileIsRealPatient)")
+                                .foregroundStyle((self.pfPatientFileItem!.bPFPatientFileIsRealPatient) ? .red : .primary)
 
                         }
                         .font(.caption2) 
@@ -307,6 +308,7 @@ struct AppDataGathererPatient1DetailsView: View
 
                             Text("Patient is 'On Hold'?")
                             Text("\(self.pfPatientFileItem!.bPFPatientFileIsOnHold)")
+                                .foregroundStyle((self.pfPatientFileItem!.bPFPatientFileIsOnHold) ? .red : .primary)
 
                         }
                         .font(.caption2) 
@@ -316,6 +318,7 @@ struct AppDataGathererPatient1DetailsView: View
 
                             Text("Patients' 'On Hold' Date")
                             Text("\(self.pfPatientFileItem!.sPFPatientFileOnHoldDate)")
+                                .foregroundStyle((self.pfPatientFileItem!.sPFPatientFileOnHoldDate.count > 0) ? .red : .primary)
 
                         }
                         .font(.caption2) 
@@ -334,6 +337,42 @@ struct AppDataGathererPatient1DetailsView: View
 
                             Text("Patients' Parent ID")
                             Text("\(self.pfPatientFileItem!.sPFPatientFileParentID)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' (Supervisor) SID")
+                            Text("\(self.pfPatientFileItem!.iPFPatientFileSID)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' Supervisor Name")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileSidName)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' Supervised Visits")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileSupervisedVisits)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' File is 'to' Supervisor")
+                            Text("\(self.pfPatientFileItem!.bPFPatientFileIsToSuper)")
 
                         }
                         .font(.caption2) 

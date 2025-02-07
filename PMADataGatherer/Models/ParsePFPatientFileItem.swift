@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0511"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -118,7 +118,10 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     //
     // ----------------------------------------------------------------------------------------------------------
 
-
+    var iPFPatientFileSID:Int                                   = -1         // 'pfPatientFileObject[sid]'
+    var sPFPatientFileSidName:String                            = "-N/A-"    // 'pfPatientFileObject[sidName]'
+    var sPFPatientFileSupervisedVisits:String                   = "-N/A-"    // 'pfPatientFileObject[supervisedVisits]'
+    var bPFPatientFileIsToSuper:Bool                            = false      // 'pfPatientFileObject[toSuper]'
 
     // ----------------------------------------------------------------------------------------------------------
     //  --- Pass #2 ---
@@ -379,6 +382,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         asToString.append("'sPFPatientFileParentID': [\(String(describing: self.sPFPatientFileParentID))],")
         asToString.append("],")
         asToString.append("[")
+        asToString.append("'iPFPatientFileSID': (\(String(describing: self.iPFPatientFileSID))),")
+        asToString.append("'sPFPatientFileSidName': [\(String(describing: self.sPFPatientFileSidName))],")
+        asToString.append("'sPFPatientFileSupervisedVisits': [\(String(describing: self.sPFPatientFileSupervisedVisits))],")
+        asToString.append("'bPFPatientFileIsToSuper': [\(String(describing: self.bPFPatientFileIsToSuper))],")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'pfPatientFileObjectLatitude': [\(String(describing: self.pfPatientFileObjectLatitude))],")
         asToString.append("'pfPatientFileObjectLongitude': [\(String(describing: self.pfPatientFileObjectLongitude))],")
         asToString.append("'sPFPatientFileObjectLatitude': [\(String(describing: self.sPFPatientFileObjectLatitude))],")
@@ -460,6 +469,11 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileOnHoldDate'        is [\(String(describing: self.sPFPatientFileOnHoldDate))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentName'        is [\(String(describing: self.sPFPatientFileParentName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentID'          is [\(String(describing: self.sPFPatientFileParentID))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileSID'               is (\(String(describing: self.iPFPatientFileSID)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileSidName'           is [\(String(describing: self.sPFPatientFileSidName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileSupervisedVisits'  is [\(String(describing: self.sPFPatientFileSupervisedVisits))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsToSuper'         is [\(String(describing: self.bPFPatientFileIsToSuper))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLatitude'     is [\(String(describing: self.pfPatientFileObjectLatitude))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLongitude'    is [\(String(describing: self.pfPatientFileObjectLongitude))]...")
@@ -609,14 +623,16 @@ class ParsePFPatientFileItem: NSObject, Identifiable
                                                                                        bFormatNumericsAsPhoneNumbers:true)
 
         self.bPFPatientFileIsRealPatient            = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"realPatient") ?? "0"))) ?? 0) as NSNumber)
-        self.sPFPatientFileLanguagePref             = String(describing: (pfPatientFileObject.object(forKey:"langPreference") ?? ""))
+        self.sPFPatientFileLanguagePref             = String(describing: (pfPatientFileObject.object(forKey:"langPreference")   ?? ""))
         self.bPFPatientFileIsOnHold                 = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"onHold")      ?? "0"))) ?? 0) as NSNumber)
-        self.sPFPatientFileOnHoldDate               = String(describing: (pfPatientFileObject.object(forKey:"onHoldDate")     ?? ""))
-        self.sPFPatientFileParentName               = String(describing: (pfPatientFileObject.object(forKey:"parent")         ?? ""))
-        self.sPFPatientFileParentID                 = String(describing: (pfPatientFileObject.object(forKey:"parentID")       ?? ""))
+        self.sPFPatientFileOnHoldDate               = String(describing: (pfPatientFileObject.object(forKey:"onHoldDate")       ?? ""))
+        self.sPFPatientFileParentName               = String(describing: (pfPatientFileObject.object(forKey:"parent")           ?? ""))
+        self.sPFPatientFileParentID                 = String(describing: (pfPatientFileObject.object(forKey:"parentID")         ?? ""))
 
-        //  self.bPFPatientFileNotActive            = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"notActive")    ?? "0")))  ?? 0) as NSNumber)
-        //  self.iPFPatientFileSuperID              = Int(String(describing: (pfPatientFileObject.object(forKey:"superID")                        ?? "-1"))) ?? -2
+        self.iPFPatientFileSID                      = Int(String(describing: (pfPatientFileObject.object(forKey:"sid")          ?? "-1"))) ?? -2
+        self.sPFPatientFileSidName                  = String(describing: (pfPatientFileObject.object(forKey:"sidName")          ?? ""))
+        self.sPFPatientFileSupervisedVisits         = String(describing: (pfPatientFileObject.object(forKey:"supervisedVisits") ?? ""))
+        self.bPFPatientFileIsToSuper                = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"toSuper")     ?? "0"))) ?? 0) as NSNumber)
 
         self.bHomeLocAddessLookupScheduled          = false
         self.bHomeLocAddessLookupComplete           = false
@@ -679,6 +695,11 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         self.sPFPatientFileOnHoldDate             = pfPatientFileItem.sPFPatientFileOnHoldDate   
         self.sPFPatientFileParentName             = pfPatientFileItem.sPFPatientFileParentName   
         self.sPFPatientFileParentID               = pfPatientFileItem.sPFPatientFileParentID     
+
+        self.iPFPatientFileSID                    = pfPatientFileItem.iPFPatientFileSID
+        self.sPFPatientFileSidName                = pfPatientFileItem.sPFPatientFileSidName 
+        self.sPFPatientFileSupervisedVisits       = pfPatientFileItem.sPFPatientFileSupervisedVisits 
+        self.bPFPatientFileIsToSuper              = pfPatientFileItem.bPFPatientFileIsToSuper     
 
         self.pfPatientFileObjectLatitude          = pfPatientFileItem.pfPatientFileObjectLatitude
         self.pfPatientFileObjectLongitude         = pfPatientFileItem.pfPatientFileObjectLongitude

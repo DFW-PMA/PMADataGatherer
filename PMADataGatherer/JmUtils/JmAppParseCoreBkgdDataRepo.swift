@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1204"
+        static let sClsVers      = "v1.1402"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1212,6 +1212,37 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 {
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                    continue
+
+                }
+
+                let iPFTherapistParseTID:Int = Int(sPFTherapistParseTID) ?? -1
+
+                if (iPFTherapistParseTID < 0)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)] - the 'tid' field (Int) is less than 0 - Warning!")
+
+                    continue
+
+                }
+
+                let pfTherapistFileItem:ParsePFTherapistFileItem? = self.dictPFTherapistFileItems[iPFTherapistParseTID]
+
+                if (pfTherapistFileItem == nil)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'pfTherapistFileItem' - 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)] - the 'pfTherapistFileItem' is nil - unable to locate the TherapistFile item - Warning!")
+
+                    continue
+
+                }
+
+                if (pfTherapistFileItem!.bPFTherapistFileNotActive == true)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'pfTherapistFileItem.bPFTherapistFileNotActive' - 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)] - the 'pfTherapistFileItem.bPFTherapistFileNotActive' flag is True - the Therapist is NOT 'active'...")
 
                     continue
 

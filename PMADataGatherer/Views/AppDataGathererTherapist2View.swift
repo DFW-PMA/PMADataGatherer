@@ -17,7 +17,7 @@ struct AppDataGathererTherapist2View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.0807"
+        static let sClsVers      = "v1.0901"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -254,7 +254,7 @@ struct AppDataGathererTherapist2View: View
 
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist2View.Button(Xcode).'Locate the Therapist by tName'...")
 
-                            self.sTherapistTID = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
+                            self.sTherapistTID = self.locateAppTherapistNameByTName(sTherapistName:self.sTherapistName)
 
                             self.isAppRunTherapistLocateByTNameShowing.toggle()
 
@@ -411,7 +411,7 @@ struct AppDataGathererTherapist2View: View
                         }
                         .onSubmit
                         {
-                            self.sTherapistTID  = self.locateAppTherapistNameByTName(sTherapistName:sTherapistName)
+                            self.sTherapistTID  = self.locateAppTherapistNameByTName(sTherapistName:self.sTherapistName)
                             focusedField        = .therapistName
                         }
 
@@ -481,6 +481,8 @@ struct AppDataGathererTherapist2View: View
                         .onTapGesture
                         {
                             self.sTherapistName = appSearchableTherapistName.sTherapistTName
+                            self.sTherapistTID  = self.locateAppTherapistNameByTName(sTherapistName:self.sTherapistName)
+                            focusedField        = .therapistName
                         }
 
                 }
