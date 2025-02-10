@@ -8,70 +8,141 @@
 
 import Foundation
 
-// Extension class to add extra method(s) to String - v8.0101.
+// Enumeration to indicate CharacterSet(s) to use to 'clean' a String.
+
+enum StringCleaning
+{
+    
+    case removeNone
+    case removeAll
+    case removeControl
+    case removeDecomposables
+    case removeIllegal
+    case removeNewlines
+    case removeNonBase
+    case removePunctuation
+    case removeSymbols
+    case removeWhitespaces
+    case removeWhitespacesAndNewlines
+    
+}
+
+// Extension class to add extra method(s) to String - v8.0201.
 
 extension String
 {
 
     var length:Int
     {
-
         get
         {
-
             return self.count
-
         }
-
-    }   // End of var 'length'.
+    }   // End of var 'length' <computed property>.
 
     func containsString(s:String)->Bool
     {
 
-        let rangeSearch = self.range(of: s)
+        if (s.count < 1)
+        {
+        
+            return false
+        
+        }
 
-        return rangeSearch != nil ? true : false
+        let rangeSearch = self.range(of:s)
 
-    }   // End of func containsString().
+        return (rangeSearch != nil) ? true : false
+
+    }   // End of func containsString(s:String)->Bool.
 
     func containsStringIgnoreCase(s:String)->Bool
     {
 
-        let rangeSearch = self.range(of: s, options:.caseInsensitive)
+        if (s.count < 1)
+        {
+        
+            return false
+        
+        }
 
-        return rangeSearch != nil ? true : false
+        let rangeSearch = self.range(of:s, options:.caseInsensitive)
 
-    }   // End of func containsString().
+        return (rangeSearch != nil) ? true : false
+
+    }   // End of func containsString(s:String)->Bool.
 
     func stringByReplacingAllOccurrencesOfString(target:String, withString:String)->String
     {
 
-        return self.replacingOccurrences(of: target, with: withString, options: String.CompareOptions.literal, range: nil)
+        if (target.count < 1)
+        {
+        
+            return self
+        
+        }
 
-    }   // End of func stringByReplacingAllOccurrencesOfString().
+        if (withString.count < 1)
+        {
+        
+            return self
+        
+        }
+
+        return self.replacingOccurrences(of:target, with:withString, options:String.CompareOptions.literal, range:nil)
+
+    }   // End of func stringByReplacingAllOccurrencesOfString(target:String, withString:String)->String.
 
     func subString(startIndex:Int, length:Int)->String
     {
 
-        let cStartIndex = self.index(self.startIndex, offsetBy: startIndex)
-        let cEndIndex   = self.index(self.startIndex, offsetBy: (startIndex + length))
+        if (startIndex < 0)
+        {
+        
+            return self
+        
+        }
+
+        if (length < 1)
+        {
+        
+            return self
+        
+        }
+
+        let cStartIndex = self.index(self.startIndex, offsetBy:startIndex)
+        let cEndIndex   = self.index(self.startIndex, offsetBy:(startIndex + length))
 
         return String(self[cStartIndex..<cEndIndex])
 
-    }   // End of func subString().
+    }   // End of func subString(startIndex:Int, length:Int)->String.
 
     func indexOfString(target:String)->Int
     {
 
-        return self.indexOfString(target: target, startIndex: 0)
+        return self.indexOfString(target:target, startIndex:0)
 
-    }   // End of func indexOfString(target).
+    }   // End of func indexOfString(target:String)->Int.
 
     func indexOfString(target:String, startIndex:Int)->Int
     {
 
-        let substringIndex         = self.index(self.startIndex, offsetBy: startIndex)
-        let sSearchString: String? = String(self[substringIndex..<self.endIndex])
+        if (target.count < 1)
+        {
+        
+            return -1
+        
+        }
+
+        if (startIndex < 0)
+        {
+        
+            return -1
+        
+        }
+
+        let substringIndex        = self.index(self.startIndex, offsetBy:startIndex)
+        let sSearchString:String? = String(self[substringIndex..<self.endIndex])
 
         if let svSearchString = sSearchString
         {
@@ -79,7 +150,7 @@ extension String
             if let rangeOfSubstring = svSearchString.range(of:target)
             {
 
-                return (self.distance(from: self.startIndex, to: rangeOfSubstring.lowerBound) + startIndex)
+                return (self.distance(from:self.startIndex, to:rangeOfSubstring.lowerBound) + startIndex)
 
             }
 
@@ -87,13 +158,20 @@ extension String
 
         return -1
 
-    }   // End of func indexOfString(target, startIndex).
+    }   // End of func indexOfString(target:String, startIndex:Int)->Int.
 
     func lastIndexOfString(target:String)->Int
     {
 
+        if (target.count < 1)
+        {
+        
+            return -1
+        
+        }
+
         var index     = -1
-        var stepIndex = self.indexOfString(target: target)
+        var stepIndex = self.indexOfString(target:target)
 
         while (stepIndex > -1)
         {
@@ -103,7 +181,7 @@ extension String
             if ((stepIndex + target.length) < self.length)
             {
 
-                stepIndex = self.indexOfString(target: target, startIndex: (stepIndex + target.length))
+                stepIndex = self.indexOfString(target:target, startIndex:(stepIndex + target.length))
 
             }
             else
@@ -117,12 +195,19 @@ extension String
 
         return index
 
-    }   // End of func lastIndexOfString(target).
+    }   // End of func lastIndexOfString(target:String)->Int.
 
     func rightPartitionStrings(target:String)->[String]?
     {
 
-        let partitionIndex = self.lastIndexOfString(target: target)
+        if (target.count < 1)
+        {
+        
+            return nil
+        
+        }
+
+        let partitionIndex = self.lastIndexOfString(target:target)
 
         if (partitionIndex < 0)
         {
@@ -137,17 +222,24 @@ extension String
         //  123456789+123456789+123456789+123456789+123456789+
         //           1         2         3         4         5
 
-        let sLeftPartition  = self.subString(startIndex: 0, length:partitionIndex)
-        let sRightPartition = self.subString(startIndex: (partitionIndex + target.length), length:(self.length - partitionIndex - target.length))
+        let sLeftPartition  = self.subString(startIndex:0, length:partitionIndex)
+        let sRightPartition = self.subString(startIndex:(partitionIndex + target.length), length:(self.length - partitionIndex - target.length))
 
         return [sLeftPartition, target, sRightPartition]
 
-    }   // End of func rightPartitionStrings(target).
+    }   // End of func rightPartitionStrings(target:String)->[String]?.
 
     func leftPartitionStrings(target:String)->[String]?
     {
 
-        let partitionIndex = self.indexOfString(target: target)
+        if (target.count < 1)
+        {
+        
+            return nil
+        
+        }
+
+        let partitionIndex = self.indexOfString(target:target)
 
         if (partitionIndex < 0)
         {
@@ -162,19 +254,107 @@ extension String
         //  123456789+123456789+123456789+123456789+123456789+
         //           1         2         3         4         5
 
-        let sLeftPartition  = self.subString(startIndex: 0, length:partitionIndex)
-        let sRightPartition = self.subString(startIndex: (partitionIndex + target.length), length:(self.length - partitionIndex - target.length))
+        let sLeftPartition  = self.subString(startIndex:0, length:partitionIndex)
+        let sRightPartition = self.subString(startIndex:(partitionIndex + target.length), length:(self.length - partitionIndex - target.length))
 
         return [sLeftPartition, target, sRightPartition]
 
-    }   // End of func leftPartitionStrings(target).
+    }   // End of func leftPartitionStrings(target:String)->[String]?.
 
-//  public var expandingTildeInPath: String
-    func expandTildeInString() -> String
+    func expandTildeInString()->String
     {
 
-        return NSString(string: self).expandingTildeInPath as String
+        return NSString(string:self).expandingTildeInPath as String
 
-    }   // End of var expandingTildeInString().
+    }   // End of func expandingTildeInString()->String.
 
+    func removeUnwantedCharacters(charsetToRemove:[StringCleaning], sExtraCharacters:String = "", sJoinCharacters:String = "", bResultIsLowerCased:Bool = false)->String
+    {
+        
+        var sCleanedValueToWork:String        = self
+        var bCSUnwantedDelimitersUpdated:Bool = false
+        var csUnwantedDelimiters:CharacterSet = CharacterSet()
+
+        if (charsetToRemove.count > 0)
+        {
+    
+            for currentCharactersToRemove in charsetToRemove
+            {
+                
+                switch currentCharactersToRemove
+                {
+                case StringCleaning.removeNone:
+                    break
+                case StringCleaning.removeAll:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.controlCharacters)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.decomposables)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.newlines)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.nonBaseCharacters)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.symbols)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.whitespaces)
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeControl:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.controlCharacters)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeDecomposables:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.decomposables)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeIllegal:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeNewlines:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.newlines)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeNonBase:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.nonBaseCharacters)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removePunctuation:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeSymbols:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.symbols)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeWhitespaces:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.whitespaces)
+                    bCSUnwantedDelimitersUpdated = true
+                case StringCleaning.removeWhitespacesAndNewlines:
+                    csUnwantedDelimiters         = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
+                    bCSUnwantedDelimitersUpdated = true
+                }
+                
+            }
+            
+        }
+        
+        if (sExtraCharacters.count > 0)
+        {
+            
+            csUnwantedDelimiters.insert(charactersIn:sExtraCharacters)
+
+            bCSUnwantedDelimitersUpdated = true
+            
+        }
+        
+        if (bCSUnwantedDelimitersUpdated == true)
+        {
+            
+            let listCleanedValueToWork:[String] = sCleanedValueToWork.components(separatedBy:csUnwantedDelimiters)
+            sCleanedValueToWork                 = listCleanedValueToWork.joined(separator:sJoinCharacters)
+            
+        }
+            
+        if (bResultIsLowerCased == true)
+        {
+            
+            sCleanedValueToWork = sCleanedValueToWork.lowercased()
+            
+        }
+        
+        return sCleanedValueToWork
+        
+    }   // End of func removeUnwantedCharacters(charsetToRemove:[StringCleaning], sExtraCharacters:String, sJoinCharacters:String, bResultIsLowerCased:Bool)->String.
+    
 }   // End of extension String.

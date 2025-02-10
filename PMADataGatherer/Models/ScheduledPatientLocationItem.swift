@@ -16,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.0902"
+        static let sClsVers      = "v1.1002"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -448,14 +448,16 @@ class ScheduledPatientLocationItem: NSObject, Identifiable
         else
         {
 
-            let listVDateStartTimeBase:[String]  = sVDateStartTimeBase.components(separatedBy:CharacterSet.illegalCharacters)
-            let sVDateStartTimeBaseJoined:String = listVDateStartTimeBase.joined(separator:"")
-            let listVDateStartTimeNoWS:[String]  = sVDateStartTimeBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
-            let sVDateStartTimeUppercased:String = listVDateStartTimeNoWS.joined(separator:"")
+        //  let listVDateStartTimeBase:[String]  = sVDateStartTimeBase.components(separatedBy:CharacterSet.illegalCharacters)
+        //  let sVDateStartTimeBaseJoined:String = listVDateStartTimeBase.joined(separator:"")
+        //  let listVDateStartTimeNoWS:[String]  = sVDateStartTimeBaseJoined.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+        //  let sVDateStartTimeUppercased:String = listVDateStartTimeNoWS.joined(separator:"")
+        //
+        //  self.sVDateStartTime = sVDateStartTimeUppercased.lowercased()
 
-            self.sVDateStartTime = sVDateStartTimeUppercased.lowercased()
+            self.sVDateStartTime = sVDateStartTimeBase.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeIllegal, StringCleaning.removeWhitespacesAndNewlines], bResultIsLowerCased:true)
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Cleaning - 'self.sVDateStartTime' is [\(self.sVDateStartTime)] <lowercased>...")
+            self.xcgLogMsg("\(sCurrMethodDisp) Cleaning - 'self.sVDateStartTime' is [\(self.sVDateStartTime)] <no illegal, no WS, lowercased>...")
 
         }
 

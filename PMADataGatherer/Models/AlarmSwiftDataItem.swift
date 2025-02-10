@@ -20,7 +20,7 @@ public class AlarmSwiftDataItem: Identifiable
     {
         
         static let sClsId        = "AlarmSwiftDataItem"
-        static let sClsVers      = "v1.1001"
+        static let sClsVers      = "v1.1102"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -223,9 +223,11 @@ public class AlarmSwiftDataItem: Identifiable
         else
         {
 
-            let listDateAlarmFiresNoWS:[String]  = sDateAlarmFiresBaseT.components(separatedBy:CharacterSet.whitespacesAndNewlines)
-            let sDateAlarmFiresUppercased:String = listDateAlarmFiresNoWS.joined(separator:"")
-            let sDateAlarmFiresLowercased:String = sDateAlarmFiresUppercased.lowercased()
+        //  let listDateAlarmFiresNoWS:[String]  = sDateAlarmFiresBaseT.components(separatedBy:CharacterSet.whitespacesAndNewlines)
+        //  let sDateAlarmFiresUppercased:String = listDateAlarmFiresNoWS.joined(separator:"")
+        //  let sDateAlarmFiresLowercased:String = sDateAlarmFiresUppercased.lowercased()
+
+            let sDateAlarmFiresLowercased:String = sDateAlarmFiresBaseT.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeWhitespacesAndNewlines], bResultIsLowerCased:true)
 
             sAlarmShortTitle = "\(sDateAlarmFiresBaseD) @ \(sDateAlarmFiresLowercased)"
 
