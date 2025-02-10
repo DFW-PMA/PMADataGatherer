@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0601"
+        static let sClsVers      = "v1.0805"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -135,9 +135,9 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     //  "expectedFreq": 2,
     //  "expectedVisits": 40,
     //  "firstVisitDate": "7/7/17",
-    //  "lastDrVisit": "11/19/22",
-    //  "lastEvalDate": "8/21/24",
     //  "lastVisitDate": "1/28/25",
+    //  "lastEvalDate": "8/21/24",
+    //  "lastDrVisit": "11/19/22",
     //  "newVisitCount": 35,
     //  "numVisitsDone": 2,
     //  "totalAuthdVisits": 52,
@@ -146,6 +146,83 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     //  "visitCount2": 0,
     // ----------------------------------------------------------------------------------------------------------
 
+    var sPFPatientFileAuthBegin:String                          = "-N/A-"    // 'pfPatientFileObject[authBegin]'
+    var sPFPatientFileAuthEnd:String                            = "-N/A-"    // 'pfPatientFileObject[authEnd]'
+    var sPFPatientFileStartAuthBegin:String                     = "-N/A-"    // 'pfPatientFileObject[startAuthBegin]'
+    var sPFPatientFileStartAuthEnd:String                       = "-N/A-"    // 'pfPatientFileObject[startAuthEnd]'
+    var sPFPatientFileCurrentAuthBegin:String                   = "-N/A-"    // 'pfPatientFileObject[currentAuthBegin]'
+    var sPFPatientFileCurrentAuthEnd:String                     = "-N/A-"    // 'pfPatientFileObject[currentAuthEnd]'
+    var iPFPatientFileExpectedFrequency:Int                     = -1         // 'pfPatientFileObject[expectedFreq]'
+    var iPFPatientFileExpectedVisits:Int                        = -1         // 'pfPatientFileObject[expectedVisits]'
+    var sPFPatientFileFirstVisitDate:String                     = "-N/A-"    // 'pfPatientFileObject[firstVisitDate]'
+    var sPFPatientFileLastVisitDate:String                      = "-N/A-"    // 'pfPatientFileObject[lastVisitDate]'
+    var sPFPatientFileLastEvalDate:String                       = "-N/A-"    // 'pfPatientFileObject[lastEvalDate]'
+    var sPFPatientFileLastDrVisitDate:String                    = "-N/A-"    // 'pfPatientFileObject[lastDrVisit]'
+    var iPFPatientFileNewVisitCount:Int                         = -1         // 'pfPatientFileObject[newVisitCount]'
+    var iPFPatientFileNumberOfVisitsDone:Int                    = -1         // 'pfPatientFileObject[numVisitsDone]'
+    var iPFPatientFileTotalAuthorizedVisits:Int                 = -1         // 'pfPatientFileObject[totalAuthdVisits]'
+    var iPFPatientFileTotalNumberOfMissedVisits:Int             = -1         // 'pfPatientFileObject[totalNumMVs]'
+    var iPFPatientFileVisitCount:Int                            = -1         // 'pfPatientFileObject[visitCount]'
+    var iPFPatientFileVisitCount2:Int                           = -1         // 'pfPatientFileObject[visitCount2]'
+
+    // ----------------------------------------------------------------------------------------------------------
+    //  --- Pass #3 ---
+    //
+    //  "DME": "None",
+    //  "allergies": "Insect bites, seasonal",
+    //  "behavObs": "Pt is pleasant and cooperates with consistent positive reinforcement, redirection and parent interaction.",
+    //  "currentDiet": "Regular solids and thin liquids",
+    //  "currentFreqs": ["2","0","0","0","0","0","0","0","0"],
+    //  "currentTIDs": ["115","31","9","9","9","9","9","9","9"],
+    //  "discharged": 0,
+    //  "evalMeds": "Methylphenidate, Clonidine",
+    //  "haveAdminVisits": false,
+    //  "haveMissedVisits": false,
+    //  "holdReason": 10,
+    //  "makeupsAllowed": false,
+    //  "medNumber": 3295,
+    //  "noPreSigRequired": false,
+    //  "pertinentHist": "Pt is a 10 year old male with a history of a speech and ...",
+    //  "primaryIns": 3,
+    //  "readyForSuper": true,
+    //  "registeredNames": ["Ophelia*8/6/24","ophelia*6/11/24"],
+    //  "safeties": "Pt\u2019s communication deficits adversely impact his ability to ...",
+    //  "secondaryIns": 0,
+    //  "startTFreqs": ["2","0","0","0","0","0","0","0","0"],
+    //  "startTIDs": ["115","31","9","9","9","9","9","9","9"],
+    //  "treatmentDX": "F80.2",
+    //  "type": 2,
+    //  "visitsDone": [
+    //      "1/27/25 115 Allison Wurz Phone 5:00\u202fPM 32.672853 -97.448343",
+    //      "1/28/25 115 Allison Wurz Phone 6:00\u202fPM 32.672873 -97.448384"
+    //  ]
+    // ----------------------------------------------------------------------------------------------------------
+
+    var sPFPatientFileDME:String                                = "-N/A-"    // 'pfPatientFileObject[DME]'
+    var sPFPatientFileAlergies:String                           = "-N/A-"    // 'pfPatientFileObject[allergies]'
+    var sPFPatientFileBehaviorObs:String                        = "-N/A-"    // 'pfPatientFileObject[behavObs]'
+    var sPFPatientFileCurrentDiet:String                        = "-N/A-"    // 'pfPatientFileObject[currentDiet]'
+    var sPFPatientFileCurrentFrequencies:String                 = "-N/A-"    // 'pfPatientFileObject[currentFreqs]' (see 'sPFPatientFileEmerContacts')
+    var sPFPatientFileCurrentTIDs:String                        = "-N/A-"    // 'pfPatientFileObject[currentTIDs]'  (see 'sPFPatientFileEmerContacts')
+    var bPFPatientFileIsDischarged:Bool                         = false      // 'pfPatientFileObject[discharged]'
+    var sPFPatientFileEvalMeds:String                           = "-N/A-"    // 'pfPatientFileObject[evalMeds]'
+    var bPFPatientFileHaveAdminVisits:Bool                      = false      // 'pfPatientFileObject[haveAdminVisits]'
+    var bPFPatientFileHaveMissedVisits:Bool                     = false      // 'pfPatientFileObject[haveMissedVisits]'
+    var iPFPatientFileHoldReason:Int                            = -1         // 'pfPatientFileObject[holdReason]'
+    var bPFPatientFileMakeupsAllowed:Bool                       = false      // 'pfPatientFileObject[makeupsAllowed]'
+    var iPFPatientFileMedNumber:Int                             = -1         // 'pfPatientFileObject[medNumber]'
+    var bPFPatientFileNoPreSigRequired:Bool                     = false      // 'pfPatientFileObject[noPreSigRequired]'
+    var sPFPatientFilePertinentHistory:String                   = "-N/A-"    // 'pfPatientFileObject[pertinentHist]'
+    var iPFPatientFilePrimaryIns:Int                            = -1         // 'pfPatientFileObject[primaryIns]'
+    var bPFPatientFileReadyForSuper:Bool                        = false      // 'pfPatientFileObject[readyForSuper]'
+    var sPFPatientFileRegisteredNames:String                    = "-N/A-"    // 'pfPatientFileObject[registeredNames]'
+    var sPFPatientFileSafeties:String                           = "-N/A-"    // 'pfPatientFileObject[safeties]'
+    var iPFPatientFileSecondaryIns:Int                          = -1         // 'pfPatientFileObject[secondaryIns]'
+    var sPFPatientFileStartTIDFrequencies:String                = "-N/A-"    // 'pfPatientFileObject[startTFreqs]'  (see 'sPFPatientFileEmerContacts')
+    var sPFPatientFileStartTIDs:String                          = "-N/A-"    // 'pfPatientFileObject[startTIDs]'    (see 'sPFPatientFileEmerContacts')
+    var sPFPatientFileTreatmentDX:String                        = "-N/A-"    // 'pfPatientFileObject[treatmentDX]'
+    var iPFPatientFileType:Int                                  = -1         // 'pfPatientFileObject[type]'
+    var sPFPatientFileVisitsDone:String                         = "-N/A-"    // 'pfPatientFileObject[visitsDone]'
 
     // ----------------------------------------------------------------------------------------------------------------
     //  TYPE of 'pfPatientFileObjectLatitude'     is [Optional<Any>] - value is [Optional(32.77201080322266)]...
@@ -388,6 +465,54 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         asToString.append("'bPFPatientFileIsToSuper': [\(String(describing: self.bPFPatientFileIsToSuper))],")
         asToString.append("],")
         asToString.append("[")
+        asToString.append("'sPFPatientFileAuthBegin': [\(String(describing: self.sPFPatientFileAuthBegin))],")
+        asToString.append("'sPFPatientFileAuthEnd': [\(String(describing: self.sPFPatientFileAuthEnd))],")
+        asToString.append("'sPFPatientFileStartAuthBegin': [\(String(describing: self.sPFPatientFileStartAuthBegin))],")
+        asToString.append("'sPFPatientFileStartAuthEnd': [\(String(describing: self.sPFPatientFileStartAuthEnd))],")
+        asToString.append("'sPFPatientFileCurrentAuthBegin': [\(String(describing: self.sPFPatientFileCurrentAuthBegin))],")
+        asToString.append("'sPFPatientFileCurrentAuthEnd': [\(String(describing: self.sPFPatientFileCurrentAuthEnd))],")
+        asToString.append("'iPFPatientFileExpectedFrequency': (\(String(describing: self.iPFPatientFileExpectedFrequency))),")
+        asToString.append("'iPFPatientFileExpectedVisits': (\(String(describing: self.iPFPatientFileExpectedVisits))),")
+        asToString.append("'sPFPatientFileFirstVisitDate': [\(String(describing: self.sPFPatientFileFirstVisitDate))],")
+        asToString.append("'sPFPatientFileLastVisitDate': [\(String(describing: self.sPFPatientFileLastVisitDate))],")
+        asToString.append("'sPFPatientFileLastEvalDate': [\(String(describing: self.sPFPatientFileLastEvalDate))],")
+        asToString.append("'sPFPatientFileLastDrVisitDate': [\(String(describing: self.sPFPatientFileLastDrVisitDate))],")
+        asToString.append("'iPFPatientFileNewVisitCount': (\(String(describing: self.iPFPatientFileNewVisitCount))),")
+        asToString.append("'iPFPatientFileNumberOfVisitsDone': (\(String(describing: self.iPFPatientFileNumberOfVisitsDone))),")
+        asToString.append("'iPFPatientFileTotalAuthorizedVisits': (\(String(describing: self.iPFPatientFileTotalAuthorizedVisits))),")
+        asToString.append("'iPFPatientFileTotalNumberOfMissedVisits': (\(String(describing: self.iPFPatientFileTotalNumberOfMissedVisits))),")
+        asToString.append("'iPFPatientFileVisitCount': (\(String(describing: self.iPFPatientFileVisitCount))),")
+        asToString.append("'iPFPatientFileVisitCount2': (\(String(describing: self.iPFPatientFileVisitCount2))),")
+        asToString.append("],")
+        asToString.append("[")
+
+        asToString.append("'sPFPatientFileDME': [\(String(describing: self.sPFPatientFileDME))],")
+        asToString.append("'sPFPatientFileAlergies': [\(String(describing: self.sPFPatientFileAlergies))],")
+        asToString.append("'sPFPatientFileBehaviorObs': [\(String(describing: self.sPFPatientFileBehaviorObs))],")
+        asToString.append("'sPFPatientFileCurrentDiet': [\(String(describing: self.sPFPatientFileCurrentDiet))],")
+        asToString.append("'sPFPatientFileCurrentFrequencies': [\(String(describing: self.sPFPatientFileCurrentFrequencies))],")
+        asToString.append("'sPFPatientFileCurrentTIDs': [\(String(describing: self.sPFPatientFileCurrentTIDs))],")
+        asToString.append("'bPFPatientFileIsDischarged': [\(String(describing: self.bPFPatientFileIsDischarged))],")
+        asToString.append("'sPFPatientFileEvalMeds': [\(String(describing: self.sPFPatientFileEvalMeds))],")
+        asToString.append("'bPFPatientFileHaveAdminVisits': [\(String(describing: self.bPFPatientFileHaveAdminVisits))],")
+        asToString.append("'bPFPatientFileHaveMissedVisits': [\(String(describing: self.bPFPatientFileHaveMissedVisits))],")
+        asToString.append("'iPFPatientFileHoldReason': (\(String(describing: self.iPFPatientFileHoldReason))),")
+        asToString.append("'bPFPatientFileMakeupsAllowed': [\(String(describing: self.bPFPatientFileMakeupsAllowed))],")
+        asToString.append("'iPFPatientFileMedNumber': (\(String(describing: self.iPFPatientFileMedNumber))),")
+        asToString.append("'bPFPatientFileNoPreSigRequired': [\(String(describing: self.bPFPatientFileNoPreSigRequired))],")
+        asToString.append("'sPFPatientFilePertinentHistory': [\(String(describing: self.sPFPatientFilePertinentHistory))],")
+        asToString.append("'iPFPatientFilePrimaryIns': (\(String(describing: self.iPFPatientFilePrimaryIns))),")
+        asToString.append("'bPFPatientFileReadyForSuper': [\(String(describing: self.bPFPatientFileReadyForSuper))],")
+        asToString.append("'sPFPatientFileRegisteredNames': [\(String(describing: self.sPFPatientFileRegisteredNames))],")
+        asToString.append("'sPFPatientFileSafeties': [\(String(describing: self.sPFPatientFileSafeties))],")
+        asToString.append("'iPFPatientFileSecondaryIns': (\(String(describing: self.iPFPatientFileSecondaryIns))),")
+        asToString.append("'sPFPatientFileStartTIDFrequencies': [\(String(describing: self.sPFPatientFileStartTIDFrequencies))],")
+        asToString.append("'sPFPatientFileStartTIDs': [\(String(describing: self.sPFPatientFileStartTIDs))],")
+        asToString.append("'sPFPatientFileTreatmentDX': [\(String(describing: self.sPFPatientFileTreatmentDX))],")
+        asToString.append("'iPFPatientFileType': (\(String(describing: self.iPFPatientFileType))),")
+        asToString.append("'sPFPatientFileVisitsDone': [\(String(describing: self.sPFPatientFileVisitsDone))],")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'pfPatientFileObjectLatitude': [\(String(describing: self.pfPatientFileObjectLatitude))],")
         asToString.append("'pfPatientFileObjectLongitude': [\(String(describing: self.pfPatientFileObjectLongitude))],")
         asToString.append("'sPFPatientFileObjectLatitude': [\(String(describing: self.sPFPatientFileObjectLatitude))],")
@@ -427,70 +552,115 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         // Display the various field(s) of this object in the Log...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'self'                            is [\(String(describing: self))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bInternalTraceFlag'              is [\(String(describing: self.bInternalTraceFlag))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'self'                                    is [\(String(describing: self))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bInternalTraceFlag'                      is [\(String(describing: self.bInternalTraceFlag))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'id'                              is [\(String(describing: self.id))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'idPFPatientFileObject'           is [\(String(describing: self.idPFPatientFileObject))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectClonedFrom'   is [\(String(describing: self.pfPatientFileObjectClonedFrom))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectClonedTo'     is [\(String(describing: self.pfPatientFileObjectClonedTo))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'id'                                      is [\(String(describing: self.id))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'idPFPatientFileObject'                   is [\(String(describing: self.idPFPatientFileObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectClonedFrom'           is [\(String(describing: self.pfPatientFileObjectClonedFrom))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectClonedTo'             is [\(String(describing: self.pfPatientFileObjectClonedTo))]...")
 
-    //  self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'             is [\(String(describing: self.pfPatientFileObject))]...")
+    //  self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'                     is [\(String(describing: self.pfPatientFileObject))]...")
 
         if (self.pfPatientFileObject == nil)
         {
-            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'             is [-nil-]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'                     is [-nil-]...")
         }
         else
         {
-            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'             is [-available-]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObject'                     is [-available-]...")
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileClassName'         is [\(String(describing: self.sPFPatientFileClassName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileObjectId'          is [\(String(describing: self.sPFPatientFileObjectId))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFPatientFileCreatedAt'      is [\(String(describing: self.datePFPatientFileCreatedAt))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFPatientFileUpdatedAt'      is [\(String(describing: self.datePFPatientFileUpdatedAt))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'aclPFPatientFile'                is [\(String(describing: self.aclPFPatientFile))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsDataAvailable'   is [\(String(describing: self.bPFPatientFileIsDataAvailable))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIdDirty'           is [\(String(describing: self.bPFPatientFileIdDirty))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFPatientFileAllKeys'        is [\(String(describing: self.listPFPatientFileAllKeys))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileClassName'                 is [\(String(describing: self.sPFPatientFileClassName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileObjectId'                  is [\(String(describing: self.sPFPatientFileObjectId))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFPatientFileCreatedAt'              is [\(String(describing: self.datePFPatientFileCreatedAt))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFPatientFileUpdatedAt'              is [\(String(describing: self.datePFPatientFileUpdatedAt))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'aclPFPatientFile'                        is [\(String(describing: self.aclPFPatientFile))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsDataAvailable'           is [\(String(describing: self.bPFPatientFileIsDataAvailable))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIdDirty'                   is [\(String(describing: self.bPFPatientFileIdDirty))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'listPFPatientFileAllKeys'                is [\(String(describing: self.listPFPatientFileAllKeys))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFilePID'               is (\(String(describing: self.iPFPatientFilePID)))...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileName'              is [\(String(describing: self.sPFPatientFileName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileNameNoWS'          is [\(String(describing: self.sPFPatientFileNameNoWS))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileFirstName'         is [\(String(describing: self.sPFPatientFileFirstName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLastName'          is [\(String(describing: self.sPFPatientFileLastName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileEmerContacts'      is [\(String(describing: self.sPFPatientFileEmerContacts))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileHomeLoc'           is [\(String(describing: self.sPFPatientFileHomeLoc))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFilePID'                       is (\(String(describing: self.iPFPatientFilePID)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileName'                      is [\(String(describing: self.sPFPatientFileName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileNameNoWS'                  is [\(String(describing: self.sPFPatientFileNameNoWS))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileFirstName'                 is [\(String(describing: self.sPFPatientFileFirstName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLastName'                  is [\(String(describing: self.sPFPatientFileLastName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileEmerContacts'              is [\(String(describing: self.sPFPatientFileEmerContacts))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileHomeLoc'                   is [\(String(describing: self.sPFPatientFileHomeLoc))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsRealPatient'     is [\(String(describing: self.bPFPatientFileIsRealPatient))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLanguagePref'      is [\(String(describing: self.sPFPatientFileLanguagePref))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsOnHold'          is [\(String(describing: self.bPFPatientFileIsOnHold))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileOnHoldDate'        is [\(String(describing: self.sPFPatientFileOnHoldDate))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentName'        is [\(String(describing: self.sPFPatientFileParentName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentID'          is [\(String(describing: self.sPFPatientFileParentID))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsRealPatient'             is [\(String(describing: self.bPFPatientFileIsRealPatient))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLanguagePref'              is [\(String(describing: self.sPFPatientFileLanguagePref))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsOnHold'                  is [\(String(describing: self.bPFPatientFileIsOnHold))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileOnHoldDate'                is [\(String(describing: self.sPFPatientFileOnHoldDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentName'                is [\(String(describing: self.sPFPatientFileParentName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileParentID'                  is [\(String(describing: self.sPFPatientFileParentID))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileSID'               is (\(String(describing: self.iPFPatientFileSID)))...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileSidName'           is [\(String(describing: self.sPFPatientFileSidName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileSupervisedVisits'  is [\(String(describing: self.sPFPatientFileSupervisedVisits))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsToSuper'         is [\(String(describing: self.bPFPatientFileIsToSuper))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileSID'                       is (\(String(describing: self.iPFPatientFileSID)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileSidName'                   is [\(String(describing: self.sPFPatientFileSidName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileSupervisedVisits'          is [\(String(describing: self.sPFPatientFileSupervisedVisits))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsToSuper'                 is [\(String(describing: self.bPFPatientFileIsToSuper))]...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLatitude'     is [\(String(describing: self.pfPatientFileObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLongitude'    is [\(String(describing: self.pfPatientFileObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileObjectLatitude'    is [\(String(describing: self.sPFPatientFileObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileObjectLongitude'   is [\(String(describing: self.sPFPatientFileObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFPatientFileObjectLatitude'  is [\(String(describing: self.dblPFPatientFileObjectLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFPatientFileObjectLongitude' is [\(String(describing: self.dblPFPatientFileObjectLongitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLatitude'            is [\(String(describing: self.dblConvertedLatitude))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLongitude'           is [\(String(describing: self.dblConvertedLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileAuthBegin'                 is [\(String(describing: self.sPFPatientFileAuthBegin))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileAuthEnd'                   is [\(String(describing: self.sPFPatientFileAuthEnd))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileStartAuthBegin'            is [\(String(describing: self.sPFPatientFileStartAuthBegin))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileStartAuthEnd'              is [\(String(describing: self.sPFPatientFileStartAuthEnd))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileCurrentAuthBegin'          is [\(String(describing: self.sPFPatientFileCurrentAuthBegin))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileCurrentAuthEnd'            is [\(String(describing: self.sPFPatientFileCurrentAuthEnd))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileExpectedFrequency'         is (\(String(describing: self.iPFPatientFileExpectedFrequency)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileExpectedVisits'            is (\(String(describing: self.iPFPatientFileExpectedVisits)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileFirstVisitDate'            is [\(String(describing: self.sPFPatientFileFirstVisitDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLastVisitDate'             is [\(String(describing: self.sPFPatientFileLastVisitDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLastEvalDate'              is [\(String(describing: self.sPFPatientFileLastEvalDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLastDrVisitDate'           is [\(String(describing: self.sPFPatientFileLastDrVisitDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileNewVisitCount'             is (\(String(describing: self.iPFPatientFileNewVisitCount)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileNumberOfVisitsDone'        is (\(String(describing: self.iPFPatientFileNumberOfVisitsDone)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileTotalAuthorizedVisits'     is (\(String(describing: self.iPFPatientFileTotalAuthorizedVisits)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileTotalNumberOfMissedVisits' is (\(String(describing: self.iPFPatientFileTotalNumberOfMissedVisits)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileVisitCount'                is (\(String(describing: self.iPFPatientFileVisitCount)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileVisitCount2'               is (\(String(describing: self.iPFPatientFileVisitCount2)))...")
 
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bHomeLocAddessLookupScheduled'   is [\(String(describing: self.bHomeLocAddessLookupScheduled))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'bHomeLocAddessLookupComplete'    is [\(String(describing: self.bHomeLocAddessLookupComplete))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocLocationName'            is [\(String(describing: self.sHomeLocLocationName))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocCity'                    is [\(String(describing: self.sHomeLocCity))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocCountry'                 is [\(String(describing: self.sHomeLocCountry))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocPostalCode'              is [\(String(describing: self.sHomeLocPostalCode))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocTimeZone'                is [\(String(describing: self.sHomeLocTimeZone))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileDME'                       is [\(String(describing: self.sPFPatientFileDME))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileAlergies'                  is [\(String(describing: self.sPFPatientFileAlergies))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileBehaviorObs'               is [\(String(describing: self.sPFPatientFileBehaviorObs))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileCurrentDiet'               is [\(String(describing: self.sPFPatientFileCurrentDiet))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileCurrentFrequencies'        is [\(String(describing: self.sPFPatientFileCurrentFrequencies))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileCurrentTIDs'               is [\(String(describing: self.sPFPatientFileCurrentTIDs))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsDischarged'              is [\(String(describing: self.bPFPatientFileIsDischarged))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileEvalMeds'                  is [\(String(describing: self.sPFPatientFileEvalMeds))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileHaveAdminVisits'           is [\(String(describing: self.bPFPatientFileHaveAdminVisits))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileHaveMissedVisits'          is [\(String(describing: self.bPFPatientFileHaveMissedVisits))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileHoldReason'                is (\(String(describing: self.iPFPatientFileHoldReason)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileMakeupsAllowed'            is [\(String(describing: self.bPFPatientFileMakeupsAllowed))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileMedNumber'                 is (\(String(describing: self.iPFPatientFileMedNumber)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileNoPreSigRequired'          is [\(String(describing: self.bPFPatientFileNoPreSigRequired))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFilePertinentHistory'          is [\(String(describing: self.sPFPatientFilePertinentHistory))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFilePrimaryIns'                is (\(String(describing: self.iPFPatientFilePrimaryIns)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileReadyForSuper'             is [\(String(describing: self.bPFPatientFileReadyForSuper))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileRegisteredNames'           is [\(String(describing: self.sPFPatientFileRegisteredNames))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileSafeties'                  is [\(String(describing: self.sPFPatientFileSafeties))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileSecondaryIns'              is (\(String(describing: self.iPFPatientFileSecondaryIns)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileStartTIDFrequencies'       is [\(String(describing: self.sPFPatientFileStartTIDFrequencies))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileStartTIDs'                 is [\(String(describing: self.sPFPatientFileStartTIDs))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileTreatmentDX'               is [\(String(describing: self.sPFPatientFileTreatmentDX))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPFPatientFileType'                      is (\(String(describing: self.iPFPatientFileType)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileVisitsDone'                is [\(String(describing: self.sPFPatientFileVisitsDone))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLatitude'             is [\(String(describing: self.pfPatientFileObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'pfPatientFileObjectLongitude'            is [\(String(describing: self.pfPatientFileObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileObjectLatitude'            is [\(String(describing: self.sPFPatientFileObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileObjectLongitude'           is [\(String(describing: self.sPFPatientFileObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFPatientFileObjectLatitude'          is [\(String(describing: self.dblPFPatientFileObjectLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblPFPatientFileObjectLongitude'         is [\(String(describing: self.dblPFPatientFileObjectLongitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLatitude'                    is [\(String(describing: self.dblConvertedLatitude))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'dblConvertedLongitude'                   is [\(String(describing: self.dblConvertedLongitude))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bHomeLocAddessLookupScheduled'           is [\(String(describing: self.bHomeLocAddessLookupScheduled))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'bHomeLocAddessLookupComplete'            is [\(String(describing: self.bHomeLocAddessLookupComplete))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocLocationName'                    is [\(String(describing: self.sHomeLocLocationName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocCity'                            is [\(String(describing: self.sHomeLocCity))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocCountry'                         is [\(String(describing: self.sHomeLocCountry))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocPostalCode'                      is [\(String(describing: self.sHomeLocPostalCode))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sHomeLocTimeZone'                        is [\(String(describing: self.sHomeLocTimeZone))]...")
 
         // Exit:
 
@@ -511,58 +681,58 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         // Assign the various field(s) of this object from the supplied PFObject...
 
-        self.idPFPatientFileObject                  = idPFPatientFileObject
+        self.idPFPatientFileObject                   = idPFPatientFileObject
 
-        self.pfPatientFileObjectClonedFrom          = nil 
-        self.pfPatientFileObjectClonedTo            = nil 
+        self.pfPatientFileObjectClonedFrom           = nil 
+        self.pfPatientFileObjectClonedTo             = nil 
 
-        self.pfPatientFileObject                    = pfPatientFileObject                                                             
+        self.pfPatientFileObject                     = pfPatientFileObject                                                             
         
-        self.sPFPatientFileClassName                = pfPatientFileObject.parseClassName
-        self.sPFPatientFileObjectId                 = pfPatientFileObject.objectId  != nil ? pfPatientFileObject.objectId!  : ""
-        self.datePFPatientFileCreatedAt             = pfPatientFileObject.createdAt != nil ? pfPatientFileObject.createdAt! : nil
-        self.datePFPatientFileUpdatedAt             = pfPatientFileObject.updatedAt != nil ? pfPatientFileObject.updatedAt! : nil
-        self.aclPFPatientFile                       = pfPatientFileObject.acl
-        self.bPFPatientFileIsDataAvailable          = pfPatientFileObject.isDataAvailable
-        self.bPFPatientFileIdDirty                  = pfPatientFileObject.isDirty
-        self.listPFPatientFileAllKeys               = pfPatientFileObject.allKeys
+        self.sPFPatientFileClassName                 = pfPatientFileObject.parseClassName
+        self.sPFPatientFileObjectId                  = pfPatientFileObject.objectId  != nil ? pfPatientFileObject.objectId!  : ""
+        self.datePFPatientFileCreatedAt              = pfPatientFileObject.createdAt != nil ? pfPatientFileObject.createdAt! : nil
+        self.datePFPatientFileUpdatedAt              = pfPatientFileObject.updatedAt != nil ? pfPatientFileObject.updatedAt! : nil
+        self.aclPFPatientFile                        = pfPatientFileObject.acl
+        self.bPFPatientFileIsDataAvailable           = pfPatientFileObject.isDataAvailable
+        self.bPFPatientFileIdDirty                   = pfPatientFileObject.isDirty
+        self.listPFPatientFileAllKeys                = pfPatientFileObject.allKeys
 
-        self.iPFPatientFilePID                      = Int(String(describing: (pfPatientFileObject.object(forKey:"ID")       ?? "-1"))) ?? -2
-        self.sPFPatientFileName                     = String(describing: (pfPatientFileObject.object(forKey:"name")         ?? ""))
+        self.iPFPatientFilePID                       = Int(String(describing: (pfPatientFileObject.object(forKey:"ID")               ?? "-1"))) ?? -2
+        self.sPFPatientFileName                      = String(describing: (pfPatientFileObject.object(forKey:"name")                 ?? ""))
 
-    //  var csUnwantedDelimiters:CharacterSet       = CharacterSet()
+    //  var csUnwantedDelimiters:CharacterSet        = CharacterSet()
     //
     //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.illegalCharacters)
     //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.whitespacesAndNewlines)
     //  csUnwantedDelimiters = csUnwantedDelimiters.union(CharacterSet.punctuationCharacters)
     //
-    //  let sPFPatientFileNameLower:String          = self.sPFPatientFileName.lowercased()
-    //  let listPFPatientFileNameLowerNoWS:[String] = sPFPatientFileNameLower.components(separatedBy:csUnwantedDelimiters)
-    //  let sPFPatientFileNameLowerNoWS:String      = listPFPatientFileNameLowerNoWS.joined(separator:"")
+    //  let sPFPatientFileNameLower:String           = self.sPFPatientFileName.lowercased()
+    //  let listPFPatientFileNameLowerNoWS:[String]  = sPFPatientFileNameLower.components(separatedBy:csUnwantedDelimiters)
+    //  let sPFPatientFileNameLowerNoWS:String       = listPFPatientFileNameLowerNoWS.joined(separator:"")
 
-        self.sPFPatientFileNameNoWS                 = self.sPFPatientFileName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
-        self.sPFPatientFileFirstName                = String(describing: (pfPatientFileObject.object(forKey:"firstName")    ?? ""))
-        self.sPFPatientFileLastName                 = String(describing: (pfPatientFileObject.object(forKey:"lastName")     ?? ""))
+        self.sPFPatientFileNameNoWS                  = self.sPFPatientFileName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
+        self.sPFPatientFileFirstName                 = String(describing: (pfPatientFileObject.object(forKey:"firstName")            ?? ""))
+        self.sPFPatientFileLastName                  = String(describing: (pfPatientFileObject.object(forKey:"lastName")             ?? ""))
 
         if (bInternalTraceFlag == true)
         {
 
-            let objPFPatientFileLastName            = pfPatientFileObject.object(forKey:"lastName")
-            let typeOfObjPFPatientFileLastName      = type(of:objPFPatientFileLastName)
-            let sTypeOfObjPFPatientFileLastName     = self.getMetaTypeStringForObject(object:objPFPatientFileLastName as Any)
+            let objPFPatientFileLastName             = pfPatientFileObject.object(forKey:"lastName")
+            let typeOfObjPFPatientFileLastName       = type(of:objPFPatientFileLastName)
+            let sTypeOfObjPFPatientFileLastName      = self.getMetaTypeStringForObject(object:objPFPatientFileLastName as Any)
 
             self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileLastName' is [\(typeOfObjPFPatientFileLastName)] and 'sTypeOfObjPFPatientFileLastName' is [\(sTypeOfObjPFPatientFileLastName)] for 'objPFPatientFileLastName' is [\(String(describing: objPFPatientFileLastName))]...")
 
         }
 
-        self.sPFPatientFileHomeLoc                  = String(describing: (pfPatientFileObject.object(forKey:"histLoc1")     ?? ""))
+        self.sPFPatientFileHomeLoc                   = String(describing: (pfPatientFileObject.object(forKey:"histLoc1")             ?? ""))
 
         if (bInternalTraceFlag == true)
         {
 
-            let objPFPatientFileHomeLoc             = pfPatientFileObject.object(forKey:"histLoc1")
-            let typeOfObjPFPatientFileHomeLoc       = type(of:objPFPatientFileHomeLoc)
-            let sTypeOfObjPFPatientFileHomeLoc      = self.getMetaTypeStringForObject(object:objPFPatientFileHomeLoc as Any)
+            let objPFPatientFileHomeLoc              = pfPatientFileObject.object(forKey:"histLoc1")
+            let typeOfObjPFPatientFileHomeLoc        = type(of:objPFPatientFileHomeLoc)
+            let sTypeOfObjPFPatientFileHomeLoc       = self.getMetaTypeStringForObject(object:objPFPatientFileHomeLoc as Any)
 
             self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileHomeLoc' is [\(typeOfObjPFPatientFileHomeLoc)] and 'sTypeOfObjPFPatientFileHomeLoc' is [\(sTypeOfObjPFPatientFileHomeLoc)] for 'objPFPatientFileHomeLoc' is [\(String(describing: objPFPatientFileHomeLoc))]...")
 
@@ -570,15 +740,15 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         self.convertPFPatientFileHomeLocToLatitudeLongitude()
 
-        self.sPFPatientFileEmerContacts             = String(describing: (pfPatientFileObject.object(forKey:"emerContacts") ?? ""))
+        self.sPFPatientFileEmerContacts              = String(describing: (pfPatientFileObject.object(forKey:"emerContacts")         ?? ""))
 
-        let objPFPatientFileEmerContacts            = pfPatientFileObject.object(forKey:"emerContacts")
-        let sTypeOfObjPFPatientFileEmerContacts     = self.getMetaTypeStringForObject(object:objPFPatientFileEmerContacts as Any)
+        let objPFPatientFileEmerContacts             = pfPatientFileObject.object(forKey:"emerContacts")
+        let sTypeOfObjPFPatientFileEmerContacts      = self.getMetaTypeStringForObject(object:objPFPatientFileEmerContacts as Any)
 
         if (bInternalTraceFlag == true)
         {
 
-            let typeOfObjPFPatientFileEmerContacts  = type(of:objPFPatientFileEmerContacts)
+            let typeOfObjPFPatientFileEmerContacts   = type(of:objPFPatientFileEmerContacts)
 
             self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileEmerContacts' is [\(typeOfObjPFPatientFileEmerContacts)] and 'sTypeOfObjPFPatientFileEmerContacts' is [\(sTypeOfObjPFPatientFileEmerContacts)] for 'objPFPatientFileEmerContacts' is [\(String(describing: objPFPatientFileEmerContacts))]...")
 
@@ -617,31 +787,101 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     //  
     //  }
 
-        let objPFPatientFileEmerContacts2           = pfPatientFileObject.object(forKey:"emerContacts")
-        self.sPFPatientFileEmerContacts             = self.reducePFObjectListOfStrings(object:                       objPFPatientFileEmerContacts2 as Any,
-                                                                                       listStringsToRemove:          [""],
-                                                                                       bFormatNumericsAsPhoneNumbers:true)
+        let objPFPatientFileEmerContacts2            = pfPatientFileObject.object(forKey:"emerContacts")
+        self.sPFPatientFileEmerContacts              = self.reducePFObjectListOfStrings(object:                       objPFPatientFileEmerContacts2 as Any,
+                                                                                        listStringsToRemove:          [""],
+                                                                                        bFormatNumericsAsPhoneNumbers:true)
 
-        self.bPFPatientFileIsRealPatient            = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"realPatient") ?? "0"))) ?? 0) as NSNumber)
-        self.sPFPatientFileLanguagePref             = String(describing: (pfPatientFileObject.object(forKey:"langPreference")   ?? ""))
-        self.bPFPatientFileIsOnHold                 = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"onHold")      ?? "0"))) ?? 0) as NSNumber)
-        self.sPFPatientFileOnHoldDate               = String(describing: (pfPatientFileObject.object(forKey:"onHoldDate")       ?? ""))
-        self.sPFPatientFileParentName               = String(describing: (pfPatientFileObject.object(forKey:"parent")           ?? ""))
-        self.sPFPatientFileParentID                 = String(describing: (pfPatientFileObject.object(forKey:"parentID")         ?? ""))
+        self.bPFPatientFileIsRealPatient             = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"realPatient") ?? "0"))) ?? 0) as NSNumber)
+        self.sPFPatientFileLanguagePref              = String(describing: (pfPatientFileObject.object(forKey:"langPreference")       ?? ""))
+        self.bPFPatientFileIsOnHold                  = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"onHold")      ?? "0"))) ?? 0) as NSNumber)
+        self.sPFPatientFileOnHoldDate                = String(describing: (pfPatientFileObject.object(forKey:"onHoldDate")           ?? ""))
+        self.sPFPatientFileParentName                = String(describing: (pfPatientFileObject.object(forKey:"parent")               ?? ""))
+        self.sPFPatientFileParentID                  = String(describing: (pfPatientFileObject.object(forKey:"parentID")             ?? ""))
 
-        self.iPFPatientFileSID                      = Int(String(describing: (pfPatientFileObject.object(forKey:"sid")          ?? "-1"))) ?? -2
-        self.sPFPatientFileSidName                  = String(describing: (pfPatientFileObject.object(forKey:"sidName")          ?? ""))
-        self.sPFPatientFileSupervisedVisits         = String(describing: (pfPatientFileObject.object(forKey:"supervisedVisits") ?? ""))
-        self.bPFPatientFileIsToSuper                = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"toSuper")     ?? "0"))) ?? 0) as NSNumber)
+        self.iPFPatientFileSID                       = Int(String(describing: (pfPatientFileObject.object(forKey:"sid")              ?? "-1"))) ?? -2
+        self.sPFPatientFileSidName                   = String(describing: (pfPatientFileObject.object(forKey:"sidName")              ?? ""))
+        self.sPFPatientFileSupervisedVisits          = String(describing: (pfPatientFileObject.object(forKey:"supervisedVisits")     ?? ""))
+        self.bPFPatientFileIsToSuper                 = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"toSuper")     ?? "0"))) ?? 0) as NSNumber)
 
-        self.bHomeLocAddessLookupScheduled          = false
-        self.bHomeLocAddessLookupComplete           = false
+        self.sPFPatientFileAuthBegin                 = String(describing: (pfPatientFileObject.object(forKey:"authBegin")            ?? ""))
+        self.sPFPatientFileAuthEnd                   = String(describing: (pfPatientFileObject.object(forKey:"authEnd")              ?? ""))
+        self.sPFPatientFileStartAuthBegin            = String(describing: (pfPatientFileObject.object(forKey:"startAuthBegin")       ?? ""))
+        self.sPFPatientFileStartAuthEnd              = String(describing: (pfPatientFileObject.object(forKey:"startAuthEnd")         ?? ""))
+        self.sPFPatientFileCurrentAuthBegin          = String(describing: (pfPatientFileObject.object(forKey:"currentAuthBegin")     ?? ""))
+        self.sPFPatientFileCurrentAuthEnd            = String(describing: (pfPatientFileObject.object(forKey:"currentAuthEnd")       ?? ""))
+        self.iPFPatientFileExpectedFrequency         = Int(String(describing: (pfPatientFileObject.object(forKey:"expectedFreq")     ?? "-1"))) ?? -2
+        self.iPFPatientFileExpectedVisits            = Int(String(describing: (pfPatientFileObject.object(forKey:"expectedVisits")   ?? "-1"))) ?? -2
+        self.sPFPatientFileFirstVisitDate            = String(describing: (pfPatientFileObject.object(forKey:"firstVisitDate")       ?? ""))
+        self.sPFPatientFileLastVisitDate             = String(describing: (pfPatientFileObject.object(forKey:"lastVisitDate")        ?? ""))
+        self.sPFPatientFileLastEvalDate              = String(describing: (pfPatientFileObject.object(forKey:"lastEvalDate")         ?? ""))
+        self.sPFPatientFileLastDrVisitDate           = String(describing: (pfPatientFileObject.object(forKey:"lastDrVisit")          ?? ""))
+        self.iPFPatientFileNewVisitCount             = Int(String(describing: (pfPatientFileObject.object(forKey:"newVisitCount")    ?? "-1"))) ?? -2
+        self.iPFPatientFileNumberOfVisitsDone        = Int(String(describing: (pfPatientFileObject.object(forKey:"numVisitsDone")    ?? "-1"))) ?? -2
+        self.iPFPatientFileTotalAuthorizedVisits     = Int(String(describing: (pfPatientFileObject.object(forKey:"totalAuthdVisits") ?? "-1"))) ?? -2
+        self.iPFPatientFileTotalNumberOfMissedVisits = Int(String(describing: (pfPatientFileObject.object(forKey:"totalNumMVs")      ?? "-1"))) ?? -2
+        self.iPFPatientFileVisitCount                = Int(String(describing: (pfPatientFileObject.object(forKey:"visitCount")       ?? "-1"))) ?? -2
+        self.iPFPatientFileVisitCount2               = Int(String(describing: (pfPatientFileObject.object(forKey:"visitCount2")      ?? "-1"))) ?? -2
+
+        self.sPFPatientFileDME                       = String(describing: (pfPatientFileObject.object(forKey:"DME")          ?? ""))
+        self.sPFPatientFileAlergies                  = String(describing: (pfPatientFileObject.object(forKey:"allergies")          ?? ""))
+        self.sPFPatientFileBehaviorObs               = String(describing: (pfPatientFileObject.object(forKey:"behavObs")          ?? ""))
+        self.sPFPatientFileCurrentDiet               = String(describing: (pfPatientFileObject.object(forKey:"currentDiet")          ?? ""))
+
+        let objPFPatientFileCurrentFrequencies       = pfPatientFileObject.object(forKey:"currentFreqs")
+        self.sPFPatientFileCurrentFrequencies        = self.reducePFObjectListOfStrings(object:                       objPFPatientFileCurrentFrequencies as Any,
+                                                                                        listStringsToRemove:          ["","0"],
+                                                                                        bFormatNumericsAsPhoneNumbers:false)
+
+        let objPFPatientFileCurrentTIDs              = pfPatientFileObject.object(forKey:"currentTIDs")
+        self.sPFPatientFileCurrentTIDs               = self.reducePFObjectListOfStrings(object:                       objPFPatientFileCurrentTIDs as Any,
+                                                                                        listStringsToRemove:          ["","9"],
+                                                                                        bFormatNumericsAsPhoneNumbers:false)
+
+        self.bPFPatientFileIsDischarged              = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"discharged")       ?? "0"))) ?? 0) as NSNumber)
+        self.sPFPatientFileEvalMeds                  = String(describing: (pfPatientFileObject.object(forKey:"evalMeds") ?? ""))
+        self.bPFPatientFileHaveAdminVisits           = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"haveAdminVisits")  ?? "0"))) ?? 0) as NSNumber)
+        self.bPFPatientFileHaveMissedVisits          = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"haveMissedVisits") ?? "0"))) ?? 0) as NSNumber)
+        self.iPFPatientFileHoldReason                = Int(String(describing: (pfPatientFileObject.object(forKey:"holdReason") ?? "-1"))) ?? -2
+        self.bPFPatientFileMakeupsAllowed            = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"makeupsAllowed")   ?? "0"))) ?? 0) as NSNumber)
+        self.iPFPatientFileMedNumber                 = Int(String(describing: (pfPatientFileObject.object(forKey:"medNumber")  ?? "-1"))) ?? -2
+        self.bPFPatientFileNoPreSigRequired          = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"noPreSigRequired") ?? "0"))) ?? 0) as NSNumber)
+
+
+        self.sPFPatientFilePertinentHistory          = String(describing: (pfPatientFileObject.object(forKey:"pertinentHist")    ?? ""))
+        self.iPFPatientFilePrimaryIns                = Int(String(describing: (pfPatientFileObject.object(forKey:"primaryIns")   ?? "-1"))) ?? -2
+        self.bPFPatientFileReadyForSuper             = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"readyForSuper") ?? "0"))) ?? 0) as NSNumber)
+
+        let objPFPatientFileRegisteredNames          = pfPatientFileObject.object(forKey:"registeredNames")
+        self.sPFPatientFileRegisteredNames           = self.reducePFObjectListOfStrings(object:                       objPFPatientFileRegisteredNames as Any,
+                                                                                        listStringsToRemove:          [""],
+                                                                                        bFormatNumericsAsPhoneNumbers:false)
+
+        self.sPFPatientFileSafeties                  = String(describing: (pfPatientFileObject.object(forKey:"safeties")         ?? ""))
+        self.iPFPatientFileSecondaryIns              = Int(String(describing: (pfPatientFileObject.object(forKey:"secondaryIns") ?? "-1"))) ?? -2
+
+        let objPFPatientFileStartTIDFrequencies      = pfPatientFileObject.object(forKey:"startTFreqs")
+        self.sPFPatientFileStartTIDFrequencies       = self.reducePFObjectListOfStrings(object:                       objPFPatientFileStartTIDFrequencies as Any,
+                                                                                        listStringsToRemove:          ["","0"],
+                                                                                        bFormatNumericsAsPhoneNumbers:false)
+
+        let objPFPatientFileStartTIDs                = pfPatientFileObject.object(forKey:"startTIDs")
+        self.sPFPatientFileStartTIDs                 = self.reducePFObjectListOfStrings(object:                       objPFPatientFileStartTIDs as Any,
+                                                                                        listStringsToRemove:          ["","9"],
+                                                                                        bFormatNumericsAsPhoneNumbers:false)
+
+        self.sPFPatientFileTreatmentDX               = String(describing: (pfPatientFileObject.object(forKey:"treatmentDX") ?? ""))
+        self.iPFPatientFileType                      = Int(String(describing: (pfPatientFileObject.object(forKey:"type")    ?? "-1"))) ?? -2
+        self.sPFPatientFileVisitsDone                = String(describing: (pfPatientFileObject.object(forKey:"visitsDone")  ?? ""))
+
+        self.bHomeLocAddessLookupScheduled           = false
+        self.bHomeLocAddessLookupComplete            = false
       
-        self.sHomeLocLocationName                   = ""
-        self.sHomeLocCity                           = ""
-        self.sHomeLocCountry                        = ""
-        self.sHomeLocPostalCode                     = ""
-        self.sHomeLocTimeZone                       = ""
+        self.sHomeLocLocationName                    = ""
+        self.sHomeLocCity                            = ""
+        self.sHomeLocCountry                         = ""
+        self.sHomeLocPostalCode                      = ""
+        self.sHomeLocTimeZone                        = ""
 
         self.resolveLocationAndAddress()
       
@@ -663,58 +903,103 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         // Finish the 'overlay' update of field(s)...
 
-        self.idPFPatientFileObject                = pfPatientFileItem.idPFPatientFileObject
+        self.idPFPatientFileObject                   = pfPatientFileItem.idPFPatientFileObject
 
         // 'Object' From/To update does NOT occur in an 'overlay'...
 
-    //  self.pfPatientFileObjectClonedFrom        = nil 
-    //  self.pfPatientFileObjectClonedTo          = nil 
+    //  self.pfPatientFileObjectClonedFrom           = nil 
+    //  self.pfPatientFileObjectClonedTo             = nil 
 
-        self.pfPatientFileObject                  = pfPatientFileItem.pfPatientFileObject
+        self.pfPatientFileObject                     = pfPatientFileItem.pfPatientFileObject
 
-        self.sPFPatientFileClassName              = pfPatientFileItem.sPFPatientFileClassName
-        self.sPFPatientFileObjectId               = pfPatientFileItem.sPFPatientFileObjectId
-        self.datePFPatientFileCreatedAt           = pfPatientFileItem.datePFPatientFileCreatedAt
-        self.datePFPatientFileUpdatedAt           = pfPatientFileItem.datePFPatientFileUpdatedAt
-        self.aclPFPatientFile                     = pfPatientFileItem.aclPFPatientFile
-        self.bPFPatientFileIsDataAvailable        = pfPatientFileItem.bPFPatientFileIsDataAvailable
-        self.bPFPatientFileIdDirty                = pfPatientFileItem.bPFPatientFileIdDirty
-        self.listPFPatientFileAllKeys             = pfPatientFileItem.listPFPatientFileAllKeys
+        self.sPFPatientFileClassName                 = pfPatientFileItem.sPFPatientFileClassName
+        self.sPFPatientFileObjectId                  = pfPatientFileItem.sPFPatientFileObjectId
+        self.datePFPatientFileCreatedAt              = pfPatientFileItem.datePFPatientFileCreatedAt
+        self.datePFPatientFileUpdatedAt              = pfPatientFileItem.datePFPatientFileUpdatedAt
+        self.aclPFPatientFile                        = pfPatientFileItem.aclPFPatientFile
+        self.bPFPatientFileIsDataAvailable           = pfPatientFileItem.bPFPatientFileIsDataAvailable
+        self.bPFPatientFileIdDirty                   = pfPatientFileItem.bPFPatientFileIdDirty
+        self.listPFPatientFileAllKeys                = pfPatientFileItem.listPFPatientFileAllKeys
         
-        self.iPFPatientFilePID                    = pfPatientFileItem.iPFPatientFilePID
-        self.sPFPatientFileName                   = pfPatientFileItem.sPFPatientFileName
-        self.sPFPatientFileNameNoWS               = pfPatientFileItem.sPFPatientFileNameNoWS
-        self.sPFPatientFileFirstName              = pfPatientFileItem.sPFPatientFileFirstName
-        self.sPFPatientFileLastName               = pfPatientFileItem.sPFPatientFileLastName
-        self.sPFPatientFileEmerContacts           = pfPatientFileItem.sPFPatientFileEmerContacts
-        self.sPFPatientFileHomeLoc                = pfPatientFileItem.sPFPatientFileHomeLoc
+        self.iPFPatientFilePID                       = pfPatientFileItem.iPFPatientFilePID
+        self.sPFPatientFileName                      = pfPatientFileItem.sPFPatientFileName
+        self.sPFPatientFileNameNoWS                  = pfPatientFileItem.sPFPatientFileNameNoWS
+        self.sPFPatientFileFirstName                 = pfPatientFileItem.sPFPatientFileFirstName
+        self.sPFPatientFileLastName                  = pfPatientFileItem.sPFPatientFileLastName
+        self.sPFPatientFileEmerContacts              = pfPatientFileItem.sPFPatientFileEmerContacts
+        self.sPFPatientFileHomeLoc                   = pfPatientFileItem.sPFPatientFileHomeLoc
         
-        self.bPFPatientFileIsRealPatient          = pfPatientFileItem.bPFPatientFileIsRealPatient
-        self.sPFPatientFileLanguagePref           = pfPatientFileItem.sPFPatientFileLanguagePref 
-        self.bPFPatientFileIsOnHold               = pfPatientFileItem.bPFPatientFileIsOnHold     
-        self.sPFPatientFileOnHoldDate             = pfPatientFileItem.sPFPatientFileOnHoldDate   
-        self.sPFPatientFileParentName             = pfPatientFileItem.sPFPatientFileParentName   
-        self.sPFPatientFileParentID               = pfPatientFileItem.sPFPatientFileParentID     
+        self.bPFPatientFileIsRealPatient             = pfPatientFileItem.bPFPatientFileIsRealPatient
+        self.sPFPatientFileLanguagePref              = pfPatientFileItem.sPFPatientFileLanguagePref 
+        self.bPFPatientFileIsOnHold                  = pfPatientFileItem.bPFPatientFileIsOnHold     
+        self.sPFPatientFileOnHoldDate                = pfPatientFileItem.sPFPatientFileOnHoldDate   
+        self.sPFPatientFileParentName                = pfPatientFileItem.sPFPatientFileParentName   
+        self.sPFPatientFileParentID                  = pfPatientFileItem.sPFPatientFileParentID     
 
-        self.iPFPatientFileSID                    = pfPatientFileItem.iPFPatientFileSID
-        self.sPFPatientFileSidName                = pfPatientFileItem.sPFPatientFileSidName 
-        self.sPFPatientFileSupervisedVisits       = pfPatientFileItem.sPFPatientFileSupervisedVisits 
-        self.bPFPatientFileIsToSuper              = pfPatientFileItem.bPFPatientFileIsToSuper     
+        self.iPFPatientFileSID                       = pfPatientFileItem.iPFPatientFileSID
+        self.sPFPatientFileSidName                   = pfPatientFileItem.sPFPatientFileSidName 
+        self.sPFPatientFileSupervisedVisits          = pfPatientFileItem.sPFPatientFileSupervisedVisits 
+        self.bPFPatientFileIsToSuper                 = pfPatientFileItem.bPFPatientFileIsToSuper     
 
-        self.pfPatientFileObjectLatitude          = pfPatientFileItem.pfPatientFileObjectLatitude
-        self.pfPatientFileObjectLongitude         = pfPatientFileItem.pfPatientFileObjectLongitude
-        self.sPFPatientFileObjectLatitude         = pfPatientFileItem.sPFPatientFileObjectLatitude
-        self.sPFPatientFileObjectLongitude        = pfPatientFileItem.sPFPatientFileObjectLongitude
-        self.dblPFPatientFileObjectLatitude       = pfPatientFileItem.dblPFPatientFileObjectLatitude
-        self.dblPFPatientFileObjectLongitude      = pfPatientFileItem.dblPFPatientFileObjectLongitude
+        self.sPFPatientFileAuthBegin                 = pfPatientFileItem.sPFPatientFileAuthBegin                
+        self.sPFPatientFileAuthEnd                   = pfPatientFileItem.sPFPatientFileAuthEnd                  
+        self.sPFPatientFileStartAuthBegin            = pfPatientFileItem.sPFPatientFileStartAuthBegin           
+        self.sPFPatientFileStartAuthEnd              = pfPatientFileItem.sPFPatientFileStartAuthEnd             
+        self.sPFPatientFileCurrentAuthBegin          = pfPatientFileItem.sPFPatientFileCurrentAuthBegin         
+        self.sPFPatientFileCurrentAuthEnd            = pfPatientFileItem.sPFPatientFileCurrentAuthEnd           
+        self.iPFPatientFileExpectedFrequency         = pfPatientFileItem.iPFPatientFileExpectedFrequency        
+        self.iPFPatientFileExpectedVisits            = pfPatientFileItem.iPFPatientFileExpectedVisits           
+        self.sPFPatientFileFirstVisitDate            = pfPatientFileItem.sPFPatientFileFirstVisitDate           
+        self.sPFPatientFileLastVisitDate             = pfPatientFileItem.sPFPatientFileLastVisitDate            
+        self.sPFPatientFileLastEvalDate              = pfPatientFileItem.sPFPatientFileLastEvalDate             
+        self.sPFPatientFileLastDrVisitDate           = pfPatientFileItem.sPFPatientFileLastDrVisitDate          
+        self.iPFPatientFileNewVisitCount             = pfPatientFileItem.iPFPatientFileNewVisitCount            
+        self.iPFPatientFileNumberOfVisitsDone        = pfPatientFileItem.iPFPatientFileNumberOfVisitsDone       
+        self.iPFPatientFileTotalAuthorizedVisits     = pfPatientFileItem.iPFPatientFileTotalAuthorizedVisits    
+        self.iPFPatientFileTotalNumberOfMissedVisits = pfPatientFileItem.iPFPatientFileTotalNumberOfMissedVisits
+        self.iPFPatientFileVisitCount                = pfPatientFileItem.iPFPatientFileVisitCount               
+        self.iPFPatientFileVisitCount2               = pfPatientFileItem.iPFPatientFileVisitCount2              
 
-        let dblPreviousLatitude:Double            = self.dblConvertedLatitude
-        let dblPreviousLongitude:Double           = self.dblConvertedLongitude
-        let dblHomeLocLatitude:Double             = pfPatientFileItem.dblConvertedLatitude
-        let dblHomeLocLongitude:Double            = pfPatientFileItem.dblConvertedLongitude
+        self.sPFPatientFileDME                       = pfPatientFileItem.sPFPatientFileDME                
+        self.sPFPatientFileAlergies                  = pfPatientFileItem.sPFPatientFileAlergies           
+        self.sPFPatientFileBehaviorObs               = pfPatientFileItem.sPFPatientFileBehaviorObs        
+        self.sPFPatientFileCurrentDiet               = pfPatientFileItem.sPFPatientFileCurrentDiet        
+        self.sPFPatientFileCurrentFrequencies        = pfPatientFileItem.sPFPatientFileCurrentFrequencies 
+        self.sPFPatientFileCurrentTIDs               = pfPatientFileItem.sPFPatientFileCurrentTIDs        
+        self.bPFPatientFileIsDischarged              = pfPatientFileItem.bPFPatientFileIsDischarged       
+        self.sPFPatientFileEvalMeds                  = pfPatientFileItem.sPFPatientFileEvalMeds           
+        self.bPFPatientFileHaveAdminVisits           = pfPatientFileItem.bPFPatientFileHaveAdminVisits    
+        self.bPFPatientFileHaveMissedVisits          = pfPatientFileItem.bPFPatientFileHaveMissedVisits   
+        self.iPFPatientFileHoldReason                = pfPatientFileItem.iPFPatientFileHoldReason         
+        self.bPFPatientFileMakeupsAllowed            = pfPatientFileItem.bPFPatientFileMakeupsAllowed     
+        self.iPFPatientFileMedNumber                 = pfPatientFileItem.iPFPatientFileMedNumber          
+        self.bPFPatientFileNoPreSigRequired          = pfPatientFileItem.bPFPatientFileNoPreSigRequired   
+        self.sPFPatientFilePertinentHistory          = pfPatientFileItem.sPFPatientFilePertinentHistory   
+        self.iPFPatientFilePrimaryIns                = pfPatientFileItem.iPFPatientFilePrimaryIns         
+        self.bPFPatientFileReadyForSuper             = pfPatientFileItem.bPFPatientFileReadyForSuper      
+        self.sPFPatientFileRegisteredNames           = pfPatientFileItem.sPFPatientFileRegisteredNames    
+        self.sPFPatientFileSafeties                  = pfPatientFileItem.sPFPatientFileSafeties           
+        self.iPFPatientFileSecondaryIns              = pfPatientFileItem.iPFPatientFileSecondaryIns       
+        self.sPFPatientFileStartTIDFrequencies       = pfPatientFileItem.sPFPatientFileStartTIDFrequencies
+        self.sPFPatientFileStartTIDs                 = pfPatientFileItem.sPFPatientFileStartTIDs          
+        self.sPFPatientFileTreatmentDX               = pfPatientFileItem.sPFPatientFileTreatmentDX        
+        self.iPFPatientFileType                      = pfPatientFileItem.iPFPatientFileType               
+        self.sPFPatientFileVisitsDone                = pfPatientFileItem.sPFPatientFileVisitsDone         
 
-        self.dblConvertedLatitude                 = pfPatientFileItem.dblConvertedLatitude
-        self.dblConvertedLongitude                = pfPatientFileItem.dblConvertedLongitude
+        self.pfPatientFileObjectLatitude             = pfPatientFileItem.pfPatientFileObjectLatitude
+        self.pfPatientFileObjectLongitude            = pfPatientFileItem.pfPatientFileObjectLongitude
+        self.sPFPatientFileObjectLatitude            = pfPatientFileItem.sPFPatientFileObjectLatitude
+        self.sPFPatientFileObjectLongitude           = pfPatientFileItem.sPFPatientFileObjectLongitude
+        self.dblPFPatientFileObjectLatitude          = pfPatientFileItem.dblPFPatientFileObjectLatitude
+        self.dblPFPatientFileObjectLongitude         = pfPatientFileItem.dblPFPatientFileObjectLongitude
+
+        let dblPreviousLatitude:Double               = self.dblConvertedLatitude
+        let dblPreviousLongitude:Double              = self.dblConvertedLongitude
+        let dblHomeLocLatitude:Double                = pfPatientFileItem.dblConvertedLatitude
+        let dblHomeLocLongitude:Double               = pfPatientFileItem.dblConvertedLongitude
+
+        self.dblConvertedLatitude                    = pfPatientFileItem.dblConvertedLatitude
+        self.dblConvertedLongitude                   = pfPatientFileItem.dblConvertedLongitude
         
         // If 'self' (current) does NOT have 'important' location data, then copy all of it...
 
