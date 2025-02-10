@@ -17,7 +17,7 @@ struct AppDataGathererPatient2View: View
     {
         
         static let sClsId        = "AppDataGathererPatient2View"
-        static let sClsVers      = "v1.0102"
+        static let sClsVers      = "v1.0302"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -253,7 +253,7 @@ struct AppDataGathererPatient2View: View
 
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient2View.Button(Xcode).'Locate the Patient by Name'...")
 
-                            self.sPatientPID = self.locateAppPatientNameByName(sPatientName:sPatientName)
+                            self.sPatientPID = self.locateAppPatientNameByName(sPatientName:self.sPatientName)
 
                             self.isAppRunPatientLocateByNameShowing.toggle()
 
@@ -396,12 +396,12 @@ struct AppDataGathererPatient2View: View
                         {
                             self.sPatientName = ""
                             self.sPatientPID  = ""
-                            focusedField        = .patientName
+                            focusedField      = .patientName
                         }
                         .onChange(of: self.sPatientName)
                         {
                             self.updateSelectablePatientNamesList(sSearchValue:self.sPatientName)
-                            focusedField        = .patientName
+                            focusedField      = .patientName
 
                             if (self.sPatientName.count < 1)
                             {
@@ -410,8 +410,8 @@ struct AppDataGathererPatient2View: View
                         }
                         .onSubmit
                         {
-                            self.sPatientPID  = self.locateAppPatientNameByName(sPatientName:sPatientName)
-                            focusedField        = .patientName
+                            self.sPatientPID  = self.locateAppPatientNameByName(sPatientName:self.sPatientName)
+                            focusedField      = .patientName
                         }
 
                     Spacer()
@@ -423,7 +423,7 @@ struct AppDataGathererPatient2View: View
 
                         self.sPatientName = ""
                         self.sPatientPID  = ""
-                        focusedField        = .patientName
+                        focusedField      = .patientName
 
                     }
                     label:
@@ -480,6 +480,8 @@ struct AppDataGathererPatient2View: View
                         .onTapGesture
                         {
                             self.sPatientName = appSearchablePatientName.sPatientName
+                            self.sPatientPID  = self.locateAppPatientNameByName(sPatientName:self.sPatientName)
+                            focusedField      = .patientName
                         }
 
                 }
