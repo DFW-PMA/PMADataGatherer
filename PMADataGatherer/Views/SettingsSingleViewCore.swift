@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.2201"
+        static let sClsVers      = "v1.2302"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -31,9 +31,11 @@ struct SettingsSingleViewCore: View
     
            private var bInternalZipTest:Bool                                 = false
 
+    @State private var cAppLocationViewLogPFDataButtonPresses:Int            = 0
     @State private var cAppZipFileButtonPresses:Int                          = 0
     @State private var cAppCrashButtonPresses:Int                            = 0
 
+    @State private var isAppLogPFDataViewModal:Bool                          = false
     @State private var isAppZipFileShowing:Bool                              = false
     @State private var isAppCrashShowing:Bool                                = false
 
@@ -509,6 +511,61 @@ struct SettingsSingleViewCore: View
                 HStack(alignment:.center)
                 {
       
+                    Spacer()
+
+                    Button
+                    {
+
+                        self.cAppLocationViewLogPFDataButtonPresses += 1
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+
+                        self.isAppLogPFDataViewModal.toggle()
+
+                    //  self.detailPFCscDataItems()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "doc.text.magnifyingglass")
+                                .help(Text("Log PFXxxDataItem(s)..."))
+                                .imageScale(.small)
+
+                            Text("Log PFData")
+                                .font(.caption2)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppLogPFDataViewModal, content:
+                        {
+
+                            AppLogPFDataView()
+
+                        }
+                    )
+                #endif
+                #if os(iOS)
+                    .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
+                    {
+
+                        AppLogPFDataView()
+
+                    }
+                #endif
+                    .padding()
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+
                     Spacer()
       
                     Button

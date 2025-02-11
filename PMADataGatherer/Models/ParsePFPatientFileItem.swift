@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0805"
+        static let sClsVers      = "v1.0901"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -83,7 +83,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
     var iPFPatientFilePID:Int                                   = -1         // 'pfPatientFileObject[ID]'
     var sPFPatientFileName:String                               = "-N/A-"    // 'pfPatientFileObject[name]' (last, first middle)
-    var sPFPatientFileNameNoWS:String                           = "-N/A-"    // Name: (lastfirstmiddle)
+    var sPFPatientFileNameNoWS:String                           = "-N/A-"    // 'sPFPatientFileName' (lowercased - no whitespace/newline/illegal/punc). 
     var sPFPatientFileFirstName:String                          = "-N/A-"    // 'pfPatientFileObject[firstName]' (first)
     var sPFPatientFileLastName:String                           = "-N/A-"    // 'pfPatientFileObject[lastName]' (<middle> last)
     var sPFPatientFileEmerContacts:String                       = ""         // 'pfPatientFileObject[emerContacts]' <list>

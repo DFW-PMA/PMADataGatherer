@@ -17,7 +17,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.1903"
+        static let sClsVers      = "v1.2001"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -859,11 +859,14 @@ struct AppAuthenticateView: View
 
         var pfAdminsDataItem:ParsePFAdminsDataItem? = nil
         var sLookupUserName:String                  = ""
+        var sLookupUserNameNoWS:String              = ""
 
         if (self.sLoginUsername.count > 0)
         {
 
-            sLookupUserName = self.sLoginUsername.lowercased()
+            sLookupUserName     = self.sLoginUsername.lowercased()
+            sLookupUserNameNoWS = sLookupUserName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
+
 
         }
         else
@@ -897,7 +900,8 @@ struct AppAuthenticateView: View
         for (_, parsePFAdminsDataItem) in jmAppParseCoreManager.dictPFAdminsDataItems
         {
 
-            let sComparePFAdminsParseName:String = parsePFAdminsDataItem.sPFAdminsParseName.lowercased()
+            let sComparePFAdminsParseName:String     = parsePFAdminsDataItem.sPFAdminsParseName.lowercased()
+            let sComparePFAdminsParseNameNoWS:String = parsePFAdminsDataItem.sPFAdminsParseNameNoWS
 
             if (sComparePFAdminsParseName.count  > 0 &&
                 sComparePFAdminsParseName       == sLookupUserName)
@@ -914,6 +918,24 @@ struct AppAuthenticateView: View
             {
 
                 self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] does NOT match the 'sComparePFAdminsParseName' of [\(sComparePFAdminsParseName)] - continuing search...")
+
+                if (sComparePFAdminsParseNameNoWS.count  > 0 &&
+                    sComparePFAdminsParseNameNoWS       == sLookupUserNameNoWS)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserNameNoWS' of [\(sLookupUserNameNoWS)] matches the 'sComparePFAdminsParseNameNoWS' of [\(sComparePFAdminsParseNameNoWS)] - setting 'pfAdminsDataItem' to this item...")
+
+                    pfAdminsDataItem = parsePFAdminsDataItem   
+
+                    break
+
+                }
+                else
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] does NOT match the 'sComparePFAdminsParseName' of [\(sComparePFAdminsParseName)] - continuing search...")
+
+                }
 
             }
 
@@ -968,11 +990,13 @@ struct AppAuthenticateView: View
 
         var pfAdminsSwiftDataItem:PFAdminsSwiftDataItem? = nil
         var sLookupUserName:String                       = ""
+        var sLookupUserNameNoWS:String                   = ""
 
         if (self.sLoginUsername.count > 0)
         {
 
-            sLookupUserName = self.sLoginUsername.lowercased()
+            sLookupUserName     = self.sLoginUsername.lowercased()
+            sLookupUserNameNoWS = sLookupUserName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
 
         }
         else
@@ -991,7 +1015,8 @@ struct AppAuthenticateView: View
         for listSwiftDataItem in self.jmAppSwiftDataManager.pfAdminsSwiftDataItems
         {
 
-            let sComparePFAdminsParseName:String = listSwiftDataItem.sPFAdminsParseName.lowercased()
+            let sComparePFAdminsParseName:String     = listSwiftDataItem.sPFAdminsParseName.lowercased()
+            let sComparePFAdminsParseNameNoWS:String = listSwiftDataItem.sPFAdminsParseNameNoWS
 
             if (sComparePFAdminsParseName.count  > 0 &&
                 sComparePFAdminsParseName       == sLookupUserName)
@@ -1008,6 +1033,24 @@ struct AppAuthenticateView: View
             {
 
                 self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] does NOT match the 'sComparePFAdminsParseName' of [\(sComparePFAdminsParseName)] - continuing search...")
+
+                if (sComparePFAdminsParseNameNoWS.count  > 0 &&
+                    sComparePFAdminsParseNameNoWS       == sLookupUserNameNoWS)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserNameNoWS' of [\(sLookupUserNameNoWS)] matches the 'sComparePFAdminsParseNameNoWS' of [\(sComparePFAdminsParseNameNoWS)] - setting 'pfAdminsSwiftDataItem' to this item...")
+
+                    pfAdminsSwiftDataItem = listSwiftDataItem   
+
+                    break
+
+                }
+                else
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] does NOT match the 'sComparePFAdminsParseName' of [\(sComparePFAdminsParseName)] - continuing search...")
+
+                }
 
             }
 

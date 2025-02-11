@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1403"
+        static let sClsVers      = "v1.1501"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -298,51 +298,56 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
     }   // End of private func runPostInitializationTasks().
 
-    public func getJmAppParsePFQueryForAdmins()
+    public func getJmAppParsePFQueryForAdmins(bForceReloadOfPFQuery:Bool = false)
     {
         
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
 
         // If we already have a dictionary of PFAdmins item(s), then display them and skip the PFQuery...
 
-        if (self.dictPFAdminsDataItems.count > 0)
+        if (bForceReloadOfPFQuery == false)
         {
-
-            self.xcgLogMsg("\(sCurrMethodDisp) The (existing) dictionary of 'parsePFAdminsDataItem' item(s) has #(\(self.dictPFAdminsDataItems.count)) object(s) - skipping the PFQuery...")
-            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the (existing) dictionary of 'parsePFAdminsDataItem' item(s)...")
-
-            for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
+        
+            if (self.dictPFAdminsDataItems.count > 0)
             {
 
-                parsePFAdminsDataItem.displayParsePFAdminsDataItemToLog()
+                self.xcgLogMsg("\(sCurrMethodDisp) The (existing) dictionary of 'parsePFAdminsDataItem' item(s) has #(\(self.dictPFAdminsDataItems.count)) object(s) - skipping the PFQuery...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Displaying the (existing) dictionary of 'parsePFAdminsDataItem' item(s)...")
+
+                for (_, parsePFAdminsDataItem) in self.dictPFAdminsDataItems
+                {
+
+                    parsePFAdminsDataItem.displayParsePFAdminsDataItemToLog()
+
+                }
+
+                // ----------------------------------------------------------------------------------------------
+                // var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem] = [:]
+                //                                                            // [String:ParsePFAdminsDataItem]
+                //                                                            // Key:PFAdminsParseTID(String)
+                // ----------------------------------------------------------------------------------------------
+
+                // If we have a different # of item(s) then the ParseCoreManager does, then deep copy and update it...
+
+                if (self.jmAppParseCoreManager.dictPFAdminsDataItems.count  < 1 ||
+                    self.jmAppParseCoreManager.dictPFAdminsDataItems.count != self.dictPFAdminsDataItems.count)
+                {
+
+                    let _ = self.deepCopyDictPFAdminsDataItems()
+
+                }
+
+                // Exit:
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+                return
 
             }
-
-            // ----------------------------------------------------------------------------------------------
-            // var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem] = [:]
-            //                                                            // [String:ParsePFAdminsDataItem]
-            //                                                            // Key:PFAdminsParseTID(String)
-            // ----------------------------------------------------------------------------------------------
-          
-            // If we have a different # of item(s) then the ParseCoreManager does, then deep copy and update it...
-          
-            if (self.jmAppParseCoreManager.dictPFAdminsDataItems.count  < 1 ||
-                self.jmAppParseCoreManager.dictPFAdminsDataItems.count != self.dictPFAdminsDataItems.count)
-            {
-
-                let _ = self.deepCopyDictPFAdminsDataItems()
-            
-            }
-
-            // Exit:
-
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
-
-            return
-
+        
         }
 
         // Issue a PFQuery for the 'Admins' class...
@@ -407,9 +412,9 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 if (self.dictPFAdminsDataItems.count > 0)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) Adding the 'TherapistFile' query data to the dictionary of 'parsePFAdminsDataItem' item(s)...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) Adding the 'TherapistFile' query data to the dictionary of 'parsePFAdminsDataItem' item(s) - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
 
-                    self.getJmAppParsePFQueryForTherapistFileToAddToAdmins()
+                    self.getJmAppParsePFQueryForTherapistFileToAddToAdmins(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
                     self.displayDictPFAdminsDataItems()
 
                     // Copy back to self.dictPFAdminsDataItems[] and to SwiftData...
@@ -436,21 +441,25 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
             
         }
 
+        // We've updated from PFQuery, so then deep copy and update it in ParseCoreManager...
+
+        let _ = self.deepCopyDictPFAdminsDataItems()
+
         // Exit:
 
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
     
         return
 
-    } // End of public func getJmAppParsePFQueryForAdmins().
+    } // End of public func getJmAppParsePFQueryForAdmins(bForceReloadOfPFQuery:Bool).
 
-    public func getJmAppParsePFQueryForTherapistFileToAddToAdmins()
+    public func getJmAppParsePFQueryForTherapistFileToAddToAdmins(bForceReloadOfPFQuery:Bool = false)
     {
         
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
 
         // Issue a PFQuery for the 'TherapistFile' class...
 
@@ -594,7 +603,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                     if let parsePFAdminsDataItem:ParsePFAdminsDataItem = self.dictPFAdminsDataItems[sPFTherapistParseTID]
                     {
 
-                        parsePFAdminsDataItem.sPFAdminsParseName = sPFTherapistParseName
+                        parsePFAdminsDataItem.sPFAdminsParseName     = sPFTherapistParseName
+                        parsePFAdminsDataItem.sPFAdminsParseNameNoWS = sPFTherapistParseName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
 
                         self.xcgLogMsg("\(sCurrMethodDisp) Using object #(\(cPFTherapistObjects)) 'pfTherapistObject' - to set the 'name' field of [\(sPFTherapistParseName)] in the dictionary of 'parsePFAdminsDataItem' item(s)...")
 
@@ -718,7 +728,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     
         return
 
-    } // End of public func getJmAppParsePFQueryForTherapistFileToAddToAdmins().
+    } // End of public func getJmAppParsePFQueryForTherapistFileToAddToAdmins(bForceReloadOfPFQuery:Bool).
 
     public func getJmAppParsePFQueryForCSC()
     {

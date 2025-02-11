@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0803"
+        static let sClsVers      = "v1.0901"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -85,7 +85,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
     var iPFTherapistFileTID:Int                                   = -1         // 'pfTherapistFileObject[ID]'
     var sPFTherapistFileName:String                               = "-N/A-"    // 'pfTherapistFileObject[name]'
-    var sPFTherapistFileNameNoWS:String                           = "-N/A-"    // name (lowercased - no whitespace/newline/illegal/punc.
+    var sPFTherapistFileNameNoWS:String                           = "-N/A-"    // 'sPFTherapistFileName' (lowercased - no whitespace/newline/illegal/punc).
     var sPFTherapistFilePhone:String                              = "-N/A-"    // 'pfTherapistFileObject[phone]'
     var sPFTherapistFileEmail:String                              = "-N/A-"    // 'pfTherapistFileObject[email]'
     var sPFTherapistFileUsername:String                           = "-N/A-"    // 'pfTherapistFileObject[username]'
