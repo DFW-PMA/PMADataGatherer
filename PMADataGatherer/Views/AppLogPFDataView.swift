@@ -16,7 +16,7 @@ struct AppLogPFDataView: View
     {
         
         static let sClsId        = "AppLogPFDataView"
-        static let sClsVers      = "v1.0401"
+        static let sClsVers      = "v1.0402"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -28,6 +28,7 @@ struct AppLogPFDataView: View
 
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.openWindow)       var openWindow
 
     @State private  var cContentViewAppDataButtonPresses:Int                  = 0
     @State private  var cContentViewAppLocationButtonPresses:Int              = 0

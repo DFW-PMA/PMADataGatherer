@@ -26,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0903"
+        static let sClsVers      = "v1.0904"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -154,7 +154,7 @@ struct AppDataGathererTherapist1DetailsView: View
                         .font(.caption2) 
                         .frame(maxWidth:.infinity, alignment:.center)
 
-                    Text("DATA Gatherer - Therapist Details by TID")
+                    Text("DATA Gatherer - Therapist Details by TID/tName")
                         .bold()
                         .font(.caption2) 
                         .frame(maxWidth:.infinity, alignment:.center)
@@ -168,7 +168,7 @@ struct AppDataGathererTherapist1DetailsView: View
                 HStack()
                 {
 
-                    Text(":: Therapists' TID: ")
+                    Text("::: Therapists' TID: ")
                         .font(.caption) 
                         .onAppear
                         {
@@ -180,6 +180,7 @@ struct AppDataGathererTherapist1DetailsView: View
                     Text("\(self.sTherapistTID)")
                         .italic()
                         .font(.caption) 
+                        .foregroundColor(.red)
 
                     Spacer()
 
@@ -194,6 +195,7 @@ struct AppDataGathererTherapist1DetailsView: View
                     Text("\(self.sTherapistName)")
                         .italic()
                         .font(.caption) 
+                        .foregroundColor(.red)
 
                     Spacer()
 
