@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1501"
+        static let sClsVers      = "v1.1502"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -677,6 +677,19 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 let _ = self.deepCopyDictTherapistTidXref()
             
             }
+            else
+            {
+
+                // If we're 'forcing' a Reload, then deep copy and update it...
+
+                if (bForceReloadOfPFQuery == true)
+                {
+                    
+                    let _ = self.deepCopyDictTherapistTidXref()
+                
+                }
+
+            }
 
         }
 
@@ -698,6 +711,19 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 let _ = self.deepCopyDictPFTherapistFileItems()
             
             }
+            else
+            {
+
+                // If we're 'forcing' a Reload, then deep copy and update it...
+
+                if (bForceReloadOfPFQuery == true)
+                {
+
+                    let _ = self.deepCopyDictPFTherapistFileItems()
+
+                }
+
+            }
 
         }
 
@@ -718,6 +744,19 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 let _ = self.deepCopyDictSchedPatientLocItems()
             
+            }
+            else
+            {
+
+                // If we're 'forcing' a Reload, then deep copy and update it...
+
+                if (bForceReloadOfPFQuery == true)
+                {
+
+                    let _ = self.deepCopyDictSchedPatientLocItems()
+
+                }
+
             }
 
         }
@@ -1091,13 +1130,13 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
     } // End of public func copyJmAppParsePFAdminsToSwiftData().
 
-    public func gatherJmAppParsePFQueriesForScheduledLocationsInBackground()
+    public func gatherJmAppParsePFQueriesForScheduledLocationsInBackground(bForceReloadOfPFQuery:Bool = false)
     {
 
         let sCurrMethod:String = #function;
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
   
         let dispatchGroup = DispatchGroup()
 
@@ -1115,13 +1154,13 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'PatientCalDay' class...")
 
-                self.gatherJmAppParsePFQueriesForPatientCalDayInBackground()
+                self.gatherJmAppParsePFQueriesForPatientCalDayInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'PatientCalDay' class...")
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'BackupVisit' class...")
 
-                self.gatherJmAppParsePFQueriesForBackupVisitInBackground()
+                self.gatherJmAppParsePFQueriesForBackupVisitInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'BackupVisit' class...")
 
@@ -1137,15 +1176,15 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         return
 
-    } // End of public func gatherJmAppParsePFQueriesForScheduledLocationsInBackground().
+    } // End of public func gatherJmAppParsePFQueriesForScheduledLocationsInBackground(bForceReloadOfPFQuery:Bool).
     
-    public func gatherJmAppParsePFQueriesForPatientInfoInBackground()
+    public func gatherJmAppParsePFQueriesForPatientInfoInBackground(bForceReloadOfPFQuery:Bool = false)
     {
 
         let sCurrMethod:String = #function;
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
   
         let dispatchGroup = DispatchGroup()
 
@@ -1163,7 +1202,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'PatientFile' class...")
 
-                self.gatherJmAppParsePFQueriesForPatientFileInBackground()
+                self.gatherJmAppParsePFQueriesForPatientFileInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
 
                 self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'PatientFile' class...")
 
@@ -1179,15 +1218,15 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         return
 
-    } // End of public func gatherJmAppParsePFQueriesForPatientInfoInBackground().
+    } // End of public func gatherJmAppParsePFQueriesForPatientInfoInBackground(bForceReloadOfPFQuery:Bool).
     
-    public func gatherJmAppParsePFQueriesForPatientCalDayInBackground()
+    public func gatherJmAppParsePFQueriesForPatientCalDayInBackground(bForceReloadOfPFQuery:Bool = false)
     {
 
         let sCurrMethod:String = #function;
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
   
         // Issue a PFQueries to pull Therapist data from PatientCalDay for the current day...
 
@@ -1391,15 +1430,15 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         return
 
-    } // End of public func gatherJmAppParsePFQueriesForPatientCalDayInBackground().
+    } // End of public func gatherJmAppParsePFQueriesForPatientCalDayInBackground(bForceReloadOfPFQuery:Bool).
     
-    public func gatherJmAppParsePFQueriesForBackupVisitInBackground()
+    public func gatherJmAppParsePFQueriesForBackupVisitInBackground(bForceReloadOfPFQuery:Bool = false)
     {
 
         let sCurrMethod:String = #function;
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
   
         // ------------------------------------------------------------------------------------------------------------------
         //
@@ -1640,15 +1679,15 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         return
 
-    } // End of public func gatherJmAppParsePFQueriesForBackupVisitInBackground().
+    } // End of public func gatherJmAppParsePFQueriesForBackupVisitInBackground(bForceReloadOfPFQuery:Bool).
     
-    public func gatherJmAppParsePFQueriesForPatientFileInBackground()
+    public func gatherJmAppParsePFQueriesForPatientFileInBackground(bForceReloadOfPFQuery:Bool = false)
     {
 
         let sCurrMethod:String = #function;
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)]...")
   
         // Issue a PFQuery for the 'PatientFile' class...
 
@@ -1804,6 +1843,19 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 let _ = self.deepCopyDictPatientPidXref()
             
             }
+            else
+            {
+
+                // If we're 'forcing' a Reload, then deep copy and update it...
+
+                if (bForceReloadOfPFQuery == true)
+                {
+
+                    let _ = self.deepCopyDictPatientPidXref()
+
+                }
+
+            }
       
         }
       
@@ -1825,6 +1877,19 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 let _ = self.deepCopyDictPFPatientFileItems()
             
             }
+            else
+            {
+
+                // If we're 'forcing' a Reload, then deep copy and update it...
+
+                if (bForceReloadOfPFQuery == true)
+                {
+
+                    let _ = self.deepCopyDictPFPatientFileItems()
+
+                }
+
+            }
       
         }
 
@@ -1834,7 +1899,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         return
 
-    } // End of public func gatherJmAppParsePFQueriesForPatientFileInBackground().
+    } // End of public func gatherJmAppParsePFQueriesForPatientFileInBackground(bForceReloadOfPFQuery:Bool).
     
     public func convertTidToTherapistName(sPFTherapistParseTID:String = "")->String
     {

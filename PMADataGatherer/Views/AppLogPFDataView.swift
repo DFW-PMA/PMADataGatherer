@@ -16,7 +16,7 @@ struct AppLogPFDataView: View
     {
         
         static let sClsId        = "AppLogPFDataView"
-        static let sClsVers      = "v1.0303"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -28,7 +28,13 @@ struct AppLogPFDataView: View
 
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
+
+    @State private  var cContentViewAppDataButtonPresses:Int                  = 0
+    @State private  var cContentViewAppLocationButtonPresses:Int              = 0
     
+    @State private  var isAppDataViewModal:Bool                               = false
+    @State private  var isAppLocationViewModal:Bool                           = false
+
     @State private  var cAppLogPFDataLoggingRefreshButtonPresses:Int          = 0
     @State private  var cAppLogPFDataLoggingPFAdminsButtonPresses:Int         = 0
     @State private  var cAppLogPFDataLoggingPFCscButtonPresses:Int            = 0
@@ -103,8 +109,6 @@ struct AppLogPFDataView: View
                 HStack(alignment:.center)
                 {
 
-                    Spacer()
-
                     Button
                     {
 
@@ -129,6 +133,142 @@ struct AppLogPFDataView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+                #if os(iOS)
+                    .padding()
+                #endif
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        self.cContentViewAppDataButtonPresses += 1
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Data...'.#(\(self.cContentViewAppDataButtonPresses))...")
+
+                        self.isAppDataViewModal.toggle()
+
+                    #if os(macOS)
+                  
+                        // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                        openWindow(id:"AppDataGathererView")
+                  
+                    #endif
+
+                //  #if os(macOS)
+                //
+                //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+                //
+                //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
+                //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
+                //
+                //  #endif
+                
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "swiftdata")
+                                .help(Text("App Data Gatherer"))
+                                .imageScale(.large)
+
+                            Text("Data")
+                                .font(.caption)
+
+                        }
+
+                    }
+            //  #if os(macOS)
+            //      .sheet(isPresented:$isAppDataViewModal, content:
+            //          {
+            //
+            //              AppDataGathererView()
+            //
+            //          }
+            //      )
+            //  #endif
+                #if os(iOS)
+                    .fullScreenCover(isPresented:$isAppDataViewModal)
+                    {
+
+                        AppDataGathererView()
+
+                    }
+                #endif
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        self.cContentViewAppLocationButtonPresses += 1
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Location'.#(\(self.cContentViewAppLocationButtonPresses))...")
+
+                        self.isAppLocationViewModal.toggle()
+
+                //  #if os(macOS)
+                //
+                //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+                //
+                //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
+                //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
+                //
+                //  #endif
+                //
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "location.viewfinder")
+                                .help(Text("App Location Information"))
+                                .imageScale(.large)
+
+                            Text("Location")
+                                .font(.caption)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppLocationViewModal, content:
+                        {
+              
+                            AppLocationView()
+              
+                        }
+                    )
+                #endif
+                #if os(iOS)
+                    .fullScreenCover(isPresented:$isAppLocationViewModal)
+                    {
+
+                        AppLocationView()
+
+                    }
+                #endif
                 #if os(macOS)
                     .buttonStyle(.borderedProminent)
                     .padding()
@@ -1351,16 +1491,58 @@ struct AppLogPFDataView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
     
-    //  // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFCscDataItem(s)...
-    //
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreManager' #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) PFCscDataItem(s)...")
-    //
-    //  self.jmAppParseCoreManager.displayListPFCscDataItems()
-    //
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreBkgdDataRepo' #(\(self.jmAppParseCoreBkgdDataRepo.listPFCscDataItems.count)) PFCscDataItem(s)...")
-    //
-    //  self.jmAppParseCoreBkgdDataRepo.displayListPFCscDataItems()
-    
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForCSC()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFAdminsDataItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method...")
+
+        if (self.jmAppParseCoreManager.listPFCscDataItems.count < 1)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Sorting #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) Item(s) in the 'jmAppParseCoreManager.listPFCscDataItems' of [\(self.jmAppParseCoreManager.listPFCscDataItems)]...")
+
+            self.jmAppParseCoreManager.listPFCscDataItems.sort
+            { (pfCscDataItem1, pfCscDataItem2) in
+
+            //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
+
+            var bIsItem1GreaterThanItem2:Bool = false
+
+            if (pfCscDataItem1.sPFCscParseLastLocDate != pfCscDataItem2.sPFCscParseLastLocDate)
+            {
+                bIsItem1GreaterThanItem2 = (pfCscDataItem1.sPFCscParseLastLocDate > pfCscDataItem2.sPFCscParseLastLocDate)
+            }
+            else
+            {
+            //  bIsItem1GreaterThanItem2:Bool = (pfCscDataItem1.sPFCscParseLastLocTime < pfCscDataItem2.sPFCscParseLastLocTime)
+                bIsItem1GreaterThanItem2 = (pfCscDataItem1.sPFCscParseLastLocTime > pfCscDataItem2.sPFCscParseLastLocTime)
+            }
+
+            //  self.xcgLogMsg("\(sCurrMethodDisp) Sort <OP> Returning 'bIsItem1GreaterThanItem2' of [\(bIsItem1GreaterThanItem2)] because 'pfCscDataItem1.sPFCscParseLastLocTime' is [\(pfCscDataItem1.sPFCscParseLastLocTime)] and is less than 'pfCscDataItem2.sPFCscParseLastLocTime' is [\(pfCscDataItem2.sPFCscParseLastLocTime)]...")
+
+                return bIsItem1GreaterThanItem2
+
+            }
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Sorted  #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) Item(s) in the 'jmAppParseCoreManager.listPFCscDataItems' of [\(self.jmAppParseCoreManager.listPFCscDataItems)]...")
+
+        }
+
         // Exit...
     
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -1377,90 +1559,13 @@ struct AppLogPFDataView: View
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
-    //  // Detail all TherapistFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
-    //
-    //  if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-    //  {
-    //
-    //      if (self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count > 0)
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreManager' dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
-    //
-    //          var cPFTherapistParseTIDs:Int = 0
-    //
-    //          for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFTherapistFileItems
-    //          {
-    //
-    //              cPFTherapistParseTIDs += 1
-    //
-    //              if (iPFTherapistParseTID < 0)
-    //              {
-    //
-    //                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
-    //
-    //                  continue
-    //
-    //              }
-    //
-    //              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
-    //
-    //              pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
-    //
-    //          }
-    //
-    //      }
-    //      else
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the 'jmAppParseCoreManager' dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
-    //
-    //      }
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' is nil - unable to get the dictionary 'dictPFTherapistFileItems' - Error!")
-    //
-    //  }
-    //
-    //  // Detail all TherapistFile 'item(s)' in the JmAppParseCoreBkgdDataRepo of the JmAppDelegateVisitor...
-    //
-    //  if (self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count > 0)
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreBkgdDataRepo' dictionary of #(\(self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems.count)) 'dictPFTherapistFileItems' item(s)...")
-    //
-    //      var cPFTherapistParseTIDs:Int = 0
-    //
-    //      for (iPFTherapistParseTID, pfTherapistFileItem) in self.jmAppParseCoreBkgdDataRepo.dictPFTherapistFileItems
-    //      {
-    //
-    //          cPFTherapistParseTIDs += 1
-    //
-    //          if (iPFTherapistParseTID < 0)
-    //          {
-    //
-    //              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Skipping object #(\(cPFTherapistParseTIDs)) 'iPFTherapistParseTID' - the 'tid' field is less than 0 - Warning!")
-    //
-    //              continue
-    //
-    //          }
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' For TID [\(iPFTherapistParseTID)] - Displaying 'pfTherapistFileItem' item #(\(cPFTherapistParseTIDs)):")
-    //
-    //          pfTherapistFileItem.displayParsePFTherapistFileItemToLog()
-    //
-    //      }
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Unable to display the dictionary of 'dictPFTherapistFileItems' item(s) - item(s) count is less than 1 - Warning!")
-    //
-    //  }
+        // Reload the ParseCoreBkgdDataRepo PFTherapistFileItem(s) (deepcopy to ParseCoreManager)...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForTherapistFileToAddToAdmins()' to get Therapist dictionaries (TherapistFile, TherapistXref, TherapistNames)...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForTherapistFileToAddToAdmins(bForceReloadOfPFQuery:true)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForTherapistFileToAddToAdmins()' to get Therapist dictionaries (TherapistFile, TherapistXref, TherapistNames)...")
 
         // Exit:
 
@@ -1478,90 +1583,13 @@ struct AppLogPFDataView: View
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
-    //  // Detail all PatientFile 'item(s)' in the JmAppParseCoreManger of the JmAppDelegateVisitor...
-    //
-    //  if (self.jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-    //  {
-    //
-    //      if (self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFPatientFileItems.count > 0)
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreManager' dictionary of #(\(self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFPatientFileItems.count)) 'dictPFPatientFileItems' item(s)...")
-    //
-    //          var cPFPatientParsePIDs:Int = 0
-    //
-    //          for (iPFPatientParsePID, pfPatientFileItem) in self.jmAppDelegateVisitor.jmAppParseCoreManager!.dictPFPatientFileItems
-    //          {
-    //
-    //              cPFPatientParsePIDs += 1
-    //
-    //              if (iPFPatientParsePID < 0)
-    //              {
-    //
-    //                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' Skipping object #(\(cPFPatientParsePIDs)) 'iPFPatientParsePID' - the 'pid' field is less than 0 - Warning!")
-    //
-    //                  continue
-    //
-    //              }
-    //
-    //              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' For PID [\(iPFPatientParsePID)] - Displaying 'pfPatientFileItem' item #(\(cPFPatientParsePIDs)):")
-    //
-    //              pfPatientFileItem.displayParsePFPatientFileItemToLog()
-    //
-    //          }
-    //
-    //      }
-    //      else
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the 'jmAppParseCoreManager' dictionary of 'dictPFPatientFileItems' item(s) - item(s) count is less than 1 - Warning!")
-    //
-    //      }
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' is nil - unable to get the dictionary 'dictPFPatientFileItems' - Error!")
-    //
-    //  }
-    //
-    //  // Detail all PatientFile 'item(s)' in the JmAppParseCoreBkgdDataRepo of the JmAppDelegateVisitor...
-    //
-    //  if (self.jmAppParseCoreBkgdDataRepo.dictPFPatientFileItems.count > 0)
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Displaying the 'jmAppParseCoreBkgdDataRepo' dictionary of #(\(self.jmAppParseCoreBkgdDataRepo.dictPFPatientFileItems.count)) 'dictPFPatientFileItems' item(s)...")
-    //
-    //      var cPFPatientParsePIDs:Int = 0
-    //
-    //      for (iPFPatientParsePID, pfPatientFileItem) in self.jmAppParseCoreBkgdDataRepo.dictPFPatientFileItems
-    //      {
-    //
-    //          cPFPatientParsePIDs += 1
-    //
-    //          if (iPFPatientParsePID < 0)
-    //          {
-    //
-    //              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Skipping object #(\(cPFPatientParsePIDs)) 'iPFPatientParsePID' - the 'pid' field is less than 0 - Warning!")
-    //
-    //              continue
-    //
-    //          }
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' For PID [\(iPFPatientParsePID)] - Displaying 'pfPatientFileItem' item #(\(cPFPatientParsePIDs)):")
-    //
-    //          pfPatientFileItem.displayParsePFPatientFileItemToLog()
-    //
-    //      }
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreBkgdDataRepo' Unable to display the dictionary of 'dictPFPatientFileItems' item(s) - item(s) count is less than 1 - Warning!")
-    //
-    //  }
+        // Reload the ParseCoreBkgdDataRepo PFPatientFileItem(s) (deepcopy to ParseCoreManager)...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForPatientFileInBackground()' to get Patient lists (PatientFile, PatientXref)...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.gatherJmAppParsePFQueriesForPatientFileInBackground(bForceReloadOfPFQuery:true)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForPatientFileInBackground()' to get Patient lists (PatientFile, PatientXref)...")
 
         // Exit:
 
@@ -1578,16 +1606,14 @@ struct AppLogPFDataView: View
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Reload the ParseCoreBkgdDataRepo PFSchedPatientLocItem(s) (deepcopy to ParseCoreManager)...
     
-    //  // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFCscDataItem(s)...
-    //
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreManager' #(\(self.jmAppParseCoreManager.dictSchedPatientLocItems.count)) dictionary of ScheduledPatientLocationItem(s)...")
-    //
-    //  self.jmAppParseCoreManager.displayDictSchedPatientLocItems()
-    //
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreBkgdDataRepo' #(\(self.jmAppParseCoreBkgdDataRepo.dictSchedPatientLocItems.count)) dictionary of ScheduledPatientLocationItem(s)")
-    //
-    //  self.jmAppParseCoreBkgdDataRepo.displayDictSchedPatientLocItems()
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to get ScheduledPatientLocation item(s)...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.gatherJmAppParsePFQueriesForScheduledLocationsInBackground(bForceReloadOfPFQuery:true)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to get ScheduledPatientLocation item(s)...")
     
         // Exit...
     

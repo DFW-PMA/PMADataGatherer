@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.2901"
+        static let sClsVers      = "v1.3001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -36,23 +36,25 @@ struct ContentView: View
 
 #if os(iOS)
 
-    @State private var cAppViewSettingsButtonPresses:Int         = 0
+    @State private var cAppViewSettingsButtonPresses:Int          = 0
     
-    @State private var isAppSettingsModal:Bool                   = false
+    @State private var isAppSettingsModal:Bool                    = false
 
 #endif
     
-    @State private var cContentViewRefreshButtonPresses:Int      = 0
-    @State private var cContentViewAppDataButtonPresses:Int      = 0
-    @State private var cContentViewAppLocationButtonPresses:Int  = 0
+    @State private var cAppLocationViewLogPFDataButtonPresses:Int = 0
+    @State private var cContentViewRefreshButtonPresses:Int       = 0
+    @State private var cContentViewAppDataButtonPresses:Int       = 0
+    @State private var cContentViewAppLocationButtonPresses:Int   = 0
 
-    @State private var isAppDataViewModal:Bool                   = false
-    @State private var isAppLocationViewModal:Bool               = false
+    @State private var isAppLogPFDataViewModal:Bool               = false
+    @State private var isAppDataViewModal:Bool                    = false
+    @State private var isAppLocationViewModal:Bool                = false
 
-    @State private var shouldContentViewChange:Bool              = false
-    @State private var shouldContentViewShowAlert:Bool           = false
+    @State private var shouldContentViewChange:Bool               = false
+    @State private var shouldContentViewShowAlert:Bool            = false
 
-                   var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                   var jmAppDelegateVisitor:JmAppDelegateVisitor  = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
     init(isUserLoggedIn: Binding<Bool>, sLoginUsername: Binding<String>, sLoginPassword: Binding<String>)
     {
@@ -112,6 +114,64 @@ struct ContentView: View
 
             HStack
             {
+
+                if (AppGlobalInfo.bPerformAppDevTesting == true)
+                {
+
+                    Button
+                    {
+
+                        self.cAppLocationViewLogPFDataButtonPresses += 1
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+
+                        self.isAppLogPFDataViewModal.toggle()
+
+                    //  self.detailPFCscDataItems()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "doc.text.magnifyingglass")
+                                .help(Text("Log PFXxxDataItem(s)..."))
+                                .imageScale(.small)
+
+                            Text("Log PFData")
+                                .font(.caption2)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppLogPFDataViewModal, content:
+                        {
+
+                            AppLogPFDataView()
+
+                        }
+                    )
+                #endif
+                #if os(iOS)
+                    .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
+                    {
+
+                        AppLogPFDataView()
+
+                    }
+                #endif
+                    .padding()
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+
+                }
 
                 Spacer()
 

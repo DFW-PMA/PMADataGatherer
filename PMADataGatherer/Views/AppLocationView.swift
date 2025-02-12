@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.1201"
+        static let sClsVers      = "v1.1401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -39,6 +39,9 @@ struct AppLocationView: View
     @State private  var cAppLocationViewRefreshButtonPresses:Int              = 0
     @State private  var cAppLocationViewRefreshAutoTimer:Int                  = 0
     @State private  var cAppScheduleViewRefreshAutoTimer:Int                  = 0
+    @State private  var cContentViewAppDataButtonPresses:Int                  = 0
+
+    @State private  var isAppDataViewModal:Bool                               = false
 
                     var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
@@ -220,6 +223,76 @@ struct AppLocationView: View
                         }
 
                     }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        self.cContentViewAppDataButtonPresses += 1
+
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Data...'.#(\(self.cContentViewAppDataButtonPresses))...")
+
+                        self.isAppDataViewModal.toggle()
+
+                    #if os(macOS)
+
+                        // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                        openWindow(id:"AppDataGathererView")
+
+                    #endif
+
+                //  #if os(macOS)
+                //
+                //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+                //
+                //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
+                //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
+                //
+                //  #endif
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "swiftdata")
+                                .help(Text("App Data Gatherer"))
+                                .imageScale(.large)
+
+                            Text("Data")
+                                .font(.caption)
+
+                        }
+
+                    }
+            //  #if os(macOS)
+            //      .sheet(isPresented:$isAppDataViewModal, content:
+            //          {
+            //
+            //              AppDataGathererView()
+            //
+            //          }
+            //      )
+            //  #endif
+                #if os(iOS)
+                    .fullScreenCover(isPresented:$isAppDataViewModal)
+                    {
+
+                        AppDataGathererView()
+
+                    }
+                #endif
                 #if os(macOS)
                     .buttonStyle(.borderedProminent)
                     .padding()
