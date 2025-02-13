@@ -16,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0603"
+        static let sClsVers      = "v1.0705"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -41,8 +41,10 @@ struct AppDataGathererView: View
     @State private  var isAppLocationViewModal:Bool                    = false
     @State private  var isAppDataTherapist1ViewModal:Bool              = false
     @State private  var isAppDataTherapist2ViewModal:Bool              = false
+    @State private  var isAppDataTherapist3ViewModal:Bool              = false
     @State private  var isAppDataPatient1ViewModal:Bool                = false
     @State private  var isAppDataPatient2ViewModal:Bool                = false
+    @State private  var isAppDataPatient3ViewModal:Bool                = false
 
                     var jmAppDelegateVisitor:JmAppDelegateVisitor      = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager    = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
@@ -304,6 +306,126 @@ struct AppDataGathererView: View
                     Section
                     {
 
+                    //  HStack(alignment:.center)
+                    //  {
+                    //
+                    //      Spacer()
+                    //
+                    //      Button
+                    //      {
+                    //
+                    //          self.cAppDataGathererViewTherapistButtonPresses += 1
+                    //
+                    //          let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by TID'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                    //
+                    //          self.isAppDataTherapist1ViewModal.toggle()
+                    //
+                    //      }
+                    //      label:
+                    //      {
+                    //
+                    //          VStack(alignment:.center)
+                    //          {
+                    //
+                    //              Label("", systemImage: "bed.double")
+                    //                  .help(Text("Therapist Data Gatherer #1 by TID Screen..."))
+                    //                  .imageScale(.medium)
+                    //
+                    //              Text("Therapist - Data Gatherer by TID - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                    //                  .font(.caption2)
+                    //
+                    //          }
+                    //
+                    //      }
+                    //  #if os(macOS)
+                    //      .sheet(isPresented:$isAppDataTherapist1ViewModal, content:
+                    //          {
+                    //
+                    //              AppDataGathererTherapist1View()
+                    //
+                    //          }
+                    //      )
+                    //  #endif
+                    //  #if os(iOS)
+                    //      .fullScreenCover(isPresented:$isAppDataTherapist1ViewModal)
+                    //      {
+                    //
+                    //          AppDataGathererTherapist1View()
+                    //
+                    //      }
+                    //  #endif
+                    //  #if os(macOS)
+                    //      .buttonStyle(.borderedProminent)
+                    //      .padding()
+                    //  //  .background(???.isPressed ? .blue : .gray)
+                    //      .cornerRadius(10)
+                    //      .foregroundColor(Color.primary)
+                    //  #endif
+                    //
+                    //      Spacer()
+                    //
+                    //  }
+                    //
+                    //  HStack(alignment:.center)
+                    //  {
+                    //
+                    //      Spacer()
+                    //
+                    //      Button
+                    //      {
+                    //
+                    //          self.cAppDataGathererViewTherapistButtonPresses += 1
+                    //
+                    //          let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                    //
+                    //          self.isAppDataTherapist2ViewModal.toggle()
+                    //
+                    //      }
+                    //      label:
+                    //      {
+                    //
+                    //          VStack(alignment:.center)
+                    //          {
+                    //
+                    //              Label("", systemImage: "bed.double")
+                    //                  .help(Text("Therapist Data Gatherer #2 by tName Screen..."))
+                    //                  .imageScale(.medium)
+                    //
+                    //              Text("Therapist - Data Gatherer by tName - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                    //                  .font(.caption2)
+                    //
+                    //          }
+                    //
+                    //      }
+                    //  #if os(macOS)
+                    //      .sheet(isPresented:$isAppDataTherapist2ViewModal, content:
+                    //          {
+                    //
+                    //              AppDataGathererTherapist2View()
+                    //
+                    //          }
+                    //      )
+                    //  #endif
+                    //  #if os(iOS)
+                    //      .fullScreenCover(isPresented:$isAppDataTherapist2ViewModal)
+                    //      {
+                    //
+                    //          AppDataGathererTherapist2View()
+                    //
+                    //      }
+                    //  #endif
+                    //  #if os(macOS)
+                    //      .buttonStyle(.borderedProminent)
+                    //      .padding()
+                    //  //  .background(???.isPressed ? .blue : .gray)
+                    //      .cornerRadius(10)
+                    //      .foregroundColor(Color.primary)
+                    //  #endif
+                    //
+                    //      Spacer()
+                    //
+                    //  }
+
                         HStack(alignment:.center)
                         {
 
@@ -314,69 +436,9 @@ struct AppDataGathererView: View
 
                                 self.cAppDataGathererViewTherapistButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by TID'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by TID or tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
 
-                                self.isAppDataTherapist1ViewModal.toggle()
-
-                            }
-                            label:
-                            {
-
-                                VStack(alignment:.center)
-                                {
-
-                                    Label("", systemImage: "bed.double")
-                                        .help(Text("Therapist Data Gatherer #1 by TID Screen..."))
-                                        .imageScale(.medium)
-
-                                    Text("Therapist - Data Gatherer by TID - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
-                                        .font(.caption2)
-
-                                }
-
-                            }
-                        #if os(macOS)
-                            .sheet(isPresented:$isAppDataTherapist1ViewModal, content:
-                                {
-
-                                    AppDataGathererTherapist1View()
-
-                                }
-                            )
-                        #endif
-                        #if os(iOS)
-                            .fullScreenCover(isPresented:$isAppDataTherapist1ViewModal)
-                            {
-
-                                AppDataGathererTherapist1View()
-
-                            }
-                        #endif
-                        #if os(macOS)
-                            .buttonStyle(.borderedProminent)
-                            .padding()
-                        //  .background(???.isPressed ? .blue : .gray)
-                            .cornerRadius(10)
-                            .foregroundColor(Color.primary)
-                        #endif
-
-                            Spacer()
-
-                        }
-
-                        HStack(alignment:.center)
-                        {
-
-                            Spacer()
-
-                            Button
-                            {
-
-                                self.cAppDataGathererViewTherapistButtonPresses += 1
-
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Therapist Gatherer by tName'.#(\(self.cAppDataGathererViewTherapistButtonPresses))...")
-
-                                self.isAppDataTherapist2ViewModal.toggle()
+                                self.isAppDataTherapist3ViewModal.toggle()
 
                             }
                             label:
@@ -386,29 +448,29 @@ struct AppDataGathererView: View
                                 {
 
                                     Label("", systemImage: "bed.double")
-                                        .help(Text("Therapist Data Gatherer #2 by tName Screen..."))
+                                        .help(Text("Therapist Data Gatherer #3 by TID or tName Screen..."))
                                         .imageScale(.medium)
 
-                                    Text("Therapist - Data Gatherer by tName - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
+                                    Text("Therapist - Data Gatherer by TID or tName - #(\(self.cAppDataGathererViewTherapistButtonPresses))...")
                                         .font(.caption2)
 
                                 }
 
                             }
                         #if os(macOS)
-                            .sheet(isPresented:$isAppDataTherapist2ViewModal, content:
+                            .sheet(isPresented:$isAppDataTherapist3ViewModal, content:
                                 {
 
-                                    AppDataGathererTherapist2View()
+                                    AppDataGathererTherapist3View()
 
                                 }
                             )
                         #endif
                         #if os(iOS)
-                            .fullScreenCover(isPresented:$isAppDataTherapist2ViewModal)
+                            .fullScreenCover(isPresented:$isAppDataTherapist3ViewModal)
                             {
 
-                                AppDataGathererTherapist2View()
+                                AppDataGathererTherapist3View()
 
                             }
                         #endif
@@ -439,6 +501,126 @@ struct AppDataGathererView: View
                     Section
                     {
 
+                    //  HStack(alignment:.center)
+                    //  {
+                    //
+                    //      Spacer()
+                    //
+                    //      Button
+                    //      {
+                    //
+                    //          self.cAppDataGathererViewPatientButtonPresses += 1
+                    //
+                    //          let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Patient Gatherer by PID'.#(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                    //
+                    //          self.isAppDataPatient1ViewModal.toggle()
+                    //
+                    //      }
+                    //      label:
+                    //      {
+                    //
+                    //          VStack(alignment:.center)
+                    //          {
+                    //
+                    //              Label("", systemImage: "person.text.rectangle")
+                    //                  .help(Text("Patient Data Gatherer #1 by PID Screen..."))
+                    //                  .imageScale(.medium)
+                    //
+                    //              Text("Patient - Data Gatherer by PID - #(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                    //                  .font(.caption2)
+                    //
+                    //          }
+                    //
+                    //      }
+                    //  #if os(macOS)
+                    //      .sheet(isPresented:$isAppDataPatient1ViewModal, content:
+                    //          {
+                    //
+                    //              AppDataGathererPatient1View()
+                    //
+                    //          }
+                    //      )
+                    //  #endif
+                    //  #if os(iOS)
+                    //      .fullScreenCover(isPresented:$isAppDataPatient1ViewModal)
+                    //      {
+                    //
+                    //          AppDataGathererPatient1View()
+                    //
+                    //      }
+                    //  #endif
+                    //  #if os(macOS)
+                    //      .buttonStyle(.borderedProminent)
+                    //      .padding()
+                    //  //  .background(???.isPressed ? .blue : .gray)
+                    //      .cornerRadius(10)
+                    //      .foregroundColor(Color.primary)
+                    //  #endif
+                    //
+                    //      Spacer()
+                    //
+                    //  }
+                    //
+                    //  HStack(alignment:.center)
+                    //  {
+                    //
+                    //      Spacer()
+                    //
+                    //      Button
+                    //      {
+                    //
+                    //          self.cAppDataGathererViewPatientButtonPresses += 1
+                    //
+                    //          let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Patient Gatherer by Name'.#(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                    //
+                    //          self.isAppDataPatient2ViewModal.toggle()
+                    //
+                    //      }
+                    //      label:
+                    //      {
+                    //
+                    //          VStack(alignment:.center)
+                    //          {
+                    //
+                    //              Label("", systemImage: "person.text.rectangle")
+                    //                  .help(Text("Patient Data Gatherer #2 by Name Screen..."))
+                    //                  .imageScale(.medium)
+                    //
+                    //              Text("Patient - Data Gatherer by Name - #(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                    //                  .font(.caption2)
+                    //
+                    //          }
+                    //
+                    //      }
+                    //  #if os(macOS)
+                    //      .sheet(isPresented:$isAppDataPatient2ViewModal, content:
+                    //          {
+                    //
+                    //              AppDataGathererPatient2View()
+                    //
+                    //          }
+                    //      )
+                    //  #endif
+                    //  #if os(iOS)
+                    //      .fullScreenCover(isPresented:$isAppDataPatient2ViewModal)
+                    //      {
+                    //
+                    //          AppDataGathererPatient2View()
+                    //
+                    //      }
+                    //  #endif
+                    //  #if os(macOS)
+                    //      .buttonStyle(.borderedProminent)
+                    //      .padding()
+                    //  //  .background(???.isPressed ? .blue : .gray)
+                    //      .cornerRadius(10)
+                    //      .foregroundColor(Color.primary)
+                    //  #endif
+                    //
+                    //      Spacer()
+                    //
+                    //  }
+
                         HStack(alignment:.center)
                         {
 
@@ -449,69 +631,9 @@ struct AppDataGathererView: View
 
                                 self.cAppDataGathererViewPatientButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Patient Gatherer by PID'.#(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Patient Gatherer by PID or Name'.#(\(self.cAppDataGathererViewPatientButtonPresses))...")
 
-                                self.isAppDataPatient1ViewModal.toggle()
-
-                            }
-                            label:
-                            {
-
-                                VStack(alignment:.center)
-                                {
-
-                                    Label("", systemImage: "person.text.rectangle")
-                                        .help(Text("Patient Data Gatherer #1 by PID Screen..."))
-                                        .imageScale(.medium)
-
-                                    Text("Patient - Data Gatherer by PID - #(\(self.cAppDataGathererViewPatientButtonPresses))...")
-                                        .font(.caption2)
-
-                                }
-
-                            }
-                        #if os(macOS)
-                            .sheet(isPresented:$isAppDataPatient1ViewModal, content:
-                                {
-
-                                    AppDataGathererPatient1View()
-
-                                }
-                            )
-                        #endif
-                        #if os(iOS)
-                            .fullScreenCover(isPresented:$isAppDataPatient1ViewModal)
-                            {
-
-                                AppDataGathererPatient1View()
-
-                            }
-                        #endif
-                        #if os(macOS)
-                            .buttonStyle(.borderedProminent)
-                            .padding()
-                        //  .background(???.isPressed ? .blue : .gray)
-                            .cornerRadius(10)
-                            .foregroundColor(Color.primary)
-                        #endif
-
-                            Spacer()
-
-                        }
-
-                        HStack(alignment:.center)
-                        {
-
-                            Spacer()
-
-                            Button
-                            {
-
-                                self.cAppDataGathererViewPatientButtonPresses += 1
-
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppDataGathererView.Button(Xcode).'Patient Gatherer by Name'.#(\(self.cAppDataGathererViewPatientButtonPresses))...")
-
-                                self.isAppDataPatient2ViewModal.toggle()
+                                self.isAppDataPatient3ViewModal.toggle()
 
                             }
                             label:
@@ -521,29 +643,29 @@ struct AppDataGathererView: View
                                 {
 
                                     Label("", systemImage: "person.text.rectangle")
-                                        .help(Text("Patient Data Gatherer #2 by Name Screen..."))
+                                        .help(Text("Patient Data Gatherer #3 by PID or Name Screen..."))
                                         .imageScale(.medium)
 
-                                    Text("Patient - Data Gatherer by Name - #(\(self.cAppDataGathererViewPatientButtonPresses))...")
+                                    Text("Patient - Data Gatherer by PID or Name - #(\(self.cAppDataGathererViewPatientButtonPresses))...")
                                         .font(.caption2)
 
                                 }
 
                             }
                         #if os(macOS)
-                            .sheet(isPresented:$isAppDataPatient2ViewModal, content:
+                            .sheet(isPresented:$isAppDataPatient3ViewModal, content:
                                 {
 
-                                    AppDataGathererPatient2View()
+                                    AppDataGathererPatient3View()
 
                                 }
                             )
                         #endif
                         #if os(iOS)
-                            .fullScreenCover(isPresented:$isAppDataPatient2ViewModal)
+                            .fullScreenCover(isPresented:$isAppDataPatient3ViewModal)
                             {
 
-                                AppDataGathererPatient2View()
+                                AppDataGathererPatient3View()
 
                             }
                         #endif
@@ -595,7 +717,7 @@ struct AppDataGathererView: View
                     header:
                     {
 
-                        Text("Other")
+                        Text("Schedule(s)")
                             .bold()
                             .italic()
                             .underline()

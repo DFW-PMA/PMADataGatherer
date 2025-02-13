@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1502"
+        static let sClsVers      = "v1.1505"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1707,12 +1707,14 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         // Query => db.getCollection("PatientFile").find({$and: [{"discharged": {$ne: 1}}, {"expectedVisits": {$gte: 1}}]})
             
             pfQueryPatient.whereKeyExists("ID")
-            pfQueryPatient.whereKeyExists("name")
-
-            pfQueryPatient.whereKey("discharged",     notEqualTo:1)
-            pfQueryPatient.whereKey("expectedVisits", greaterThanOrEqualTo:1)
+            pfQueryPatient.whereKeyExists("discharged")
+            pfQueryPatient.whereKeyExists("expectedVisits")
+        //  pfQueryPatient.whereKeyExists("name")
+        //
+        //  pfQueryPatient.whereKey("discharged",     notEqualTo:1)
+        //  pfQueryPatient.whereKey("expectedVisits", greaterThanOrEqualTo:1)
             
-            pfQueryPatient.limit = 1000
+            pfQueryPatient.limit = 3000
             
             let listPFPatientObjects:[PFObject]? = try pfQueryPatient.findObjects()
             
@@ -1734,8 +1736,10 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
           
                     cPFPatientObjects += 1
           
-                    let sPFPatientParseName:String = String(describing: (pfPatientObject.object(forKey:"name") ?? "-N/A-"))
-                    let sPFPatientParsePID:String  = String(describing: (pfPatientObject.object(forKey:"ID") ?? "-N/A-"))
+                    let sPFPatientParseFirstName:String = String(describing: (pfPatientObject.object(forKey:"firstName") ?? "-N/A-"))
+                    let sPFPatientParseLastName:String  = String(describing: (pfPatientObject.object(forKey:"lastName")  ?? "-N/A-"))
+                    var sPFPatientParseName:String      = String(describing: (pfPatientObject.object(forKey:"name")      ?? "-N/A-"))
+                    let sPFPatientParsePID:String       = String(describing: (pfPatientObject.object(forKey:"ID")        ?? "-N/A-"))
           
                     if (sPFPatientParsePID.count  < 1 ||
                         sPFPatientParsePID       == "-N/A-")
@@ -1763,9 +1767,25 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                         sPFPatientParseName       == "-N/A-")
                     {
           
-                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFPatientObjects)) 'pfPatientObject' for 'sPFPatientParseName' of [\(sPFPatientParseName)] - the 'name' field is nil or '-N/A-' - Warning!")
+                        self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFPatientObjects)) 'pfPatientObject' has 'sPFPatientParseName' of [\(sPFPatientParseName)] - the 'name' field is nil or '-N/A-' - attempting to use first/last name(s) - Warning!")
+
+                        if (sPFPatientParseFirstName.count  > 0       &&
+                            sPFPatientParseFirstName       != "-N/A-" &&
+                            sPFPatientParseLastName.count   > 0       &&
+                            sPFPatientParseLastName        != "-N/A-")
+                        {
+
+                            sPFPatientParseName = "\(sPFPatientParseLastName),\(sPFPatientParseFirstName)"
+
+                        }
+                        else
+                        {
+
+                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFPatientObjects)) 'pfPatientObject' has 'sPFPatientParseName' of [\(sPFPatientParseName)] - the 'name' field is nil or '-N/A-' - unable to calculate a name from first/last name(s) - Error!")
           
-                        continue
+                            continue
+
+                        }
           
                     }
           
@@ -1810,7 +1830,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
             else
             {
           
-                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryTherapist' returned a count of #(\(listPFPatientObjects!.count)) PFObject(s) for ALL PID(s) not 'discharged' and with 'expectedVisits' > 0 - Error!")
+                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryPatient' returned a count of #(\(listPFPatientObjects!.count)) PFObject(s) for ALL PID(s) not 'discharged' and with 'expectedVisits' > 0 - Error!")
           
             }
             
@@ -1818,7 +1838,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         catch
         {
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Parse - failed execute the query 'pfQueryAdmins' - Details: \(error) - Error!")
+            self.xcgLogMsg("\(sCurrMethodDisp) Parse - failed execute the query 'pfQueryPatient' - Details: \(error) - Error!")
             
         }
 

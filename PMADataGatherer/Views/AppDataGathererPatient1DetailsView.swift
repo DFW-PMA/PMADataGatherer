@@ -26,7 +26,7 @@ struct AppDataGathererPatient1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererPatient1DetailsView"
-        static let sClsVers      = "v1.0516"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -166,7 +166,7 @@ struct AppDataGathererPatient1DetailsView: View
                         .font(.caption2) 
                         .frame(maxWidth:.infinity, alignment:.center)
 
-                    Text("DATA Gatherer - Patient Details by PID")
+                    Text("DATA Gatherer - Patient Details by PID/Name")
                         .bold()
                         .font(.caption2) 
                         .frame(maxWidth:.infinity, alignment:.center)
@@ -180,7 +180,7 @@ struct AppDataGathererPatient1DetailsView: View
                 HStack()
                 {
 
-                    Text(":: Patients' PID: ")
+                    Text("::: Patients' PID: ")
                         .font(.caption) 
                         .onAppear
                         {
@@ -192,6 +192,7 @@ struct AppDataGathererPatient1DetailsView: View
                     Text("\(self.sPatientPID)")
                         .italic()
                         .font(.caption) 
+                        .foregroundColor(.red)
 
                     Spacer()
 
@@ -206,6 +207,7 @@ struct AppDataGathererPatient1DetailsView: View
                     Text("\(self.sPatientName)")
                         .italic()
                         .font(.caption) 
+                        .foregroundColor(.red)
 
                     Spacer()
 
@@ -304,7 +306,20 @@ struct AppDataGathererPatient1DetailsView: View
                         {
 
                             Text("Patients' Name (No Whitespace)")
-                            Text("\(self.pfPatientFileItem!.sPFPatientFileNameNoWS)")
+
+                            if (self.pfPatientFileItem!.sPFPatientFileNameNoWS.count > 0)
+                            {
+                            
+                                Text("\(self.pfPatientFileItem!.sPFPatientFileNameNoWS)")
+                            
+                            }
+                            else
+                            {
+                            
+                                Text("--- Omitted in the Database - Warning! ---")
+                                    .foregroundColor(.red)
+                            
+                            }
 
                         }
                         .font(.caption2) 
