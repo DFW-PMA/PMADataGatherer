@@ -15,7 +15,7 @@ struct AppLocationView: View
     {
         
         static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.1402"
+        static let sClsVers      = "v1.1601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -558,9 +558,10 @@ struct AppLocationView: View
 
                             AppLocationView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
                             { _ in
-                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()' and 'syncPFDataItems()'...")
+                                self.jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()
                                 self.syncPFDataItems()
-                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoked  the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()' and 'syncPFDataItems()'...")
                             }
 
                         //  AppLocationView.timerOnDemand3Sec = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
@@ -594,10 +595,44 @@ struct AppLocationView: View
 
             }
 
+            Text("")            
+                .hidden()
+                .onAppear(
+                    perform:
+                    {
+                        // Finish App 'initialization'...
+
+                        let _ = self.finishAppInitialization()
+                    })
+
         }
         .padding()
         
     }
+    
+    private func finishAppInitialization()
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Finish the App 'initialization'...
+  
+        self.xcgLogMsg("\(ClassInfo.sClsDisp) Invoking the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()'...")
+
+        self.jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()
+
+        self.xcgLogMsg("\(ClassInfo.sClsDisp) Invoked  the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()'...")
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of private func finishAppInitialization().
     
     private func checkIfAppParseCoreHasPFCscDataItems(bRefresh:Bool = false) -> Bool
     {
