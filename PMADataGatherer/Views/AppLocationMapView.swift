@@ -16,7 +16,7 @@ struct AppLocationMapView: View
     {
         
         static let sClsId        = "AppLocationMapView"
-        static let sClsVers      = "v1.1407"
+        static let sClsVers      = "v1.1501"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -394,9 +394,43 @@ struct AppLocationMapView: View
 
             }
 
+            Text("")            
+                .hidden()
+                .onAppear(
+                    perform:
+                    {
+                        // Finish App 'initialization'...
+
+                        let _ = self.finishAppInitialization()
+                    })
+
         }
-        
+
     }
+    
+    private func finishAppInitialization()
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Finish the App 'initialization'...
+  
+        self.xcgLogMsg("\(ClassInfo.sClsDisp) Invoking the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()'...")
+
+        self.jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()
+
+        self.xcgLogMsg("\(ClassInfo.sClsDisp) Invoked  the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()'...")
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of private func finishAppInitialization().
     
     private func convertPFCscDataItemToTid(pfCscDataItem:ParsePFCscDataItem)->String
     {

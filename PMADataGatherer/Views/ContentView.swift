@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.3001"
+        static let sClsVers      = "v1.3101"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -502,11 +502,45 @@ struct ContentView: View
             }
             
             Spacer()
+
+            Text("")            
+                .hidden()
+                .onAppear(
+                    perform:
+                    {
+                        // Finish App 'initialization'...
+
+                        let _ = self.finishAppInitialization()
+                    })
             
         }
         .padding()
         
     }
 
+    private func finishAppInitialization()
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Finish the App 'initialization'...
+  
+        self.xcgLogMsg("\(ClassInfo.sClsDisp) Invoking the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()'...")
+
+        self.jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()
+
+        self.xcgLogMsg("\(ClassInfo.sClsDisp) Invoked  the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()'...")
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of private func finishAppInitialization().
+    
 }   // End of struct ContentView(View).
 

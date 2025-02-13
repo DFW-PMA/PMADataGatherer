@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.3202"
+        static let sClsVers      = "v1.3302"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -152,6 +152,10 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 //  var alarmSwiftDataItems:[AlarmSwiftDataItem]                   = []
 //  @Published 
 //  var bAreAlarmSwiftDataItemsAvailable:Bool                      = false
+
+    // App <global> Message(s) 'stack' cached before XCGLogger is available:
+
+    let appGlobalInfo:AppGlobalInfo                                = AppGlobalInfo.ClassSingleton.appGlobalInfo
     
     // App <possible> JmAppSwiftData Manager instance:
 
@@ -267,6 +271,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     //  asToString.append("SwiftData 'bAreAlarmSwiftDataItemsAvailable': (\(String(describing: self.bAreAlarmSwiftDataItemsAvailable))),")
     //  asToString.append("],")
     //  asToString.append("[")
+        asToString.append("appGlobalInfo': [\(String(describing: self.appGlobalInfo))],")
         asToString.append("jmAppSwiftDataManager': [\(String(describing: self.jmAppSwiftDataManager))],")
         asToString.append("jmObjCSwiftEnvBridge': [\(String(describing: self.jmObjCSwiftEnvBridge))],")
         asToString.append("jmAppMetricKitManager': [\(String(describing: self.jmAppMetricKitManager))],")
@@ -760,6 +765,37 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     }   // End of private func setupAppDelegateVisitorXCGLogger().
 
+    @objc public func checkAppDelegateVisitorTraceLogFileForSize()
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Check the 'default' xcgLogger? File size, clear if it's too large...
+
+        let cTestFilespecSize:Int64 = JmFileIO.getFilespecSize(sFilespec:self.sAppDelegateVisitorLogFilespec)
+
+        if (cTestFilespecSize > AppGlobalInfo.sGlobalInfoAppLogFilespecMaxSize)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Current Log file size of (\(cTestFilespecSize)) is greater then (\(AppGlobalInfo.sGlobalInfoAppLogFilespecMaxSize)) - clearing the file [\(String(describing: self.sAppDelegateVisitorLogFilespec))]...")
+
+            self.clearAppDelegateVisitorTraceLogFile()
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Cleared the current Log file [\(String(describing: self.sAppDelegateVisitorLogFilespec))]...")
+        
+        }
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of @objc public func checkAppDelegateVisitorTraceLogFileForSize().
+
     @objc public func clearAppDelegateVisitorTraceLogFile()
     {
 
@@ -875,9 +911,9 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
         // Get the 'shared' instance of the AppGlobalInfo struct and finish it's 'setup':
 
-        let appGlobalInfo:AppGlobalInfo = AppGlobalInfo.ClassSingleton.appGlobalInfo
+    //  let appGlobalInfo:AppGlobalInfo = AppGlobalInfo.ClassSingleton.appGlobalInfo
 
-        appGlobalInfo.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
+        self.appGlobalInfo.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
 
         // Exit:
 
