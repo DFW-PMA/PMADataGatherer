@@ -17,7 +17,7 @@ struct AppDataGathererTherapist3View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist3View"
-        static let sClsVers      = "v1.0110"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -46,9 +46,12 @@ struct AppDataGathererTherapist3View: View
     @State       private var listSelectableTherapistNames:[AppSearchableTherapistName] = [AppSearchableTherapistName]()
 
     @State       private var cAppLocationViewLogPFDataButtonPresses:Int                = 0
+    @State       private var cAppTidScheduleViewButtonPresses:Int                      = 0
     @State       private var cAppDataGathererTherapist3ViewRefreshButtonPresses:Int    = 0
 
     @State       private var isAppLogPFDataViewModal:Bool                              = false
+    @State       private var isAppTidScheduleViewModal:Bool                            = false
+    @State       private var isAppTidScheduleViewEnabled:Bool                          = false
     @State       private var isAppRunTherapistLocateByTidShowing:Bool                  = false
     @State       private var isAppTherapistDetailsByTidShowing:Bool                    = false
     @State       private var isAppRunTherapistLocateByTNameShowing:Bool                = false
@@ -101,6 +104,9 @@ struct AppDataGathererTherapist3View: View
         
         let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) \(ClassInfo.sClsCopyRight)...")
         
+        let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+            = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+
     //  NavigationStack
         ScrollView
         {
@@ -167,6 +173,71 @@ struct AppDataGathererTherapist3View: View
                         .foregroundColor(Color.primary)
                     #endif
 
+                    }
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        self.cAppTidScheduleViewButtonPresses += 1
+
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
+
+                        self.isAppTidScheduleViewModal.toggle()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "doc.text.magnifyingglass")
+                                .help(Text("App TID/Patient Schedule Viewer"))
+                                .imageScale(.large)
+
+                            Text("Schedule")
+                                .font(.caption)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppTidScheduleViewModal, content:
+                        {
+
+                            AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+
+                        }
+                    )
+                #elseif os(iOS)
+                    .fullScreenCover(isPresented:$isAppTidScheduleViewModal)
+                    {
+
+                        AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+
+                    }
+                #endif
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+                    .padding()
+                    .onAppear
+                    {
+                        if (self.sTherapistTID.count                > 0 &&
+                            listScheduledPatientLocationItems.count > 0)
+                        {
+                            self.isAppTidScheduleViewEnabled = true
+                        }
+                        else
+                        {
+                            self.isAppTidScheduleViewEnabled = false
+                        }
                     }
 
                     Spacer()
@@ -799,7 +870,40 @@ struct AppDataGathererTherapist3View: View
         .padding()
         
     }
-    
+
+    private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem]
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
+
+        // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
+
+        var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
+        let jmAppParseCoreManager:JmAppParseCoreManager                      = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+
+        if (sPFTherapistParseTID.count > 0)
+        {
+
+            if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
+            {
+
+                listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
+
+            }
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
+  
+        return listScheduledPatientLocationItems
+  
+    }   // End of private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem].
+
     private func locateAppTherapistNamebyTid(sTherapistTID:String = "")->String
     {
 

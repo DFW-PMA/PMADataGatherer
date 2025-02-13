@@ -26,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.0904"
+        static let sClsVers      = "v1.1001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -38,6 +38,8 @@ struct AppDataGathererTherapist1DetailsView: View
 
 //  @Environment(\.dismiss) var dismiss
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.openURL)          var openURL
+    @Environment(\.openWindow)       var openWindow
 
     @Binding     private var sTherapistTID:String
 
@@ -47,6 +49,9 @@ struct AppDataGathererTherapist1DetailsView: View
     @State       private var sSupervisorTID:String                         = ""
     @State       private var sSupervisorName:String                        = ""
 
+    @State       private var cAppTidScheduleViewButtonPresses:Int          = 0
+
+    @State       private var isAppTidScheduleViewModal:Bool                = false
     @State       private var isAppSupervisorDetailsByTIDShowing:Bool       = false
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor     = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
@@ -99,6 +104,9 @@ struct AppDataGathererTherapist1DetailsView: View
         
         let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) \(ClassInfo.sClsCopyRight)...")
         
+        let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+            = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+
         NavigationStack
         {
 
@@ -107,6 +115,57 @@ struct AppDataGathererTherapist1DetailsView: View
 
                 HStack(alignment:.center)
                 {
+
+                    Button
+                    {
+
+                        self.cAppTidScheduleViewButtonPresses += 1
+
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
+
+                        self.isAppTidScheduleViewModal.toggle()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "doc.text.magnifyingglass")
+                                .help(Text("App TID/Patient Schedule Viewer"))
+                                .imageScale(.large)
+
+                            Text("Schedule")
+                                .font(.caption)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppTidScheduleViewModal, content:
+                        {
+
+                            AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+
+                        }
+                    )
+                #elseif os(iOS)
+                    .fullScreenCover(isPresented:$isAppTidScheduleViewModal)
+                    {
+
+                        AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+
+                    }
+                #endif
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+                    .padding()
 
                     Spacer()
 
@@ -642,6 +701,39 @@ struct AppDataGathererTherapist1DetailsView: View
         
     }
     
+    private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem]
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
+
+        // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
+
+        var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
+        let jmAppParseCoreManager:JmAppParseCoreManager                      = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+
+        if (sPFTherapistParseTID.count > 0)
+        {
+
+            if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
+            {
+
+                listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
+
+            }
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
+  
+        return listScheduledPatientLocationItems
+  
+    }   // End of private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem].
+
     private func locateAppTherapistNamebyTid(tidType:TIDType, sTherapistTID:String = "")->String
     {
 
