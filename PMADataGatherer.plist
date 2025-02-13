@@ -11,7 +11,8 @@
                     <key>kind</key>
                     <string>software-package</string>
                     <key>url</key>
-                    <string>https://github.com/DFW-PMA/PMADataGatherer/releases/download/PDG-10.7/PMADataGatherer_iOS.1.01.30.01.25C044.ipa</string>
+                    <string>https://github.com/DFW-PMA/PMADataGatherer/releases/download/PDF-10.8/PMADataGatherer_iOS.1.01.30.12.25C044.ipa</string>
+                <!--<string>https://github.com/DFW-PMA/PMADataGatherer/releases/download/PDG-10.7/PMADataGatherer_iOS.1.01.30.01.25C044.ipa</string> -->
                 <!--<string>https://github.com/DFW-PMA/PMADataGatherer/releases/download/PDG-10.6/PMADataGatherer_iOS.1.01.28.01.25C042.ipa</string> -->
                 <!--<string>https://github.com/DFW-PMA/PMADataGatherer/releases/download/PDG-10.4/PMADataGatherer_iOS.1.01.19.01.25C029.ipa</string> -->
                 </dict>
