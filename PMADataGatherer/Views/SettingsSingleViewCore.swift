@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.2302"
+        static let sClsVers      = "v1.2401"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -75,6 +75,7 @@ struct SettingsSingleViewCore: View
     @State private var sAppExecutionPreviousLogToUpload:String               = ""
     @State private var isAppExecutionPreviousShowing:Bool                    = false
 
+                   var appGlobalInfo:AppGlobalInfo                           = AppGlobalInfo.ClassSingleton.appGlobalInfo
                    var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
                    var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
@@ -986,6 +987,15 @@ struct SettingsSingleViewCore: View
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
             return
+
+        }
+
+        // If we're delaying XCGLogger messsaging, then 'flush' the output from the Visitor before we zip and/or upload...
+
+        if (self.appGlobalInfo.bEnableAppInternalSelectiveTracing == true)
+        {
+
+            self.jmAppDelegateVisitor.flushPreXCGLoggerMessagesIntoLog()
 
         }
 

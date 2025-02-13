@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.3202"
+        static let sClsVers      = "v1.3308"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -152,6 +152,10 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 //  var alarmSwiftDataItems:[AlarmSwiftDataItem]                   = []
 //  @Published 
 //  var bAreAlarmSwiftDataItemsAvailable:Bool                      = false
+
+    // App <global> Info (shared) instance:
+
+    var appGlobalInfo:AppGlobalInfo                                = AppGlobalInfo.ClassSingleton.appGlobalInfo
     
     // App <possible> JmAppSwiftData Manager instance:
 
@@ -183,6 +187,10 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     // App <possible> NWSWeatherModel observable instance:
 
 //  var nwsWeatherModelObservable:NWSWeatherModelObservable?       = nil
+
+    // App <global> DateStamp formatter:
+
+    let dtFormatterDateStamp:DateFormatter                         = DateFormatter()
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
@@ -267,6 +275,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     //  asToString.append("SwiftData 'bAreAlarmSwiftDataItemsAvailable': (\(String(describing: self.bAreAlarmSwiftDataItemsAvailable))),")
     //  asToString.append("],")
     //  asToString.append("[")
+        asToString.append("appGlobalInfo': [\(String(describing: self.appGlobalInfo))],")
         asToString.append("jmAppSwiftDataManager': [\(String(describing: self.jmAppSwiftDataManager))],")
         asToString.append("jmObjCSwiftEnvBridge': [\(String(describing: self.jmObjCSwiftEnvBridge))],")
         asToString.append("jmAppMetricKitManager': [\(String(describing: self.jmAppMetricKitManager))],")
@@ -275,6 +284,10 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         asToString.append("jmAppParseCoreBkgdDataRepo': [\(String(describing: self.jmAppParseCoreBkgdDataRepo))],")
         asToString.append("jmAppCLModelObservable2': [\(String(describing: self.jmAppCLModelObservable2))],")
     //  asToString.append("nwsWeatherModelObservable': [\(String(describing: self.nwsWeatherModelObservable))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("dtFormatterDateStamp': [\(self.dtFormatterDateStamp)],")
+        asToString.append("listPreXCGLoggerMessages': has (\(self.listPreXCGLoggerMessages.count)) message(s),")
         asToString.append("],")
         asToString.append("]")
 
@@ -294,6 +307,12 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         
         self.cAppDelegateVisitorInitCalls           += 1
         self.bAppDelegateVisitorLogFilespecIsUsable  = false
+
+        self.dtFormatterDateStamp.locale             = Locale(identifier: "en_US")
+        self.dtFormatterDateStamp.timeZone           = TimeZone.current
+        self.dtFormatterDateStamp.dateFormat         = "yyyy-MM-dd hh:mm:ss.SSS"
+
+        self.listPreXCGLoggerMessages.reserveCapacity(self.appGlobalInfo.iPreXCGLoggerMessageLimit)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked - #(\(self.cAppDelegateVisitorInitCalls)) time(s) - 'self' is [\(self)]...")
 
@@ -326,6 +345,143 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     }   // End of private override init().
         
+    @objc public func xcgLogMsg(_ sMessage:String)
+    {
+
+        if (self.appGlobalInfo.bEnableAppInternalSelectiveTracing == false)
+        {
+
+            if (self.bAppDelegateVisitorLogFilespecIsUsable == true)
+            {
+
+                self.xcgLogger?.info(sMessage)
+
+            }
+            else
+            {
+
+                let sMessageDateStamp:String   = self.dtFormatterDateStamp.string(from:.now)
+                let sMessageDateStamped:String = "\(sMessageDateStamp) >> \(sMessage)"
+
+                self.listPreXCGLoggerMessages.append(sMessageDateStamped)
+
+                print("\(sMessageDateStamped)")
+
+            }
+
+        }
+        else
+        {
+
+            if (self.listPreXCGLoggerMessages.count > self.appGlobalInfo.iPreXCGLoggerMessageLimit)
+            {
+
+                self.flushPreXCGLoggerMessagesIntoLog(bBypassPhysicalLog:true)  
+
+            //  DispatchQueue.main.async
+            //  {
+            //
+            //  //  self.listPreXCGLoggerMessages = [String]()
+            //  //  self.listPreXCGLoggerMessages.removeAll(keepingCapacity:true)
+            //
+            //      self.listPreXCGLoggerMessages = [String]()
+            //
+            //      self.listPreXCGLoggerMessages.reserveCapacity(self.appGlobalInfo.iPreXCGLoggerMessageLimit)
+            //
+            //  }
+
+            }
+
+            let sMessageDateStamp:String   = self.dtFormatterDateStamp.string(from:.now)
+            let sMessageDateStamped:String = "\(sMessageDateStamp) >> \(sMessage)"
+
+            self.listPreXCGLoggerMessages.append(sMessageDateStamped)
+
+            print("\(sMessageDateStamped)")
+
+        }
+
+        // Exit:
+
+        return
+
+    }   // End of @objc public func xcgLogMsg().
+
+    public func flushPreXCGLoggerMessagesIntoLog(bBypassPhysicalLog:Bool = false)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bBypassPhysicalLog' is [\(bBypassPhysicalLog)]...")
+
+        // Possibly 'flush' into the physical Log...
+
+        if (bBypassPhysicalLog == true)
+        {
+        
+            // Flush (any) Pre-XCGLogger message(s) into the Log <maybe>:
+
+            if (self.bAppDelegateVisitorLogFilespecIsUsable == true &&
+                self.listPreXCGLoggerMessages.count          > 0)
+            {
+
+                self.xcgLogMsg("")
+                self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooling the XCGLogger 'pre' Message(s) === >>>")
+
+            //  let sPreXCGLoggerMessages:String = self.listPreXCGLoggerMessages.joined(separator:"\n")
+            //
+            //  self.xcgLogMsg(sPreXCGLoggerMessages)
+
+                for sMessage in self.listPreXCGLoggerMessages
+                {
+
+                    if (sMessage.count < 1)
+                    {
+
+                        continue
+
+                    }
+
+                    if (self.bAppDelegateVisitorLogFilespecIsUsable == true)
+                    {
+
+                        self.xcgLogger?.info(sMessage)
+
+                    }
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooled  the XCGLogger 'pre' Message(s) === >>>")
+                self.xcgLogMsg("")
+
+            }
+            
+        
+        }
+        
+        // Clear the list...
+
+        DispatchQueue.main.async
+        {
+
+        //  self.listPreXCGLoggerMessages = [String]()
+        //  self.listPreXCGLoggerMessages.removeAll(keepingCapacity:true)
+
+            self.listPreXCGLoggerMessages = [String]()
+
+            self.listPreXCGLoggerMessages.reserveCapacity(self.appGlobalInfo.iPreXCGLoggerMessageLimit)
+
+        }
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of public func flushPreXCGLoggerMessagesIntoLog().
+
     public func runPostInitializationTasks()
     {
         
@@ -514,30 +670,6 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     }   // End of public func runPostInitializationTasks().
 
-    @objc public func xcgLogMsg(_ sMessage:String)
-    {
-
-        if (self.bAppDelegateVisitorLogFilespecIsUsable == true)
-        {
-
-            self.xcgLogger?.info(sMessage)
-
-        }
-        else
-        {
-
-            print("\(sMessage)")
-
-            self.listPreXCGLoggerMessages.append(sMessage)
-
-        }
-
-        // Exit:
-
-        return
-
-    }   // End of @objc public func xcgLogMsg().
-
     // Method(s) to setup the file and console 'logging' output:
 
     private func initAppDelegateVisitorTraceLog(initappdelegatetracelogtag:String = "-unknown-")
@@ -552,21 +684,25 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
             self.setupAppDelegateVisitorTraceLogFile()
             self.setupAppDelegateVisitorXCGLogger()
 
-            if (self.bAppDelegateVisitorLogFilespecIsUsable == true &&
-                self.listPreXCGLoggerMessages.count          > 0)
-            {
+        //  if (self.bAppDelegateVisitorLogFilespecIsUsable == true &&
+        //      self.listPreXCGLoggerMessages.count          > 0)
+        //  {
+        //
+        //      self.xcgLogMsg("")
+        //      self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooling the XCGLogger 'pre' Message(s) === >>>")
+        //
+        //      let sPreXCGLoggerMessages:String = self.listPreXCGLoggerMessages.joined(separator: "\n")
+        //
+        //      self.xcgLogMsg(sPreXCGLoggerMessages)
+        //
+        //      self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooled  the XCGLogger 'pre' Message(s) === >>>")
+        //      self.xcgLogMsg("")
+        //
+        //      self.listPreXCGLoggerMessages = [String]()
+        //
+        //  }
 
-                self.xcgLogMsg("")
-                self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooling the XCGLogger 'pre' Message(s) === >>>")
-
-                let sPreXCGLoggerMessages:String = self.listPreXCGLoggerMessages.joined(separator: "\n")
-
-                self.xcgLogMsg(sPreXCGLoggerMessages)
-
-                self.xcgLogMsg("\(sCurrMethodDisp) <<< === Spooled  the XCGLogger 'pre' Message(s) === >>>")
-                self.xcgLogMsg("")
-
-            }
+            self.flushPreXCGLoggerMessagesIntoLog()
 
             self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'initappdelegatetracelogtag' is [\(initappdelegatetracelogtag)]...")
 
@@ -875,7 +1011,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
         // Get the 'shared' instance of the AppGlobalInfo struct and finish it's 'setup':
 
-        let appGlobalInfo:AppGlobalInfo = AppGlobalInfo.ClassSingleton.appGlobalInfo
+    //  let appGlobalInfo:AppGlobalInfo = AppGlobalInfo.ClassSingleton.appGlobalInfo
 
         appGlobalInfo.setJmAppDelegateVisitorInstance(jmAppDelegateVisitor:self)
 

@@ -28,7 +28,7 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.2701"
+    static let sGlobalInfoAppVers:String                                 = "v1.2803"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
     static let sGlobalInfoAppLogFilespec:String                          = "PMADataGatherer.log"
@@ -119,6 +119,11 @@ public class AppGlobalInfo: NSObject
            var sAppVersionAndBuildNumber:String                          = "-unknown-"
            var sAppCopyright:String                                      = "-unknown-"
 
+    // Various 'app' Internal 'tracing' (selective) flag(s):
+
+           var bEnableAppInternalSelectiveTracing:Bool                   = true
+           var iPreXCGLoggerMessageLimit:Int                             = 10000
+
     // App 'delegate' Visitor:
 
            var jmAppDelegateVisitor:JmAppDelegateVisitor?                = nil
@@ -129,7 +134,7 @@ public class AppGlobalInfo: NSObject
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
-           var listPreXCGLoggerMessages:[String]                         = Array()
+           var listPreXCGLoggerMessages:[String]                         = [String]()
 
     // Private 'init()' to make this class a 'singleton':
 
@@ -561,6 +566,10 @@ public class AppGlobalInfo: NSObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sAppBundleIdentifier' is [\(String(describing: self.sAppBundleIdentifier))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sAppVersionAndBuildNumber' is [\(String(describing: self.sAppVersionAndBuildNumber))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sAppCopyright' is [\(String(describing: self.sAppCopyright))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bEnableAppInternalSelectiveTracing' is [\(String(describing: self.bEnableAppInternalSelectiveTracing))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.iPreXCGLoggerMessageLimit' is [\(String(describing: self.iPreXCGLoggerMessageLimit))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.listPreXCGLoggerMessages' has (\(self.listPreXCGLoggerMessages.count)) message(s)...")
 
         // Exit:
 

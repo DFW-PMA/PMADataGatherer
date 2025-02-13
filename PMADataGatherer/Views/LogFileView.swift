@@ -17,7 +17,7 @@ struct LogFileView: View
     {
         
         static let sClsId          = "LogFileView"
-        static let sClsVers        = "v1.1801"
+        static let sClsVers        = "v1.1901"
         static let sClsDisp        = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
@@ -29,23 +29,25 @@ struct LogFileView: View
 
     @Environment(\.presentationMode) var presentationMode
 
+    @State private var cLogFileViewAppLogFlushButtonPresses:Int = 0
     @State private var cLogFileViewAppLogClearButtonPresses:Int = 0
 
+    @State private var isAppLogFlushShowingAlert:Bool           = false
     @State private var isAppLogClearShowingAlert:Bool           = false
     
 #if os(macOS)
 
-    private let pasteboard = NSPasteboard.general
+           private let pasteboard                               = NSPasteboard.general
 
 #elseif os(iOS)
 
-    private let pasteboard = UIPasteboard.general
+           private let pasteboard                               = UIPasteboard.general
 
 #endif
 
     @State  var logFileUrl:URL?
     
-    var jmAppDelegateVisitor:JmAppDelegateVisitor               = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+            var jmAppDelegateVisitor:JmAppDelegateVisitor       = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
     init()
     {
@@ -133,6 +135,50 @@ struct LogFileView: View
                 .foregroundColor(Color.primary)
             #endif
                 .padding()
+
+                Spacer()
+
+                Button
+                {
+
+                    self.cLogFileViewAppLogFlushButtonPresses += 1
+
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):LogFileView.Button(Xcode).'App Log 'Flush'.#(\(self.cLogFileViewAppLogFlushButtonPresses))'...")
+
+                    self.jmAppDelegateVisitor.flushPreXCGLoggerMessagesIntoLog()
+
+                    self.isAppLogFlushShowingAlert = true
+
+                }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "clear")
+                            .help(Text("Flush the AppDelegateVisitor Pre-XCGLogger messages into LOG file..."))
+                            .imageScale(.medium)
+
+                        Text("Flush Pre-LOG Meessages")
+                            .font(.caption2)
+
+                    }
+
+                }
+                .alert("AppDelegateVisitor Pre-XCGLogger Message(s) have been 'Flushed'...", isPresented:$isAppLogFlushShowingAlert)
+                {
+
+                    Button("Ok", role:.cancel) { }
+
+                }
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
 
                 Spacer()
 
@@ -263,7 +309,11 @@ struct LogFileView: View
 
             Text("")
 
-            Text("Log file 'size' is: [\(self.getLogFilespecFileSizeDisplayableMB())]")
+            Text("Log file 'size' is:         [\(self.getLogFilespecFileSizeDisplayableMB())]")
+
+            Text("")
+
+            Text("Pre-Log Message 'count' is: (\(self.jmAppDelegateVisitor.listPreXCGLoggerMessages.count))")
 
             Spacer()
 
