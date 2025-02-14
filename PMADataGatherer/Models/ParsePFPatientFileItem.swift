@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.0903"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -1328,14 +1328,15 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] for Therapist [\(self.idPFPatientFileObject)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)] - 'requestID' is [\(requestID)] - 'dictCurrentLocation' is [\(String(describing: dictCurrentLocation))]...")
+    //  self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] for Therapist [\(self.idPFPatientFileObject)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)] - 'requestID' is [\(requestID)] - 'dictCurrentLocation' is [\(String(describing: dictCurrentLocation))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - for Therapist [\(self.idPFPatientFileObject)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)]...")
 
         // Update the address info for BOTH 'self' and (possibly 'from'/'to')...
 
         if (dictCurrentLocation.count > 0)
         {
         
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFPatientFileName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
+        //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFPatientFileName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
 
             self.sHomeLocLocationName = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
             self.sHomeLocCity         = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
@@ -1352,11 +1353,11 @@ class ParsePFPatientFileItem: NSObject, Identifiable
                     self.pfPatientFileObjectClonedFrom != self)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfPatientFileObjectClonedFrom' of [\(String(describing: self.pfPatientFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfPatientFileObjectClonedFrom' of [\(String(describing: self.pfPatientFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
 
                     self.pfPatientFileObjectClonedFrom!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfPatientFileObjectClonedFrom' of [\(String(describing: self.pfPatientFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfPatientFileObjectClonedFrom' of [\(String(describing: self.pfPatientFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
 
                 }
 
@@ -1364,11 +1365,11 @@ class ParsePFPatientFileItem: NSObject, Identifiable
                     self.pfPatientFileObjectClonedTo != self)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfPatientFileObjectClonedTo' of [\(String(describing: self.pfPatientFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfPatientFileObjectClonedTo' of [\(String(describing: self.pfPatientFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
 
                     self.pfPatientFileObjectClonedTo!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfPatientFileObjectClonedTo' of [\(String(describing: self.pfPatientFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfPatientFileObjectClonedTo' of [\(String(describing: self.pfPatientFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFPatientFileName)]...")
 
                 }
             
@@ -1400,7 +1401,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'object' is [\(object)]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'object' is [\(object)]...")
+
+        }
 
         var sValueTypeOf:String = "-undefined-"
 
@@ -1420,11 +1426,21 @@ class ParsePFPatientFileItem: NSObject, Identifiable
                 sValueTypeOf = "-unmatched-"
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Supplied object is 'typeOf' [\(String(describing: type(of: object)))]/[\(sValueTypeOf)]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Supplied object is 'typeOf' [\(String(describing: type(of: object)))]/[\(sValueTypeOf)]...")
+
+        }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sValueTypeOf' is [\(sValueTypeOf)]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sValueTypeOf' is [\(sValueTypeOf)]...")
+
+        }
 
         return sValueTypeOf
 
@@ -1436,7 +1452,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPhoneNumber' is [\(sPhoneNumber)]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPhoneNumber' is [\(sPhoneNumber)]...")
+
+        }
 
         // Format the supplied Phone #...
 
@@ -1447,7 +1468,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
             
             // Exit...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+            if (bInternalTraceFlag == true)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+
+            }
 
             return sPhoneNumberFormatted
             
@@ -1480,7 +1506,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPhoneNumber' is [\(sPhoneNumber)] - 'sPhoneNumberFormatted' is [\(sPhoneNumberFormatted)]...")
+
+        }
   
         return sPhoneNumberFormatted
         
@@ -1492,7 +1523,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'object' is [\(object)] - 'listStringsToRemove' is [\(listStringsToRemove)] - 'bFormatNumericsAsPhoneNumbers' is [\(bFormatNumericsAsPhoneNumbers)]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'object' is [\(object)] - 'listStringsToRemove' is [\(listStringsToRemove)] - 'bFormatNumericsAsPhoneNumbers' is [\(bFormatNumericsAsPhoneNumbers)]...")
+
+        }
 
         // Process the supplied 'object' as a List of String(s) to reduce...
 
@@ -1580,7 +1616,12 @@ class ParsePFPatientFileItem: NSObject, Identifiable
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sReducedListOfStrings' is [\(sReducedListOfStrings)]...")
+        if (bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sReducedListOfStrings' is [\(sReducedListOfStrings)]...")
+
+        }
 
         return sReducedListOfStrings
 

@@ -17,7 +17,7 @@ struct AppDataGathererTherapist3View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist3View"
-        static let sClsVers      = "v1.0202"
+        static let sClsVers      = "v1.0408"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -25,6 +25,11 @@ struct AppDataGathererTherapist3View: View
         
     }
     
+    // 'Internal' Trace flag:
+
+    private 
+    var bInternalTraceFlag:Bool                                                        = false
+
     // App Data field(s):
 
 //  @Environment(\.dismiss) var dismiss
@@ -51,7 +56,7 @@ struct AppDataGathererTherapist3View: View
 
     @State       private var isAppLogPFDataViewModal:Bool                              = false
     @State       private var isAppTidScheduleViewModal:Bool                            = false
-    @State       private var isAppTidScheduleViewEnabled:Bool                          = false
+//  @State       private var isAppTidScheduleViewEnabled:Bool                          = false
     @State       private var isAppRunTherapistLocateByTidShowing:Bool                  = false
     @State       private var isAppTherapistDetailsByTidShowing:Bool                    = false
     @State       private var isAppRunTherapistLocateByTNameShowing:Bool                = false
@@ -60,18 +65,29 @@ struct AppDataGathererTherapist3View: View
                          var jmAppDelegateVisitor:JmAppDelegateVisitor                 = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager               = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
                          var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo     = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
+                         var appScheduleLoadingAssistant:AppScheduleLoadingAssistant   = AppScheduleLoadingAssistant.ClassSingleton.appScheduleLoadingAssistant
     
     init()
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
 
@@ -104,8 +120,8 @@ struct AppDataGathererTherapist3View: View
         
         let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) \(ClassInfo.sClsCopyRight)...")
         
-        let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
-            = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+    //  let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+    //      = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
 
     //  NavigationStack
         ScrollView
@@ -207,7 +223,8 @@ struct AppDataGathererTherapist3View: View
                     .sheet(isPresented:$isAppTidScheduleViewModal, content:
                         {
 
-                            AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+                            AppTidScheduleView(listScheduledPatientLocationItems:self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
+)
 
                         }
                     )
@@ -215,7 +232,8 @@ struct AppDataGathererTherapist3View: View
                     .fullScreenCover(isPresented:$isAppTidScheduleViewModal)
                     {
 
-                        AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+                        AppTidScheduleView(listScheduledPatientLocationItems:self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
+)
 
                     }
                 #endif
@@ -227,18 +245,19 @@ struct AppDataGathererTherapist3View: View
                     .foregroundColor(Color.primary)
                 #endif
                     .padding()
-                    .onAppear
-                    {
-                        if (self.sTherapistTID.count                > 0 &&
-                            listScheduledPatientLocationItems.count > 0)
-                        {
-                            self.isAppTidScheduleViewEnabled = true
-                        }
-                        else
-                        {
-                            self.isAppTidScheduleViewEnabled = false
-                        }
-                    }
+                //  .onAppear
+                //  {
+                //      if (self.sTherapistTID.count                > 0 &&
+                //          listScheduledPatientLocationItems.count > 0)
+                //      {
+                //          self.isAppTidScheduleViewEnabled = true
+                //      }
+                //      else
+                //      {
+                //          self.isAppTidScheduleViewEnabled = false
+                //      }
+                //  }
+                //  .disabled(!self.appScheduleLoadingAssistant.bScheduledPatientLocationItemsAreAvaiable)
 
                     Spacer()
 
@@ -451,6 +470,7 @@ struct AppDataGathererTherapist3View: View
                             if (self.sTherapistTID.count < 1)
                             {
                                 self.sTherapistName = ""
+                            //  self.appScheduleLoadingAssistant.clearScheduledPatientLocationItems()
                             }
 
                         //  self.sTherapistName = ""
@@ -460,8 +480,11 @@ struct AppDataGathererTherapist3View: View
                         {
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - 'self.sTherapistName' is [\(self.sTherapistName)] - clearing the 'sTherapistTID' field...")
                     
-                            self.sTherapistTID  = self.locateAppTherapistTIDByTName(sTherapistName:self.sTherapistName)
+                        //  self.sTherapistTID  = self.locateAppTherapistTIDByTName(sTherapistName:self.sTherapistName)
                         //  self.sTherapistTID  = ""
+                        //  listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+                        //      = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+                        //  let _ = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
                         }
                         .onSubmit
                         {
@@ -469,6 +492,9 @@ struct AppDataGathererTherapist3View: View
                     
                             self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
                             focusedField        = .therapistTID
+                        //  listScheduledPatientLocationItems:[ScheduledPatientLocationItem] 
+                        //      = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+                        //  let _ = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
                         }
                         .onReceive(Just(sTherapistTID))
                         { newValue in
@@ -594,6 +620,8 @@ struct AppDataGathererTherapist3View: View
                         self.sTherapistTID  = ""
                         focusedField        = .therapistTID
 
+                        self.appScheduleLoadingAssistant.clearScheduledPatientLocationItems()
+
                     }
                     label:
                     {
@@ -670,6 +698,9 @@ struct AppDataGathererTherapist3View: View
 
                             self.sTherapistTID  = self.locateAppTherapistTIDByTName(sTherapistName:self.sTherapistName)
                             focusedField        = .therapistName
+                        //  listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+                        //      = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+                        //  let _ = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
                         }
 
                     Spacer()
@@ -747,12 +778,18 @@ struct AppDataGathererTherapist3View: View
                         if (self.sTherapistTID.count > 0)
                         {
                             self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
+                        //  listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+                        //      = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+                        //  let _ = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
                         }
                         else
                         {
                             if (self.sTherapistName.count > 0)
                             {
                                 self.sTherapistTID = self.locateAppTherapistTIDByTName(sTherapistName:self.sTherapistName)
+                            //  listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+                            //      = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+                            //  let _ = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
                             }
                         }
 
@@ -795,6 +832,8 @@ struct AppDataGathererTherapist3View: View
                         self.sTherapistName = ""
                         self.sTherapistTID  = ""
                         focusedField        = .therapistName
+
+                        self.appScheduleLoadingAssistant.clearScheduledPatientLocationItems()
 
                     }
                     label:
@@ -855,6 +894,9 @@ struct AppDataGathererTherapist3View: View
                             self.sTherapistName = appSearchableTherapistName.sTherapistTName
                             self.sTherapistTID  = self.locateAppTherapistTIDByTName(sTherapistName:self.sTherapistName)
                             focusedField        = .therapistName
+                        //  listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+                        //      = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sTherapistTID)
+                        //  let _ = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
                         }
 
                 }
@@ -871,38 +913,38 @@ struct AppDataGathererTherapist3View: View
         
     }
 
-    private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem]
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
-
-        // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
-
-        var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
-        let jmAppParseCoreManager:JmAppParseCoreManager                      = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
-
-        if (sPFTherapistParseTID.count > 0)
-        {
-
-            if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
-            {
-
-                listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
-
-            }
-
-        }
-        
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
-  
-        return listScheduledPatientLocationItems
-  
-    }   // End of private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem].
+//  private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem]
+//  {
+//
+//      let sCurrMethod:String = #function
+//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+//      
+//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
+//
+//      // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
+//
+//      var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
+//      let jmAppParseCoreManager:JmAppParseCoreManager                      = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+//
+//      if (sPFTherapistParseTID.count > 0)
+//      {
+//
+//          if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
+//          {
+//
+//              listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
+//
+//          }
+//
+//      }
+//      
+//      // Exit...
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
+//
+//      return listScheduledPatientLocationItems
+//
+//  }   // End of private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem].
 
     private func locateAppTherapistNamebyTid(sTherapistTID:String = "")->String
     {
@@ -910,7 +952,12 @@ struct AppDataGathererTherapist3View: View
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistTID' is [\(sTherapistTID)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistTID' is [\(sTherapistTID)]...")
+
+        }
 
         // Locate the Therapist 'name' by TID...
 
@@ -925,7 +972,12 @@ struct AppDataGathererTherapist3View: View
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistName' is [\(sTherapistName)] - 'sTherapistTID' is [\(sTherapistTID)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistName' is [\(sTherapistName)] - 'sTherapistTID' is [\(sTherapistTID)]...")
+
+        }
   
         return sTherapistName
   
@@ -937,7 +989,12 @@ struct AppDataGathererTherapist3View: View
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistName' is [\(sTherapistName)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistName' is [\(sTherapistName)]...")
+
+        }
 
         // Locate the Therapist TID by 'name'...
 
@@ -953,7 +1010,12 @@ struct AppDataGathererTherapist3View: View
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistName' is [\(sTherapistName)] - 'sTherapistTID' is [\(sTherapistTID)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistName' is [\(sTherapistName)] - 'sTherapistTID' is [\(sTherapistTID)]...")
+
+        }
   
         return sTherapistTID
   
@@ -965,7 +1027,12 @@ struct AppDataGathererTherapist3View: View
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sSearchValue' is [\(sSearchValue)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sSearchValue' is [\(sSearchValue)]...")
+
+        }
 
         // Update the 'selectable' Therapist 'name(s)' list from the 'sSearchValue' criteria...
 
@@ -976,7 +1043,12 @@ struct AppDataGathererTherapist3View: View
             
             // Exit:
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+            if (self.bInternalTraceFlag == true)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            }
 
             return
         
@@ -991,13 +1063,23 @@ struct AppDataGathererTherapist3View: View
             
             // Exit:
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+            if (self.bInternalTraceFlag == true)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            }
 
             return
         
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - 'sSearchValue' is [\(sSearchValue)] - 'self.jmAppParseCoreManager.dictPFTherapistFileItems' contains (\(self.jmAppParseCoreManager.dictPFTherapistFileItems.count)) item(s)...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - 'sSearchValue' is [\(sSearchValue)] - 'self.jmAppParseCoreManager.dictPFTherapistFileItems' contains (\(self.jmAppParseCoreManager.dictPFTherapistFileItems.count)) item(s)...")
+
+        }
 
         self.listSelectableTherapistNames = [AppSearchableTherapistName]()
 
@@ -1033,17 +1115,32 @@ struct AppDataGathererTherapist3View: View
 
                 cSelectableTherapistNames += 1
 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'sTherapistTName' of [\(sTherapistTName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
-            
+                if (self.bInternalTraceFlag == true)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'sTherapistTName' of [\(sTherapistTName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+
+                }
+
             }
 
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - added (\(cSelectableTherapistNames)) names(s) to the 'selectable' list of (\(self.listSelectableTherapistNames.count)) item(s)...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - added (\(cSelectableTherapistNames)) names(s) to the 'selectable' list of (\(self.listSelectableTherapistNames.count)) item(s)...")
+
+        }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
 

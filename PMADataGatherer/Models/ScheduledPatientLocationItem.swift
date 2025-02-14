@@ -9,14 +9,14 @@
 import Foundation
 import ParseCore
 
-class ScheduledPatientLocationItem: NSObject, Identifiable
+class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 {
     
     struct ClassInfo
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1002"
+        static let sClsVers      = "v1.1101"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true

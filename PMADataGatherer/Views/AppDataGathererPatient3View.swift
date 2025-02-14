@@ -17,7 +17,7 @@ struct AppDataGathererPatient3View: View
     {
         
         static let sClsId        = "AppDataGathererPatient3View"
-        static let sClsVers      = "v1.0103"
+        static let sClsVers      = "v1.0105"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -25,6 +25,11 @@ struct AppDataGathererPatient3View: View
         
     }
     
+    // 'Internal' Trace flag:
+
+    private 
+    var bInternalTraceFlag:Bool                                                    = false
+
     // App Data field(s):
 
 //  @Environment(\.dismiss) var dismiss
@@ -64,11 +69,21 @@ struct AppDataGathererPatient3View: View
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
 
@@ -806,7 +821,12 @@ struct AppDataGathererPatient3View: View
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPatientPID' is [\(sPatientPID)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPatientPID' is [\(sPatientPID)]...")
+
+        }
 
         // Locate the Patient 'name' by PID...
 
@@ -821,7 +841,12 @@ struct AppDataGathererPatient3View: View
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPatientName' is [\(sPatientName)] - 'sPatientPID' is [\(sPatientPID)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPatientName' is [\(sPatientName)] - 'sPatientPID' is [\(sPatientPID)]...")
+
+        }
   
         return sPatientName
   
@@ -833,7 +858,12 @@ struct AppDataGathererPatient3View: View
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPatientName' is [\(sPatientName)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPatientName' is [\(sPatientName)]...")
+
+        }
 
         // Locate the Patient PID by 'name'...
 
@@ -849,7 +879,12 @@ struct AppDataGathererPatient3View: View
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPatientName' is [\(sPatientName)] - 'sPatientPID' is [\(sPatientPID)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPatientName' is [\(sPatientName)] - 'sPatientPID' is [\(sPatientPID)]...")
+
+        }
   
         return sPatientPID
   
@@ -861,7 +896,12 @@ struct AppDataGathererPatient3View: View
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sSearchValue' is [\(sSearchValue)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sSearchValue' is [\(sSearchValue)]...")
+
+        }
 
         // Update the 'selectable' Patient 'name(s)' list from the 'sSearchValue' criteria...
 
@@ -872,7 +912,12 @@ struct AppDataGathererPatient3View: View
             
             // Exit:
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+            if (self.bInternalTraceFlag == true)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            }
 
             return
         
@@ -887,19 +932,29 @@ struct AppDataGathererPatient3View: View
             
             // Exit:
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+            if (self.bInternalTraceFlag == true)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            }
 
             return
         
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - 'sSearchValue' is [\(sSearchValue)] - 'self.jmAppParseCoreManager.dictPFPatientFileItems' contains (\(self.jmAppParseCoreManager.dictPFPatientFileItems.count)) item(s)...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - 'sSearchValue' is [\(sSearchValue)] - 'self.jmAppParseCoreManager.dictPFPatientFileItems' contains (\(self.jmAppParseCoreManager.dictPFPatientFileItems.count)) item(s)...")
+
+        }
 
         self.listSelectablePatientNames = [AppSearchablePatientName]()
 
         var cPatientNames:Int           = 0
         var cSelectablePatientNames:Int = 0
-        let sSearchValueLow:String        = sSearchValue.lowercased()
+        let sSearchValueLow:String      = sSearchValue.lowercased()
         
         // var dictPFPatientFileItems:[Int:ParsePFPatientFileItem] = [Int:ParsePFPatientFileItem]()
 
@@ -929,17 +984,32 @@ struct AppDataGathererPatient3View: View
 
                 cSelectablePatientNames += 1
 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientNames)): 'sPatientName' of [\(sPatientName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+                if (self.bInternalTraceFlag == true)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientNames)): 'sPatientName' of [\(sPatientName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+
+                }
             
             }
 
         }
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - added (\(cSelectablePatientNames)) names(s) to the 'selectable' list of (\(self.listSelectablePatientNames.count)) item(s)...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate #3 - added (\(cSelectablePatientNames)) names(s) to the 'selectable' list of (\(self.listSelectablePatientNames.count)) item(s)...")
+
+        }
 
         // Exit:
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
 

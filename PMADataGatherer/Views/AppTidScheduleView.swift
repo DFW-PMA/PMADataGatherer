@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0305"
+        static let sClsVers      = "v1.0409"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -35,8 +35,9 @@ struct AppTidScheduleView: View
 
                      var listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
     
+    @State private   var isAppPatientDetailsByPidShowing:Bool        = false
+
                      var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject  var jmAppSwiftDataManager:JmAppSwiftDataManager = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
     
     init(listScheduledPatientLocationItems:[ScheduledPatientLocationItem])
     {
@@ -86,156 +87,308 @@ struct AppTidScheduleView: View
     //  BLOCKED: Note - This would write a message into the log on EVERY tick of the timer...
     //  let _ = self.xcgLogMsg("...'AppTidScheduleView(.swift):body' \(JmXcodeBuildSettings.jmAppVersionAndBuildNumber)...")
 
-        VStack(alignment:.center)
+        NavigationStack
         {
 
-            HStack(alignment:.center)
+            VStack(alignment:.center)
+            {
+
+                HStack(alignment:.center)
+                {
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppTidScheduleView.Button(Xcode).'Dismiss' pressed...")
+
+                        self.presentationMode.wrappedValue.dismiss()
+
+                    //  dismiss()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "xmark.circle")
+                                .help(Text("Dismiss this Screen"))
+                                .imageScale(.large)
+
+                            Text("Dismiss")
+                                .font(.caption)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+                    .padding()
+
+                }
+
+            }
+
+            if (listScheduledPatientLocationItems.count < 1)
             {
 
                 Spacer()
 
-                Button
+                VStack(alignment:.center)
                 {
 
-                    let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'Dismiss' pressed...")
-
-                    self.presentationMode.wrappedValue.dismiss()
-
-                //  dismiss()
+                    Text("There are NO Scheduled visit(s)...")
+                        .bold()
+                        .italic()
+                        .underline()
 
                 }
-                label:
+
+                Spacer()
+
+            }
+            else
+            {
+
+                ScrollView
                 {
 
                     VStack(alignment:.center)
                     {
 
-                        Label("", systemImage: "xmark.circle")
-                            .help(Text("Dismiss this Screen"))
-                            .imageScale(.large)
+                        Text("Schedule::\(listScheduledPatientLocationItems[0].sTName) TID #(\(listScheduledPatientLocationItems[0].sTid)) Visits #(\(listScheduledPatientLocationItems.count))")
+                            .underline()
+                        Text("")
 
-                        Text("Dismiss")
-                            .font(.caption)
-
-                    }
-
-                }
-            #if os(macOS)
-                .buttonStyle(.borderedProminent)
-                .padding()
-            //  .background(???.isPressed ? .blue : .gray)
-                .cornerRadius(10)
-                .foregroundColor(Color.primary)
-            #endif
-                .padding()
-
-            }
-
-        }
-
-        if (listScheduledPatientLocationItems.count < 1)
-        {
-
-            Spacer()
-
-            VStack(alignment:.center)
-            {
-            
-                Text("There are NO Scheduled visit(s)...")
-                    .bold()
-                    .italic()
-                    .underline()
-
-            }
-
-            Spacer()
-        
-        }
-        else
-        {
-
-            ScrollView
-            {
-
-                VStack(alignment:.center)
-                {
-
-                    Text("Schedule::\(listScheduledPatientLocationItems[0].sTName) TID #(\(listScheduledPatientLocationItems[0].sTid)) Visits #(\(listScheduledPatientLocationItems.count))")
-                        .underline()
-                    Text("")
-
-                    Grid(alignment:.leadingFirstTextBaseline, horizontalSpacing:5, verticalSpacing: 3)
-                    {
-
-                        // Column Headings:
-
-                        Divider() 
-
-                        GridRow 
+                        Grid(alignment:.leadingFirstTextBaseline, horizontalSpacing:5, verticalSpacing: 3)
                         {
 
-                            Text("PID")
-                            Text("Patient")
+                            // Column Headings:
 
-                            Text("Date")
-                            Text("Time")
-                            Text("Address or Location")
+                            Divider() 
+
+                            GridRow 
+                            {
+
+                                Text("PID")
+                                Text("Patient")
+
+                                Text("Date")
+                                Text("Time")
+                                Text("Address or Location")
+
+                            //  Text("Details")
+
+                            }
+                            .font(.title2) 
+
+                            Divider() 
+
+                            // Item Rows:
+
+                            ForEach(listScheduledPatientLocationItems)
+                            { scheduledPatientLocationItem in
+
+                        //      GridRow(alignment:.bottom)
+                        //      {
+
+                                    AppTidScheduleRowView(scheduledPatientLocationItem:scheduledPatientLocationItem)
+
+                        //      #if os(macOS)
+                        //          Text(scheduledPatientLocationItem.sPid)
+                        //              .font(.caption)
+                        //      #endif
+                        //  //  #if os(macOS)
+                        //  //      Button
+                        //  //      {
+                        //  //          // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                        //  //          openWindow(id:"AppLocationMapView", value:pfCscObject.id)
+                        //  //      }
+                        //  //      label:
+                        //  //      {
+                        //  //
+                        //  //          VStack(alignment:.center)
+                        //  //          {
+                        //  //
+                        //  //              Label("", systemImage: "mappin.and.ellipse")
+                        //  //                  .help(Text("'Map' the App Location..."))
+                        //  //                  .imageScale(.small)
+                        //  //              #if os(macOS)
+                        //  //                  .onTapGesture(count:1)
+                        //  //                  {
+                        //  //
+                        //  //                      let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppTidScheduleView.GridRow.NavigationLink.'.onTapGesture()' received - Map #(\(pfCscObject.idPFCscObject))...")
+                        //  //
+                        //  //                      let _ = AppLocationMapView(parsePFCscDataItem:pfCscObject)
+                        //  //
+                        //  //                  }
+                        //  //              #endif
+                        //  //
+                        //  //              Text("Map #(\(pfCscObject.idPFCscObject))")
+                        //  //                  .font(.caption2)
+                        //  //
+                        //  //          }
+                        //  //
+                        //  //      }
+                        //  //      .gridColumnAlignment(.center)
+                        //  //      .buttonStyle(.borderedProminent)
+                        //  //      .padding()
+                        //  //  //  .background(???.isPressed ? .blue : .gray)
+                        //  //      .cornerRadius(10)
+                        //  //      .foregroundColor(Color.primary)
+                        //  //  #endif
+                        //      #if os(iOS)
+                        //          Text(scheduledPatientLocationItem.sPid)
+                        //              .font(.caption)
+                        //      //
+                        //      //  NavigationLink
+                        //      //  {
+                        //      //      AppDataGathererPatient1DetailsView(sPatientPID:scheduledPatientLocationItem.sPid)
+                        //      //          .navigationBarBackButtonHidden(true)
+                        //      //  }
+                        //      //  label:
+                        //      //  {
+                        //      //
+                        //      //      VStack(alignment:.center)
+                        //      //      {
+                        //      //
+                        //      //          Label("", systemImage: "doc.questionmark")
+                        //      //              .help(Text("Show Patient Detail(s) by PID..."))
+                        //      //              .imageScale(.small)
+                        //      //          
+                        //      //          #if os(macOS)
+                        //      //              .onTapGesture(count:1)
+                        //      //              {
+                        //      //
+                        //      //                  let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppTidScheduleView.GridRow.NavigationLink.'.onTapGesture()' received - PID #[\(scheduledPatientLocationItem.sPid)]...")
+                        //      //
+                        //      //                  let _ = AppDataGathererPatient1DetailsView(sPatientPID:scheduledPatientLocationItem.sPid)
+                        //      //
+                        //      //              }
+                        //      //          #endif
+                        //      //
+                        //      //          Text("PID: \(scheduledPatientLocationItem.sPid)")
+                        //      //              .font(.caption2)
+                        //      //
+                        //      //      }
+                        //      //
+                        //      //  }
+                        //      //  .gridColumnAlignment(.center)
+                        //      #endif
+                        //
+                        //          Text(scheduledPatientLocationItem.sPtName)
+                        //              .font(.caption)
+                        //
+                        //          Text(scheduledPatientLocationItem.sVDate)
+                        //              .font(.caption)
+                        //
+                        //          Text(scheduledPatientLocationItem.sVDateStartTime)
+                        //              .font(.caption)
+                        //
+                        //      if (scheduledPatientLocationItem.sLastVDateAddress.count  < 1       ||
+                        //          scheduledPatientLocationItem.sLastVDateAddress       == ""      ||
+                        //          scheduledPatientLocationItem.sLastVDateAddress       == "-N/A-" ||
+                        //          scheduledPatientLocationItem.sLastVDateAddress       == ",,,"   ||
+                        //          scheduledPatientLocationItem.sLastVDateAddress       == ", , , ")
+                        //      {
+                        //
+                        //          Text("\(scheduledPatientLocationItem.sLastVDateLatitude), \(scheduledPatientLocationItem.sLastVDateLongitude)")
+                        //              .font(.caption2)
+                        //
+                        //      }
+                        //      else
+                        //      {
+                        //
+                        //          Text(scheduledPatientLocationItem.sLastVDateAddress)
+                        //              .font(.caption2)
+                        //
+                        //      }
+                        //
+                        //  //      Button
+                        //  //      {
+                        //  //
+                        //  //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppTidScheduleView.Button(Xcode).'Patient Detail(s) by PID' for PID - 'scheduledPatientLocationItem.sPid' is [\(scheduledPatientLocationItem.sPid)]...")
+                        //  //
+                        //  //          self.isAppPatientDetailsByPidShowing.toggle()
+                        //  //
+                        //  //      }
+                        //  //      label:
+                        //  //      {
+                        //  //
+                        //  //          VStack(alignment:.center)
+                        //  //          {
+                        //  //
+                        //  //              Label("", systemImage: "doc.questionmark")
+                        //  //                  .help(Text("Show Patient Detail(s) by PID..."))
+                        //  //                  .imageScale(.small)
+                        //  //
+                        //  //              HStack(alignment:.center)
+                        //  //              {
+                        //  //
+                        //  //                  Spacer()
+                        //  //
+                        //  //                  Text("PID: \(scheduledPatientLocationItem.sPid)")
+                        //  //                      .font(.caption2)
+                        //  //
+                        //  //                  Spacer()
+                        //  //
+                        //  //              }
+                        //  //
+                        //  //          }
+                        //  //
+                        //  //      }
+                        //  //  #if os(macOS)
+                        //  //      .sheet(isPresented:$isAppPatientDetailsByPidShowing, content:
+                        //  //      {
+                        //  //
+                        //  //          AppDataGathererPatient1DetailsView(sPatientPID:scheduledPatientLocationItem.sPid)
+                        //  //
+                        //  //      })
+                        //  //  #endif
+                        //  //  #if os(iOS)
+                        //  //      .fullScreenCover(isPresented:$isAppPatientDetailsByPidShowing)
+                        //  //      {
+                        //  //
+                        //  //          AppDataGathererPatient1DetailsView(sPatientPID:scheduledPatientLocationItem.sPid)
+                        //  //
+                        //  //      }
+                        //  //  #endif
+                        //  //  #if os(macOS)
+                        //  //      .buttonStyle(.borderedProminent)
+                        //  //      .padding()
+                        //  //  //  .background(???.isPressed ? .blue : .gray)
+                        //  //      .cornerRadius(10)
+                        //  //      .foregroundColor(Color.primary)
+                        //  //  #endif
+                        //  //  #if os(iOS)
+                        //  //      .padding()
+                        //  //  #endif
+                        //
+                        //      }
+
+                            }
 
                         }
-                        .font(.title2) 
+                        .padding()
 
-                        Divider() 
-
-                        // Item Rows:
-
-                        ForEach(listScheduledPatientLocationItems)
-                        { scheduledPatientLocationItem in
-
-                            GridRow(alignment:.bottom)
-                            {
-
-                                Text(scheduledPatientLocationItem.sPid)
-                                    .font(.caption)
-                                Text(scheduledPatientLocationItem.sPtName)
-                                    .font(.caption)
-                                Text(scheduledPatientLocationItem.sVDate)
-                                    .font(.caption)
-                                Text(scheduledPatientLocationItem.sVDateStartTime)
-                                    .font(.caption)
-
-                            if (scheduledPatientLocationItem.sLastVDateAddress.count  < 1       ||
-                                scheduledPatientLocationItem.sLastVDateAddress       == ""      ||
-                                scheduledPatientLocationItem.sLastVDateAddress       == "-N/A-" ||
-                                scheduledPatientLocationItem.sLastVDateAddress       == ",,,"   ||
-                                scheduledPatientLocationItem.sLastVDateAddress       == ", , , ")
-                            {
-                            
-                                Text("\(scheduledPatientLocationItem.sLastVDateLatitude), \(scheduledPatientLocationItem.sLastVDateLongitude)")
-                                    .font(.caption2)
-                            
-                            }
-                            else
-                            {
-                            
-                                Text(scheduledPatientLocationItem.sLastVDateAddress)
-                                    .font(.caption2)
-                            
-                            }
-
-                            }
-
-                        }
+                        Spacer()
 
                     }
-                    .padding()
-
-                    Spacer()
 
                 }
 
             }
 
         }
+        .padding()
 
     }
     
