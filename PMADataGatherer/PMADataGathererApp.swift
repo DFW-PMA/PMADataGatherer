@@ -18,7 +18,7 @@ struct PMADataGathererApp: App
     {
         
         static let sClsId        = "PMADataGathererApp"
-        static let sClsVers      = "v1.1901"
+        static let sClsVers      = "v1.2001"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -127,23 +127,21 @@ struct PMADataGathererApp: App
 #endif
         
 #if os(macOS)
-        // This is the Window to diaplay the AppLocationView...this works from MacOS...
+        // This is the Window to diaplay the AppWorkRouteView...this works from MacOS...
         
-        Window("AppLocation", id:"AppLocationView")
+        Window("AppWorkRoute", id:"AppWorkRouteView")
         {
             
-            //  AppLocationView(jmAppParseCoreManager:jmAppDelegateVisitor.jmAppParseCoreManager!)
-            AppLocationView()
+            AppWorkRouteView()
             
         }
         
-        // This is the Window to diaplay the AppLocationMapView...this works from MacOS...
+        // This is the Window to diaplay the AppWorkRouteMapView...this works from MacOS...
         
-        WindowGroup("AppLocationMap", id:"AppLocationMapView", for: UUID.self)
+        WindowGroup("AppWorkRouteMap", id:"AppWorkRouteMapView", for: UUID.self)
         { $uuid in
             
-            AppLocationMapView(parsePFCscDataItem:jmAppParseCoreManager.locatePFCscDataItemByID(id:uuid ?? UUID()))
-            //  AppLocationMapView(parsePFCscDataItem:ParsePFCscDataItem())
+            AppWorkRouteMapView(parsePFCscDataItem:jmAppParseCoreManager.locatePFCscDataItemByID(id:uuid ?? UUID()))
             
         }
 
@@ -152,13 +150,11 @@ struct PMADataGathererApp: App
         Window("AppTidSchedule", id:"AppTidScheduleView")
         {
 
-        //  AppTidScheduleView(listScheduledPatientLocationItems:[ScheduledPatientLocationItem()])
-        //  AppTidScheduleView(listScheduledPatientLocationItems: <#[ScheduledPatientLocationItem]#>)
             AppTidScheduleView(listScheduledPatientLocationItems: [])
 
         }
 
-        // This is the Window to diaplay the AppLocationView...this works from MacOS...
+        // This is the Window to diaplay the AppWorkRouteView...this works from MacOS...
 
         Window("AppDataGatherer", id:"AppDataGathererView")
         {

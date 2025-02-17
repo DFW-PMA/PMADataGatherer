@@ -16,7 +16,7 @@ struct AppDataGathererView: View
     {
         
         static let sClsId        = "AppDataGathererView"
-        static let sClsVers      = "v1.0801"
+        static let sClsVers      = "v1.0902"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -31,14 +31,14 @@ struct AppDataGathererView: View
     
 //  @StateObject    var jmAppParseCoreManager:JmAppParseCoreManager
     
-    @State private  var cAppLocationViewLogPFDataButtonPresses:Int     = 0
+    @State private  var cAppLogPFDataButtonPresses:Int                 = 0
     @State private  var cAppDataGathererViewRefreshButtonPresses:Int   = 0
-    @State private  var cContentViewAppLocationButtonPresses:Int       = 0
+    @State private  var cContentViewAppWorkRouteButtonPresses:Int      = 0
     @State private  var cAppDataGathererViewTherapistButtonPresses:Int = 0
     @State private  var cAppDataGathererViewPatientButtonPresses:Int   = 0
 
     @State private  var isAppLogPFDataViewModal:Bool                   = false
-    @State private  var isAppLocationViewModal:Bool                    = false
+    @State private  var isAppWorkRouteViewModal:Bool                    = false
     @State private  var isAppDataTherapist1ViewModal:Bool              = false
     @State private  var isAppDataTherapist2ViewModal:Bool              = false
     @State private  var isAppDataTherapist3ViewModal:Bool              = false
@@ -107,9 +107,9 @@ struct AppDataGathererView: View
                         Button
                         {
 
-                            self.cAppLocationViewLogPFDataButtonPresses += 1
+                            self.cAppLogPFDataButtonPresses += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
 
                             self.isAppLogPFDataViewModal.toggle()
 
@@ -198,16 +198,16 @@ struct AppDataGathererView: View
                     Button
                     {
 
-                        self.cContentViewAppLocationButtonPresses += 1
+                        self.cContentViewAppWorkRouteButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Location'.#(\(self.cContentViewAppLocationButtonPresses))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App WorkRoute'.#(\(self.cContentViewAppWorkRouteButtonPresses))...")
 
-                        self.isAppLocationViewModal.toggle()
+                        self.isAppWorkRouteViewModal.toggle()
 
                 //  #if os(macOS)
                 //
                 //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-                //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+                //      openWindow(id:"AppWorkRouteView", value:self.getAppParseCoreManagerInstance())
                 //
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
@@ -222,29 +222,29 @@ struct AppDataGathererView: View
                         {
 
                             Label("", systemImage: "location.viewfinder")
-                                .help(Text("App Location Information"))
+                                .help(Text("App WorkRoute (Location) Information"))
                                 .imageScale(.large)
 
-                            Text("Location")
+                            Text("WorkRoute")
                                 .font(.caption)
 
                         }
 
                     }
                 #if os(macOS)
-                    .sheet(isPresented:$isAppLocationViewModal, content:
+                    .sheet(isPresented:$isAppWorkRouteViewModal, content:
                         {
 
-                            AppLocationView()
+                            AppWorkRouteView()
 
                         }
                     )
                 #endif
                 #if os(iOS)
-                    .fullScreenCover(isPresented:$isAppLocationViewModal)
+                    .fullScreenCover(isPresented:$isAppWorkRouteViewModal)
                     {
 
-                        AppLocationView()
+                        AppWorkRouteView()
 
                     }
                 #endif

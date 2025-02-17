@@ -17,7 +17,7 @@ struct AppDataGathererTherapist2View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.1001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -45,7 +45,7 @@ struct AppDataGathererTherapist2View: View
     @State       private var listSelectableTherapistNames:[AppSearchableTherapistName] 
                                                                                     = [AppSearchableTherapistName]()
 
-    @State       private var cAppLocationViewLogPFDataButtonPresses:Int             = 0
+    @State       private var cAppLogPFDataButtonPresses:Int                         = 0
     @State       private var cAppDataGathererTherapist2ViewRefreshButtonPresses:Int = 0
 
     @State       private var isAppLogPFDataViewModal:Bool                           = false
@@ -114,9 +114,9 @@ struct AppDataGathererTherapist2View: View
                         Button
                         {
 
-                            self.cAppLocationViewLogPFDataButtonPresses += 1
+                            self.cAppLogPFDataButtonPresses += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererTherapist2View.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererTherapist2View.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
 
                             self.isAppLogPFDataViewModal.toggle()
 

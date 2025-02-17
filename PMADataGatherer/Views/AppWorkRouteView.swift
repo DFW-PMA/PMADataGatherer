@@ -1,5 +1,5 @@
 //
-//  AppLocationView.swift
+//  AppWorkRouteView.swift
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 11/18/2024.
@@ -8,14 +8,14 @@
 
 import SwiftUI
 
-struct AppLocationView: View 
+struct AppWorkRouteView: View 
 {
     
     struct ClassInfo
     {
         
-        static let sClsId        = "AppLocationView"
-        static let sClsVers      = "v1.1601"
+        static let sClsId        = "AppWorkRouteView"
+        static let sClsVers      = "v1.1701"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -32,12 +32,12 @@ struct AppLocationView: View
     static          var timerOnDemand90Sec                                    = Timer()
     static          var timerOnDemand3Sec                                     = Timer()
     
-    @State private  var cAppLocationViewLogPFDataButtonPresses:Int            = 0
+    @State private  var cAppLogPFDataButtonPresses:Int                        = 0
 
     @State private  var isAppLogPFDataViewModal:Bool                          = false
 
-    @State private  var cAppLocationViewRefreshButtonPresses:Int              = 0
-    @State private  var cAppLocationViewRefreshAutoTimer:Int                  = 0
+    @State private  var cAppWorkRouteViewRefreshButtonPresses:Int             = 0
+    @State private  var cAppWorkRouteViewRefreshAutoTimer:Int                 = 0
     @State private  var cAppScheduleViewRefreshAutoTimer:Int                  = 0
     @State private  var cContentViewAppDataButtonPresses:Int                  = 0
 
@@ -108,9 +108,9 @@ struct AppLocationView: View
                         Button
                         {
 
-                            self.cAppLocationViewLogPFDataButtonPresses += 1
+                            self.cAppLogPFDataButtonPresses += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppWorkRouteView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
 
                             self.isAppLogPFDataViewModal.toggle()
 
@@ -163,7 +163,7 @@ struct AppLocationView: View
                     Button
                     {
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Sync PFData' pressed...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppWorkRouteView.Button(Xcode).'Sync PFData' pressed...")
 
                         self.syncPFDataItems()
 
@@ -199,9 +199,9 @@ struct AppLocationView: View
                     Button
                     {
 
-                        self.cAppLocationViewRefreshButtonPresses += 1
+                        self.cAppWorkRouteViewRefreshButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLocationView.Button(Xcode).'Refresh'.#(\(self.cAppLocationViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppWorkRouteView.Button(Xcode).'Refresh'.#(\(self.cAppWorkRouteViewRefreshButtonPresses))...")
 
                         let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
                         let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
@@ -214,10 +214,10 @@ struct AppLocationView: View
                         {
 
                             Label("", systemImage: "arrow.clockwise")
-                                .help(Text("'Refresh' App Location Screen..."))
+                                .help(Text("'Refresh' App WorkRoute Screen..."))
                                 .imageScale(.large)
 
-                            Text("Refresh - #(\(self.cAppLocationViewRefreshButtonPresses))...")
+                            Text("Refresh - #(\(self.cAppWorkRouteViewRefreshButtonPresses))...")
                                 .font(.caption)
 
                         }
@@ -252,7 +252,7 @@ struct AppLocationView: View
                 //  #if os(macOS)
                 //
                 //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-                //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+                //      openWindow(id:"AppWorkRouteView", value:self.getAppParseCoreManagerInstance())
                 //
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
@@ -306,7 +306,7 @@ struct AppLocationView: View
                     Button
                     {
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Dismiss' pressed...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppWorkRouteView.Button(Xcode).'Dismiss' pressed...")
 
                         self.presentationMode.wrappedValue.dismiss()
 
@@ -348,7 +348,7 @@ struct AppLocationView: View
                             self.syncPFDataItems()
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear(perform:) Initial View - invoked  the 'syncPFDataItems()'...")
 
-                            AppLocationView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
+                            AppWorkRouteView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
                             { _ in
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
                                 self.syncPFDataItems()
@@ -356,14 +356,14 @@ struct AppLocationView: View
                             }
                         })
 
-                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppLocationViewRefreshButtonPresses).\(cAppLocationViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer))")
+                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppWorkRouteViewRefreshButtonPresses).\(cAppWorkRouteViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer))")
                     .bold()
                     .italic()
                     .underline(true)
                     .font(.footnote)
-                    .onChange(of:self.cAppLocationViewRefreshAutoTimer)
+                    .onChange(of:self.cAppWorkRouteViewRefreshAutoTimer)
                     {
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #2 - Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)): for 'cAppLocationViewRefreshAutoTimer' of #(\(self.cAppLocationViewRefreshAutoTimer))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #2 - Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)): for 'cAppWorkRouteViewRefreshAutoTimer' of #(\(self.cAppWorkRouteViewRefreshAutoTimer))...")
                     }
                     .onChange(of:self.cAppScheduleViewRefreshAutoTimer)
                     {
@@ -434,7 +434,7 @@ struct AppLocationView: View
                                 Button
                                 {
                                     // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-                                    openWindow(id:"AppLocationMapView", value:pfCscObject.id)
+                                    openWindow(id:"AppWorkRouteMapView", value:pfCscObject.id)
                                 }
                                 label:
                                 {
@@ -443,15 +443,15 @@ struct AppLocationView: View
                                     {
 
                                         Label("", systemImage: "mappin.and.ellipse")
-                                            .help(Text("'Map' the App Location..."))
+                                            .help(Text("'Map' the App WorkRoute..."))
                                             .imageScale(.small)
                                         #if os(macOS)
                                             .onTapGesture(count:1)
                                             {
 
-                                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.GridRow.NavigationLink.'.onTapGesture()' received - Map #(\(pfCscObject.idPFCscObject))...")
+                                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppWorkRouteView.GridRow.NavigationLink.'.onTapGesture()' received - Map #(\(pfCscObject.idPFCscObject))...")
 
-                                                let _ = AppLocationMapView(parsePFCscDataItem:pfCscObject)
+                                                let _ = AppWorkRouteMapView(parsePFCscDataItem:pfCscObject)
 
                                             }
                                         #endif
@@ -472,7 +472,7 @@ struct AppLocationView: View
                             #if os(iOS)
                                 NavigationLink
                                 {
-                                    AppLocationMapView(parsePFCscDataItem:pfCscObject)
+                                    AppWorkRouteMapView(parsePFCscDataItem:pfCscObject)
                                         .navigationBarBackButtonHidden(true)
                                     //  .navigationBarBackButtonHidden(false)
                                     // NOTE: This causes a 'build' failure:
@@ -487,15 +487,15 @@ struct AppLocationView: View
                                     {
 
                                         Label("", systemImage: "mappin.and.ellipse")
-                                            .help(Text("'Map' the App Location..."))
+                                            .help(Text("'Map' the App WorkRoute..."))
                                             .imageScale(.small)
                                         #if os(macOS)
                                             .onTapGesture(count:1)
                                             {
 
-                                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.GridRow.NavigationLink.'.onTapGesture()' received - Map #(\(pfCscObject.idPFCscObject))...")
+                                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppWorkRouteView.GridRow.NavigationLink.'.onTapGesture()' received - Map #(\(pfCscObject.idPFCscObject))...")
 
-                                                let _ = AppLocationMapView(parsePFCscDataItem:pfCscObject)
+                                                let _ = AppWorkRouteMapView(parsePFCscDataItem:pfCscObject)
 
                                             }
                                         #endif
@@ -550,13 +550,13 @@ struct AppLocationView: View
                         perform:
                         { dtObserved in
 
-                            self.cAppLocationViewRefreshAutoTimer += 1
+                            self.cAppWorkRouteViewRefreshAutoTimer += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - Grid.Timer<notification> - <timerPublisherTherapistLocations> - setting auto 'refresh' by timer to #(\(self.cAppLocationViewRefreshAutoTimer)) - 'dtObserved' is [\(dtObserved)]...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - Grid.Timer<notification> - <timerPublisherTherapistLocations> - setting auto 'refresh' by timer to #(\(self.cAppWorkRouteViewRefreshAutoTimer)) - 'dtObserved' is [\(dtObserved)]...")
 
                             let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:false)
 
-                            AppLocationView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
+                            AppWorkRouteView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
                             { _ in
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()' and 'syncPFDataItems()'...")
                                 self.jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()
@@ -564,7 +564,7 @@ struct AppLocationView: View
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoked  the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()' and 'syncPFDataItems()'...")
                             }
 
-                        //  AppLocationView.timerOnDemand3Sec = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
+                        //  AppWorkRouteView.timerOnDemand3Sec = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
                         //  { _ in
                         //      let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
                         //      self.syncPFDataItems()
@@ -582,7 +582,7 @@ struct AppLocationView: View
 
                             let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:false)
 
-                            AppLocationView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
+                            AppWorkRouteView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
                             { _ in
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
                                 self.syncPFDataItems()
@@ -1023,12 +1023,12 @@ struct AppLocationView: View
     
     }   // End of private func detailPFCscDataItems()
 
-}   // End of struct AppLocationView(View).
+}   // End of struct AppWorkRouteView(View).
 
 #Preview 
 {
     
-    AppLocationView()
+    AppWorkRouteView()
     
 }
 

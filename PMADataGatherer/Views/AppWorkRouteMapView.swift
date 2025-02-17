@@ -1,5 +1,5 @@
 //
-//  AppLocationMapView.swift
+//  AppWorkRouteMapView.swift
 //  PMADataGatherer
 //
 //  Created by Daryl Cox on 11/18/2024.
@@ -9,14 +9,14 @@
 import SwiftUI
 import MapKit
 
-struct AppLocationMapView: View 
+struct AppWorkRouteMapView: View 
 {
     
     struct ClassInfo
     {
         
-        static let sClsId        = "AppLocationMapView"
-        static let sClsVers      = "v1.1501"
+        static let sClsId        = "AppWorkRouteMapView"
+        static let sClsVers      = "v1.1601"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -126,7 +126,7 @@ struct AppLocationMapView: View
 
                         self.cAppTidScheduleViewButtonPresses += 1
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppWorkRouteMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
 
                         self.isAppTidScheduleViewModal.toggle()
 
@@ -257,7 +257,7 @@ struct AppLocationMapView: View
                     Button
                     {
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'Dismiss' pressed...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppWorkRouteMapView.Button(Xcode).'Dismiss' pressed...")
 
                         self.presentationMode.wrappedValue.dismiss()
 
@@ -536,7 +536,7 @@ struct AppLocationMapView: View
 #Preview 
 {
     
-    AppLocationMapView(parsePFCscDataItem:ParsePFCscDataItem())
+    AppWorkRouteMapView(parsePFCscDataItem:ParsePFCscDataItem())
     
 }
 

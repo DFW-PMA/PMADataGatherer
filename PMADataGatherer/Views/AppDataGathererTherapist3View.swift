@@ -17,7 +17,7 @@ struct AppDataGathererTherapist3View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist3View"
-        static let sClsVers      = "v1.0408"
+        static let sClsVers      = "v1.0501"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -50,7 +50,7 @@ struct AppDataGathererTherapist3View: View
 
     @State       private var listSelectableTherapistNames:[AppSearchableTherapistName] = [AppSearchableTherapistName]()
 
-    @State       private var cAppLocationViewLogPFDataButtonPresses:Int                = 0
+    @State       private var cAppLogPFDataButtonPresses:Int                            = 0
     @State       private var cAppTidScheduleViewButtonPresses:Int                      = 0
     @State       private var cAppDataGathererTherapist3ViewRefreshButtonPresses:Int    = 0
 
@@ -139,9 +139,9 @@ struct AppDataGathererTherapist3View: View
                         Button
                         {
 
-                            self.cAppLocationViewLogPFDataButtonPresses += 1
+                            self.cAppLogPFDataButtonPresses += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererTherapist3View.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererTherapist3View.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
 
                             self.isAppLogPFDataViewModal.toggle()
 
@@ -198,7 +198,7 @@ struct AppDataGathererTherapist3View: View
 
                         self.cAppTidScheduleViewButtonPresses += 1
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationMapView.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererTherapist3View.Button(Xcode).'App TID Schedule View'.#(\(self.cAppTidScheduleViewButtonPresses))...")
 
                         self.isAppTidScheduleViewModal.toggle()
 
@@ -347,7 +347,7 @@ struct AppDataGathererTherapist3View: View
                 //      Button
                 //      {
                 //
-                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Locate the Therapist by TID'...")
+                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist3View.Button(Xcode).'Locate the Therapist by TID'...")
                 //
                 //          self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
                 //
@@ -578,7 +578,7 @@ struct AppDataGathererTherapist3View: View
             //      Button
             //      {
             //
-            //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Locate the Therapist by TID'...")
+            //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist3View.Button(Xcode).'Locate the Therapist by TID'...")
             //
             //          self.sTherapistName = self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID)
             //
@@ -614,7 +614,7 @@ struct AppDataGathererTherapist3View: View
                     Button
                     {
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist1View.Button(Xcode).'Therapist TID delete'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererTherapist3View.Button(Xcode).'Therapist TID delete'...")
 
                         self.sTherapistName = ""
                         self.sTherapistTID  = ""

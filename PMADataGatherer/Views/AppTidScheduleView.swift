@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0409"
+        static let sClsVers      = "v1.0601"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -35,9 +35,9 @@ struct AppTidScheduleView: View
 
                      var listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
     
-    @State private   var isAppPatientDetailsByPidShowing:Bool        = false
+    @State private   var isAppPatientDetailsByPidShowing:Bool      = false
 
-                     var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                     var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
     init(listScheduledPatientLocationItems:[ScheduledPatientLocationItem])
     {
@@ -197,11 +197,38 @@ struct AppTidScheduleView: View
                             ForEach(listScheduledPatientLocationItems)
                             { scheduledPatientLocationItem in
 
-                        //      GridRow(alignment:.bottom)
-                        //      {
+                                GridRow(alignment:.bottom)
+                                {
 
                                     AppTidScheduleRowView(scheduledPatientLocationItem:scheduledPatientLocationItem)
 
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+                Spacer()
+
+            }
+
+        }
+        .padding()
+
+    }
+
+                        //  ForEach(listScheduledPatientLocationItems)
+                        //  { scheduledPatientLocationItem in
+                        //
+                        //      GridRow(alignment:.bottom)
+                        //      {
+                        //
+                        //          AppTidScheduleRowView(scheduledPatientLocationItem:scheduledPatientLocationItem)
+                        //
                         //      #if os(macOS)
                         //          Text(scheduledPatientLocationItem.sPid)
                         //              .font(.caption)
@@ -210,7 +237,7 @@ struct AppTidScheduleView: View
                         //  //      Button
                         //  //      {
                         //  //          // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-                        //  //          openWindow(id:"AppLocationMapView", value:pfCscObject.id)
+                        //  //          openWindow(id:"AppWorkRouteMapView", value:pfCscObject.id)
                         //  //      }
                         //  //      label:
                         //  //      {
@@ -219,7 +246,7 @@ struct AppTidScheduleView: View
                         //  //          {
                         //  //
                         //  //              Label("", systemImage: "mappin.and.ellipse")
-                        //  //                  .help(Text("'Map' the App Location..."))
+                        //  //                  .help(Text("'Map' the App WorkRoute..."))
                         //  //                  .imageScale(.small)
                         //  //              #if os(macOS)
                         //  //                  .onTapGesture(count:1)
@@ -227,7 +254,7 @@ struct AppTidScheduleView: View
                         //  //
                         //  //                      let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppTidScheduleView.GridRow.NavigationLink.'.onTapGesture()' received - Map #(\(pfCscObject.idPFCscObject))...")
                         //  //
-                        //  //                      let _ = AppLocationMapView(parsePFCscDataItem:pfCscObject)
+                        //  //                      let _ = AppWorkRouteMapView(parsePFCscDataItem:pfCscObject)
                         //  //
                         //  //                  }
                         //  //              #endif
@@ -373,24 +400,24 @@ struct AppTidScheduleView: View
                         //  //  #endif
                         //
                         //      }
+                        //
+                        //  }
 
-                            }
-
-                        }
-                        .padding()
-
-                        Spacer()
-
-                    }
-
-                }
-
-            }
-
-        }
-        .padding()
-
-    }
+//                      }
+//                      .padding()
+//
+//                      Spacer()
+//
+//                  }
+//
+//              }
+//
+//          }
+//
+//      }
+//      .padding()
+//
+//  }
     
 }   // End of struct AppTidScheduleView(View).
 

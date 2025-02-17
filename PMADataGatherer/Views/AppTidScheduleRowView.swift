@@ -18,7 +18,7 @@ struct AppTidScheduleRowView: View
     {
         
         static let sClsId        = "AppTidScheduleRowView"
-        static let sClsVers      = "v1.0106"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -90,8 +90,8 @@ struct AppTidScheduleRowView: View
     var body: some View 
     {
 
-        GridRow(alignment:.bottom)
-        {
+    //  GridRow(alignment:.bottom)
+    //  {
 
             HStack(alignment:.center)
             {
@@ -179,7 +179,8 @@ struct AppTidScheduleRowView: View
 
             }
 
-        }
+    //  }
+    //  .gridCellColumns(5)
 
     }
     
