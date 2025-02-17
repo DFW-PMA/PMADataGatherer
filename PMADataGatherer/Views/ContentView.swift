@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.3302"
+        static let sClsVers      = "v1.3303"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -46,10 +46,12 @@ struct ContentView: View
     @State private var cAppRefreshButtonPresses:Int              = 0
     @State private var cAppDataButtonPresses:Int                 = 0
     @State private var cAppWorkRouteButtonPresses:Int            = 0
+    @State private var cAppSchedPatLocButtonPresses:Int          = 0
 
     @State private var isAppLogPFDataViewModal:Bool              = false
     @State private var isAppDataViewModal:Bool                   = false
     @State private var isAppWorkRouteViewModal:Bool              = false
+    @State private var isAppSchedPatLocViewModal:Bool            = false
 
     @State private var shouldContentViewChange:Bool              = false
     @State private var shouldContentViewShowAlert:Bool           = false
@@ -450,6 +452,69 @@ struct ContentView: View
                 {
 
                     AppWorkRouteView()
+
+                }
+            #endif
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
+
+                Spacer()
+
+                Button
+                {
+
+                    self.cAppSchedPatLocButtonPresses += 1
+
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App SchedPatLoc'.#(\(self.cAppSchedPatLocButtonPresses))...")
+
+                    self.isAppSchedPatLocViewModal.toggle()
+
+            //  #if os(macOS)
+            //
+            //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+            //      openWindow(id:"AppSchedPatLocView", value:self.getAppParseCoreManagerInstance())
+            //
+            //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
+            //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
+            //
+            //  #endif
+            //
+                }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "location.viewfinder")
+                            .help(Text("App SchedPatLoc (Location) Information"))
+                            .imageScale(.large)
+
+                        Text("SchedPatLoc")
+                            .font(.caption)
+
+                    }
+
+                }
+            #if os(macOS)
+                .sheet(isPresented:$isAppSchedPatLocViewModal, content:
+                    {
+          
+                        AppSchedPatLocView()
+          
+                    }
+                )
+            #endif
+            #if os(iOS)
+                .fullScreenCover(isPresented:$isAppSchedPatLocViewModal)
+                {
+
+                    AppSchedPatLocView()
 
                 }
             #endif

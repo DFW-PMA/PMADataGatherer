@@ -176,6 +176,8 @@
 		F0EF628C2C8B70BE00DB79DB /* DeveloperSupportEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EF628A2C8B70BD00DB79DB /* DeveloperSupportEmail.swift */; };
 		F0F1277D2CEB944D00656B7E /* AppWorkRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1277C2CEB944D00656B7E /* AppWorkRouteView.swift */; };
 		F0F1277E2CEB944D00656B7E /* AppWorkRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1277C2CEB944D00656B7E /* AppWorkRouteView.swift */; };
+		F0FBE7762D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */; };
+		F0FBE7772D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -282,6 +284,7 @@
 		F0EF09D22D00B6CC0088D819 /* ScheduledPatientLocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledPatientLocationItem.swift; sourceTree = "<group>"; };
 		F0EF628A2C8B70BD00DB79DB /* DeveloperSupportEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperSupportEmail.swift; sourceTree = "<group>"; };
 		F0F1277C2CEB944D00656B7E /* AppWorkRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWorkRouteView.swift; sourceTree = "<group>"; };
+		F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchedPatLocView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,6 +404,7 @@
 		F028C5BF2C486134007C459E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */,
 				F0D524F92D5FE3CA006216D8 /* AppTidScheduleRowView.swift */,
 				F0D0AD132D5F956B00C34916 /* AppScheduleLoadingAssistant.swift */,
 				F05E47142D5D29150059F4C2 /* AppDataGathererPatient3View.swift */,
@@ -616,6 +620,7 @@
 				F029E0B72C82386D00FC96B9 /* SettingsSingleViewMac.swift in Sources */,
 				F05E47152D5D29150059F4C2 /* AppDataGathererPatient3View.swift in Sources */,
 				F0EEDD882CADC38400E437E8 /* JmAppMetricKitManager.swift in Sources */,
+				F0FBE7762D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */,
 				F05E47122D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift in Sources */,
 				F0D0AD142D5F956B00C34916 /* AppScheduleLoadingAssistant.swift in Sources */,
 				F0D524FB2D5FE3CA006216D8 /* AppTidScheduleRowView.swift in Sources */,
@@ -684,6 +689,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F091A2882C8F73DD00FB85D5 /* RestURLData.swift in Sources */,
+				F0FBE7772D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */,
 				F05E47132D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift in Sources */,
 				F08C00C82CE536430045A5CD /* JmAppParseCoreManager.swift in Sources */,
 				F091A2892C8F73DD00FB85D5 /* RestURLEndpoint.swift in Sources */,
@@ -992,7 +998,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 32.05.25C048;
+				CURRENT_PROJECT_VERSION = 32.10.25C048;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -1042,7 +1048,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 32.05.25C048;
+				CURRENT_PROJECT_VERSION = 32.10.25C048;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";

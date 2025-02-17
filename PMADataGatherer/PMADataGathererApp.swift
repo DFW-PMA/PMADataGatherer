@@ -18,7 +18,7 @@ struct PMADataGathererApp: App
     {
         
         static let sClsId        = "PMADataGathererApp"
-        static let sClsVers      = "v1.2001"
+        static let sClsVers      = "v1.2002"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -144,6 +144,22 @@ struct PMADataGathererApp: App
             AppWorkRouteMapView(parsePFCscDataItem:jmAppParseCoreManager.locatePFCscDataItemByID(id:uuid ?? UUID()))
             
         }
+
+        Window("AppSchedPatLoc", id:"AppSchedPatLocView")
+        {
+            
+            AppSchedPatLocView()
+            
+        }
+        
+    //  // This is the Window to diaplay the AppSchedPatLocMapView...this works from MacOS...
+    //  
+    //  WindowGroup("AppSchedPatLocMap", id:"AppSchedPatLocMapView", for: UUID.self)
+    //  { $uuid in
+    //      
+    //      AppSchedPatLocMapView(parsePFCscDataItem:jmAppParseCoreManager.locatePFCscDataItemByID(id:uuid ?? UUID()))
+    //      
+    //  }
 
         // This is the Window to diaplay the AppTidScheduleView...this works from MacOS...
 
