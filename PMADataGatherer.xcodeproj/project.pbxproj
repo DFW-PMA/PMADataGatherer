@@ -123,6 +123,8 @@
 		F0981DB42C52C5AE0054CE7C /* PMADataGathererAppGlobalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0981DB32C52C5AD0054CE7C /* PMADataGathererAppGlobalInfo.swift */; };
 		F0A443392C498ED6005EEE81 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		F0A59E052C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A59E032C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift */; };
+		F0A8FB3E2D650BBF00ADD658 /* AppSchedPatLocMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A8FB3D2D650BBF00ADD658 /* AppSchedPatLocMapView.swift */; };
+		F0A8FB3F2D650BBF00ADD658 /* AppSchedPatLocMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A8FB3D2D650BBF00ADD658 /* AppSchedPatLocMapView.swift */; };
 		F0BB63FE2CF4DB6900B22F9D /* SettingsSingleViewCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BB63FD2CF4DB6900B22F9D /* SettingsSingleViewCore.swift */; };
 		F0BB63FF2CF4DB6900B22F9D /* SettingsSingleViewCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0BB63FD2CF4DB6900B22F9D /* SettingsSingleViewCore.swift */; };
 		F0BCCC572C820EF1007EA382 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F028C5B22C48610A007C459E /* ContentView.swift */; };
@@ -151,8 +153,10 @@
 		F0BCCC722C820EF1007EA382 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F028C5B42C48610B007C459E /* Assets.xcassets */; };
 		F0C6A8FF2C4AA2A40004606A /* ObjcExceptionBridging in Frameworks */ = {isa = PBXBuildFile; productRef = F0C6A8FE2C4AA2A40004606A /* ObjcExceptionBridging */; settings = {ATTRIBUTES = (Required, ); }; };
 		F0C6A9012C4AA2A40004606A /* XCGLogger in Frameworks */ = {isa = PBXBuildFile; productRef = F0C6A9002C4AA2A40004606A /* XCGLogger */; };
-		F0CBE9002CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CBE8FF2CEBDD6E00B0625E /* AppLocationMapView.swift */; };
-		F0CBE9012CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CBE8FF2CEBDD6E00B0625E /* AppLocationMapView.swift */; };
+		F0CBE9002CEBDD6E00B0625E /* AppWorkRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CBE8FF2CEBDD6E00B0625E /* AppWorkRouteMapView.swift */; };
+		F0CBE9012CEBDD6E00B0625E /* AppWorkRouteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0CBE8FF2CEBDD6E00B0625E /* AppWorkRouteMapView.swift */; };
+		F0D0AD142D5F956B00C34916 /* AppScheduleLoadingAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D0AD132D5F956B00C34916 /* AppScheduleLoadingAssistant.swift */; };
+		F0D0AD152D5F956B00C34916 /* AppScheduleLoadingAssistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D0AD132D5F956B00C34916 /* AppScheduleLoadingAssistant.swift */; };
 		F0D17B892C52E414000E5A52 /* JmFileIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17B872C52E414000E5A52 /* JmFileIO.swift */; };
 		F0D17B8A2C52E414000E5A52 /* JmStringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17B882C52E414000E5A52 /* JmStringExtensions.swift */; };
 		F0D17B8D2C52E572000E5A52 /* AppInfoCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17B8C2C52E572000E5A52 /* AppInfoCommands.swift */; };
@@ -160,6 +164,8 @@
 		F0D17B922C52E951000E5A52 /* SettingsSingleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17B902C52E951000E5A52 /* SettingsSingleView.swift */; };
 		F0D17B932C52E951000E5A52 /* LogFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D17B912C52E951000E5A52 /* LogFileView.swift */; };
 		F0D473982C7AD2960027F651 /* JmAppDelegateVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D473972C7AD2960027F651 /* JmAppDelegateVisitor.swift */; };
+		F0D524FA2D5FE3CA006216D8 /* AppTidScheduleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D524F92D5FE3CA006216D8 /* AppTidScheduleRowView.swift */; };
+		F0D524FB2D5FE3CA006216D8 /* AppTidScheduleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0D524F92D5FE3CA006216D8 /* AppTidScheduleRowView.swift */; };
 		F0DC5D312CDBCE7A009F0090 /* MultipartZipFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DC5D302CDBCE7A009F0090 /* MultipartZipFileService.swift */; };
 		F0DC5D322CDBCE7A009F0090 /* MultipartZipFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DC5D302CDBCE7A009F0090 /* MultipartZipFileService.swift */; };
 		F0EDCABA2CE54444003A4D79 /* ParseLiveQuery in Frameworks */ = {isa = PBXBuildFile; productRef = F0EDCAB92CE54444003A4D79 /* ParseLiveQuery */; };
@@ -170,8 +176,10 @@
 		F0EF09D42D00B6CC0088D819 /* ScheduledPatientLocationItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EF09D22D00B6CC0088D819 /* ScheduledPatientLocationItem.swift */; };
 		F0EF628B2C8B70BE00DB79DB /* DeveloperSupportEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EF628A2C8B70BD00DB79DB /* DeveloperSupportEmail.swift */; };
 		F0EF628C2C8B70BE00DB79DB /* DeveloperSupportEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0EF628A2C8B70BD00DB79DB /* DeveloperSupportEmail.swift */; };
-		F0F1277D2CEB944D00656B7E /* AppLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1277C2CEB944D00656B7E /* AppLocationView.swift */; };
-		F0F1277E2CEB944D00656B7E /* AppLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1277C2CEB944D00656B7E /* AppLocationView.swift */; };
+		F0F1277D2CEB944D00656B7E /* AppWorkRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1277C2CEB944D00656B7E /* AppWorkRouteView.swift */; };
+		F0F1277E2CEB944D00656B7E /* AppWorkRouteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0F1277C2CEB944D00656B7E /* AppWorkRouteView.swift */; };
+		F0FBE7762D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */; };
+		F0FBE7772D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -258,10 +266,12 @@
 		F0981DB32C52C5AD0054CE7C /* PMADataGathererAppGlobalInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMADataGathererAppGlobalInfo.swift; sourceTree = "<group>"; };
 		F0A59E032C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmObjCSwiftEnvBridge.swift; sourceTree = "<group>"; };
 		F0A59E042C5962E900302BA8 /* JmObjCSwiftEnvBridge-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "JmObjCSwiftEnvBridge-Bridging-Header.h"; sourceTree = "<group>"; };
+		F0A8FB3D2D650BBF00ADD658 /* AppSchedPatLocMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchedPatLocMapView.swift; sourceTree = "<group>"; };
 		F0BB63FD2CF4DB6900B22F9D /* SettingsSingleViewCore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSingleViewCore.swift; sourceTree = "<group>"; };
 		F0BCCC4F2C820ECB007EA382 /* PMADataGathererUIAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMADataGathererUIAppDelegate.swift; sourceTree = "<group>"; };
 		F0BCCC762C820EF1007EA382 /* PMADataGatherer_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PMADataGatherer_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F0CBE8FF2CEBDD6E00B0625E /* AppLocationMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocationMapView.swift; sourceTree = "<group>"; };
+		F0CBE8FF2CEBDD6E00B0625E /* AppWorkRouteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWorkRouteMapView.swift; sourceTree = "<group>"; };
+		F0D0AD132D5F956B00C34916 /* AppScheduleLoadingAssistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppScheduleLoadingAssistant.swift; sourceTree = "<group>"; };
 		F0D17B872C52E414000E5A52 /* JmFileIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmFileIO.swift; sourceTree = "<group>"; };
 		F0D17B882C52E414000E5A52 /* JmStringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmStringExtensions.swift; sourceTree = "<group>"; };
 		F0D17B8C2C52E572000E5A52 /* AppInfoCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppInfoCommands.swift; sourceTree = "<group>"; };
@@ -269,13 +279,15 @@
 		F0D17B902C52E951000E5A52 /* SettingsSingleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsSingleView.swift; sourceTree = "<group>"; };
 		F0D17B912C52E951000E5A52 /* LogFileView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogFileView.swift; sourceTree = "<group>"; };
 		F0D473972C7AD2960027F651 /* JmAppDelegateVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmAppDelegateVisitor.swift; sourceTree = "<group>"; };
+		F0D524F92D5FE3CA006216D8 /* AppTidScheduleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTidScheduleRowView.swift; sourceTree = "<group>"; };
 		F0DC5D302CDBCE7A009F0090 /* MultipartZipFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipartZipFileService.swift; sourceTree = "<group>"; };
 		F0EEDD842CADC38400E437E8 /* JmAppDelegateVisitor-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JmAppDelegateVisitor-Bridging-Header.h"; sourceTree = "<group>"; };
 		F0EEDD852CADC38400E437E8 /* JmAppMetricKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JmAppMetricKitManager.swift; sourceTree = "<group>"; };
 		F0EEDD862CADC38400E437E8 /* JmUserDefaults-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "JmUserDefaults-Bridging-Header.h"; sourceTree = "<group>"; };
 		F0EF09D22D00B6CC0088D819 /* ScheduledPatientLocationItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledPatientLocationItem.swift; sourceTree = "<group>"; };
 		F0EF628A2C8B70BD00DB79DB /* DeveloperSupportEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeveloperSupportEmail.swift; sourceTree = "<group>"; };
-		F0F1277C2CEB944D00656B7E /* AppLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocationView.swift; sourceTree = "<group>"; };
+		F0F1277C2CEB944D00656B7E /* AppWorkRouteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppWorkRouteView.swift; sourceTree = "<group>"; };
+		F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSchedPatLocView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -395,6 +407,10 @@
 		F028C5BF2C486134007C459E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F0A8FB3D2D650BBF00ADD658 /* AppSchedPatLocMapView.swift */,
+				F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */,
+				F0D524F92D5FE3CA006216D8 /* AppTidScheduleRowView.swift */,
+				F0D0AD132D5F956B00C34916 /* AppScheduleLoadingAssistant.swift */,
 				F05E47142D5D29150059F4C2 /* AppDataGathererPatient3View.swift */,
 				F05E47112D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift */,
 				F05EDC2E2D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift */,
@@ -408,8 +424,8 @@
 				F08A94752D11F1A900B69C3C /* AppTidScheduleView.swift */,
 				F029E0B92C823ACB00FC96B9 /* AppAboutView.swift */,
 				F069E2AE2CEFADE5001F0A5E /* AppAuthenticateView.swift */,
-				F0CBE8FF2CEBDD6E00B0625E /* AppLocationMapView.swift */,
-				F0F1277C2CEB944D00656B7E /* AppLocationView.swift */,
+				F0CBE8FF2CEBDD6E00B0625E /* AppWorkRouteMapView.swift */,
+				F0F1277C2CEB944D00656B7E /* AppWorkRouteView.swift */,
 				F028C5B22C48610A007C459E /* ContentView.swift */,
 				F0289D2A2C53D863001B19CD /* HelpBasicView.swift */,
 				F0D17B912C52E951000E5A52 /* LogFileView.swift */,
@@ -608,7 +624,10 @@
 				F029E0B72C82386D00FC96B9 /* SettingsSingleViewMac.swift in Sources */,
 				F05E47152D5D29150059F4C2 /* AppDataGathererPatient3View.swift in Sources */,
 				F0EEDD882CADC38400E437E8 /* JmAppMetricKitManager.swift in Sources */,
+				F0FBE7762D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */,
 				F05E47122D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift in Sources */,
+				F0D0AD142D5F956B00C34916 /* AppScheduleLoadingAssistant.swift in Sources */,
+				F0D524FB2D5FE3CA006216D8 /* AppTidScheduleRowView.swift in Sources */,
 				F05EBBB22D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */,
 				F0474E592CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift in Sources */,
 				F0474E5A2CDAA54A0079B1E0 /* JmAppUserNotificationIdentifiers.swift in Sources */,
@@ -617,7 +636,7 @@
 				F08C00C72CE536430045A5CD /* JmAppParseCoreManager.swift in Sources */,
 				F091A2872C8F6FEF00FB85D5 /* RestURLProcessor.swift in Sources */,
 				F028C5B32C48610A007C459E /* ContentView.swift in Sources */,
-				F0F1277E2CEB944D00656B7E /* AppLocationView.swift in Sources */,
+				F0F1277E2CEB944D00656B7E /* AppWorkRouteView.swift in Sources */,
 				F0289D332C53D98D001B19CD /* HelpBasicMode.swift in Sources */,
 				F08C86B02D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */,
 				F05EE1D52D380E4E00ABC0C5 /* JmAppAlarmSoundManager.swift in Sources */,
@@ -625,6 +644,7 @@
 				F05EDC322D53FA2F00306C62 /* AppDataGathererPatient1View.swift in Sources */,
 				F05EDC332D53FA2F00306C62 /* AppDataGathererPatient2View.swift in Sources */,
 				F00619A62C94A8060094614E /* MultipartRequestInfo.swift in Sources */,
+				F0A8FB3F2D650BBF00ADD658 /* AppSchedPatLocMapView.swift in Sources */,
 				F091A2862C8F6FEF00FB85D5 /* RestURLEndpoint.swift in Sources */,
 				F00619A02C94A8060094614E /* MultipartRequestDriver.swift in Sources */,
 				F0981DB42C52C5AE0054CE7C /* PMADataGathererAppGlobalInfo.swift in Sources */,
@@ -646,7 +666,7 @@
 				F0D17B932C52E951000E5A52 /* LogFileView.swift in Sources */,
 				F0786E462CE68E9E0052A534 /* CoreLocationModelObservable2.swift in Sources */,
 				F069E2B02CEFADE5001F0A5E /* AppAuthenticateView.swift in Sources */,
-				F0CBE9012CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */,
+				F0CBE9012CEBDD6E00B0625E /* AppWorkRouteMapView.swift in Sources */,
 				F0786E472CE68E9E0052A534 /* CoreLocationSiteItem.swift in Sources */,
 				F07F7B952C94DB2D0094AE18 /* DefinesObjCOverrides.m in Sources */,
 				F05EE1D22D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */,
@@ -674,11 +694,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				F091A2882C8F73DD00FB85D5 /* RestURLData.swift in Sources */,
+				F0FBE7772D63C8A200028CBA /* AppSchedPatLocView.swift in Sources */,
 				F05E47132D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift in Sources */,
 				F08C00C82CE536430045A5CD /* JmAppParseCoreManager.swift in Sources */,
 				F091A2892C8F73DD00FB85D5 /* RestURLEndpoint.swift in Sources */,
 				F08C86B42D1DD6C100D5B19A /* AppDataGathererTherapist1View.swift in Sources */,
 				F091A28A2C8F73DD00FB85D5 /* RestURLProcessor.swift in Sources */,
+				F0D0AD152D5F956B00C34916 /* AppScheduleLoadingAssistant.swift in Sources */,
 				F091A28B2C8F73DD00FB85D5 /* RestURLResponse.swift in Sources */,
 				F069E2AF2CEFADE5001F0A5E /* AppAuthenticateView.swift in Sources */,
 				F00619A72C94A8060094614E /* MultipartRequestInfo.swift in Sources */,
@@ -699,11 +721,12 @@
 				F0BCCC5E2C820EF1007EA382 /* SettingsSingleView.swift in Sources */,
 				F0EF628C2C8B70BE00DB79DB /* DeveloperSupportEmail.swift in Sources */,
 				F08C86B12D1DBAEF00D5B19A /* AppDataGathererView.swift in Sources */,
-				F0CBE9002CEBDD6E00B0625E /* AppLocationMapView.swift in Sources */,
-				F0F1277D2CEB944D00656B7E /* AppLocationView.swift in Sources */,
+				F0CBE9002CEBDD6E00B0625E /* AppWorkRouteMapView.swift in Sources */,
+				F0F1277D2CEB944D00656B7E /* AppWorkRouteView.swift in Sources */,
 				F0474E5B2CDAA54A0079B1E0 /* JmAppUserNotificationManager.swift in Sources */,
 				F05EE1D32D380E3700ABC0C5 /* AlarmSwiftDataItem.swift in Sources */,
 				F0474E5C2CDAA54A0079B1E0 /* JmAppUserNotificationIdentifiers.swift in Sources */,
+				F0D524FA2D5FE3CA006216D8 /* AppTidScheduleRowView.swift in Sources */,
 				F00619A52C94A8060094614E /* MultipartRequest.swift in Sources */,
 				F05B51562CE7D8B5008A0EEE /* ParsePFCscDataItem.swift in Sources */,
 				F0BCCC602C820EF1007EA382 /* JmFileIO.swift in Sources */,
@@ -735,6 +758,7 @@
 				F05EDC342D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift in Sources */,
 				F05EDC352D53FA2F00306C62 /* AppDataGathererPatient1View.swift in Sources */,
 				F05EDC362D53FA2F00306C62 /* AppDataGathererPatient2View.swift in Sources */,
+				F0A8FB3E2D650BBF00ADD658 /* AppSchedPatLocMapView.swift in Sources */,
 				F0BCCC682C820EF1007EA382 /* JmStringExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -893,7 +917,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 30.12.25C044;
+				CURRENT_PROJECT_VERSION = 33.01.25C049;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -937,7 +961,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 30.12.25C044;
+				CURRENT_PROJECT_VERSION = 33.01.25C049;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -980,7 +1004,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 30.12.25C044;
+				CURRENT_PROJECT_VERSION = 33.08.25C049;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -1030,7 +1054,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 30.12.25C044;
+				CURRENT_PROJECT_VERSION = 33.08.25C049;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";

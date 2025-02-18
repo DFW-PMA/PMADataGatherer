@@ -26,7 +26,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     {
         
         static let sClsId        = "CoreLocationModelObservable2"
-        static let sClsVers      = "v1.0601"
+        static let sClsVers      = "v1.0802"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -41,6 +41,11 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         static var appCoreLocationModel:CoreLocationModelObservable2
                                                               = CoreLocationModelObservable2()
     }
+
+    // 'Internal' Trace flag:
+
+    private 
+    var bInternalTraceFlag:Bool                               = false
 
     // App Data field(s):
 
@@ -148,6 +153,9 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         asToString.append("'sClsCopyRight': [\(ClassInfo.sClsCopyRight)],")
         asToString.append("'bClsTrace': [\(ClassInfo.bClsTrace)],")
         asToString.append("'bClsFileLog': [\(ClassInfo.bClsFileLog)]")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'bInternalTraceFlag': [\(String(describing: self.bInternalTraceFlag))],")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'cCoreLocationReverseLookupsPrimary': (\(String(describing: self.cCoreLocationReverseLookupsPrimary))),")
@@ -274,35 +282,42 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         }
-        
+
         // Clear the 'last' CLLocation setting(s)...
 
-        self.clCurrentHeading              = nil
-        self.clCurrentLocation             = nil
+        DispatchQueue.main.async
+        {
 
-        self.sCurrentLocationName          = "-N/A-"
-        self.sCurrentCity                  = "-N/A-"
-        self.sCurrentCountry               = "-N/A-"
-        self.sCurrentPostalCode            = "-N/A-"
-        self.tzCurrentTimeZone             = nil
-        self.clCurrentRegion               = nil
-        self.sCurrentSubLocality           = "-N/A-"
-        self.sCurrentThoroughfare          = "-N/A-"
-        self.sCurrentSubThoroughfare       = "-N/A-"
-        self.sCurrentAdministrativeArea    = "-N/A-"
-        self.sCurrentSubAdministrativeArea = "-N/A-"
+            self.clCurrentHeading              = nil
+            self.clCurrentLocation             = nil
 
-        self.listCoreLocationSiteItems     = [CoreLocationSiteItem]()
+            self.sCurrentLocationName          = "-N/A-"
+            self.sCurrentCity                  = "-N/A-"
+            self.sCurrentCountry               = "-N/A-"
+            self.sCurrentPostalCode            = "-N/A-"
+            self.tzCurrentTimeZone             = nil
+            self.clCurrentRegion               = nil
+            self.sCurrentSubLocality           = "-N/A-"
+            self.sCurrentThoroughfare          = "-N/A-"
+            self.sCurrentSubThoroughfare       = "-N/A-"
+            self.sCurrentAdministrativeArea    = "-N/A-"
+            self.sCurrentSubAdministrativeArea = "-N/A-"
+
+            self.listCoreLocationSiteItems     = [CoreLocationSiteItem]()
+
+        }
 
         // Exit:
 
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -319,7 +334,12 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'clRevLocType' is [\(clRevLocType)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'clRevLocType' is [\(clRevLocType)]...")
+
+        }
 
         // Generate a 'next' ReverseLocation Dispatch time...
 
@@ -342,7 +362,12 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting <ReverseLocation 'lookup'> - 'dblDeadlineInterval' is (\(dblDeadlineInterval))...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting <ReverseLocation 'lookup'> - 'dblDeadlineInterval' is (\(dblDeadlineInterval))...")
+
+        }
 
         return dblDeadlineInterval
         
@@ -354,7 +379,12 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'clRevLocType' is [\(clRevLocType)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'clRevLocType' is [\(clRevLocType)]...")
+
+        }
 
         // Generate a 'next' ReverseLocation Dispatch time...
 
@@ -370,7 +400,12 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
         
@@ -382,17 +417,32 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-        
-        self.locationManager?.requestLocation()
+        if (self.bInternalTraceFlag == true)
+        {
 
-        self.clCurrentHeading = self.locationManager?.heading
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
         
-    //  self.locationManager?.startUpdatingLocation()
+        DispatchQueue.main.async
+        {
+
+            self.locationManager?.requestLocation()
+
+            self.clCurrentHeading = self.locationManager?.heading
+            
+        //  self.locationManager?.startUpdatingLocation()
+
+        }
 
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
         
@@ -404,13 +454,23 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
         
         self.locationManager?.stopUpdatingLocation()
         
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
         
@@ -422,13 +482,14 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         }
-        
+    
         // Instantiate a CLGeocoder and attempt to convert latitude/longitude into an address...
 
         self.clearLastCLLocationSettings()
@@ -459,7 +520,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
                     let _ = self.updateCoreLocationSiteItemList()
 
-                    if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+                //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+                    if (self.bInternalTraceFlag == true)
                     {
 
                         self.xcgLogMsg("\(sCurrMethodDisp) CLGeocoder 'reverseGeocodeLocation()' returned a 'location' of [\(self.sCurrentLocationName)]/[\(self.sCurrentCity)]...")
@@ -478,7 +540,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
                 // Exit...
 
-                if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+            //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+            if (self.bInternalTraceFlag == true)
                 {
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -493,13 +556,14 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         // Exit...
 
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
         }
-        
+    
         return true
         
     }   // End of public func updateGeocoderLocations().
@@ -510,13 +574,14 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         }
-        
+    
         // Instantiate a CLGeocoder and attempt to convert latitude/longitude into an address...
 
         self.clearLastCLLocationSettings()
@@ -562,7 +627,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
                     dictCurrentLocation["sCurrentAdministrativeArea"]    = self.sCurrentAdministrativeArea   
                     dictCurrentLocation["sCurrentSubAdministrativeArea"] = self.sCurrentSubAdministrativeArea
 
-                    if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+                //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+                    if (self.bInternalTraceFlag == true)
                     {
 
                         self.xcgLogMsg("\(sCurrMethodDisp) CLGeocoder 'reverseGeocodeLocation()' returned a 'location' of [\(self.sCurrentLocationName)]/[\(self.sCurrentCity)]...")
@@ -581,7 +647,8 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
                 // Exit...
 
-                if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+            //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+                if (self.bInternalTraceFlag == true)
                 {
 
                     self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -598,13 +665,14 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         // Exit...
 
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
         }
-        
+    
         return true
         
     }   // End of public func updateGeocoderLocations(requestID:Int, latitude:Double, longitude:Double, withCompletionHandler completionHandler:@escaping(_ requestID:Int, _ dictCurrentLocation:[String:Any])->Void) -> Bool
@@ -615,13 +683,14 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         }
-        
+    
         // Build the CoreLocationSiteItem(s) list...
 
         self.listCoreLocationSiteItems = []
@@ -670,13 +739,14 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         // Exit...
 
-        if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+    //  if (AppGlobalInfo.bPerformAppCoreLocationTesting == true)
+        if (self.bInternalTraceFlag == true)
         {
 
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
         }
-        
+    
         return true
 
     }   // End of public func updateCoreLocationSiteItemList().
@@ -687,18 +757,33 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
         
-//        guard let clHeading = heading
-//        else { return }
+    //  guard let clHeading = heading
+    //  else { return }
 
         self.clCurrentHeading = heading
         
-        self.xcgLogMsg("magneticHeading: [[\(self.clCurrentHeading!.magneticHeading)], trueHeading: [\(self.clCurrentHeading!.trueHeading)], timestamp: [\(self.clCurrentHeading!.timestamp)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("magneticHeading: [[\(self.clCurrentHeading!.magneticHeading)], trueHeading: [\(self.clCurrentHeading!.trueHeading)], timestamp: [\(self.clCurrentHeading!.timestamp)]...")
+
+        }
         
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
         
@@ -710,17 +795,32 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
         
         guard let location = locations.last
         else { return }
         
-        self.xcgLogMsg("Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("Latitude: \(location.coordinate.latitude), Longitude: \(location.coordinate.longitude)")
+
+        }
         
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
 
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
+    
         return
         
     }   // End of func locationManager().
@@ -731,7 +831,12 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
         
         self.locationManager?.stopUpdatingLocation()
         
@@ -743,23 +848,23 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
                 
             case .locationUnknown, .denied, .network:
                 
-                self.xcgLogMsg("Location request failed with error: \(clErr.localizedDescription)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Location request failed with error: \(clErr.localizedDescription)...")
                 
             case .headingFailure:
                 
-                self.xcgLogMsg("Heading request failed with error: \(clErr.localizedDescription)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Heading request failed with error: \(clErr.localizedDescription)...")
                 
             case .rangingUnavailable, .rangingFailure:
                 
-                self.xcgLogMsg("Ranging request failed with error: \(clErr.localizedDescription)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Ranging request failed with error: \(clErr.localizedDescription)...")
                 
             case .regionMonitoringDenied, .regionMonitoringFailure, .regionMonitoringSetupDelayed, .regionMonitoringResponseDelayed:
                 
-                self.xcgLogMsg("Region monitoring request failed with error: \(clErr.localizedDescription)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Region monitoring request failed with error: \(clErr.localizedDescription)...")
                 
             default:
                 
-                self.xcgLogMsg("Unknown 'location manager' request failed with error: \(clErr.localizedDescription)...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Unknown 'location manager' request failed with error: \(clErr.localizedDescription)...")
                 
             }
             
@@ -767,13 +872,18 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         else
         {
             
-            self.xcgLogMsg("Unknown error occurred while handling the 'location manager' request failed with error: \(error.localizedDescription)...")
+            self.xcgLogMsg("\(sCurrMethodDisp) Unknown error occurred while handling the 'location manager' request failed with error: \(error.localizedDescription)...")
             
         }
         
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
         
@@ -785,42 +895,52 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        }
         
         switch manager.authorizationStatus
         {
             
         case .notDetermined:
             
-            self.xcgLogMsg("The User has NOT yet determined authorization...")
+            self.xcgLogMsg("\(sCurrMethodDisp) The User has NOT yet determined authorization...")
             
         case .restricted:
             
-            self.xcgLogMsg("Authorization is RESTRICTED by Parental control...")
+            self.xcgLogMsg("\(sCurrMethodDisp) Authorization is RESTRICTED by Parental control...")
             
         case .denied:
             
-            self.xcgLogMsg("The User has selected 'Do NOT Allow' (denied)...")
+            self.xcgLogMsg("\(sCurrMethodDisp) The User has selected 'Do NOT Allow' (denied)...")
             
         case .authorizedAlways:
             
-            self.xcgLogMsg("The User has changed the selection to 'Always Allow'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) The User has changed the selection to 'Always Allow'...")
             
         case .authorizedWhenInUse:
             
-            self.xcgLogMsg("The User has selected 'Allow while Using' or 'Allow Once'...")
+            self.xcgLogMsg("\(sCurrMethodDisp) The User has selected 'Allow while Using' or 'Allow Once'...")
             
             self.locationManager?.requestAlwaysAuthorization()
             
         default:
             
-            self.xcgLogMsg("This is the 'default' option...")
+            self.xcgLogMsg("\(sCurrMethodDisp) This is the 'default' option...")
             
         }
         
         // Exit...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        }
 
         return
         

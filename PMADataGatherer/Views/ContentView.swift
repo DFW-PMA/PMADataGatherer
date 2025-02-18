@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.3101"
+        static let sClsVers      = "v1.3303"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -36,25 +36,27 @@ struct ContentView: View
 
 #if os(iOS)
 
-    @State private var cAppViewSettingsButtonPresses:Int          = 0
+    @State private var cAppViewSettingsButtonPresses:Int         = 0
     
-    @State private var isAppSettingsModal:Bool                    = false
+    @State private var isAppSettingsModal:Bool                   = false
 
 #endif
     
-    @State private var cAppLocationViewLogPFDataButtonPresses:Int = 0
-    @State private var cContentViewRefreshButtonPresses:Int       = 0
-    @State private var cContentViewAppDataButtonPresses:Int       = 0
-    @State private var cContentViewAppLocationButtonPresses:Int   = 0
+    @State private var cAppLogPFDataButtonPresses:Int            = 0
+    @State private var cAppRefreshButtonPresses:Int              = 0
+    @State private var cAppDataButtonPresses:Int                 = 0
+    @State private var cAppWorkRouteButtonPresses:Int            = 0
+    @State private var cAppSchedPatLocButtonPresses:Int          = 0
 
-    @State private var isAppLogPFDataViewModal:Bool               = false
-    @State private var isAppDataViewModal:Bool                    = false
-    @State private var isAppLocationViewModal:Bool                = false
+    @State private var isAppLogPFDataViewModal:Bool              = false
+    @State private var isAppDataViewModal:Bool                   = false
+    @State private var isAppWorkRouteViewModal:Bool              = false
+    @State private var isAppSchedPatLocViewModal:Bool            = false
 
-    @State private var shouldContentViewChange:Bool               = false
-    @State private var shouldContentViewShowAlert:Bool            = false
+    @State private var shouldContentViewChange:Bool              = false
+    @State private var shouldContentViewShowAlert:Bool           = false
 
-                   var jmAppDelegateVisitor:JmAppDelegateVisitor  = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+                   var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
     init(isUserLoggedIn: Binding<Bool>, sLoginUsername: Binding<String>, sLoginPassword: Binding<String>)
     {
@@ -121,9 +123,9 @@ struct ContentView: View
                     Button
                     {
 
-                        self.cAppLocationViewLogPFDataButtonPresses += 1
+                        self.cAppLogPFDataButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
 
                         self.isAppLogPFDataViewModal.toggle()
 
@@ -178,9 +180,9 @@ struct ContentView: View
                 Button
                 {
 
-                    self.cContentViewRefreshButtonPresses += 1
+                    self.cAppRefreshButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'Refresh'.#(\(self.cContentViewRefreshButtonPresses))...")
+                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)ContentView.Button(Xcode).'Refresh'.#(\(self.cAppRefreshButtonPresses))...")
 
                 }
                 label:
@@ -193,7 +195,7 @@ struct ContentView: View
                             .help(Text("'Refresh' App Screen..."))
                             .imageScale(.large)
 
-                        Text("Refresh Screen - #(\(self.cContentViewRefreshButtonPresses))...")
+                        Text("Refresh Screen - #(\(self.cAppRefreshButtonPresses))...")
                             .font(.caption)
 
                     }
@@ -333,9 +335,9 @@ struct ContentView: View
                 Button
                 {
 
-                    self.cContentViewAppDataButtonPresses += 1
+                    self.cAppDataButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Data...'.#(\(self.cContentViewAppDataButtonPresses))...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Data...'.#(\(self.cAppDataButtonPresses))...")
 
                     self.isAppDataViewModal.toggle()
 
@@ -349,7 +351,7 @@ struct ContentView: View
             //  #if os(macOS)
             //
             //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-            //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+            //      openWindow(id:"AppWorkRouteView", value:self.getAppParseCoreManagerInstance())
             //
             //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
             //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
@@ -403,16 +405,16 @@ struct ContentView: View
                 Button
                 {
 
-                    self.cContentViewAppLocationButtonPresses += 1
+                    self.cAppWorkRouteButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Location'.#(\(self.cContentViewAppLocationButtonPresses))...")
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App WorkRoute'.#(\(self.cAppWorkRouteButtonPresses))...")
 
-                    self.isAppLocationViewModal.toggle()
+                    self.isAppWorkRouteViewModal.toggle()
 
             //  #if os(macOS)
             //
             //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-            //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+            //      openWindow(id:"AppWorkRouteView", value:self.getAppParseCoreManagerInstance())
             //
             //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
             //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
@@ -427,29 +429,92 @@ struct ContentView: View
                     {
 
                         Label("", systemImage: "location.viewfinder")
-                            .help(Text("App Location Information"))
+                            .help(Text("App WorkRoute (Location) Information"))
                             .imageScale(.large)
 
-                        Text("Location")
+                        Text("WorkRoute")
                             .font(.caption)
 
                     }
 
                 }
             #if os(macOS)
-                .sheet(isPresented:$isAppLocationViewModal, content:
+                .sheet(isPresented:$isAppWorkRouteViewModal, content:
                     {
           
-                        AppLocationView()
+                        AppWorkRouteView()
           
                     }
                 )
             #endif
             #if os(iOS)
-                .fullScreenCover(isPresented:$isAppLocationViewModal)
+                .fullScreenCover(isPresented:$isAppWorkRouteViewModal)
                 {
 
-                    AppLocationView()
+                    AppWorkRouteView()
+
+                }
+            #endif
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
+
+                Spacer()
+
+                Button
+                {
+
+                    self.cAppSchedPatLocButtonPresses += 1
+
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App SchedPatLoc'.#(\(self.cAppSchedPatLocButtonPresses))...")
+
+                    self.isAppSchedPatLocViewModal.toggle()
+
+            //  #if os(macOS)
+            //
+            //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+            //      openWindow(id:"AppSchedPatLocView", value:self.getAppParseCoreManagerInstance())
+            //
+            //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
+            //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
+            //
+            //  #endif
+            //
+                }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "location.viewfinder")
+                            .help(Text("App SchedPatLoc (Location) Information"))
+                            .imageScale(.large)
+
+                        Text("SchedPatLoc")
+                            .font(.caption)
+
+                    }
+
+                }
+            #if os(macOS)
+                .sheet(isPresented:$isAppSchedPatLocViewModal, content:
+                    {
+          
+                        AppSchedPatLocView()
+          
+                    }
+                )
+            #endif
+            #if os(iOS)
+                .fullScreenCover(isPresented:$isAppSchedPatLocViewModal)
+                {
+
+                    AppSchedPatLocView()
 
                 }
             #endif

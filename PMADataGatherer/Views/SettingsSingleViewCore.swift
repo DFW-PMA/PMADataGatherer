@@ -15,7 +15,7 @@ struct SettingsSingleViewCore: View
     {
         
         static let sClsId        = "SettingsSingleViewCore"
-        static let sClsVers      = "v1.2401"
+        static let sClsVers      = "v1.2501"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -31,7 +31,7 @@ struct SettingsSingleViewCore: View
     
            private var bInternalZipTest:Bool                                 = false
 
-    @State private var cAppLocationViewLogPFDataButtonPresses:Int            = 0
+    @State private var cAppLogPFDataButtonPresses:Int                        = 0
     @State private var cAppZipFileButtonPresses:Int                          = 0
     @State private var cAppCrashButtonPresses:Int                            = 0
 
@@ -516,9 +516,9 @@ struct SettingsSingleViewCore: View
                     Button
                     {
 
-                        self.cAppLocationViewLogPFDataButtonPresses += 1
+                        self.cAppLogPFDataButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLocationView.Button(Xcode).'Log PFData'.#(\(self.cAppLocationViewLogPFDataButtonPresses)) pressed...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
 
                         self.isAppLogPFDataViewModal.toggle()
 

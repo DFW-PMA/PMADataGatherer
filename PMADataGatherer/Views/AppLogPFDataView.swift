@@ -16,7 +16,7 @@ struct AppLogPFDataView: View
     {
         
         static let sClsId        = "AppLogPFDataView"
-        static let sClsVers      = "v1.0402"
+        static let sClsVers      = "v1.0602"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -30,11 +30,11 @@ struct AppLogPFDataView: View
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.openWindow)       var openWindow
 
-    @State private  var cContentViewAppDataButtonPresses:Int                  = 0
-    @State private  var cContentViewAppLocationButtonPresses:Int              = 0
+    @State private  var cAppDataButtonPresses:Int                             = 0
+    @State private  var cAppWorkRouteButtonPresses:Int                        = 0
     
     @State private  var isAppDataViewModal:Bool                               = false
-    @State private  var isAppLocationViewModal:Bool                           = false
+    @State private  var isAppWorkRouteViewModal:Bool                          = false
 
     @State private  var cAppLogPFDataLoggingRefreshButtonPresses:Int          = 0
     @State private  var cAppLogPFDataLoggingPFAdminsButtonPresses:Int         = 0
@@ -150,9 +150,9 @@ struct AppLogPFDataView: View
                     Button
                     {
 
-                        self.cContentViewAppDataButtonPresses += 1
+                        self.cAppDataButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Data...'.#(\(self.cContentViewAppDataButtonPresses))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLogPFDataView.Button(Xcode).'App Data...'.#(\(self.cAppDataButtonPresses))...")
 
                         self.isAppDataViewModal.toggle()
 
@@ -166,7 +166,7 @@ struct AppLogPFDataView: View
                 //  #if os(macOS)
                 //
                 //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-                //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+                //      openWindow(id:"AppWorkRouteView", value:self.getAppParseCoreManagerInstance())
                 //
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
@@ -220,16 +220,16 @@ struct AppLogPFDataView: View
                     Button
                     {
 
-                        self.cContentViewAppLocationButtonPresses += 1
+                        self.cAppWorkRouteButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'App Location'.#(\(self.cContentViewAppLocationButtonPresses))...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppLogPFDataView.Button(Xcode).'App WorkRoute'.#(\(self.cAppWorkRouteButtonPresses))...")
 
-                        self.isAppLocationViewModal.toggle()
+                        self.isAppWorkRouteViewModal.toggle()
 
                 //  #if os(macOS)
                 //
                 //      // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
-                //      openWindow(id:"AppLocationView", value:self.getAppParseCoreManagerInstance())
+                //      openWindow(id:"AppWorkRouteView", value:self.getAppParseCoreManagerInstance())
                 //
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Encodable'
                 //      //  ERROR: Instance method 'callAsFunction(id:value:)' requires that 'JmAppParseCoreManager' conform to 'Decodable'
@@ -244,29 +244,29 @@ struct AppLogPFDataView: View
                         {
 
                             Label("", systemImage: "location.viewfinder")
-                                .help(Text("App Location Information"))
+                                .help(Text("App WorkRoute (Location) Information"))
                                 .imageScale(.large)
 
-                            Text("Location")
+                            Text("WorkRoute")
                                 .font(.caption)
 
                         }
 
                     }
                 #if os(macOS)
-                    .sheet(isPresented:$isAppLocationViewModal, content:
+                    .sheet(isPresented:$isAppWorkRouteViewModal, content:
                         {
               
-                            AppLocationView()
+                            AppWorkRouteView()
               
                         }
                     )
                 #endif
                 #if os(iOS)
-                    .fullScreenCover(isPresented:$isAppLocationViewModal)
+                    .fullScreenCover(isPresented:$isAppWorkRouteViewModal)
                     {
 
-                        AppLocationView()
+                        AppWorkRouteView()
 
                     }
                 #endif

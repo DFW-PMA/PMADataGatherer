@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.0902"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -1056,7 +1056,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
 
             DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
             {
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFTherapistFileObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFTherapistFileName)]...")
+            //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFTherapistFileObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFTherapistFileName)]...")
 
                 let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idPFTherapistFileObject, 
                                                                    latitude:  self.dblConvertedLatitude, 
@@ -1093,14 +1093,15 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] for Therapist [\(self.idPFTherapistFileObject)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)] - 'requestID' is [\(requestID)] - 'dictCurrentLocation' is [\(String(describing: dictCurrentLocation))]...")
+    //  self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] for Therapist [\(self.idPFTherapistFileObject)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)] - 'requestID' is [\(requestID)] - 'dictCurrentLocation' is [\(String(describing: dictCurrentLocation))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - for Therapist [\(self.idPFTherapistFileObject)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)]...")
 
         // Update the address info for BOTH 'self' and (possibly 'from'/'to')...
 
         if (dictCurrentLocation.count > 0)
         {
         
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFTherapistFileName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
+        //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFTherapistFileName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
 
             self.sHomeLocLocationName = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
             self.sHomeLocCity         = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
@@ -1117,11 +1118,11 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
                     self.pfTherapistFileObjectClonedFrom != self)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfTherapistFileObjectClonedFrom' of [\(String(describing: self.pfTherapistFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfTherapistFileObjectClonedFrom' of [\(String(describing: self.pfTherapistFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
 
                     self.pfTherapistFileObjectClonedFrom!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfTherapistFileObjectClonedFrom' of [\(String(describing: self.pfTherapistFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfTherapistFileObjectClonedFrom' of [\(String(describing: self.pfTherapistFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
 
                 }
 
@@ -1129,11 +1130,11 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
                     self.pfTherapistFileObjectClonedTo != self)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfTherapistFileObjectClonedTo' of [\(String(describing: self.pfTherapistFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfTherapistFileObjectClonedTo' of [\(String(describing: self.pfTherapistFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
 
                     self.pfTherapistFileObjectClonedTo!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfTherapistFileObjectClonedTo' of [\(String(describing: self.pfTherapistFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
+                //  self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfTherapistFileObjectClonedTo' of [\(String(describing: self.pfTherapistFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFTherapistFileName)]...")
 
                 }
             
