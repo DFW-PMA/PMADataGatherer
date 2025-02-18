@@ -26,7 +26,7 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
     {
         
         static let sClsId        = "CoreLocationModelObservable2"
-        static let sClsVers      = "v1.0702"
+        static let sClsVers      = "v1.0802"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -292,22 +292,27 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         // Clear the 'last' CLLocation setting(s)...
 
-        self.clCurrentHeading              = nil
-        self.clCurrentLocation             = nil
+        DispatchQueue.main.async
+        {
 
-        self.sCurrentLocationName          = "-N/A-"
-        self.sCurrentCity                  = "-N/A-"
-        self.sCurrentCountry               = "-N/A-"
-        self.sCurrentPostalCode            = "-N/A-"
-        self.tzCurrentTimeZone             = nil
-        self.clCurrentRegion               = nil
-        self.sCurrentSubLocality           = "-N/A-"
-        self.sCurrentThoroughfare          = "-N/A-"
-        self.sCurrentSubThoroughfare       = "-N/A-"
-        self.sCurrentAdministrativeArea    = "-N/A-"
-        self.sCurrentSubAdministrativeArea = "-N/A-"
+            self.clCurrentHeading              = nil
+            self.clCurrentLocation             = nil
 
-        self.listCoreLocationSiteItems     = [CoreLocationSiteItem]()
+            self.sCurrentLocationName          = "-N/A-"
+            self.sCurrentCity                  = "-N/A-"
+            self.sCurrentCountry               = "-N/A-"
+            self.sCurrentPostalCode            = "-N/A-"
+            self.tzCurrentTimeZone             = nil
+            self.clCurrentRegion               = nil
+            self.sCurrentSubLocality           = "-N/A-"
+            self.sCurrentThoroughfare          = "-N/A-"
+            self.sCurrentSubThoroughfare       = "-N/A-"
+            self.sCurrentAdministrativeArea    = "-N/A-"
+            self.sCurrentSubAdministrativeArea = "-N/A-"
+
+            self.listCoreLocationSiteItems     = [CoreLocationSiteItem]()
+
+        }
 
         // Exit:
 
@@ -419,11 +424,16 @@ class CoreLocationModelObservable2: NSObject, CLLocationManagerDelegate, Observa
 
         }
         
-        self.locationManager?.requestLocation()
+        DispatchQueue.main.async
+        {
 
-        self.clCurrentHeading = self.locationManager?.heading
-        
-    //  self.locationManager?.startUpdatingLocation()
+            self.locationManager?.requestLocation()
+
+            self.clCurrentHeading = self.locationManager?.heading
+            
+        //  self.locationManager?.startUpdatingLocation()
+
+        }
 
         // Exit...
 
