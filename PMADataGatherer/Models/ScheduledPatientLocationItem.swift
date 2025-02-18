@@ -16,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1101"
+        static let sClsVers      = "v1.1201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -58,6 +58,28 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 
         return CLLocationCoordinate2D(latitude:  Double(self.sLastVDateLatitude)  ?? 0.0,
                                       longitude: Double(self.sLastVDateLongitude) ?? 0.0)
+
+    }
+
+    var sVDateAddressOrLatLong:String
+    {
+
+        if (self.sLastVDateAddress.count  < 1       ||
+            self.sLastVDateAddress       == ""      ||
+            self.sLastVDateAddress       == "-N/A-" ||
+            self.sLastVDateAddress       == ",,,"   ||
+            self.sLastVDateAddress       == ", , , ")
+        {
+
+            return ("\(self.sLastVDateLatitude), \(self.sLastVDateLongitude)")
+
+        }
+        else
+        {
+
+            return (self.sLastVDateAddress)
+
+        }
 
     }
 

@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0306"
+        static let sClsVers      = "v1.0309"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -132,7 +132,7 @@ struct AppSchedPatLocView: View
                                     .imageScale(.small)
 
                                 Text("Log PFData")
-                                    .font(.caption2)
+                                    .font(.footnote)
 
                             }
 
@@ -183,7 +183,7 @@ struct AppSchedPatLocView: View
                                 .imageScale(.small)
 
                             Text("Sync PFData")
-                                .font(.caption2)
+                                .font(.footnote)
 
                         }
 
@@ -221,7 +221,7 @@ struct AppSchedPatLocView: View
                                 .imageScale(.large)
 
                             Text("Refresh - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
-                                .font(.caption)
+                                .font(.footnote)
 
                         }
 
@@ -264,7 +264,7 @@ struct AppSchedPatLocView: View
                                 .imageScale(.large)
 
                             Text("Data")
-                                .font(.caption)
+                                .font(.footnote)
 
                         }
 
@@ -308,7 +308,7 @@ struct AppSchedPatLocView: View
                                 .imageScale(.large)
 
                             Text("Dismiss")
-                                .font(.caption)
+                                .font(.footnote)
 
                         }
 
@@ -384,17 +384,17 @@ struct AppSchedPatLocView: View
                         {
 
                             Text("Map")
-                                .font(.caption)
+                                .font(.footnote)
                             Text("Visits")
-                                .font(.caption)
+                                .font(.footnote)
                             Text("TID")
-                                .font(.caption)
+                                .font(.footnote)
                             Text("Name")
-                                .font(.caption)
+                                .font(.footnote)
                         //  Text("Time")
-                        //      .font(.caption)
+                        //      .font(.footnote)
                         //  Text("Address or Location")
-                        //      .font(.caption)
+                        //      .font(.footnote)
 
                         }
                         .font(.title3) 
@@ -445,7 +445,7 @@ struct AppSchedPatLocView: View
                                         #endif
                           
                                         Text("Map...")
-                                            .font(.caption2)
+                                            .font(.footnote)
                           
                                     }
                           
@@ -471,7 +471,7 @@ struct AppSchedPatLocView: View
                                 label:
                                 {
                           
-                                    VStack(alignment:.center)
+                                    HStack(alignment:.center)
                                     {
                           
                                         Label("", systemImage: "mappin.and.ellipse")
@@ -488,8 +488,8 @@ struct AppSchedPatLocView: View
                                             }
                                         #endif
                           
-                                        Text("Map...")
-                                            .font(.caption2)
+                                        Text("Map")
+                                            .font(.footnote)
                           
                                     }
                           
@@ -500,20 +500,20 @@ struct AppSchedPatLocView: View
                         //      Text("<map>")
                                 Text("(\(listScheduledPatientLocationItems.count))")
                                     .bold()
-                                    .font(.caption)
+                                    .font(.footnote)
                                 Text(sTherapistTID)
                                     .bold()
-                                    .font(.caption)
+                                    .font(.footnote)
                                 Text(self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID))
                                     .bold()
-                                    .font(.caption)
+                                    .font(.footnote)
                                 
                         //      Text(pfCscObject.sPFCscParseLastLocDate)
                         //          .gridColumnAlignment(.center)
-                        //          .font(.caption)
+                        //          .font(.footnote)
                         //      Text(pfCscObject.sPFCscParseLastLocTime)
                         //          .gridColumnAlignment(.center)
-                        //          .font(.caption)
+                        //          .font(.footnote)
                         //          .onChange(of:jmAppParseCoreManager.cPFCscObjectsRefresh)
                         //          {
                         //              let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - GridRow(Item(s)) #(\(pfCscObject.idPFCscObject)) for [\(pfCscObject.sPFCscParseName)] received a 'refresh' COUNT update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh))...")
@@ -523,14 +523,14 @@ struct AppSchedPatLocView: View
                         //  {
                         //  
                         //      Text("\(pfCscObject.dblConvertedLatitude), \(pfCscObject.dblConvertedLongitude)")
-                        //          .font(.caption2)
+                        //          .font(.footnote)
                         //
                         //  }
                         //  else
                         //  {
                         //  
                         //      Text("\(pfCscObject.sCurrentLocationName), \(pfCscObject.sCurrentCity)")
-                        //          .font(.caption)
+                        //          .font(.footnote)
                         //
                         //  }
 
