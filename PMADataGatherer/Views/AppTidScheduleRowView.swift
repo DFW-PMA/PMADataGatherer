@@ -18,7 +18,7 @@ struct AppTidScheduleRowView: View
     {
         
         static let sClsId        = "AppTidScheduleRowView"
-        static let sClsVers      = "v1.0202"
+        static let sClsVers      = "v1.0301"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -40,7 +40,6 @@ struct AppTidScheduleRowView: View
 
                        var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
-//  init(scheduledPatientLocationItem:Binding<ScheduledPatientLocationItem>)
     init(scheduledPatientLocationItem:ScheduledPatientLocationItem)
     {
 
@@ -50,9 +49,6 @@ struct AppTidScheduleRowView: View
         // Handle inbound parameter(s) before any 'self.' references...
         
         _sPatientPID                      = State(wrappedValue:scheduledPatientLocationItem.sPid)
-    //  self.sPatientPID                  = State(initialValue:scheduledPatientLocationItem.sPid)
-    //  _sPatientPID                      = scheduledPatientLocationItem.sPid
-    //  _scheduledPatientLocationItem     = scheduledPatientLocationItem
         self.scheduledPatientLocationItem = scheduledPatientLocationItem
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
@@ -90,97 +86,89 @@ struct AppTidScheduleRowView: View
     var body: some View 
     {
 
-    //  GridRow(alignment:.bottom)
-    //  {
+        HStack(alignment:.center)
+        {
 
-            HStack(alignment:.center)
+            Button
             {
-
-                Button
-                {
-            
-                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppTidScheduleRowView.Button(Xcode).'Patient Detail(s) by PID' for PID - 'scheduledPatientLocationItem.sPid' is [\(scheduledPatientLocationItem.sPid)]...")
-            
-                    self.isAppPatientDetailsByPidShowing.toggle()
-            
-                }
-                label:
-                {
-            
-                    VStack(alignment:.center)
-                    {
-            
-                        Label("", systemImage: "doc.questionmark")
-                            .help(Text("Show Patient Detail(s) by PID..."))
-                            .imageScale(.small)
-            
-                        Text("\(scheduledPatientLocationItem.sPid)")
-                            .font(.caption2)
-            
-                    }
-            
-                }
-            #if os(macOS)
-                .sheet(isPresented:$isAppPatientDetailsByPidShowing, content:
-                {
-            
-                //  AppDataGathererPatient1DetailsView(sPatientPID:scheduledPatientLocationItem.sPid)
-                    AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
-            
-                })
-            #endif
-            #if os(iOS)
-                .fullScreenCover(isPresented:$isAppPatientDetailsByPidShowing)
-                {
-            
-                //  AppDataGathererPatient1DetailsView(sPatientPID:scheduledPatientLocationItem.sPid)
-                    AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
-            
-                }
-            #endif
-            #if os(macOS)
-                .buttonStyle(.borderedProminent)
-                .padding()
-            //  .background(???.isPressed ? .blue : .gray)
-                .cornerRadius(10)
-                .foregroundColor(Color.primary)
-            #endif
-            #if os(iOS)
-                .padding()
-            #endif
-
-                Text(scheduledPatientLocationItem.sPtName)
-                    .font(.caption)
-
-                Text(scheduledPatientLocationItem.sVDate)
-                    .font(.caption)
-
-                Text(scheduledPatientLocationItem.sVDateStartTime)
-                    .font(.caption)
-
-            if (scheduledPatientLocationItem.sLastVDateAddress.count  < 1       ||
-                scheduledPatientLocationItem.sLastVDateAddress       == ""      ||
-                scheduledPatientLocationItem.sLastVDateAddress       == "-N/A-" ||
-                scheduledPatientLocationItem.sLastVDateAddress       == ",,,"   ||
-                scheduledPatientLocationItem.sLastVDateAddress       == ", , , ")
+        
+                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppTidScheduleRowView.Button(Xcode).'Patient Detail(s) by PID' for PID - 'scheduledPatientLocationItem.sPid' is [\(scheduledPatientLocationItem.sPid)]...")
+        
+                self.isAppPatientDetailsByPidShowing.toggle()
+        
+            }
+            label:
             {
-
-                Text("\(scheduledPatientLocationItem.sLastVDateLatitude), \(scheduledPatientLocationItem.sLastVDateLongitude)")
-                    .font(.caption2)
-
+        
+                VStack(alignment:.center)
+                {
+        
+                    Label("", systemImage: "doc.questionmark")
+                        .help(Text("Show Patient Detail(s) by PID..."))
+                        .imageScale(.small)
+        
+                    Text("\(scheduledPatientLocationItem.sPid)")
+                        .font(.caption2)
+        
+                }
+        
             }
-            else
+        #if os(macOS)
+            .sheet(isPresented:$isAppPatientDetailsByPidShowing, content:
             {
-
-                Text(scheduledPatientLocationItem.sLastVDateAddress)
-                    .font(.caption2)
-
+        
+                AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
+        
+            })
+        #endif
+        #if os(iOS)
+            .fullScreenCover(isPresented:$isAppPatientDetailsByPidShowing)
+            {
+        
+                AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
+        
             }
+        #endif
+        #if os(macOS)
+            .buttonStyle(.borderedProminent)
+            .padding()
+        //  .background(???.isPressed ? .blue : .gray)
+            .cornerRadius(10)
+            .foregroundColor(Color.primary)
+        #endif
+        #if os(iOS)
+            .padding()
+        #endif
 
-            }
+            Text(scheduledPatientLocationItem.sPtName)
+                .font(.caption)
 
-    //  }
-    //  .gridCellColumns(5)
+            Text(scheduledPatientLocationItem.sVDate)
+                .font(.caption)
+
+            Text(scheduledPatientLocationItem.sVDateStartTime)
+                .font(.caption)
+
+        if (scheduledPatientLocationItem.sLastVDateAddress.count  < 1       ||
+            scheduledPatientLocationItem.sLastVDateAddress       == ""      ||
+            scheduledPatientLocationItem.sLastVDateAddress       == "-N/A-" ||
+            scheduledPatientLocationItem.sLastVDateAddress       == ",,,"   ||
+            scheduledPatientLocationItem.sLastVDateAddress       == ", , , ")
+        {
+
+            Text("\(scheduledPatientLocationItem.sLastVDateLatitude), \(scheduledPatientLocationItem.sLastVDateLongitude)")
+                .font(.caption2)
+
+        }
+        else
+        {
+
+            Text(scheduledPatientLocationItem.sLastVDateAddress)
+                .font(.caption2)
+
+        }
+
+        }
 
     }
     

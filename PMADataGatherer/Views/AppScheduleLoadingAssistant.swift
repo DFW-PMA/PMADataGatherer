@@ -334,7 +334,7 @@ public class AppScheduleLoadingAssistant: NSObject
             
             self.xcgLogMsg("\(sCurrMethodDisp) <dictionary loading> sorting #(\(self.jmAppParseCoreManager.dictSchedPatientLocItems.count)) item(s) in the dictionary of SchedPatientLocItem(s)...")
 
-            var listOfSortedSchedPatientLocItems
+            let listOfSortedSchedPatientLocItems
                 = dictOfFilteredSchedPatientLocItems.sorted(by:
                   { (elementSchedPatientLocItem1, elementSchedPatientLocItem2) in
 
@@ -392,7 +392,7 @@ public class AppScheduleLoadingAssistant: NSObject
 
             var cTotalScheduledPatientVisits:Int = 0
           
-            for (sKeyTherapistTID, listScheduledPatientLocationItems) in self.dictOfSortedSchedPatientLocItems
+            for (_, listScheduledPatientLocationItems) in self.dictOfSortedSchedPatientLocItems
             {
           
                 cTotalScheduledPatientVisits += listScheduledPatientLocationItems.count
