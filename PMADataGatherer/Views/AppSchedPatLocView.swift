@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0309"
+        static let sClsVers      = "v1.0403"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -387,6 +387,8 @@ struct AppSchedPatLocView: View
                                 .font(.footnote)
                             Text("Visits")
                                 .font(.footnote)
+                            Text("Date")
+                                .font(.footnote)
                             Text("TID")
                                 .font(.footnote)
                             Text("Name")
@@ -501,11 +503,15 @@ struct AppSchedPatLocView: View
                                 Text("(\(listScheduledPatientLocationItems.count))")
                                     .bold()
                                     .font(.footnote)
+                                Text(listScheduledPatientLocationItems[0].sVDate)
+                            //  Text("\(listScheduledPatientLocationItems[0].sVDate, format:Date.FormatStyle(date:.numeric))")
+                                //  .bold()
+                                    .font(.footnote)
                                 Text(sTherapistTID)
-                                    .bold()
+                                //  .bold()
                                     .font(.footnote)
                                 Text(self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID))
-                                    .bold()
+                                //  .bold()
                                     .font(.footnote)
                                 
                         //      Text(pfCscObject.sPFCscParseLastLocDate)
