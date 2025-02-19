@@ -16,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1201"
+        static let sClsVers      = "v1.1202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -80,6 +80,29 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
             return (self.sLastVDateAddress)
 
         }
+
+    }
+
+    var sVDateShortDisplay:String
+    {
+
+        if (self.sVDate.count < 1)
+        {
+        
+            return self.sVDate
+        
+        }
+        
+        let strategyVDate                  = Date.ParseStrategy(format:  "\(year:.defaultDigits)-\(month:.twoDigits)-\(day:.twoDigits)", 
+                                                                timeZone:.current)
+        let dateVDate:Date                 = try! Date(self.sVDate, strategy:strategyVDate)
+        let dtFormatterVDate:DateFormatter = DateFormatter()
+
+        dtFormatterVDate.locale            = Locale(identifier: "en_US")
+        dtFormatterVDate.timeZone          = TimeZone.current
+        dtFormatterVDate.dateFormat        = "M/dd/yy"
+
+        return "\(dtFormatterVDate.string(from:dateVDate))"
 
     }
 
@@ -281,6 +304,11 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         asToString.append("'sLastVDateLatitude': [\(String(describing: self.sLastVDateLatitude))],")
         asToString.append("'sLastVDateLongitude': [\(String(describing: self.sLastVDateLongitude))],")
         asToString.append("'sLastVDateAddress': [\(String(describing: self.sLastVDateAddress))],")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'clLocationCoordinate2DPatLoc': [\(String(describing: self.clLocationCoordinate2DPatLoc))],")
+        asToString.append("'sVDateAddressOrLatLong': [\(String(describing: self.sVDateAddressOrLatLong))],")
+        asToString.append("'sVDateShortDisplay': [\(String(describing: self.sVDateShortDisplay))],")
     //  asToString.append("],")
     //  asToString.append("[")
     //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor)],")

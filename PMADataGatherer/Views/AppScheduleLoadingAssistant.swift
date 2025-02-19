@@ -17,7 +17,7 @@ public class AppScheduleLoadingAssistant: NSObject
     {
         
         static let sClsId          = "AppScheduleLoadingAssistant"
-        static let sClsVers        = "v1.0204"
+        static let sClsVers        = "v1.0306"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
@@ -171,7 +171,7 @@ public class AppScheduleLoadingAssistant: NSObject
 
         }
 
-        // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
+        // Use the TherapistTID to lookup any ScheduledPatientLocationItem(s)...
 
         self.sScheduledPatientLocationItemsTID = ""
         self.listScheduledPatientLocationItems = [ScheduledPatientLocationItem]()
@@ -211,6 +211,57 @@ public class AppScheduleLoadingAssistant: NSObject
   
     }   // End of func getScheduledPatientLocationItemsForTid(sPFTherapistTID:String = "")->[ScheduledPatientLocationItem].
 
+    func getScheduledPatientLocationItemsForTherapistName(sPFTherapistName:String = "")->[ScheduledPatientLocationItem]
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistName' is [\(sPFTherapistName)]...")
+
+        // If the TherapistName is empty, return an empty list...
+
+        self.sScheduledPatientLocationItemsTID = ""
+        self.listScheduledPatientLocationItems = [ScheduledPatientLocationItem]()
+
+        if (sPFTherapistName.count < 1)
+        {
+        
+            self.bScheduledPatientLocationItemsAreAvaiable = false
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.bScheduledPatientLocationItemsAreAvaiable' is [\(self.bScheduledPatientLocationItemsAreAvaiable)] - 'self.sScheduledPatientLocationItemsTID' is [\(self.sScheduledPatientLocationItemsTID)] - 'self.listScheduledPatientLocationItems' has #(\(self.listScheduledPatientLocationItems.count)) item(s)...")
+
+            return self.listScheduledPatientLocationItems
+        
+        }
+        
+        // Locate the Therapist TID by 'name'...
+
+        let sTherapistTID:String = self.jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:sPFTherapistName)
+
+        if (sTherapistTID.count < 1)
+        {
+        
+            self.bScheduledPatientLocationItemsAreAvaiable = false
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.bScheduledPatientLocationItemsAreAvaiable' is [\(self.bScheduledPatientLocationItemsAreAvaiable)] - 'self.sScheduledPatientLocationItemsTID' is [\(self.sScheduledPatientLocationItemsTID)] - 'self.listScheduledPatientLocationItems' has #(\(self.listScheduledPatientLocationItems.count)) item(s)...")
+
+            return self.listScheduledPatientLocationItems
+
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting via return 'self.getScheduledPatientLocationItemsForTid(sPFTherapistTID:)'...")
+  
+        return self.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
+  
+    }   // End of func getScheduledPatientLocationItemsForTherapistName(sPFTherapistName:String = "")->[ScheduledPatientLocationItem]
+
     public func clearSortedScheduledPatientLocationItems()
     {
   
@@ -231,6 +282,106 @@ public class AppScheduleLoadingAssistant: NSObject
         return
   
     }   // End of public func clearSortedScheduledPatientLocationItems().
+
+    func loadSortedScheduledPatientLocationItemsAsTNamesList(dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]])->[String]
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Load the SortedScheduledPatientLocationItems dictionary...
+
+        var listSortedScheduledPatientLocationItemsTNames:[String] = [String]()
+
+        let _ = self.loadSortedScheduledPatientLocationItems(dictSchedPatientLocItems:dictSchedPatientLocItems)
+
+        if (self.dictOfSortedSchedPatientLocItems.count < 1)
+        {
+        
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+
+            return listSortedScheduledPatientLocationItemsTNames
+        
+        }
+
+        for (_, listScheduledPatientLocationItems) in self.dictOfSortedSchedPatientLocItems
+        {
+
+            listSortedScheduledPatientLocationItemsTNames.append(listScheduledPatientLocationItems[0].sTName)
+            
+        }
+
+        listSortedScheduledPatientLocationItemsTNames.sort
+        { (sTherapistTName1, sTherapistTName2) in
+
+            //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
+
+            return sTherapistTName1 < sTherapistTName2
+
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+  
+        return listSortedScheduledPatientLocationItemsTNames
+  
+    }   // End of func loadSortedScheduledPatientLocationItemsAsTNamesList(dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]])->[String].
+
+    func loadSortedScheduledPatientLocationItemsAsTIDList(dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]])->[String]
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Load the SortedScheduledPatientLocationItems dictionary...
+
+        var listSortedScheduledPatientLocationItemsTIDs:[String] = [String]()
+
+        let _ = self.loadSortedScheduledPatientLocationItems(dictSchedPatientLocItems:dictSchedPatientLocItems)
+
+        if (self.dictOfSortedSchedPatientLocItems.count < 1)
+        {
+        
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+
+            return listSortedScheduledPatientLocationItemsTIDs
+        
+        }
+
+    //  listSortedScheduledPatientLocationItemsTIDs = self.dictOfSortedSchedPatientLocItems.keys
+        
+        for (sTherapistTIDKey, _) in self.dictOfSortedSchedPatientLocItems
+        {
+            
+            listSortedScheduledPatientLocationItemsTIDs.append(sTherapistTIDKey)
+            
+        }
+
+        listSortedScheduledPatientLocationItemsTIDs.sort
+        { (sTherapistTID1, sTherapistTID2) in
+
+            //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
+
+            return sTherapistTID1 < sTherapistTID2
+
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+  
+        return listSortedScheduledPatientLocationItemsTIDs
+  
+    }   // End of func loadSortedScheduledPatientLocationItems(dictSchedPatientLocItems::[String:[ScheduledPatientLocationItem]])->[String].
 
     func loadSortedScheduledPatientLocationItems(dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]])->[String:[ScheduledPatientLocationItem]]
     {
