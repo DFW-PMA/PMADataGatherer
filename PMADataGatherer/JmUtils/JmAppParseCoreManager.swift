@@ -20,7 +20,7 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
     {
 
         static let sClsId        = "JmAppParseCoreManager"
-        static let sClsVers      = "v1.3302"
+        static let sClsVers      = "v1.3303"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -585,6 +585,56 @@ public class JmAppParseCoreManager: NSObject, ObservableObject
         return pfCscDataItem
   
     } // End of func locatePFCscDataItemByID(id:UUID)->ParsePFCscDataItem.
+    
+    func locatePFCscDataItemByTherapistTID(sTherapistTID:String = "")->ParsePFCscDataItem
+    {
+  
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistTID' is [\(sTherapistTID)]...")
+  
+        // Locate a given PFCscDataItem given a TherapistTID...
+  
+        var pfCscDataItem:ParsePFCscDataItem = ParsePFCscDataItem()
+
+        if (sTherapistTID.count < 1)
+        {
+        
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'pfCscDataItem' is [\(pfCscDataItem)]...")
+
+            return pfCscDataItem
+        
+        }
+  
+        if (self.listPFCscDataItems.count > 1)
+        {
+        
+            for currentPFCscDataItem:ParsePFCscDataItem in self.listPFCscDataItems
+            {
+  
+                if (currentPFCscDataItem.sPFTherapistParseTID == sTherapistTID)
+                {
+                
+                    pfCscDataItem = currentPFCscDataItem
+                    
+                    break
+                
+                }
+  
+            }
+        
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'pfCscDataItem' is [\(pfCscDataItem)]...")
+  
+        return pfCscDataItem
+  
+    } // End of func locatePFCscDataItemByTherapistTID(sTherapistTID:String)->ParsePFCscDataItem.
     
     public func displayDictPFAdminsDataItems()
     {

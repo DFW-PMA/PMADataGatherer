@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0616"
+        static let sClsVers      = "v1.0618"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -38,6 +38,8 @@ struct AppTidScheduleView: View
     @State private   var selectedPatientLocationItemID:ScheduledPatientLocationItem.ID? = nil
 
     @State private   var sPatientPID:String                                             = ""
+
+    @State private   var cAppSchedPatLocViewRefreshButtonPresses:Int                    = 0
     
     @State private   var isAppPatientDetailsByPidShowing:Bool                           = false
 
@@ -99,6 +101,40 @@ struct AppTidScheduleView: View
 
                 HStack(alignment:.center)
                 {
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        self.cAppSchedPatLocViewRefreshButtonPresses += 1
+
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppTidScheduleView.Button(Xcode).'Refresh'.#(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "arrow.clockwise")
+                                .help(Text("'Refresh' App TID Schedule Screen..."))
+                                .imageScale(.medium)
+
+                            Text("Refresh - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+                                .font(.footnote)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
 
                     Spacer()
 
@@ -183,6 +219,8 @@ struct AppTidScheduleView: View
                                 .width(min:80, max:120)
                             TableColumn("Time",                value:\.sVDateStartTime)
                                 .width(min:60, max:90)
+                            TableColumn("Type",                value:\.sLastVDateType)
+                                .width(min:40, max:60)
                             TableColumn("Address or Location", value:\.sVDateAddressOrLatLong)
                                 .width(min:200, max:360)
 

@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0309"
+        static let sClsVers      = "v1.0424"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -38,6 +38,7 @@ struct AppSchedPatLocView: View
     static          var timerOnDemand3Sec                                       = Timer()
     
     @State private  var cAppLogPFDataButtonPresses:Int                          = 0
+//  @State private  var cAppTidScheduleViewButtonPresses:Int                    = 0
 
     @State private  var isAppLogPFDataViewModal:Bool                            = false
 
@@ -47,6 +48,7 @@ struct AppSchedPatLocView: View
     @State private  var cAppDataButtonPresses:Int                               = 0
 
     @State private  var isAppDataViewModal:Bool                                 = false
+//  @State private  var isAppTidScheduleViewModal:Bool                          = false
 
            private  var dictOfSortedSchedPatientLocItems:[String:[ScheduledPatientLocationItem]]
                                                                                 = [String:[ScheduledPatientLocationItem]]()
@@ -129,7 +131,7 @@ struct AppSchedPatLocView: View
 
                                 Label("", systemImage: "doc.text.magnifyingglass")
                                     .help(Text("Log PFXxxDataItem(s)..."))
-                                    .imageScale(.small)
+                                    .imageScale(.medium)
 
                                 Text("Log PFData")
                                     .font(.footnote)
@@ -180,7 +182,7 @@ struct AppSchedPatLocView: View
 
                             Label("", systemImage: "doc.text.magnifyingglass")
                                 .help(Text("Sync PFQuery Data Item(s)..."))
-                                .imageScale(.small)
+                                .imageScale(.medium)
 
                             Text("Sync PFData")
                                 .font(.footnote)
@@ -218,7 +220,7 @@ struct AppSchedPatLocView: View
 
                             Label("", systemImage: "arrow.clockwise")
                                 .help(Text("'Refresh' App SchedPatLoc Screen..."))
-                                .imageScale(.large)
+                                .imageScale(.medium)
 
                             Text("Refresh - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
                                 .font(.footnote)
@@ -261,7 +263,7 @@ struct AppSchedPatLocView: View
 
                             Label("", systemImage: "swiftdata")
                                 .help(Text("App Data Gatherer"))
-                                .imageScale(.large)
+                                .imageScale(.medium)
 
                             Text("Data")
                                 .font(.footnote)
@@ -305,7 +307,7 @@ struct AppSchedPatLocView: View
 
                             Label("", systemImage: "xmark.circle")
                                 .help(Text("Dismiss this Screen"))
-                                .imageScale(.large)
+                                .imageScale(.medium)
 
                             Text("Dismiss")
                                 .font(.footnote)
@@ -385,11 +387,17 @@ struct AppSchedPatLocView: View
 
                             Text("Map")
                                 .font(.footnote)
+                            Text("Schedule")
+                                .font(.footnote)
                             Text("Visits")
+                                .font(.footnote)
+                            Text("Date")
                                 .font(.footnote)
                             Text("TID")
                                 .font(.footnote)
                             Text("Name")
+                                .font(.footnote)
+                            Text("WorkRoute")
                                 .font(.footnote)
                         //  Text("Time")
                         //      .font(.footnote)
@@ -403,17 +411,23 @@ struct AppSchedPatLocView: View
 
                         // Item Rows:
 
-                        // ----------------------------------------------------------------------------------
-                        //     ForEach(Array(dict), id: \.key) 
-                        //         { key, pfCscObject in
-                        //             Text("\(key) = \(pfCscObject)")
-                        //         }
-                        // ----------------------------------------------------------------------------------
-
                     //  ForEach(Array(jmAppParseCoreManager.dictSchedPatientLocItems), id:\.key)
                     //  ForEach(Array(self.sortDictionaryOfScheduledPatientLocationItems()), id:\.key)
-                        ForEach(Array(self.appScheduleLoadingAssistant.loadSortedScheduledPatientLocationItems(dictSchedPatientLocItems:jmAppParseCoreManager.dictSchedPatientLocItems)), id:\.key)
-                        { sTherapistTID, listScheduledPatientLocationItems in
+                    //  ForEach(Array(self.appScheduleLoadingAssistant.loadSortedScheduledPatientLocationItems(dictSchedPatientLocItems:jmAppParseCoreManager.dictSchedPatientLocItems)), id:\.key)
+                    //  { sTherapistTID, listScheduledPatientLocationItems in
+                    //  ForEach(self.appScheduleLoadingAssistant.loadSortedScheduledPatientLocationItemsAsTIDList(dictSchedPatientLocItems:jmAppParseCoreManager.dictSchedPatientLocItems), 
+                    //          id:\.self)
+                    //  { sTherapistTID in
+                        ForEach(self.appScheduleLoadingAssistant.loadSortedScheduledPatientLocationItemsAsTNamesList(dictSchedPatientLocItems:jmAppParseCoreManager.dictSchedPatientLocItems), 
+                                id:\.self)
+                        { sTherapistTName in
+
+                            let sTherapistTID:String
+                                = self.locateAppTherapistTIDByTName(sTherapistName:sTherapistTName)
+                            let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
+                                = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
+                            let pfCscObject:ParsePFCscDataItem
+                                = self.jmAppParseCoreManager.locatePFCscDataItemByTherapistTID(sTherapistTID:sTherapistTID)
 
                             GridRow(alignment:.bottom)
                             {
@@ -445,7 +459,7 @@ struct AppSchedPatLocView: View
                                         #endif
                           
                                         Text("Map...")
-                                            .font(.footnote)
+                                            .font(.caption2)
                           
                                     }
                           
@@ -489,7 +503,7 @@ struct AppSchedPatLocView: View
                                         #endif
                           
                                         Text("Map")
-                                            .font(.footnote)
+                                            .font(.caption2)
                           
                                     }
                           
@@ -497,16 +511,78 @@ struct AppSchedPatLocView: View
                                 .gridColumnAlignment(.center)
                             #endif
                                
-                        //      Text("<map>")
+                            #if os(iOS)
+                                NavigationLink
+                                {
+                                //  AppTidScheduleView(listScheduledPatientLocationItems:self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID))
+                                    AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+                                        .navigationBarBackButtonHidden(true)
+                                }
+                                label:
+                                {
+                          
+                                    HStack(alignment:.center)
+                                    {
+                          
+                                        Label("", systemImage: "doc.text.magnifyingglass")
+                                            .help(Text("App TID/Patient Schedule Viewer"))
+                                            .imageScale(.small)
+                                        #if os(macOS)
+                                            .onTapGesture(count:1)
+                                            {
+                          
+                                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppSchedPatLocView.GridRow.NavigationLink.'.onTapGesture()' received - Map for TID #(\(sTherapistTID))...")
+                          
+                                                let _ = AppTidScheduleView(listScheduledPatientLocationItems:listScheduledPatientLocationItems)
+                                            //  let _ = AppTidScheduleView(listScheduledPatientLocationItems:self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID))
+                          
+                                            }
+                                        #endif
+                          
+                                        Text("Schedule")
+                                            .font(.caption2)
+                          
+                                    }
+                          
+                                }
+                                .gridColumnAlignment(.center)
+                            #endif
+                               
                                 Text("(\(listScheduledPatientLocationItems.count))")
                                     .bold()
                                     .font(.footnote)
+
+                                Text(listScheduledPatientLocationItems[0].sVDateShortDisplay)
+                                //  .bold()
+                                    .font(.footnote)
+
                                 Text(sTherapistTID)
-                                    .bold()
+                                //  .bold()
                                     .font(.footnote)
+
                                 Text(self.locateAppTherapistNamebyTid(sTherapistTID:sTherapistTID))
-                                    .bold()
+                                //  .bold()
                                     .font(.footnote)
+
+                            if (pfCscObject.sPFCscParseLastLocDate.count  > 0       &&
+                                pfCscObject.sPFCscParseLastLocDate       != "-N/A-" &&
+                                pfCscObject.sPFCscParseLastLocTime.count  > 0       &&
+                                pfCscObject.sPFCscParseLastLocTime       != "-N/A-")
+                            {
+                            
+                                Text("\(pfCscObject.sPFCscParseLastLocDate) @ \(pfCscObject.sPFCscParseLastLocTime)")
+                                    .gridColumnAlignment(.leading)
+                                    .font(.footnote)
+                            
+                            }
+                            else
+                            {
+
+                                Text(" - - - ")
+                                    .gridColumnAlignment(.leading)
+                                    .font(.footnote)
+
+                            }
                                 
                         //      Text(pfCscObject.sPFCscParseLastLocDate)
                         //          .gridColumnAlignment(.center)
@@ -653,6 +729,44 @@ struct AppSchedPatLocView: View
   
     }   // End of private func locateAppTherapistNamebyTid(sTherapistTID:String)->String.
 
+    private func locateAppTherapistTIDByTName(sTherapistName:String = "")->String
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sTherapistName' is [\(sTherapistName)]...")
+
+        }
+
+        // Locate the Therapist TID by 'name'...
+
+        var sTherapistTID:String = self.jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:sTherapistName)
+
+        if (sTherapistTID.count < 1)
+        {
+        
+            sTherapistTID = ""
+        //  sTherapistTID = "-1"
+        
+        }
+
+        // Exit...
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sTherapistName' is [\(sTherapistName)] - 'sTherapistTID' is [\(sTherapistTID)]...")
+
+        }
+  
+        return sTherapistTID
+  
+    }   // End of private func locateAppTherapistTIDByTName(sTherapistName:String)->String.
+
     private func checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:Bool = false) -> Bool
     {
   
@@ -695,39 +809,6 @@ struct AppSchedPatLocView: View
         return true
 
     }   // End of private func checkIfAppParseCoreHasPFQueryBackgroundItems().
-
-    private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem]
-    {
-  
-        let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-        
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
-
-        // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
-
-        var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
-        let jmAppParseCoreManager:JmAppParseCoreManager                      = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
-
-        if (sPFTherapistParseTID.count > 0)
-        {
-
-            if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
-            {
-
-                listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
-
-            }
-
-        }
-        
-        // Exit...
-  
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
-  
-        return listScheduledPatientLocationItems
-  
-    }   // End of private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem].
 
     private func syncPFDataItems()
     {
