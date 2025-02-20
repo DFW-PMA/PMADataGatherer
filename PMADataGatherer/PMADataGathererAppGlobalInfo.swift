@@ -28,7 +28,7 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.2901"
+    static let sGlobalInfoAppVers:String                                 = "v1.3001"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
     static let sGlobalInfoAppLogFilespecMaxSize:Int64                    = 30000000
@@ -130,7 +130,7 @@ public class AppGlobalInfo: NSObject
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
-           var listPreXCGLoggerMessages:[String]                         = Array()
+           var listPreXCGLoggerMessages:[String]                         = [String]()
 
     // Private 'init()' to make this class a 'singleton':
 
