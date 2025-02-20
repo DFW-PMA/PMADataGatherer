@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0424"
+        static let sClsVers      = "v1.0508"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -209,7 +209,8 @@ struct AppSchedPatLocView: View
 
                         let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppSchedPatLocView.Button(Xcode).'Refresh'.#(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
 
-                    //  let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
+                        let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
+                        let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
 
                     }
                     label:
@@ -344,7 +345,8 @@ struct AppSchedPatLocView: View
 
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(cTherapistsWithScheduledPatients)) - Total Visit(s) #(\(cTotalScheduledPatientVisits))...")
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(dictOfSortedSchedPatientLocItems.count)) - Total Visit(s) #(\(self.countDictionaryOfScheduledPatientLocationItemsVisits()))...")
-                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) - Total Visit(s) #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits))...")
+            //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) - Total Visit(s) #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits))...")
+                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) -> #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) Therapists with #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits)) Total Visits...")
                     .bold()
                     .italic()
                     .underline(true)
@@ -426,8 +428,8 @@ struct AppSchedPatLocView: View
                                 = self.locateAppTherapistTIDByTName(sTherapistName:sTherapistTName)
                             let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
                                 = self.appScheduleLoadingAssistant.getScheduledPatientLocationItemsForTid(sPFTherapistTID:sTherapistTID)
-                            let pfCscObject:ParsePFCscDataItem
-                                = self.jmAppParseCoreManager.locatePFCscDataItemByTherapistTID(sTherapistTID:sTherapistTID)
+                        //  let pfCscObject:ParsePFCscDataItem
+                        //      = self.jmAppParseCoreManager.locatePFCscDataItemByTherapistTID(sTherapistTID:sTherapistTID)
 
                             GridRow(alignment:.bottom)
                             {
@@ -564,6 +566,9 @@ struct AppSchedPatLocView: View
                                 //  .bold()
                                     .font(.footnote)
 
+                            let pfCscObject:ParsePFCscDataItem
+                                = self.jmAppParseCoreManager.locatePFCscDataItemByTherapistTID(sTherapistTID:sTherapistTID)
+
                             if (pfCscObject.sPFCscParseLastLocDate.count  > 0       &&
                                 pfCscObject.sPFCscParseLastLocDate       != "-N/A-" &&
                                 pfCscObject.sPFCscParseLastLocTime.count  > 0       &&
@@ -623,6 +628,8 @@ struct AppSchedPatLocView: View
 
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - Grid.Timer<notification> - <timerPublisherTherapistLocations> - setting auto 'refresh' by timer to #(\(self.cAppSchedPatLocViewRefreshAutoTimer)) - 'dtObserved' is [\(dtObserved)]...")
 
+                            let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:false)
+
                             AppSchedPatLocView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
                             { _ in
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoking the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()' and 'syncPFDataItems()'...")
@@ -639,6 +646,8 @@ struct AppSchedPatLocView: View
                             self.cAppScheduleViewRefreshAutoTimer += 1
 
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #2 - Grid.Timer<notification> - <timerPublisherScheduleLocations> - setting auto 'refresh' by timer to #(\(self.cAppScheduleViewRefreshAutoTimer)) - 'dtObserved' is [\(dtObserved)]...")
+
+                            let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:false)
 
                             AppSchedPatLocView.timerOnDemand90Sec = Timer.scheduledTimer(withTimeInterval:90, repeats:false)
                             { _ in
@@ -767,6 +776,85 @@ struct AppSchedPatLocView: View
   
     }   // End of private func locateAppTherapistTIDByTName(sTherapistName:String)->String.
 
+    private func checkIfAppParseCoreHasPFCscDataItems(bRefresh:Bool = false) -> Bool
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'bRefresh' is [\(bRefresh)]...")
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForCSC()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
+
+        if (bRefresh == true)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Calling the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method...")
+
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFAdminsDataItems()
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method...")
+        
+        }
+
+        var bWasAppPFCscDataPresent:Bool = false
+
+        if (self.jmAppParseCoreManager.listPFCscDataItems.count < 1)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
+
+            bWasAppPFCscDataPresent = false
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
+
+            bWasAppPFCscDataPresent = true
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Sorting #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) Item(s) in the 'jmAppParseCoreManager.listPFCscDataItems' of [\(self.jmAppParseCoreManager.listPFCscDataItems)]...")
+
+            self.jmAppParseCoreManager.listPFCscDataItems.sort
+            { (pfCscDataItem1, pfCscDataItem2) in
+
+            //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
+
+            var bIsItem1GreaterThanItem2:Bool = false
+
+            if (pfCscDataItem1.sPFCscParseLastLocDate != pfCscDataItem2.sPFCscParseLastLocDate)
+            {
+                bIsItem1GreaterThanItem2 = (pfCscDataItem1.sPFCscParseLastLocDate > pfCscDataItem2.sPFCscParseLastLocDate)
+            }
+            else
+            {
+            //  bIsItem1GreaterThanItem2:Bool = (pfCscDataItem1.sPFCscParseLastLocTime < pfCscDataItem2.sPFCscParseLastLocTime)
+                bIsItem1GreaterThanItem2 = (pfCscDataItem1.sPFCscParseLastLocTime > pfCscDataItem2.sPFCscParseLastLocTime)
+            }
+
+            //  self.xcgLogMsg("\(sCurrMethodDisp) Sort <OP> Returning 'bIsItem1GreaterThanItem2' of [\(bIsItem1GreaterThanItem2)] because 'pfCscDataItem1.sPFCscParseLastLocTime' is [\(pfCscDataItem1.sPFCscParseLastLocTime)] and is less than 'pfCscDataItem2.sPFCscParseLastLocTime' is [\(pfCscDataItem2.sPFCscParseLastLocTime)]...")
+
+                return bIsItem1GreaterThanItem2
+
+            }
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Sorted  #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) Item(s) in the 'jmAppParseCoreManager.listPFCscDataItems' of [\(self.jmAppParseCoreManager.listPFCscDataItems)]...")
+
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
+  
+        return bWasAppPFCscDataPresent
+  
+    }   // End of private func checkIfAppParseCoreHasPFCscDataItems().
+
     private func checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:Bool = false) -> Bool
     {
   
@@ -797,6 +885,8 @@ struct AppSchedPatLocView: View
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPatientPidXref()
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictPFPatientFileItems()
             let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyDictSchedPatientLocItems()
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
+            let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
 
             self.xcgLogMsg("\(sCurrMethodDisp) <Timer> Called  the 'jmAppParseCoreBkgdDataRepo' 'deep copy' method(s)...")
         
@@ -856,6 +946,24 @@ struct AppSchedPatLocView: View
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyDictSchedPatientLocItems()'...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscDataItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscDataItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscNameItems()'...")
+
+        let _ = self.jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked  'jmAppParseCoreBkgdDataRepo' 'deepCopyListPFCscNameItems()'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoking 'self.detailPFCscDataItems()'...")
+
+        self.detailPFCscDataItems()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked 'self.detailPFCscDataItems()'...")
+
         // Exit...
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -863,6 +971,32 @@ struct AppSchedPatLocView: View
         return
   
     }   // End of private func syncPFDataItems()
+
+    private func detailPFCscDataItems()
+    {
+    
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+    
+        // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFCscDataItem(s)...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreManager' #(\(self.jmAppParseCoreManager.listPFCscDataItems.count)) PFCscDataItem(s)...")
+    
+        self.jmAppParseCoreManager.displayListPFCscDataItems()
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreBkgdDataRepo' #(\(self.jmAppParseCoreBkgdDataRepo.listPFCscDataItems.count)) PFCscDataItem(s)...")
+    
+        self.jmAppParseCoreBkgdDataRepo.displayListPFCscDataItems()
+    
+        // Exit...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+    
+        return
+    
+    }   // End of private func detailPFCscDataItems()
 
 }   // End of struct AppSchedPatLocView(View).
 

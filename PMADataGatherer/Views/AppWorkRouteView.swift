@@ -15,7 +15,7 @@ struct AppWorkRouteView: View
     {
         
         static let sClsId        = "AppWorkRouteView"
-        static let sClsVers      = "v1.1701"
+        static let sClsVers      = "v1.1801"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -563,13 +563,6 @@ struct AppWorkRouteView: View
                                 self.syncPFDataItems()
                                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '90-second' Timer 'pop' - invoked  the 'jmAppDelegateVisitor.checkAppDelegateVisitorTraceLogFileForSize()' and 'syncPFDataItems()'...")
                             }
-
-                        //  AppWorkRouteView.timerOnDemand3Sec = Timer.scheduledTimer(withTimeInterval:3, repeats:false)
-                        //  { _ in
-                        //      let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoking the 'syncPFDataItems()'...")
-                        //      self.syncPFDataItems()
-                        //      let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '3-second' Timer 'pop' - invoked  the 'syncPFDataItems()'...")
-                        //  }
 
                         })
                     .onReceive(jmAppParseCoreManager.timerPublisherScheduleLocations,
