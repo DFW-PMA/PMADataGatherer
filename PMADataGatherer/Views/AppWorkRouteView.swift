@@ -15,7 +15,7 @@ struct AppWorkRouteView: View
     {
         
         static let sClsId        = "AppWorkRouteView"
-        static let sClsVers      = "v1.1801"
+        static let sClsVers      = "v1.1901"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -36,6 +36,7 @@ struct AppWorkRouteView: View
 
     @State private  var isAppLogPFDataViewModal:Bool                          = false
 
+    @State private  var cAppSchedPatLocViewRebuildButtonPresses:Int           = 0
     @State private  var cAppWorkRouteViewRefreshButtonPresses:Int             = 0
     @State private  var cAppWorkRouteViewRefreshAutoTimer:Int                 = 0
     @State private  var cAppScheduleViewRefreshAutoTimer:Int                  = 0
@@ -199,12 +200,49 @@ struct AppWorkRouteView: View
                     Button
                     {
 
+                        self.cAppSchedPatLocViewRebuildButtonPresses += 1
+
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppSchedPatLocView.Button(Xcode).'Rebuild'.#(\(self.cAppSchedPatLocViewRebuildButtonPresses))...")
+
+                        let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
+                        let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "arrow.down.app")
+                                .help(Text("'Rebuild' App WorkRoute Screen..."))
+                                .imageScale(.medium)
+
+                            Text("Rebuild - #(\(self.cAppSchedPatLocViewRebuildButtonPresses))...")
+                                .font(.footnote)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .buttonStyle(.borderedProminent)
+                    .padding()
+                //  .background(???.isPressed ? .blue : .gray)
+                    .cornerRadius(10)
+                    .foregroundColor(Color.primary)
+                #endif
+
+                Spacer()
+
+                    Button
+                    {
+
                         self.cAppWorkRouteViewRefreshButtonPresses += 1
 
                         let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppWorkRouteView.Button(Xcode).'Refresh'.#(\(self.cAppWorkRouteViewRefreshButtonPresses))...")
 
-                        let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
-                        let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
+                    //  let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
+                    //  let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
 
                     }
                     label:
@@ -512,12 +550,16 @@ struct AppWorkRouteView: View
                                 Text("(\(self.getScheduledPatientLocationItemsCountForPFCscDataItem(pfCscDataItem:pfCscObject)))")
                                     .bold()
                                     .font(.caption)
+
                                 Text(pfCscObject.sPFCscParseName)
                                     .bold()
                                     .font(.caption)
+
                                 Text(pfCscObject.sPFCscParseLastLocDate)
                                     .gridColumnAlignment(.center)
                                     .font(.caption)
+                                    .foregroundStyle((self.isDateInToday(sDateToCheck:pfCscObject.sPFCscParseLastLocDate) == false) ? .red : .primary)
+
                                 Text(pfCscObject.sPFCscParseLastLocTime)
                                     .gridColumnAlignment(.center)
                                     .font(.caption)
@@ -525,6 +567,7 @@ struct AppWorkRouteView: View
                                     {
                                         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - GridRow(Item(s)) #(\(pfCscObject.idPFCscObject)) for [\(pfCscObject.sPFCscParseName)] received a 'refresh' COUNT update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh))...")
                                     }
+
                             if (pfCscObject.sCurrentLocationName.count < 1 ||
                                 pfCscObject.sCurrentCity.count         < 1)
                             {
@@ -626,6 +669,36 @@ struct AppWorkRouteView: View
         return
 
     } // End of private func finishAppInitialization().
+    
+    private func isDateInToday(sDateToCheck:String)->Bool
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sDateToCheck' is [\(sDateToCheck)]...")
+
+        // Check if the supplied Date (string) is 'inToday'...
+
+        var bDateIsInToday:Bool = false
+
+        if (sDateToCheck.count > 0)
+        {
+        
+            let dateFormatterFromString:DateFormatter = DateFormatter()
+            dateFormatterFromString.dateFormat        = "M/dd/yy"
+            let dateTestIsInToday:Date                = dateFormatterFromString.date(from:sDateToCheck) ?? Calendar.current.date(byAdding: .day, value: -1, to: .now)!
+            bDateIsInToday                            = (Calendar.current.isDateInToday(dateTestIsInToday))
+        
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bDateIsInToday' is [\(bDateIsInToday)]...")
+  
+        return bDateIsInToday
+
+    } // End of private func isDateInToday(dateToCheck:Date)->Bool.
     
     private func checkIfAppParseCoreHasPFCscDataItems(bRefresh:Bool = false) -> Bool
     {
