@@ -28,10 +28,12 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.3001"
+    static let sGlobalInfoAppVers:String                                 = "v1.3101"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
     static let sGlobalInfoAppLogFilespecMaxSize:Int64                    = 30000000
+    static let bGlobalInfoAppAutoSendCrashLog:Bool                       = true
+    static let bGlobalInfoAppAutoSendCrashLogTesting:Bool                = true
     static let sGlobalInfoAppLogFilespec:String                          = "PMADataGatherer.log"
     static let sGlobalInfoAppLastGoodLogFilespec:String                  = "PMADataGatherer.last_good.log"
     static let sGlobalInfoAppLastCrashLogFilespec:String                 = "PMADataGatherer.crashed_last.log"
@@ -493,6 +495,8 @@ public class AppGlobalInfo: NSObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppDisp' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppDisp))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppCopyRight' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppCopyRight))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppLogFilespecMaxSize' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppLogFilespecMaxSize))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bGlobalInfoAppAutoSendCrashLog' is [\(String(describing: AppGlobalInfo.bGlobalInfoAppAutoSendCrashLog))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bGlobalInfoAppAutoSendCrashLogTesting' is [\(String(describing: AppGlobalInfo.bGlobalInfoAppAutoSendCrashLogTesting))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppLogFilespec' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppLogFilespec))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppLastGoodLogFilespec))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec' is [\(String(describing: AppGlobalInfo.sGlobalInfoAppLastCrashLogFilespec))]...")

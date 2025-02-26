@@ -16,7 +16,7 @@ struct AppSchedPatLocMapView: View
     {
         
         static let sClsId        = "AppSchedPatLocMapView"
-        static let sClsVers      = "v1.0103"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -114,6 +114,8 @@ struct AppSchedPatLocMapView: View
         
         }
 
+        let pfCscObject:ParsePFCscDataItem
+            = self.jmAppParseCoreManager.locatePFCscDataItemByTherapistTID(sTherapistTID:self.sTherapistTID)
         let listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
             = self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems[self.sTherapistTID] ?? [ScheduledPatientLocationItem]()
 
@@ -226,36 +228,50 @@ struct AppSchedPatLocMapView: View
 
                         }
 
-                    //  HStack(alignment:.center)
-                    //  {
-                    //
-                    //      Spacer()
-                    //
-                    //      Text("\(parsePFCscDataItem.sCurrentLocationName), \(parsePFCscDataItem.sCurrentCity) \(parsePFCscDataItem.sCurrentPostalCode)")
-                    //          .font(.caption)
-                    //
-                    //      Spacer()
-                    //
-                    //  }
-                    //
-                    //  HStack(alignment:.center)
-                    //  {
-                    //
-                    //      Spacer()
-                    //
-                    //      Text(parsePFCscDataItem.sPFCscParseLastLocDate)
-                    //          .gridColumnAlignment(.center)
-                    //          .font(.caption)
-                    //      Text(" @ ")
-                    //          .gridColumnAlignment(.center)
-                    //          .font(.caption)
-                    //      Text(parsePFCscDataItem.sPFCscParseLastLocTime)
-                    //          .gridColumnAlignment(.center)
-                    //          .font(.caption)
-                    //
-                    //      Spacer()
-                    //
-                    //  }
+                    if (pfCscObject.sPFCscParseLastLocDate.count  > 0       &&
+                        pfCscObject.sPFCscParseLastLocDate       != "-N/A-" &&
+                        pfCscObject.sPFCscParseLastLocTime.count  > 0       &&
+                        pfCscObject.sPFCscParseLastLocTime       != "-N/A-")
+                    {
+
+                    //  Text("\(pfCscObject.sPFCscParseLastLocDate) @ \(pfCscObject.sPFCscParseLastLocTime)")
+                    //      .gridColumnAlignment(.leading)
+                    //      .font(.footnote)
+                    //      .foregroundStyle((self.isDateInToday(sDateToCheck:pfCscObject.sPFCscParseLastLocDate) == false) ? .red : .primary)
+
+                        HStack(alignment:.center)
+                        {
+                        
+                            Spacer()
+                        
+                            Text("\(pfCscObject.sCurrentLocationName), \(pfCscObject.sCurrentCity) \(pfCscObject.sCurrentPostalCode)")
+                                .font(.caption)
+                        
+                            Spacer()
+                        
+                        }
+                        
+                        HStack(alignment:.center)
+                        {
+                        
+                            Spacer()
+                        
+                            Text(pfCscObject.sPFCscParseLastLocDate)
+                                .gridColumnAlignment(.center)
+                                .font(.caption)
+                            Text(" @ ")
+                                .gridColumnAlignment(.center)
+                                .font(.caption)
+                            Text(pfCscObject.sPFCscParseLastLocTime)
+                                .gridColumnAlignment(.center)
+                                .font(.caption)
+                        
+                            Spacer()
+                        
+                        }
+                        .foregroundStyle((self.isDateInToday(sDateToCheck:pfCscObject.sPFCscParseLastLocDate) == false) ? .red : .primary)
+
+                    }
 
                     }
 
@@ -306,33 +322,40 @@ struct AppSchedPatLocMapView: View
                     MapReader
                     { proxy in
 
-                    //  Map(initialPosition:parsePFCscDataItem.mapPosition)
                         Map
                         {
 
-                        //  Annotation("+", 
-                        //             coordinate:parsePFCscDataItem.clLocationCoordinate2D)
-                        //  {
-                        //
-                        //      Image(systemName:"mappin.and.ellipse")
-                        //          .help(Text("Therapist 'current' location"))
-                        //          .imageScale(.large)
-                        //          .foregroundColor(.red)
-                        //          .onTapGesture
-                        //          { position in
-                        //
-                        //              self.cAppMapTapPresses   += 1
-                        //              let sMapTapLogMsg:String  = "Map 'tap' #(\(cAppMapTapPresses)) - \(parsePFCscDataItem.sPFCscParseName) at \(parsePFCscDataItem.sCurrentLocationName),\(parsePFCscDataItem.sCurrentCity) on \(parsePFCscDataItem.sPFCscParseLastLocDate)::\(parsePFCscDataItem.sPFCscParseLastLocTime)"
-                        //              self.sMapTapMsg           = "\(parsePFCscDataItem.sPFCscParseName) at \(parsePFCscDataItem.sCurrentLocationName),\(parsePFCscDataItem.sCurrentCity) on \(parsePFCscDataItem.sPFCscParseLastLocDate)::\(parsePFCscDataItem.sPFCscParseLastLocTime)"
-                        //
-                        //              let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View).MapReader.Map.Therapist.onTapGesture - <Marker> - \(sMapTapLogMsg)...")
-                        //              let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View).MapReader.Map.Therapist.onTapGesture - <Marker> - \(self.sMapTapMsg)...")
-                        //            
-                        //              self.isAppMapTapAlertShowing.toggle()
-                        //
-                        //          }
-                        //
-                        //  }
+                            if (pfCscObject.sPFCscParseLastLocDate.count  > 0       &&
+                                pfCscObject.sPFCscParseLastLocDate       != "-N/A-" &&
+                                pfCscObject.sPFCscParseLastLocTime.count  > 0       &&
+                                pfCscObject.sPFCscParseLastLocTime       != "-N/A-")
+                            {
+
+                                Annotation("+", 
+                                           coordinate:pfCscObject.clLocationCoordinate2D)
+                                {
+                                
+                                    Image(systemName:"mappin.and.ellipse")
+                                        .help(Text("Therapist 'current' location"))
+                                        .imageScale(.large)
+                                        .foregroundColor(.red)
+                                        .onTapGesture
+                                        { position in
+                                
+                                            self.cAppMapTapPresses   += 1
+                                            let sMapTapLogMsg:String  = "Map 'tap' #(\(cAppMapTapPresses)) - \(pfCscObject.sPFCscParseName) at \(pfCscObject.sCurrentLocationName),\(pfCscObject.sCurrentCity) on \(pfCscObject.sPFCscParseLastLocDate)::\(pfCscObject.sPFCscParseLastLocTime)"
+                                            self.sMapTapMsg           = "\(pfCscObject.sPFCscParseName) at \(pfCscObject.sCurrentLocationName),\(pfCscObject.sCurrentCity) on \(pfCscObject.sPFCscParseLastLocDate)::\(pfCscObject.sPFCscParseLastLocTime)"
+                                
+                                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View).MapReader.Map.Therapist.onTapGesture - <Marker> - \(sMapTapLogMsg)...")
+                                            let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View).MapReader.Map.Therapist.onTapGesture - <Marker> - \(self.sMapTapMsg)...")
+                                          
+                                            self.isAppMapTapAlertShowing.toggle()
+                                
+                                        }
+                                
+                                }
+
+                            }
 
                             if (listScheduledPatientLocationItems.count > 0)
                             {
@@ -440,6 +463,36 @@ struct AppSchedPatLocMapView: View
 
     } // End of private func finishAppInitialization().
     
+    private func isDateInToday(sDateToCheck:String)->Bool
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sDateToCheck' is [\(sDateToCheck)]...")
+
+        // Check if the supplied Date (string) is 'inToday'...
+
+        var bDateIsInToday:Bool = false
+
+        if (sDateToCheck.count > 0)
+        {
+        
+            let dateFormatterFromString:DateFormatter = DateFormatter()
+            dateFormatterFromString.dateFormat        = "M/dd/yy"
+            let dateTestIsInToday:Date                = dateFormatterFromString.date(from:sDateToCheck) ?? Calendar.current.date(byAdding: .day, value: -1, to: .now)!
+            bDateIsInToday                            = (Calendar.current.isDateInToday(dateTestIsInToday))
+        
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bDateIsInToday' is [\(bDateIsInToday)]...")
+  
+        return bDateIsInToday
+
+    } // End of private func isDateInToday(dateToCheck:Date)->Bool.
+    
     private func locateAppTherapistNamebyTid(sTherapistTID:String = "")->String
     {
 
@@ -477,104 +530,5 @@ struct AppSchedPatLocMapView: View
   
     }   // End of private func locateAppTherapistNamebyTid(sTherapistTID:String)->String.
 
-//  private func convertPFCscDataItemToTid(pfCscDataItem:ParsePFCscDataItem)->String
-//  {
-//
-//      let sCurrMethod:String = #function
-//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-//      
-//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'pfCscDataItem' is [\(pfCscDataItem)]...")
-//
-//      // Use the TherapistName in the PFCscDataItem to lookup the 'sPFTherapistParseTID'...
-//
-//      var sPFTherapistParseTID:String                 = ""
-//      let jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
-//
-//      if (pfCscDataItem.sPFCscParseName.count > 0)
-//      {
-//
-//          sPFTherapistParseTID = jmAppParseCoreManager.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
-//
-//          if (sPFTherapistParseTID.count < 1)
-//          {
-//
-//              sPFTherapistParseTID = jmAppParseCoreBkgdDataRepo.convertTherapistNameToTid(sPFTherapistParseName:pfCscDataItem.sPFCscParseName)
-//
-//              if (sPFTherapistParseTID.count < 1)
-//              {
-//
-//                  let _ = jmAppParseCoreBkgdDataRepo.deepCopyListPFCscDataItems()
-//                  let _ = jmAppParseCoreBkgdDataRepo.deepCopyListPFCscNameItems()
-//
-//              }
-//
-//          }
-//
-//      }
-//      
-//      // Exit...
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
-//
-//      return sPFTherapistParseTID
-//
-//  }   // End of private func convertPFCscDataItemToTid(pfCscDataItem:PFCscDataItem)->String.
-//
-//  private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem]
-//  {
-//
-//      let sCurrMethod:String = #function
-//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-//      
-//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sPFTherapistParseTID' is [\(sPFTherapistParseTID)]...")
-//
-//      // Use the TherapistName in the PFCscDataItem to lookup any ScheduledPatientLocationItem(s)...
-//
-//      var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = []
-//      let jmAppParseCoreManager:JmAppParseCoreManager                      = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
-//
-//      if (sPFTherapistParseTID.count > 0)
-//      {
-//
-//          if (jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
-//          {
-//
-//              listScheduledPatientLocationItems = jmAppParseCoreManager.dictSchedPatientLocItems[sPFTherapistParseTID] ?? []
-//
-//          }
-//
-//      }
-//      
-//      // Exit...
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
-//
-//      return listScheduledPatientLocationItems
-//
-//  }   // End of private func getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:String = "")->[ScheduledPatientLocationItem].
-//
-//  private func getScheduledPatientLocationItemsForPFCscDataItem(pfCscDataItem:ParsePFCscDataItem)->[ScheduledPatientLocationItem]
-//  {
-//
-//      let sCurrMethod:String = #function
-//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-//      
-//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'pfCscDataItem' is [\(pfCscDataItem)]...")
-//
-//      // Use the Therapist TID to lookup any ScheduledPatientLocationItem(s)...
-//
-//      let sPFTherapistParseTID:String
-//          = self.convertPFCscDataItemToTid(pfCscDataItem:pfCscDataItem)
-//      let listScheduledPatientLocationItems:[ScheduledPatientLocationItem] 
-//          = self.getScheduledPatientLocationItemsForTid(sPFTherapistParseTID:sPFTherapistParseTID)
-//
-//      // Exit...
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
-//
-//      return listScheduledPatientLocationItems
-//
-//  }   // End of private func getScheduledPatientLocationItemsForPFCscDataItem(pfCscDataItem:PFCscDataItem)->[ScheduledPatientLocationItem].
-
-}
+}   // End of struct AppSchedPatLocMapView:(View).
 

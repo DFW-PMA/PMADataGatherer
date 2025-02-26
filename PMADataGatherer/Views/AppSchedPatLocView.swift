@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0508"
+        static let sClsVers      = "v1.0604"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -42,6 +42,7 @@ struct AppSchedPatLocView: View
 
     @State private  var isAppLogPFDataViewModal:Bool                            = false
 
+    @State private  var cAppSchedPatLocViewRebuildButtonPresses:Int             = 0
     @State private  var cAppSchedPatLocViewRefreshButtonPresses:Int             = 0
     @State private  var cAppSchedPatLocViewRefreshAutoTimer:Int                 = 0
     @State private  var cAppScheduleViewRefreshAutoTimer:Int                    = 0
@@ -205,9 +206,9 @@ struct AppSchedPatLocView: View
                     Button
                     {
 
-                        self.cAppSchedPatLocViewRefreshButtonPresses += 1
+                        self.cAppSchedPatLocViewRebuildButtonPresses += 1
 
-                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppSchedPatLocView.Button(Xcode).'Refresh'.#(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppSchedPatLocView.Button(Xcode).'Rebuild'.#(\(self.cAppSchedPatLocViewRebuildButtonPresses))...")
 
                         let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
                         let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
@@ -219,11 +220,11 @@ struct AppSchedPatLocView: View
                         VStack(alignment:.center)
                         {
 
-                            Label("", systemImage: "arrow.clockwise")
-                                .help(Text("'Refresh' App SchedPatLoc Screen..."))
+                            Label("", systemImage: "arrow.down.app")
+                                .help(Text("'Rebuild' App SchedPatLoc Screen..."))
                                 .imageScale(.medium)
 
-                            Text("Refresh - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+                            Text("Rebuild - #(\(self.cAppSchedPatLocViewRebuildButtonPresses))...")
                                 .font(.footnote)
 
                         }
@@ -236,6 +237,43 @@ struct AppSchedPatLocView: View
                     .cornerRadius(10)
                     .foregroundColor(Color.primary)
                 #endif
+
+                Spacer()
+
+                Button
+                {
+
+                    self.cAppSchedPatLocViewRefreshButtonPresses += 1
+
+                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppSchedPatLocView.Button(Xcode).'Refresh'.#(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+
+                //  let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
+                //  let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
+
+                }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "arrow.clockwise")
+                            .help(Text("'Refresh' App SchedPatLoc Screen..."))
+                            .imageScale(.medium)
+
+                        Text("Refresh - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+                            .font(.footnote)
+
+                    }
+
+                }
+            #if os(macOS)
+                .buttonStyle(.borderedProminent)
+                .padding()
+            //  .background(???.isPressed ? .blue : .gray)
+                .cornerRadius(10)
+                .foregroundColor(Color.primary)
+            #endif
 
                     Spacer()
 
@@ -346,7 +384,7 @@ struct AppSchedPatLocView: View
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(cTherapistsWithScheduledPatients)) - Total Visit(s) #(\(cTotalScheduledPatientVisits))...")
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(dictOfSortedSchedPatientLocItems.count)) - Total Visit(s) #(\(self.countDictionaryOfScheduledPatientLocationItemsVisits()))...")
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) - Total Visit(s) #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits))...")
-                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) -> #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) Therapists with #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits)) Total Visits...")
+                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) --->>> #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) Therapists with #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits)) Total Visits...")
                     .bold()
                     .italic()
                     .underline(true)
@@ -513,6 +551,10 @@ struct AppSchedPatLocView: View
                                 .gridColumnAlignment(.center)
                             #endif
                                
+                            #if os(macOS)
+                                Text("Schedule")
+                                    .font(.caption2)
+                            #endif
                             #if os(iOS)
                                 NavigationLink
                                 {
@@ -557,6 +599,7 @@ struct AppSchedPatLocView: View
                                 Text(listScheduledPatientLocationItems[0].sVDateShortDisplay)
                                 //  .bold()
                                     .font(.footnote)
+                                    .foregroundStyle((self.isDateInToday(sDateToCheck:listScheduledPatientLocationItems[0].sVDateShortDisplay) == false) ? .red : .primary)
 
                                 Text(sTherapistTID)
                                 //  .bold()
@@ -578,6 +621,7 @@ struct AppSchedPatLocView: View
                                 Text("\(pfCscObject.sPFCscParseLastLocDate) @ \(pfCscObject.sPFCscParseLastLocTime)")
                                     .gridColumnAlignment(.leading)
                                     .font(.footnote)
+                                    .foregroundStyle((self.isDateInToday(sDateToCheck:pfCscObject.sPFCscParseLastLocDate) == false) ? .red : .primary)
                             
                             }
                             else
@@ -700,6 +744,36 @@ struct AppSchedPatLocView: View
         return
 
     } // End of private func finishAppInitialization().
+    
+    private func isDateInToday(sDateToCheck:String)->Bool
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sDateToCheck' is [\(sDateToCheck)]...")
+
+        // Check if the supplied Date (string) is 'inToday'...
+
+        var bDateIsInToday:Bool = false
+
+        if (sDateToCheck.count > 0)
+        {
+        
+            let dateFormatterFromString:DateFormatter = DateFormatter()
+            dateFormatterFromString.dateFormat        = "M/dd/yy"
+            let dateTestIsInToday:Date                = dateFormatterFromString.date(from:sDateToCheck) ?? Calendar.current.date(byAdding: .day, value: -1, to: .now)!
+            bDateIsInToday                            = (Calendar.current.isDateInToday(dateTestIsInToday))
+        
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bDateIsInToday' is [\(bDateIsInToday)]...")
+  
+        return bDateIsInToday
+
+    } // End of private func isDateInToday(dateToCheck:Date)->Bool.
     
     private func locateAppTherapistNamebyTid(sTherapistTID:String = "")->String
     {
