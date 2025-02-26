@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0603"
+        static let sClsVers      = "v1.0604"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -551,6 +551,10 @@ struct AppSchedPatLocView: View
                                 .gridColumnAlignment(.center)
                             #endif
                                
+                            #if os(macOS)
+                                Text("Schedule")
+                                    .font(.caption2)
+                            #endif
                             #if os(iOS)
                                 NavigationLink
                                 {
