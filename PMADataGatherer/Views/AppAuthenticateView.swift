@@ -17,7 +17,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2001"
+        static let sClsVers      = "v1.2101"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -416,7 +416,9 @@ struct AppAuthenticateView: View
                             }
 
                         TextField("Username", text: $sLoginUsername)
-                        //  .keyboardType(.default)
+                        #if os(iOS)
+                            .keyboardType(.default)
+                        #endif
                             .focused($focusedField, equals: .fieldUsername)
                             .onSubmit
                             {
@@ -424,7 +426,9 @@ struct AppAuthenticateView: View
                             }
 
                         SecureField("Password", text: $sLoginPassword)
-                        //  .keyboardType(.default)
+                        #if os(iOS)
+                            .keyboardType(.default)
+                        #endif
                             .focused($focusedField, equals: .fieldPassword)
                             .onSubmit
                             {
