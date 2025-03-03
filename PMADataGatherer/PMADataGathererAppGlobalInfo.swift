@@ -28,7 +28,7 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.3101"
+    static let sGlobalInfoAppVers:String                                 = "v1.3108"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
     static let sGlobalInfoAppLogFilespecMaxSize:Int64                    = 30000000
@@ -72,6 +72,58 @@ public class AppGlobalInfo: NSObject
     static let bInstantiateAppNWSWeatherModelObservable:Bool             = false
     static let bTestStringManipulations:Bool                             = true
     static let sAppUploadNotifyFrom:String                               = "dcox@justmacapps.net"
+
+    // Various 'App' (tracking) information:
+
+           var tiGlobalAppStartTime:TimeInterval                         = ProcessInfo.processInfo.systemUptime
+
+           var dblGlobalAppUptime:Double
+           {
+               let dblCurrentUptime:Double = ProcessInfo.processInfo.systemUptime
+               
+               return(dblCurrentUptime - tiGlobalAppStartTime)
+           }
+
+           var sGlobalAppUptime:String
+           {
+               let cAppUptimeDays:Int         = (Int(dblGlobalAppUptime) / 86400)
+               let cAppUptimeHours:Int        = (Int(dblGlobalAppUptime) / 3600 % 24)
+               let cAppUptimeMinutes:Int      = (Int(dblGlobalAppUptime) / 60   % 60)
+               let cAppUptimeSeconds:Int      = (Int(dblGlobalAppUptime) % 60)
+
+               return String(format:"%02d:%02d:%02d:%02d", cAppUptimeDays, cAppUptimeHours, cAppUptimeMinutes, cAppUptimeSeconds)
+           }
+
+           var sGlobalSystemUptime:String
+           {
+               let dblCurrentAppUptime:Double = self.tiGlobalAppStartTime
+               let cAppUptimeDays:Int         = (Int(dblCurrentAppUptime) / 86400)
+               let cAppUptimeHours:Int        = (Int(dblCurrentAppUptime) / 3600 % 24)
+               let cAppUptimeMinutes:Int      = (Int(dblCurrentAppUptime) / 60   % 60)
+               let cAppUptimeSeconds:Int      = (Int(dblCurrentAppUptime) % 60)
+
+               return String(format:"%02d:%02d:%02d:%02d", cAppUptimeDays, cAppUptimeHours, cAppUptimeMinutes, cAppUptimeSeconds)
+           }
+
+    // Various 'ProcessInfo' information:
+
+           var sGlobalProcessInfoSystemUptime:TimeInterval               = 0.0000
+           var sGlobalProcessInfoOSVersion:OperatingSystemVersion        = OperatingSystemVersion()
+           var sGlobalProcessInfoHostName:String                         = "-unknown-"
+           var sGlobalProcessInfoSystemName:String                       = "-unknown-"
+           var sGlobalProcessInfoSystemVersion:String                    = "-unknown-"
+           var sGlobalProcessInfoProcessorCount:Int                      = 0
+           var sGlobalProcessInfoProcessorCountActive:Int                = 0
+           var sGlobalProcessInfoPhysicalMemory:UInt64                   = 0
+           var sGlobalProcessInfoProcessIdentifier:Int32                 = 0
+           var sGlobalProcessInfoProcessName:String                      = "-unknown-"
+
+        #if os(macOS)
+
+           var sGlobalProcessInfoMacOSUserName:String                    = "-unknown-"
+           var sGlobalProcessInfoMacOSFullUserName:String                = "-unknown-"
+
+        #endif
 
     // Various 'device' information:
 
@@ -140,32 +192,46 @@ public class AppGlobalInfo: NSObject
     {
 
         let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
+        let sCurrMethodDisp    = "AppGlobalInfo.\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
 
         super.init()
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        
+        self.sGlobalProcessInfoSystemUptime         = ProcessInfo.processInfo.systemUptime
+        self.sGlobalProcessInfoOSVersion            = ProcessInfo.processInfo.operatingSystemVersion
+        self.sGlobalProcessInfoHostName             = ProcessInfo.processInfo.hostName
+    //  self.sGlobalProcessInfoSystemName           = "MacOS v\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
+        self.sGlobalProcessInfoSystemVersion        = ProcessInfo.processInfo.operatingSystemVersionString
+        self.sGlobalProcessInfoProcessorCount       = ProcessInfo.processInfo.processorCount
+        self.sGlobalProcessInfoProcessorCountActive = ProcessInfo.processInfo.activeProcessorCount
+        self.sGlobalProcessInfoPhysicalMemory       = ProcessInfo.processInfo.physicalMemory
+        self.sGlobalProcessInfoProcessIdentifier    = ProcessInfo.processInfo.processIdentifier
+        self.sGlobalProcessInfoProcessName          = ProcessInfo.processInfo.processName         
 
     #if os(macOS)
+        
+        self.sGlobalProcessInfoSystemName           = "MacOS v\(self.sGlobalProcessInfoOSVersion.majorVersion).\(self.sGlobalProcessInfoOSVersion.minorVersion).\(self.sGlobalProcessInfoOSVersion.patchVersion)"
+        self.sGlobalProcessInfoMacOSUserName        = ProcessInfo.processInfo.userName
+        self.sGlobalProcessInfoMacOSFullUserName    = ProcessInfo.processInfo.fullUserName
 
-        self.sGlobalDeviceType             = "Mac"   // Values: "Mac", "iPad", "iPhone, "AppleWatch"
-        self.bGlobalDeviceIsMac            = true
-        self.bGlobalDeviceIsIPad           = false
-        self.bGlobalDeviceIsIPhone         = false
-        self.bGlobalDeviceIsAppleWatch     = false
-        self.bGlobalDeviceIsXcodeSimulator = false
+        self.sGlobalDeviceType                      = "Mac"   // Values: "Mac", "iPad", "iPhone, "AppleWatch"
+        self.bGlobalDeviceIsMac                     = true
+        self.bGlobalDeviceIsIPad                    = false
+        self.bGlobalDeviceIsIPhone                  = false
+        self.bGlobalDeviceIsAppleWatch              = false
+        self.bGlobalDeviceIsXcodeSimulator          = false
 
-        let osVersion:OperatingSystemVersion 
-                                           = ProcessInfo.processInfo.operatingSystemVersion 
+        let osVersion:OperatingSystemVersion        = ProcessInfo.processInfo.operatingSystemVersion 
 
-        self.sGlobalDeviceName             = ProcessInfo.processInfo.hostName
-        self.sGlobalDeviceSystemName       = "MacOS v\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
-        self.sGlobalDeviceSystemVersion    = ProcessInfo.processInfo.operatingSystemVersionString
-        self.sGlobalDeviceModel            = "-unknown-"
-        self.sGlobalDeviceLocalizedModel   = "-unknown-"
+        self.sGlobalDeviceName                      = ProcessInfo.processInfo.hostName
+        self.sGlobalDeviceSystemName                = "MacOS v\(osVersion.majorVersion).\(osVersion.minorVersion).\(osVersion.patchVersion)"
+        self.sGlobalDeviceSystemVersion             = ProcessInfo.processInfo.operatingSystemVersionString
+        self.sGlobalDeviceModel                     = "-unknown-"
+        self.sGlobalDeviceLocalizedModel            = "-unknown-"
 
-        let ioServiceExpertDevice          = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
-        var sModelIdentifier:String?       = nil
+        let ioServiceExpertDevice                   = IOServiceGetMatchingService(kIOMainPortDefault, IOServiceMatching("IOPlatformExpertDevice"))
+        var sModelIdentifier:String?                = nil
 
         if let ioModelData:Data = IORegistryEntryCreateCFProperty(ioServiceExpertDevice, ("model" as CFString), kCFAllocatorDefault, 0).takeRetainedValue() as? Data
         {
@@ -181,15 +247,15 @@ public class AppGlobalInfo: NSObject
 
         IOObjectRelease(ioServiceExpertDevice)
 
-        self.sGlobalDeviceModel            = sModelIdentifier ?? "-unknown-"
-        self.sGlobalDeviceLocalizedModel   = sModelIdentifier ?? "-unknown-"
+        self.sGlobalDeviceModel                     = sModelIdentifier ?? "-unknown-"
+        self.sGlobalDeviceLocalizedModel            = sModelIdentifier ?? "-unknown-"
 
         if let screenSize = NSScreen.main?.frame as CGRect?
         {
 
-            self.fGlobalDeviceScreenSizeWidth   = Float(screenSize.width)
-            self.fGlobalDeviceScreenSizeHeight  = Float(screenSize.height)
-            self.iGlobalDeviceScreenSizeScale   = 1
+            self.fGlobalDeviceScreenSizeWidth       = Float(screenSize.width)
+            self.fGlobalDeviceScreenSizeHeight      = Float(screenSize.height)
+            self.iGlobalDeviceScreenSizeScale       = 1
 
         }
 
@@ -201,49 +267,51 @@ public class AppGlobalInfo: NSObject
         if UIDevice.current.localizedModel == "Mac" 
         {
 
-            self.sGlobalDeviceType         = "Mac"
-            self.bGlobalDeviceIsMac        = true
+            self.sGlobalDeviceType                  = "Mac"
+            self.bGlobalDeviceIsMac                 = true
 
         } 
         else if UIDevice.current.localizedModel == "iPad" 
         {
 
-            self.sGlobalDeviceType         = "iPad"
-            self.bGlobalDeviceIsIPad       = true
+            self.sGlobalDeviceType                  = "iPad"
+            self.bGlobalDeviceIsIPad                = true
 
         }
         else if UIDevice.current.localizedModel == "iPhone" 
         {
 
-            self.sGlobalDeviceType         = "iPhone"
-            self.bGlobalDeviceIsIPhone     = true
+            self.sGlobalDeviceType                  = "iPhone"
+            self.bGlobalDeviceIsIPhone              = true
 
         }
         else if UIDevice.current.localizedModel == "AppleWatch" 
         {
 
-            self.sGlobalDeviceType         = "AppleWatch"
-            self.bGlobalDeviceIsAppleWatch = true
+            self.sGlobalDeviceType                  = "AppleWatch"
+            self.bGlobalDeviceIsAppleWatch          = true
 
         }
 
-        self.sGlobalDeviceName                   = UIDevice.current.name
-        self.sGlobalDeviceSystemName             = UIDevice.current.systemName
-        self.sGlobalDeviceSystemVersion          = UIDevice.current.systemVersion
-        self.sGlobalDeviceModel                  = UIDevice.current.model
-        self.sGlobalDeviceLocalizedModel         = UIDevice.current.localizedModel
+        self.sGlobalProcessInfoSystemName           = "\(self.sGlobalDeviceType) v\(self.sGlobalProcessInfoOSVersion.majorVersion).\(self.sGlobalProcessInfoOSVersion.minorVersion).\(self.sGlobalProcessInfoOSVersion.patchVersion)"
 
-        self.idiomGlobalDeviceUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom
-        self.iGlobalDeviceUserInterfaceIdiom     = ((idiomGlobalDeviceUserInterfaceIdiom?.rawValue ?? 0) as Int)
-        self.uuidGlobalDeviceIdForVendor         = UIDevice.current.identifierForVendor
-        self.fGlobalDeviceCurrentBatteryLevel    = UIDevice.current.batteryLevel
+        self.sGlobalDeviceName                      = UIDevice.current.name
+        self.sGlobalDeviceSystemName                = UIDevice.current.systemName
+        self.sGlobalDeviceSystemVersion             = UIDevice.current.systemVersion
+        self.sGlobalDeviceModel                     = UIDevice.current.model
+        self.sGlobalDeviceLocalizedModel            = UIDevice.current.localizedModel
+
+        self.idiomGlobalDeviceUserInterfaceIdiom    = UIDevice.current.userInterfaceIdiom
+        self.iGlobalDeviceUserInterfaceIdiom        = ((idiomGlobalDeviceUserInterfaceIdiom?.rawValue ?? 0) as Int)
+        self.uuidGlobalDeviceIdForVendor            = UIDevice.current.identifierForVendor
+        self.fGlobalDeviceCurrentBatteryLevel       = UIDevice.current.batteryLevel
 
         if let screenSize = UIScreen.main.bounds as CGRect?
         {
 
-            self.fGlobalDeviceScreenSizeWidth    = Float(screenSize.width)
-            self.fGlobalDeviceScreenSizeHeight   = Float(screenSize.height)
-            self.iGlobalDeviceScreenSizeScale    = Int(UIScreen.main.scale)
+            self.fGlobalDeviceScreenSizeWidth       = Float(screenSize.width)
+            self.fGlobalDeviceScreenSizeHeight      = Float(screenSize.height)
+            self.iGlobalDeviceScreenSizeScale       = Int(UIScreen.main.scale)
 
         }
 
@@ -255,11 +323,11 @@ public class AppGlobalInfo: NSObject
 
     #endif
 
-        self.sAppCategory                  = JmXcodeBuildSettings.jmAppCategory   
-        self.sAppDisplayName               = JmXcodeBuildSettings.jmAppDisplayName
-        self.sAppBundleIdentifier          = JmXcodeBuildSettings.jmAppBundleIdentifier
-        self.sAppVersionAndBuildNumber     = JmXcodeBuildSettings.jmAppVersionAndBuildNumber
-        self.sAppCopyright                 = JmXcodeBuildSettings.jmAppCopyright      
+        self.sAppCategory                           = JmXcodeBuildSettings.jmAppCategory   
+        self.sAppDisplayName                        = JmXcodeBuildSettings.jmAppDisplayName
+        self.sAppBundleIdentifier                   = JmXcodeBuildSettings.jmAppBundleIdentifier
+        self.sAppVersionAndBuildNumber              = JmXcodeBuildSettings.jmAppVersionAndBuildNumber
+        self.sAppCopyright                          = JmXcodeBuildSettings.jmAppCopyright      
 
         self.updateUIDeviceOrientation()
 
@@ -312,7 +380,7 @@ public class AppGlobalInfo: NSObject
     {
         
         let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
+        let sCurrMethodDisp    = "AppGlobalInfo.\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked - supplied parameter 'jmAppDelegateVisitor' is [\(jmAppDelegateVisitor)]...")
 
@@ -359,7 +427,7 @@ public class AppGlobalInfo: NSObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(self)]...")
+        self.xcgLogMsg("AppGlobalInfo.\(sCurrMethodDisp) Invoked - 'self' is [\(self)]...")
 
         // Run 'post' Initialization task(s)...
 
@@ -427,7 +495,7 @@ public class AppGlobalInfo: NSObject
     {
         
         let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
+        let sCurrMethodDisp    = "AppGlobalInfo.\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
@@ -483,7 +551,7 @@ public class AppGlobalInfo: NSObject
     {
         
         let sCurrMethod:String = #function
-        let sCurrMethodDisp    = "\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
+        let sCurrMethodDisp    = "AppGlobalInfo.\(AppGlobalInfo.sGlobalInfoAppDisp)'"+sCurrMethod+"':"
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
@@ -525,6 +593,29 @@ public class AppGlobalInfo: NSObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bInstantiateAppNWSWeatherModelObservable' is [\(String(describing: AppGlobalInfo.bInstantiateAppNWSWeatherModelObservable))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bTestStringManipulations' is [\(String(describing: AppGlobalInfo.bTestStringManipulations))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sAppUploadNotifyFrom' is [\(String(describing: AppGlobalInfo.sAppUploadNotifyFrom))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.tiGlobalAppStartTime' is [\(String(describing: self.tiGlobalAppStartTime))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.dblGlobalAppUptime' is [\(String(describing: self.dblGlobalAppUptime))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalAppUptime' is [\(String(describing: self.sGlobalAppUptime))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalSystemUptime' is [\(String(describing: self.sGlobalSystemUptime))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoSystemUptime' is [\(String(describing: self.sGlobalProcessInfoSystemUptime))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoOSVersion' is [\(String(describing: self.sGlobalProcessInfoOSVersion))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoHostName' is [\(String(describing: self.sGlobalProcessInfoHostName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoSystemName' is [\(String(describing: self.sGlobalProcessInfoSystemName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoSystemVersion' is [\(String(describing: self.sGlobalProcessInfoSystemVersion))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoProcessorCount' is [\(String(describing: self.sGlobalProcessInfoProcessorCount))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoProcessorCountActive' is [\(String(describing: self.sGlobalProcessInfoProcessorCountActive))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoPhysicalMemory' is [\(String(describing: self.sGlobalProcessInfoPhysicalMemory))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoProcessIdentifier' is [\(String(describing: self.sGlobalProcessInfoProcessIdentifier))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoProcessName' is [\(String(describing: self.sGlobalProcessInfoProcessName))]...")
+
+    #if os(macOS)
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoMacOSUserName' is [\(String(describing: self.sGlobalProcessInfoMacOSUserName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalProcessInfoMacOSFullUserName' is [\(String(describing: self.sGlobalProcessInfoMacOSFullUserName))]...")
+
+    #endif
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.sGlobalDeviceType' is [\(String(describing: self.sGlobalDeviceType))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'AppGlobalInfo.bGlobalDeviceIsMac' is [\(String(describing: self.bGlobalDeviceIsMac))]...")
