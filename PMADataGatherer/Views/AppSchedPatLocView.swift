@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0604"
+        static let sClsVers      = "v1.0803"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -224,7 +224,7 @@ struct AppSchedPatLocView: View
                                 .help(Text("'Rebuild' App SchedPatLoc Screen..."))
                                 .imageScale(.medium)
 
-                            Text("Rebuild - #(\(self.cAppSchedPatLocViewRebuildButtonPresses))...")
+                            Text("Rebuild - #(\(self.cAppSchedPatLocViewRebuildButtonPresses))")
                                 .font(.footnote)
 
                         }
@@ -245,7 +245,7 @@ struct AppSchedPatLocView: View
 
                     self.cAppSchedPatLocViewRefreshButtonPresses += 1
 
-                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppSchedPatLocView.Button(Xcode).'Refresh'.#(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppSchedPatLocView.Button(Xcode).'Recount'.#(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
 
                 //  let _ = self.checkIfAppParseCoreHasPFCscDataItems(bRefresh:true)
                 //  let _ = self.checkIfAppParseCoreHasPFQueryBackgroundItems(bRefresh:true)
@@ -258,10 +258,10 @@ struct AppSchedPatLocView: View
                     {
 
                         Label("", systemImage: "arrow.clockwise")
-                            .help(Text("'Refresh' App SchedPatLoc Screen..."))
+                            .help(Text("'Recount' App SchedPatLoc Screen..."))
                             .imageScale(.medium)
 
-                        Text("Refresh - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
+                        Text("Recount - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))")
                             .font(.footnote)
 
                     }
@@ -384,7 +384,7 @@ struct AppSchedPatLocView: View
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(cTherapistsWithScheduledPatients)) - Total Visit(s) #(\(cTotalScheduledPatientVisits))...")
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(dictOfSortedSchedPatientLocItems.count)) - Total Visit(s) #(\(self.countDictionaryOfScheduledPatientLocationItemsVisits()))...")
             //  Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) - Total Therapist(s) #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) - Total Visit(s) #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits))...")
-                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) --->>> #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count)) Therapists with #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits)) Total Visits...")
+                Text("Auto-Update #(\(jmAppParseCoreManager.cPFCscObjectsRefresh)):(\(cAppSchedPatLocViewRefreshButtonPresses).\(cAppSchedPatLocViewRefreshAutoTimer).\(cAppScheduleViewRefreshAutoTimer)) --->>> #(\(self.appScheduleLoadingAssistant.dictOfSortedSchedPatientLocItems.count):\(self.appScheduleLoadingAssistant.cTotalTidsOnWorkRoute):\(self.appScheduleLoadingAssistant.cTotalTidsOnWorkRouteToday)) Therapists with #(\(self.appScheduleLoadingAssistant.cTotalScheduledPatientVisits)) Total Visits...")
                     .bold()
                     .italic()
                     .underline(true)
