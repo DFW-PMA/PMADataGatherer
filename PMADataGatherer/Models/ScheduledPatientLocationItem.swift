@@ -603,7 +603,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 
         var csStartTimeDelimiters:CharacterSet = CharacterSet()
 
-        csStartTimeDelimiters.insert(charactersIn: ":amp")
+        csStartTimeDelimiters.insert(charactersIn:":amp")
 
         let listVDateStartTime:[String] = sVDateStartTime.components(separatedBy:csStartTimeDelimiters)
         let sVDateStartTimeHH:String    = listVDateStartTime[0]

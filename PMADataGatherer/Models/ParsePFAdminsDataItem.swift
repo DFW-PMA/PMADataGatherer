@@ -17,7 +17,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFAdminsDataItem"
-        static let sClsVers      = "v1.0502"
+        static let sClsVers      = "v1.0602"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -82,6 +82,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
     var sPFAdminsParsePassword:String             = ""
     var sPFAdminsParseNewLvl:String               = "-N/A-"
     var sPFAdminsParseLevel:String                = "-N/A-"
+    var bPFAdminsCanUseFaceId:Bool                = false
 
     // App Data field(s):
 
@@ -135,6 +136,7 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
         self.sPFAdminsParsePassword        = pfAdminsDataItem.sPFAdminsParsePassword       
         self.sPFAdminsParseNewLvl          = pfAdminsDataItem.sPFAdminsParseNewLvl         
         self.sPFAdminsParseLevel           = pfAdminsDataItem.sPFAdminsParseLevel          
+        self.bPFAdminsCanUseFaceId         = pfAdminsDataItem.bPFAdminsCanUseFaceId          
 
         // Exit:
   
@@ -200,8 +202,11 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
         asToString.append("'sPFAdminsParseNameNoWS': [\(String(describing: self.sPFAdminsParseNameNoWS))],")
         asToString.append("'sPFAdminsParseTID': [\(String(describing: self.sPFAdminsParseTID))],")
         asToString.append("'sPFAdminsParsePassword': [\(String(describing: self.sPFAdminsParsePassword))],")
+        asToString.append("],")
+        asToString.append("[")
         asToString.append("'sPFAdminsParseNewLvl': [\(String(describing: self.sPFAdminsParseNewLvl))],")
         asToString.append("'sPFAdminsParseLevel': [\(String(describing: self.sPFAdminsParseLevel))],")
+        asToString.append("'bPFAdminsCanUseFaceId': [\(String(describing: self.bPFAdminsCanUseFaceId))],")
     //  asToString.append("],")
     //  asToString.append("[")
     //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor.toString())]")
@@ -245,6 +250,8 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'sPFAdminsParseNewLvl'          is [\(String(describing: self.sPFAdminsParseNewLvl))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'sPFAdminsParseLevel'           is [\(String(describing: self.sPFAdminsParseLevel))]...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'bPFAdminsCanUseFaceId'         is [\(String(describing: self.bPFAdminsCanUseFaceId))]...")
+
         // Exit:
 
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -263,24 +270,26 @@ class ParsePFAdminsDataItem: NSObject, Identifiable
 
         // Assign the various field(s) of this object from the supplied PFObject...
 
-        self.idPFAdminsObject                = idPFAdminsObject                                                             
-        self.pfAdminsObject                  = pfAdminsObject                                                             
+        self.idPFAdminsObject              = idPFAdminsObject                                                             
+        self.pfAdminsObject                = pfAdminsObject                                                             
         
-        self.sPFAdminsParseClassName         = pfAdminsObject.parseClassName
-        self.sPFAdminsParseObjectId          = pfAdminsObject.objectId  != nil ? pfAdminsObject.objectId!  : ""
-        self.datePFAdminsParseCreatedAt      = pfAdminsObject.createdAt != nil ? pfAdminsObject.createdAt! : nil
-        self.datePFAdminsParseUpdatedAt      = pfAdminsObject.updatedAt != nil ? pfAdminsObject.updatedAt! : nil
-        self.aclPFAdminsParse                = pfAdminsObject.acl
-        self.bPFAdminsParseIsDataAvailable   = pfAdminsObject.isDataAvailable
-        self.bPFAdminsParseIdDirty           = pfAdminsObject.isDirty
-        self.sPFAdminsParseAllKeys           = pfAdminsObject.allKeys
+        self.sPFAdminsParseClassName       = pfAdminsObject.parseClassName
+        self.sPFAdminsParseObjectId        = pfAdminsObject.objectId  != nil ? pfAdminsObject.objectId!  : ""
+        self.datePFAdminsParseCreatedAt    = pfAdminsObject.createdAt != nil ? pfAdminsObject.createdAt! : nil
+        self.datePFAdminsParseUpdatedAt    = pfAdminsObject.updatedAt != nil ? pfAdminsObject.updatedAt! : nil
+        self.aclPFAdminsParse              = pfAdminsObject.acl
+        self.bPFAdminsParseIsDataAvailable = pfAdminsObject.isDataAvailable
+        self.bPFAdminsParseIdDirty         = pfAdminsObject.isDirty
+        self.sPFAdminsParseAllKeys         = pfAdminsObject.allKeys
 
-        self.sPFAdminsParseName              = "-N/A-"
-        self.sPFAdminsParseNameNoWS          = ""
-        self.sPFAdminsParseTID               = String(describing: (pfAdminsObject.object(forKey:"tid")      ?? "-N/A-"))
-        self.sPFAdminsParsePassword          = String(describing: (pfAdminsObject.object(forKey:"password") ?? ""))
-        self.sPFAdminsParseNewLvl            = String(describing: (pfAdminsObject.object(forKey:"newLvl")   ?? "-N/A-"))
-        self.sPFAdminsParseLevel             = String(describing: (pfAdminsObject.object(forKey:"level")    ?? "-N/A-"))
+        self.sPFAdminsParseName            = "-N/A-"
+        self.sPFAdminsParseNameNoWS        = ""
+        self.sPFAdminsParseTID             = String(describing: (pfAdminsObject.object(forKey:"tid")      ?? "-N/A-"))
+        self.sPFAdminsParsePassword        = String(describing: (pfAdminsObject.object(forKey:"password") ?? ""))
+        self.sPFAdminsParseNewLvl          = String(describing: (pfAdminsObject.object(forKey:"newLvl")   ?? "-N/A-"))
+        self.sPFAdminsParseLevel           = String(describing: (pfAdminsObject.object(forKey:"level")    ?? "-N/A-"))
+
+        self.bPFAdminsCanUseFaceId         = Bool(truncating: (Int(String(describing: (pfAdminsObject.object(forKey:"canUseFaceId") ?? "0"))) ?? 0) as NSNumber)
         
         // Exit:
 

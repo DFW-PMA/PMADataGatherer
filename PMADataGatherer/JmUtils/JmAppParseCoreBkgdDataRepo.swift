@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1505"
+        static let sClsVers      = "v1.1506"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -33,7 +33,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     struct ClassSingleton
     {
 
-        static var appParseCodeBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo()
+        static var appParseCodeBkgdDataRepo:JmAppParseCoreBkgdDataRepo       = JmAppParseCoreBkgdDataRepo()
 
     }
 

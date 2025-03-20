@@ -19,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2207"
+        static let sClsVers      = "v1.2301"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -43,6 +43,7 @@ struct AppAuthenticateView: View
 
     @State      private var shouldContentViewChange:Bool                          = false
 
+    @State      private var bIsUserBlockedFromFaceId:Bool                         = false
     @State      private var bIsFaceIdAvailable:Bool                               = false
     @State      private var bIsFaceIdAuthenticated:Bool                           = false
     @State      private var sFaceIdAuthenticationMessage:String                   = ""
@@ -61,19 +62,26 @@ struct AppAuthenticateView: View
     {
         var bAreWeGoodToGo:Bool = false
 
-        if (self.bIsFaceIdAvailable == false)
+        if (self.bIsUserBlockedFromFaceId == true)
         {
             bAreWeGoodToGo = self.isUserLoggedIn
         }
         else
         {
-            if (self.bIsFaceIdAuthenticated == true)
+            if (self.bIsFaceIdAvailable == false)
             {
                 bAreWeGoodToGo = self.isUserLoggedIn
             }
             else
             {
-                bAreWeGoodToGo = false
+                if (self.bIsFaceIdAuthenticated == true)
+                {
+                    bAreWeGoodToGo = self.isUserLoggedIn
+                }
+                else
+                {
+                    bAreWeGoodToGo = false
+                }
             }
         }
 
@@ -828,14 +836,13 @@ struct AppAuthenticateView: View
             sLookupUserName     = self.sLoginUsername.lowercased()
             sLookupUserNameNoWS = sLookupUserName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
 
-
         }
         else
         {
 
             // Exit...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.sLoginUsername' is nil or Empty - can NOT be 'validated' - Error!")
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.sLoginUsername' is nil or Empty - can NOT be 'validated' - Warning!")
 
             pfAdminsDataItem = nil   
 
@@ -929,6 +936,26 @@ struct AppAuthenticateView: View
 
             pfAdminsDataItem = nil   
 
+        }
+        else
+        {
+
+            if (pfAdminsDataItem.bPFAdminsCanUseFaceId == false)
+            {
+
+                self.bIsUserBlockedFromFaceId     = true
+                self.bIsFaceIdAvailable           = false
+                self.bIsFaceIdAuthenticated       = false
+                self.sFaceIdAuthenticationMessage = "App 'user' is NOT allowed to use 'FaceId' Authentication"
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User can NOT use 'FaceId' - cleared the FaceId field(s) - Warning!")
+            
+            //  self.sLoginPassword = ""
+            //
+            //  self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User can NOT use 'FaceId' - cleared the password field - Warning!")
+
+            }
+            
         }
         
         // Exit...
