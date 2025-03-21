@@ -16,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1202"
+        static let sClsVers      = "v1.1402"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -105,6 +105,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         return "\(dtFormatterVDate.string(from:dateVDate))"
 
     }
+
+    var colorOfItem:Color                                   = Color.primary
 
     var jmAppDelegateVisitor:JmAppDelegateVisitor           = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
 
@@ -309,6 +311,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         asToString.append("'clLocationCoordinate2DPatLoc': [\(String(describing: self.clLocationCoordinate2DPatLoc))],")
         asToString.append("'sVDateAddressOrLatLong': [\(String(describing: self.sVDateAddressOrLatLong))],")
         asToString.append("'sVDateShortDisplay': [\(String(describing: self.sVDateShortDisplay))],")
+        asToString.append("'colorOfItem': [\(String(describing: self.colorOfItem))],")
     //  asToString.append("],")
     //  asToString.append("[")
     //  asToString.append("'jmAppDelegateVisitor': [\(self.jmAppDelegateVisitor)],")
@@ -356,6 +359,23 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateLatitude'    is [\(String(describing: self.sLastVDateLatitude))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateLongitude'   is [\(String(describing: self.sLastVDateLongitude))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateAddress'     is [\(String(describing: self.sLastVDateAddress))]...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) 'colorOfItem'           is [\(String(describing: self.colorOfItem))]...")
+
+        var bDoBothVDatesMatch:Bool = false
+
+        if (self.sVDate.count      > 0 &&
+            self.sLastVDate.count  > 0 &&
+            self.sVDate           == self.sLastVDate)
+        {
+        
+            bDoBothVDatesMatch = true
+        
+        }
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+        self.xcgLogMsg("\(sCurrMethodDisp) <VDate-comparison> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))] - 'bDoBothVDatesMatch' is [\(bDoBothVDatesMatch)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ")
 
         // Exit:
 
@@ -405,6 +425,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.sLastVDateLatitude                            = scheduledPatientLocationItem.sLastVDateLatitude 
         self.sLastVDateLongitude                           = scheduledPatientLocationItem.sLastVDateLongitude
         self.sLastVDateAddress                             = scheduledPatientLocationItem.sLastVDateAddress  
+
+        self.colorOfItem                                   = scheduledPatientLocationItem.colorOfItem  
 
         // Check if the 'current' Location data copied was 'blank'...
 
