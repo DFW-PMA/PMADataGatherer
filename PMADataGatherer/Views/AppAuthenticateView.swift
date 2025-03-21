@@ -19,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2301"
+        static let sClsVers      = "v1.2411"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -43,7 +43,6 @@ struct AppAuthenticateView: View
 
     @State      private var shouldContentViewChange:Bool                          = false
 
-    @State      private var bIsUserBlockedFromFaceId:Bool                         = false
     @State      private var bIsFaceIdAvailable:Bool                               = false
     @State      private var bIsFaceIdAuthenticated:Bool                           = false
     @State      private var sFaceIdAuthenticationMessage:String                   = ""
@@ -53,6 +52,8 @@ struct AppAuthenticateView: View
     @State      private var isUserLoginFailureShowing:Bool                        = false
     @State      private var isUserLoggedIn:Bool                                   = false
 
+    @AppStorage("PMADataGatherer.LastLoginBlockedFromFaceId")
+                private var bIsUserBlockedFromFaceId:Bool                         = false
     @AppStorage("PMADataGatherer.LastLoginUsername")
                 private var sLoginUsername:String                                 = ""
     @AppStorage("PMADataGatherer.LastLoginPassword")
@@ -97,7 +98,7 @@ struct AppAuthenticateView: View
 
 #endif
 
-                        var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject     var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject     var jmAppSwiftDataManager:JmAppSwiftDataManager           = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
     @ObservedObject     var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
                         var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
@@ -162,6 +163,7 @@ struct AppAuthenticateView: View
         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'jmAppSwiftDataManager.pfAdminsSwiftDataItems.count' is (\(self.jmAppSwiftDataManager.pfAdminsSwiftDataItems.count))...")
         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable' is [\(self.jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable)]...")
         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'isUserAuthenticationAvailable' is [\(isUserAuthenticationAvailable)]...")
+        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
         // Check if we have 'login' data available from SwiftData...
 
@@ -172,6 +174,7 @@ struct AppAuthenticateView: View
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'jmAppSwiftDataManager.pfAdminsSwiftDataItems.count' is (\(self.jmAppSwiftDataManager.pfAdminsSwiftDataItems.count))...")
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable' is [\(self.jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable)]...")
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'isUserAuthenticationAvailable' is [\(isUserAuthenticationAvailable)]...")
+            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
             VStack(alignment:.center)
             {
@@ -271,7 +274,12 @@ struct AppAuthenticateView: View
 
                             self.authenticateViaFaceId()
 
-                            let _ = self.isUserPasswordValidForLogin()
+                            let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                            if (bUserLoginValidated == true)
+                            {
+                                self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                            }
 
                         }
                         label:
@@ -320,6 +328,7 @@ struct AppAuthenticateView: View
 
                                     let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - Toggled 'self.shouldContentViewChange' which is now [\(self.shouldContentViewChange)]...")
                                     let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - 'self.isUserAuthenticationAvailable' is [\(self.isUserAuthenticationAvailable)]...")
+                                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
                                     if (isUserAuthenticationAvailable                           == false &&
                                         self.jmAppDelegateVisitor.isUserAuthenticationAvailable == true)
@@ -362,7 +371,13 @@ struct AppAuthenticateView: View
 
                     self.authenticateViaFaceId()
 
-                    let _ = self.isUserPasswordValidForLogin()
+                    let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                    if (bUserLoginValidated == true)
+                    {
+                        self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                    }
+
                 }
             )
 
@@ -377,6 +392,7 @@ struct AppAuthenticateView: View
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'bIsFaceIdAuthenticated' is [\(bIsFaceIdAuthenticated)]...")
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'isUserLoggedIn' is [\(isUserLoggedIn)]...")
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'isUserAuthorizedAndLoggedIn' is [\(isUserAuthorizedAndLoggedIn)]...")
+            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
         //  if (isUserLoggedIn == false)
             if (isUserAuthorizedAndLoggedIn == false)
@@ -488,7 +504,12 @@ struct AppAuthenticateView: View
 
                                 self.authenticateViaFaceId()
 
-                                let _ = self.isUserPasswordValidForLogin()
+                                let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                                if (bUserLoginValidated == true)
+                                {
+                                    self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                }
 
                             }
                             label:
@@ -556,7 +577,12 @@ struct AppAuthenticateView: View
                             .focused($focusedField, equals: .fieldPassword)
                             .onSubmit
                             {
-                                let _ = self.isUserPasswordValidForLogin()
+                                let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                                if (bUserLoginValidated == true)
+                                {
+                                    self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                }
                             }
                             .alert("\(self.sCredentialsCheckReason) - try again...", isPresented:$isUserLoginFailureShowing)
                             {
@@ -588,7 +614,12 @@ struct AppAuthenticateView: View
                                     }
                                     else
                                     {
-                                        let _ = self.isUserPasswordValidForLogin()
+                                        let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                                        if (bUserLoginValidated == true)
+                                        {
+                                            self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                        }
                                     }
                                 }
                             }
@@ -606,7 +637,12 @@ struct AppAuthenticateView: View
 
                             self.authenticateViaFaceId()
 
-                            let _ = self.isUserPasswordValidForLogin()
+                            let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                            if (bUserLoginValidated == true)
+                            {
+                                self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                            }
                         }
                     )
                     .padding()
@@ -624,6 +660,7 @@ struct AppAuthenticateView: View
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'bIsFaceIdAuthenticated' is [\(bIsFaceIdAuthenticated)]...")
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'isUserLoggedIn' is [\(isUserLoggedIn)]...")
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'isUserAuthorizedAndLoggedIn' is [\(isUserAuthorizedAndLoggedIn)]...")
+                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
                 ContentView(isUserLoggedIn:$isUserLoggedIn, sLoginUsername:$sLoginUsername, sLoginPassword:$sLoginPassword)
 
@@ -642,10 +679,27 @@ struct AppAuthenticateView: View
 
                     let _ = self.finishAppInitializationInBackground()
 
+                    if (self.bIsUserBlockedFromFaceId == true)
+                    {
+                        self.sLoginPassword = ""
+                    }
+
                     self.authenticateViaFaceId()
 
-                    let _ = self.isUserPasswordValidForLogin()
+                    let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                    if (bUserLoginValidated == true)
+                    {
+                        self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                    }
+
                 })
+            .onChange(of:self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh)
+            {
+                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - JmAppDelegateVisitor has 'signalled' a View 'refresh'...")
+
+                self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+            }
         
     }
     
@@ -940,7 +994,7 @@ struct AppAuthenticateView: View
         else
         {
 
-            if (pfAdminsDataItem.bPFAdminsCanUseFaceId == false)
+            if (pfAdminsDataItem!.bPFAdminsCanUseFaceId == false)
             {
 
                 self.bIsUserBlockedFromFaceId     = true
@@ -950,9 +1004,13 @@ struct AppAuthenticateView: View
 
                 self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User can NOT use 'FaceId' - cleared the FaceId field(s) - Warning!")
             
-            //  self.sLoginPassword = ""
-            //
-            //  self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User can NOT use 'FaceId' - cleared the password field - Warning!")
+            }
+            else
+            {
+
+                self.bIsUserBlockedFromFaceId     = false
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User CAN use 'FaceId' - set FaceId field...")
 
             }
             
@@ -1072,6 +1130,30 @@ struct AppAuthenticateView: View
             pfAdminsSwiftDataItem = nil   
 
         }
+        else
+        {
+
+            if (pfAdminsSwiftDataItem!.bPFAdminsCanUseFaceId == false)
+            {
+
+                self.bIsUserBlockedFromFaceId     = true
+                self.bIsFaceIdAvailable           = false
+                self.bIsFaceIdAuthenticated       = false
+                self.sFaceIdAuthenticationMessage = "App 'user' is NOT allowed to use 'FaceId' Authentication"
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User can NOT use 'FaceId' - cleared the FaceId field(s) - Warning!")
+
+            }
+            else
+            {
+
+                self.bIsUserBlockedFromFaceId     = false
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User CAN use 'FaceId' - set FaceId field...")
+
+            }
+
+        }
         
         // Exit...
   
@@ -1089,12 +1171,32 @@ struct AppAuthenticateView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
 
+        // Check if the 'last' User 'login' has the FaceId 'blocked'...
+
+        if (self.bIsUserBlockedFromFaceId == true)
+        {
+
+            self.bIsUserBlockedFromFaceId     = true
+            self.bIsFaceIdAvailable           = false
+            self.bIsFaceIdAuthenticated       = false
+            self.sFaceIdAuthenticationMessage = "App 'user' is NOT allowed to use 'FaceId' Authentication"
+
+            self.xcgLogMsg("\(sCurrMethodDisp) User can NOT use 'FaceId' - cleared the FaceId field(s) - Warning!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.bIsUserBlockedFromFaceId' is [\(self.bIsUserBlockedFromFaceId)] - 'self.bIsFaceIdAvailable' is [\(self.bIsFaceIdAvailable)] - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
+
+            return
+
+        }
+
+        // Check whether biometric authentication is possible...
+
         let laContext = LAContext()
         var error: NSError?
 
         self.bIsFaceIdAvailable = false
-
-        // Check whether biometric authentication is possible...
 
         if laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error:&error) 
         {
@@ -1178,6 +1280,10 @@ struct AppAuthenticateView: View
 
         }
 
+        // Flag that indicates whether or not we've 'validated' the Username...
+
+        var bUserNameIsValid:Bool = false
+
         // Check SwiftData (1st) for a match on the User...
 
         let pfAdminsSwiftDataItem:PFAdminsSwiftDataItem? = self.locateUserDataInSwiftData()
@@ -1185,13 +1291,14 @@ struct AppAuthenticateView: View
         if (pfAdminsSwiftDataItem == nil)
         {
 
-            self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
-
+            self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid' - NOT found in 'Admins' <#1>"
             bUserLoginValidated          = false
 
         }
         else
         {
+
+            bUserNameIsValid = true
 
             if let sValidUserPassword:String = pfAdminsSwiftDataItem?.sPFAdminsParsePassword
             {
@@ -1201,7 +1308,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "User credential(s) are 'valid'"
-
                     bUserLoginValidated          = true
 
                 }
@@ -1209,7 +1315,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "For the Username '\(sValidUserName)', the password is 'invalid'"
-
                     bUserLoginValidated          = false
 
                 }
@@ -1218,8 +1323,7 @@ struct AppAuthenticateView: View
             else
             {
 
-                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
-
+                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'missing' a password in 'Admins' <#1>"
                 bUserLoginValidated          = false
 
             }
@@ -1250,13 +1354,20 @@ struct AppAuthenticateView: View
         if (pfAdminsDataItem == nil)
         {
 
-            self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
+            if (bUserNameIsValid == false)
+            {
+            
+                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid' - NOT found in 'Admins' <#2>"
+            
+            }
 
-            bUserLoginValidated          = false
+            bUserLoginValidated = false
 
         }
         else
         {
+
+            bUserNameIsValid = true
 
             if let sValidUserPassword:String = pfAdminsDataItem?.sPFAdminsParsePassword
             {
@@ -1266,7 +1377,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "User credential(s) are 'valid'"
-
                     bUserLoginValidated          = true
 
                 }
@@ -1274,7 +1384,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "For the Username '\(sValidUserName)', the password is 'invalid'"
-
                     bUserLoginValidated          = false
 
                 }
@@ -1283,8 +1392,7 @@ struct AppAuthenticateView: View
             else
             {
 
-                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
-
+                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'missing' a password in 'Admins' <#2>"
                 bUserLoginValidated          = false
 
             }

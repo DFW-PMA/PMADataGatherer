@@ -20,7 +20,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
     {
         
         static let sClsId        = "PFAdminsSwiftDataItem"
-        static let sClsVers      = "v1.0602"
+        static let sClsVers      = "v1.0701"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -42,6 +42,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
     var sPFAdminsParsePassword:String             = ""
     var sPFAdminsParseNewLvl:String               = "-N/A-"
     var sPFAdminsParseLevel:String                = "-N/A-"
+    var bPFAdminsCanUseFaceId:Bool                = false
 
     @Transient
     var jmAppDelegateVisitor:JmAppDelegateVisitor = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
@@ -72,6 +73,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
         self.sPFAdminsParsePassword = ""
         self.sPFAdminsParseNewLvl   = "-N/A-"
         self.sPFAdminsParseLevel    = "-N/A-"
+        self.bPFAdminsCanUseFaceId  = false
 
         // Exit:
 
@@ -100,6 +102,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
         self.sPFAdminsParsePassword = pfAdminsItem.sPFAdminsParsePassword
         self.sPFAdminsParseNewLvl   = pfAdminsItem.sPFAdminsParseNewLvl
         self.sPFAdminsParseLevel    = pfAdminsItem.sPFAdminsParseLevel
+        self.bPFAdminsCanUseFaceId  = pfAdminsItem.bPFAdminsCanUseFaceId          
 
         // Exit:
 
@@ -158,6 +161,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
         asToString.append("'sPFAdminsParsePassword': [\(String(describing: self.sPFAdminsParsePassword))],")
         asToString.append("'sPFAdminsParseNewLvl': [\(String(describing: self.sPFAdminsParseNewLvl))],")
         asToString.append("'sPFAdminsParseLevel': [\(String(describing: self.sPFAdminsParseLevel))],")
+        asToString.append("'bPFAdminsCanUseFaceId': [\(String(describing: self.bPFAdminsCanUseFaceId))],")
         asToString.append("],")
         asToString.append("]")
 
@@ -187,6 +191,7 @@ public final class PFAdminsSwiftDataItem: Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'sPFAdminsParsePassword' is [\(String(describing: self.sPFAdminsParsePassword))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'sPFAdminsParseNewLvl'   is [\(String(describing: self.sPFAdminsParseNewLvl))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'sPFAdminsParseLevel'    is [\(String(describing: self.sPFAdminsParseLevel))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idPFAdminsObject)): 'bPFAdminsCanUseFaceId'  is [\(String(describing: self.bPFAdminsCanUseFaceId))]...")
         
         // (Optionally) Display the location of the SwiftData 'local' store...
 

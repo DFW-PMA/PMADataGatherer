@@ -25,7 +25,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     {
         
         static let sClsId        = "JmAppDelegateVisitor"
-        static let sClsVers      = "v1.3303"
+        static let sClsVers      = "v1.3401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -77,6 +77,17 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
 
     public
     var isUserAuthenticationAvailable:Bool                         = false
+
+    // App <global> SwiftUI View 'Refresh' control(s):
+
+    @Published 
+    var appDelegateVisitorSwiftViewsShouldRefresh:Bool             = false
+    {
+        didSet
+        {
+            objectWillChange.send()
+        }
+    }
 
     // App <global> 'Alert' control(s):
 
@@ -234,6 +245,7 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
         asToString.append("xcgLogger': [\(String(describing: self.xcgLogger))],")
         asToString.append("],")
         asToString.append("[")
+        asToString.append("appDelegateVisitorSwiftViewsShouldRefresh': [\(String(describing: self.appDelegateVisitorSwiftViewsShouldRefresh))],")
         asToString.append("appDelegateVisitorSwiftViewsShouldChange': [\(String(describing: self.appDelegateVisitorSwiftViewsShouldChange))],")
         asToString.append("],")
         asToString.append("[")
@@ -1208,6 +1220,46 @@ public class JmAppDelegateVisitor: NSObject, ObservableObject
     }   // End of @objc public func performAppDelegateVisitorTerminatingCrashLogic().
 
     // Method(s) that signal interaction(s) with Swift View(s):
+
+    @objc public func setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(self)]...")
+
+        // Signal Swift 'view(s)' that they should refresh (if watching this AppDelegateVisitor)...
+
+        self.appDelegateVisitorSwiftViewsShouldRefresh = true
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of @objc public func setAppDelegateVisitorSignalSwiftViewsShouldRefresh().
+
+    @objc public func resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(self)]...")
+
+        // Reset the signal Swift 'view(s)' that they should refresh (if watching this AppDelegateVisitor)...
+
+        self.appDelegateVisitorSwiftViewsShouldRefresh = false
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of @objc public func resetAppDelegateVisitorSignalSwiftViewsShouldRefresh().
 
     @objc public func setAppDelegateVisitorSignalSwiftViewsShouldChange()
     {

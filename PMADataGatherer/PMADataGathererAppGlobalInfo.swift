@@ -28,10 +28,10 @@ public class AppGlobalInfo: NSObject
     }
 
     static let sGlobalInfoAppId:String                                   = "PMADataGatherer"
-    static let sGlobalInfoAppVers:String                                 = "v1.3108"
+    static let sGlobalInfoAppVers:String                                 = "v1.3109"
     static let sGlobalInfoAppDisp:String                                 = sGlobalInfoAppId+".("+sGlobalInfoAppVers+"): "
     static let sGlobalInfoAppCopyRight:String                            = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
-    static let sGlobalInfoAppLogFilespecMaxSize:Int64                    = 30000000
+    static let sGlobalInfoAppLogFilespecMaxSize:Int64                    = 50000000
     static let bGlobalInfoAppAutoSendCrashLog:Bool                       = true
     static let bGlobalInfoAppAutoSendCrashLogTesting:Bool                = true
     static let sGlobalInfoAppLogFilespec:String                          = "PMADataGatherer.log"
