@@ -9,6 +9,18 @@
 import Foundation
 import ParseCore
 
+enum ScheduleType: String, CaseIterable
+{
+    
+    case undefined          = "Undefined"
+    case pastdate           = "PastDate"
+    case scheduled          = "Scheduled"
+    case completed          = "Completed"
+    case completedDateError = "CompletedDateError"
+    case missed             = "Missed"
+    
+}   // End of enum ScheduleType(String, CaseIterable).
+
 class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 {
     
@@ -16,7 +28,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1402"
+        static let sClsVers      = "v1.1503"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -105,6 +117,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         return "\(dtFormatterVDate.string(from:dateVDate))"
 
     }
+
+    var scheduleType:ScheduleType                           = ScheduleType.undefined
 
     var colorOfItem:Color                                   = Color.primary
 
@@ -311,6 +325,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         asToString.append("'clLocationCoordinate2DPatLoc': [\(String(describing: self.clLocationCoordinate2DPatLoc))],")
         asToString.append("'sVDateAddressOrLatLong': [\(String(describing: self.sVDateAddressOrLatLong))],")
         asToString.append("'sVDateShortDisplay': [\(String(describing: self.sVDateShortDisplay))],")
+        asToString.append("'scheduleType': [\(String(describing: self.scheduleType))],")
         asToString.append("'colorOfItem': [\(String(describing: self.colorOfItem))],")
     //  asToString.append("],")
     //  asToString.append("[")
@@ -360,6 +375,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateLongitude'   is [\(String(describing: self.sLastVDateLongitude))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sLastVDateAddress'     is [\(String(describing: self.sLastVDateAddress))]...")
 
+        self.xcgLogMsg("\(sCurrMethodDisp) 'scheduleType'          is [\(String(describing: self.scheduleType))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'colorOfItem'           is [\(String(describing: self.colorOfItem))]...")
 
         var bDoBothVDatesMatch:Bool = false
@@ -426,6 +442,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.sLastVDateLongitude                           = scheduledPatientLocationItem.sLastVDateLongitude
         self.sLastVDateAddress                             = scheduledPatientLocationItem.sLastVDateAddress  
 
+        self.scheduleType                                  = scheduledPatientLocationItem.scheduleType  
         self.colorOfItem                                   = scheduledPatientLocationItem.colorOfItem  
 
         // Check if the 'current' Location data copied was 'blank'...
@@ -551,6 +568,10 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 
         }
   
+        // Test this item for Visit occurance...
+
+        self.testScheduledPatientLocationItemForVisitOccurance()
+
         // Exit:
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -576,6 +597,10 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.sLastVDateLatitude  = String(describing: (pfBackupVisit.object(forKey:"lat")     ?? ""))
         self.sLastVDateLongitude = String(describing: (pfBackupVisit.object(forKey:"long")    ?? ""))
 
+        // Test this item for Visit occurance...
+
+        self.testScheduledPatientLocationItemForVisitOccurance()
+
         // Exit:
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -584,6 +609,353 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
   
     }   // End of public func updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:PFObject).
 
+    public func testScheduledPatientLocationItemForVisitOccurance()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(self.toString())]...")
+
+        // Test this item for Visit occurance...
+
+        // --------------------------------------------------------------------------------------------------
+        //  case undefined          = "Undefined"          -> Color.primary
+        //  case pastdate           = "PastDate"           -> Color.yellow
+        //  case scheduled          = "Scheduled"          -> Color.orange
+        //  case completed          = "Completed"          -> Color.green
+        //  case completedDateError = "CompletedDateError" -> Color.purple
+        //  case missed             = "Missed"             -> Color.red
+        // --------------------------------------------------------------------------------------------------
+
+        // Determine some settings about the Dates and their values...
+
+        var bIsVDateAvailable:Bool          = (self.sVDate.count     > 0)
+        var bIsLastVDateAvailable:Bool      = (self.sLastVDate.count > 0)
+        var bBothVDatesAreNotAvailable:Bool = (bIsVDateAvailable == false && bIsLastVDateAvailable == false)
+        var bBothVDatesAreAvailable:Bool    = (bIsVDateAvailable == true  && bIsLastVDateAvailable == true)
+        var bDoBothVDatesMatch:Bool         = (bBothVDatesAreAvailable == true && self.sVDate == self.sLastVDate)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bIsVDateAvailable' is [\(bIsVDateAvailable)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bIsLastVDateAvailable' is [\(bIsLastVDateAvailable)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bBothVDatesAreNotAvailable' is [\(bBothVDatesAreNotAvailable)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bBothVDatesAreAvailable' is [\(bBothVDatesAreAvailable)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bDoBothVDatesMatch' is [\(bDoBothVDatesMatch)]...")
+
+        // If there is NO 'sVDate', then we have NO data to compare...
+
+        if (bIsVDateAvailable == false)
+        {
+        
+            self.scheduleType = ScheduleType.undefined
+            self.colorOfItem  = Color.primary
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] - Nothing to compare - type values set to defaults - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)]...")
+        
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        // If BOTH the 'sVDate' and 'sLastVDate' strings are empty, then we have NO data to compare...
+
+        if (bBothVDatesAreNotAvailable == true)
+        {
+        
+            self.scheduleType = ScheduleType.undefined
+            self.colorOfItem  = Color.primary
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))] - BOTH value(s) are empty strings - type values set to defaults - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)]...")
+        
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        // If we have a 'sVDate' (from 'PFCalDay') <scheduled visit> 
+        // AND a 'sLastVDate' (from 'PFBackupVisit') <visit HAS been completed>,
+        // then check if the Dates match...
+
+        if (bDoBothVDatesMatch == true)
+        {
+
+            self.scheduleType = ScheduleType.completed
+            self.colorOfItem  = Color.green
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))] - BOTH value(s) match - visit is 'completed' - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)]...")
+        
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        // Both Dates don't match, but if we have them both then it's 'completed' but Date 'error'...
+
+        if (bDoBothVDatesMatch      == false &&
+            bBothVDatesAreAvailable == true)
+        {
+
+            self.scheduleType = ScheduleType.completedDateError
+            self.colorOfItem  = Color.purple
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))] - BOTH value(s) are available but the Dates do NOT match - visit is 'completed' but with Date 'error' - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)]...")
+        
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        // Calculate if VDate is a 'past' date...
+
+        let bIsVDateInPast:Bool = self.isVDateInPast(sVDate:self.sVDate)
+
+        if (bIsVDateInPast == true)
+        {
+
+            self.scheduleType = ScheduleType.pastdate
+            self.colorOfItem  = Color.yellow
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] is a 'past' Date - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)]...")
+        
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        // Calculate if VDate is 'today'...
+
+        let bIsVDateToday:Bool  = self.isVDateToday(sVDate:self.sVDate)
+
+        // If VDate is NOT 'today' (and it's NOT a 'past' Date), then simply mark it 'scheduled'...
+
+        if (bIsVDateToday == false)
+        {
+
+            self.scheduleType = ScheduleType.scheduled
+            self.colorOfItem  = Color.orange
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] is NOT a 'past' Date but NOT 'today' - leaving as 'scheduled' - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)]...")
+        
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        // VDate is 'today', now check the scheduled time to make sure we have a 'time' to work with...
+
+        if (self.sVDateStartTime24h.count < 1)
+        {
+        
+            self.scheduleType = ScheduleType.scheduled
+            self.colorOfItem  = Color.orange
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] 'today' but 'self.sVDateStartTime24h' is an 'empty string - leaving as a 'scheduled' viait - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)] - Error!")
+        
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        
+        }
+
+        // VDate is 'today', now check the scheduled time vs current time 
+        // to determine if it's still to happen or a missed visit...
+
+        let sVDateTime:String           = "\(self.sVDate) \(self.sVDateStartTime24h)"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDateTime' is [\(String(describing: sVDateTime))]...")
+
+        let dateFormatter:DateFormatter = DateFormatter()
+        dateFormatter.dateFormat        = "yyyy-MM-dd HH:mm"
+
+        guard let dateVDateTime:Date = dateFormatter.date(from:sVDate)
+        else
+        {
+
+            self.scheduleType = ScheduleType.scheduled
+            self.colorOfItem  = Color.orange
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDateTime' of [\(String(describing: sVDateTime))] is an 'invalid' format - leaving as a 'scheduled' viait - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)] - Error!")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        let dateVDateTimePlus1Hour:Date = Calendar.current.date(byAdding:.hour, value:1, to:dateVDateTime)!
+        let dateTodayNow:Date           = Date()
+
+        if (dateVDateTimePlus1Hour < dateTodayNow)
+        {
+
+            self.scheduleType = ScheduleType.missed
+            self.colorOfItem  = Color.red
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'dateVDateTimePlus1Hour' of [\(String(describing: dateVDateTimePlus1Hour))] is less than 'dateTodayNow' of [\(String(describing: dateTodayNow))] - setting this as a 'missed' viait - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)] - Error!")
+        
+        }
+        else
+        {
+
+            self.scheduleType = ScheduleType.scheduled
+            self.colorOfItem  = Color.orange
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'dateVDateTimePlus1Hour' of [\(String(describing: dateVDateTimePlus1Hour))] is NOT less than 'dateTodayNow' of [\(String(describing: dateTodayNow))] - leaving this as a 'scheduled' viait - 'self.scheduleType' is [\(self.scheduleType)] - 'self.colorOfItem' is [\(self.colorOfItem)] - Error!")
+        
+        }
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of public func testScheduledPatientLocationItemForVisitOccurance().
+
+    public func isVDateInPast(sVDate:String)->Bool
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sVDate' is [\(sVDate)]...")
+
+        // Convert the VDate string into a Date and compare with 'today'...
+
+        var bIsVDateInPast:Bool = false
+
+        if (sVDate.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'sVDate' of [\(sVDate)] is an 'empty' string - Error!")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bIsVDateInPast' is [\(bIsVDateInPast)]...")
+
+            return bIsVDateInPast
+        
+        }
+
+        let dateFormatter:DateFormatter = DateFormatter()
+        dateFormatter.dateFormat        = "yyyy-MM-dd"
+
+        guard let dateVDate:Date = dateFormatter.date(from:sVDate)
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'sVDate' of [\(sVDate)] is an 'invalid' format - Error!")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bIsVDateInPast' is [\(bIsVDateInPast)]...")
+
+            return bIsVDateInPast
+
+        }
+
+        var bIsVDateToday:Bool = Calendar.current.isDateInToday(dateVDate)
+
+        if (bIsVDateToday == true)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'sVDate' of [\(sVDate)] is 'today'...")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bIsVDateInPast' is [\(bIsVDateInPast)]...")
+
+            return bIsVDateInPast
+        
+        }
+
+        let dateToday:Date = Date()
+
+        bIsVDateInPast = (dateToday > dateVDate)
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bIsVDateInPast' is [\(bIsVDateInPast)]...")
+
+        return bIsVDateInPast
+
+    }   // End of isVDateInPast(sVDate:String)->Bool.
+    
+    public func isVDateToday(sVDate:String)->Bool
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sVDate' is [\(sVDate)]...")
+
+        // Convert the VDate string into a Date and compare with the calendar...
+
+        var bIsVDateToday:Bool = false
+
+        if (sVDate.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'sVDate' of [\(sVDate)] is an 'empty' string - Error!")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bIsVDateToday' is [\(bIsVDateToday)]...")
+
+            return bIsVDateToday
+        
+        }
+
+        let dateFormatter:DateFormatter = DateFormatter()
+        dateFormatter.dateFormat        = "yyyy-MM-dd"
+
+        guard let dateVDate:Date = dateFormatter.date(from:sVDate)
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'sVDate' of [\(sVDate)] is an 'invalid' format - Error!")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bIsVDateToday' is [\(bIsVDateToday)]...")
+
+            return bIsVDateToday
+
+        }
+
+        bIsVDateToday = Calendar.current.isDateInToday(dateVDate)
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bIsVDateToday' is [\(bIsVDateToday)]...")
+
+        return bIsVDateToday
+
+    }   // End of isVDateToday(sVDate:String)->Bool.
+    
     public func convertVDateStartTimeTo24Hour(sVDateStartTime:String)->(String, Int)
     {
 

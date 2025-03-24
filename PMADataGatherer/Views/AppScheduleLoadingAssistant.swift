@@ -17,7 +17,7 @@ public class AppScheduleLoadingAssistant: NSObject
     {
         
         static let sClsId          = "AppScheduleLoadingAssistant"
-        static let sClsVers        = "v1.0406"
+        static let sClsVers        = "v1.0501"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
