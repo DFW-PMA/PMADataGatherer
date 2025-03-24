@@ -19,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2415"
+        static let sClsVers      = "v1.2501"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -31,7 +31,7 @@ struct AppAuthenticateView: View
 
 //  @Environment(\.modelContext) var modelContext
 
-    static              var timerOnDemandQuarterOfSec                             = Timer()
+    static              var timerOnDemandThirdOfSec                               = Timer()
 
     enum FocusedFields: Hashable
     {
@@ -670,7 +670,7 @@ struct AppAuthenticateView: View
 
         }
 
-        Text("View 'refresh': [\(self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh)]...")            
+        Text("View 'refresh' flag: [\(self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh)]...")            
             .hidden()
             .onAppear(
                 perform:
@@ -702,11 +702,11 @@ struct AppAuthenticateView: View
 
                 if (self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh == true)
                 {
-                    AppAuthenticateView.timerOnDemandQuarterOfSec = Timer.scheduledTimer(withTimeInterval:0.25, repeats:false)
+                    AppAuthenticateView.timerOnDemandThirdOfSec = Timer.scheduledTimer(withTimeInterval:0.35, repeats:false)
                     { _ in
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.25-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
                         self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.25-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
                     }
                 }
             }
