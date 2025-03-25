@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0705"
+        static let sClsVers      = "v1.0707"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -298,8 +298,21 @@ struct AppTidScheduleView: View
                                 .width(min:60, max:90)
                         //  TableColumn("Type",                value:\.sLastVDateType)
                         //      .width(min:40, max:60)
-                            TableColumn("Status",              value:\.scheduleType.rawValue)
+                        //  TableColumn("Status",              value:\.scheduleType.rawValue)
+                        //      .width(min:60, max:90)
+                            TableColumn("Status")
+                                { scheduledPatientLocationItem in
+                                    Text(scheduledPatientLocationItem.scheduleType.rawValue)
+                                        .foregroundStyle(scheduledPatientLocationItem.colorOfItem)
+                                }
                                 .width(min:60, max:90)
+                        //  TableColumn("Performance") { employee in
+                        //      Text(String(format: "%.1f", employee.performance))
+                        //          .foregroundColor(
+                        //              employee.performance > 4.0 ? .green : 
+                        //              employee.performance > 3.0 ? .orange : .red
+                        //          )
+                        //  }
                             TableColumn("Address or Location", value:\.sVDateAddressOrLatLong)
                                 .width(min:200, max:360)
 
