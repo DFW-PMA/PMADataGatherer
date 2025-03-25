@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0704"
+        static let sClsVers      = "v1.0705"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -311,6 +311,7 @@ struct AppTidScheduleView: View
                             { scheduledPatientLocationItem in
 
                                 TableRow(scheduledPatientLocationItem)
+                                //  .foregroundStyle(scheduledPatientLocationItem.colorOfItem)    // TableRow does NOT support the modifier...
                                 //  .font(.caption)
                                 //  .onTapGesture
                                 //  {

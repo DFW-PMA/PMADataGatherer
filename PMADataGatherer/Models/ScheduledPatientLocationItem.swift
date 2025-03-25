@@ -28,7 +28,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1508"
+        static let sClsVers      = "v1.1509"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -818,11 +818,11 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 
         // Determine some settings about the Dates and their values...
 
-        var bIsVDateAvailable:Bool          = (self.sVDate.count     > 0)
-        var bIsLastVDateAvailable:Bool      = (self.sLastVDate.count > 0)
-        var bBothVDatesAreNotAvailable:Bool = (bIsVDateAvailable == false && bIsLastVDateAvailable == false)
-        var bBothVDatesAreAvailable:Bool    = (bIsVDateAvailable == true  && bIsLastVDateAvailable == true)
-        var bDoBothVDatesMatch:Bool         = (bBothVDatesAreAvailable == true && self.sVDate == self.sLastVDate)
+        let bIsVDateAvailable:Bool          = (self.sVDate.count     > 0)
+        let bIsLastVDateAvailable:Bool      = (self.sLastVDate.count > 0)
+        let bBothVDatesAreNotAvailable:Bool = (bIsVDateAvailable == false && bIsLastVDateAvailable == false)
+        let bBothVDatesAreAvailable:Bool    = (bIsVDateAvailable == true  && bIsLastVDateAvailable == true)
+        let bDoBothVDatesMatch:Bool         = (bBothVDatesAreAvailable == true && self.sVDate == self.sLastVDate)
 
         self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bIsVDateAvailable' is [\(bIsVDateAvailable)]...")
@@ -891,7 +891,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 
         let bIsVDateToday:Bool      = self.isVDateToday(sVDate:self.sVDate)
         let bIsVDateInPast:Bool     = self.isVDateInPast(sVDate:self.sVDate)
-        let bIsLastVDateToday:Bool  = self.isVDateToday(sVDate:self.sLastVDate)
+    //  let bIsLastVDateToday:Bool  = self.isVDateToday(sVDate:self.sLastVDate)
         let bIsLastVDateInPast:Bool = self.isVDateInPast(sVDate:self.sLastVDate)
 
         // Both Dates don't match, but if we have them both then it's 'done' but Date 'error'...
