@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0618"
+        static let sClsVers      = "v1.0704"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -102,6 +102,83 @@ struct AppTidScheduleView: View
                 HStack(alignment:.center)
                 {
 
+                    if (listScheduledPatientLocationItems.count > 0)
+                    {
+
+                    #if os(macOS)
+                        Button
+                        {
+                            // Using -> @Environment(\.openWindow)var openWindow and 'openWindow(id:"...")' on MacOS...
+                            openWindow(id:"AppSchedPatLocMapView", value:listScheduledPatientLocationItems[0].sTid)
+                        }
+                        label:
+                        {
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "mappin.and.ellipse")
+                                    .help(Text("'Map' the App ScheduledPatientLocations..."))
+                                    .imageScale(.medium)
+                                #if os(macOS)
+                                    .onTapGesture(count:1)
+                                    {
+
+                                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppTidScheduleView.NavigationLink.'.onTapGesture()' received - Map for TID #(\(listScheduledPatientLocationItems[0].sTid))...")
+
+                                        let _ = AppSchedPatLocMapView(sTherapistTID:listScheduledPatientLocationItems[0].sTid)
+
+                                    }
+                                #endif
+
+                                Text("Map...")
+                                    .font(.caption)
+
+                            }
+
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding()
+                    //  .background(???.isPressed ? .blue : .gray)
+                        .cornerRadius(10)
+                        .foregroundColor(Color.primary)
+                    #endif
+                    #if os(iOS)
+                        NavigationLink
+                        {
+                            AppSchedPatLocMapView(sTherapistTID:listScheduledPatientLocationItems[0].sTid)
+                                .navigationBarBackButtonHidden(true)
+                        }
+                        label:
+                        {
+
+                            HStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "mappin.and.ellipse")
+                                    .help(Text("'Map' the App ScheduledPatientLocations..."))
+                                    .imageScale(.medium)
+                                #if os(macOS)
+                                    .onTapGesture(count:1)
+                                    {
+
+                                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppTidScheduleView.NavigationLink.'.onTapGesture()' received - Map for TID #(\(listScheduledPatientLocationItems[0].sTid))...")
+
+                                        let _ = AppSchedPatLocMapView(sTherapistTID:listScheduledPatientLocationItems[0].sTid)
+
+                                    }
+                                #endif
+
+                                Text("Map")
+                                    .font(.caption)
+
+                            }
+
+                        }
+                    #endif
+
+                    }
+
                     Spacer()
 
                     Button
@@ -123,7 +200,7 @@ struct AppTidScheduleView: View
                                 .imageScale(.medium)
 
                             Text("Refresh - #(\(self.cAppSchedPatLocViewRefreshButtonPresses))...")
-                                .font(.footnote)
+                                .font(.caption)
 
                         }
 
@@ -156,7 +233,7 @@ struct AppTidScheduleView: View
 
                             Label("", systemImage: "xmark.circle")
                                 .help(Text("Dismiss this Screen"))
-                                .imageScale(.large)
+                                .imageScale(.medium)
 
                             Text("Dismiss")
                                 .font(.caption)
@@ -219,8 +296,10 @@ struct AppTidScheduleView: View
                                 .width(min:80, max:120)
                             TableColumn("Time",                value:\.sVDateStartTime)
                                 .width(min:60, max:90)
-                            TableColumn("Type",                value:\.sLastVDateType)
-                                .width(min:40, max:60)
+                        //  TableColumn("Type",                value:\.sLastVDateType)
+                        //      .width(min:40, max:60)
+                            TableColumn("Status",              value:\.scheduleType.rawValue)
+                                .width(min:60, max:90)
                             TableColumn("Address or Location", value:\.sVDateAddressOrLatLong)
                                 .width(min:200, max:360)
 

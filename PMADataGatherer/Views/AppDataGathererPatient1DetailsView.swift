@@ -26,7 +26,7 @@ struct AppDataGathererPatient1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererPatient1DetailsView"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.1001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -148,7 +148,7 @@ struct AppDataGathererPatient1DetailsView: View
                                 .help(Text("App TID/Patient Schedule Viewer"))
                                 .imageScale(.large)
 
-                            Text("Schedule")
+                            Text("Schedule Today")
                                 .font(.caption)
 
                         }

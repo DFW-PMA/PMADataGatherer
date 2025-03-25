@@ -19,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2501"
+        static let sClsVers      = "v1.2601"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -506,13 +506,33 @@ struct AppAuthenticateView: View
 
                                 self.authenticateViaFaceId()
 
-                                let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+                            //  let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+                            //
+                            //  if (bUserLoginValidated == true)
+                            //  {
+                            //      self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                            //  }
 
-                                if (bUserLoginValidated == true)
+                                if sLoginUsername.isEmpty
                                 {
-                                    self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                    focusedField = .fieldUsername
                                 }
+                                else
+                                {
+                                    if sLoginPassword.isEmpty
+                                    {
+                                        focusedField = .fieldPassword
+                                    }
+                                    else
+                                    {
+                                        let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
 
+                                        if (bUserLoginValidated == true)
+                                        {
+                                            self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                        }
+                                    }
+                                }
                             }
                             label:
                             {

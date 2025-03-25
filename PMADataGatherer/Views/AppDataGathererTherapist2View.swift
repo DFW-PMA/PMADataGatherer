@@ -17,7 +17,7 @@ struct AppDataGathererTherapist2View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist2View"
-        static let sClsVers      = "v1.1001"
+        static let sClsVers      = "v1.1102"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -470,7 +470,7 @@ struct AppDataGathererTherapist2View: View
 
                         listSelectableTherapistNames = [AppSearchableTherapistName]()
 
-                        listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:"...placeholder..."))
+                        listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:"...placeholder...", sTherapistTID:"-1"))
 
                     }
 
@@ -588,6 +588,7 @@ struct AppDataGathererTherapist2View: View
 
             }
 
+            let sTherapistTID:String       = ("\(pfTherapistFileItem.iPFTherapistFileTID)")
             let sTherapistTName:String     = pfTherapistFileItem.sPFTherapistFileName
             let sTherapistTNameLow:String  = sTherapistTName.lowercased()
             let sTherapistTNameNoWS:String = pfTherapistFileItem.sPFTherapistFileNameNoWS
@@ -596,11 +597,11 @@ struct AppDataGathererTherapist2View: View
                 sTherapistTNameNoWS.contains(sSearchValueLow) == true)
             {
             
-                self.listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:sTherapistTName))
+                self.listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:sTherapistTName, sTherapistTID:sTherapistTID))
 
                 cSelectableTherapistNames += 1
 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'sTherapistTName' of [\(sTherapistTName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'sTherapistTName' of [\(sTherapistTName)] - 'sTherapistTID' is [\(sTherapistTID)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
             
             }
 

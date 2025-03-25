@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.0903"
+        static let sClsVers      = "v1.1001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -710,7 +710,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     //  let listPFPatientFileNameLowerNoWS:[String]  = sPFPatientFileNameLower.components(separatedBy:csUnwantedDelimiters)
     //  let sPFPatientFileNameLowerNoWS:String       = listPFPatientFileNameLowerNoWS.joined(separator:"")
 
-        self.sPFPatientFileNameNoWS                  = self.sPFPatientFileName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
+    //  self.sPFPatientFileNameNoWS                  = self.sPFPatientFileName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
         self.sPFPatientFileFirstName                 = String(describing: (pfPatientFileObject.object(forKey:"firstName")            ?? ""))
         self.sPFPatientFileLastName                  = String(describing: (pfPatientFileObject.object(forKey:"lastName")             ?? ""))
 
@@ -724,6 +724,25 @@ class ParsePFPatientFileItem: NSObject, Identifiable
             self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'typeOfObjPFPatientFileLastName' is [\(typeOfObjPFPatientFileLastName)] and 'sTypeOfObjPFPatientFileLastName' is [\(sTypeOfObjPFPatientFileLastName)] for 'objPFPatientFileLastName' is [\(String(describing: objPFPatientFileLastName))]...")
 
         }
+
+        if (self.sPFPatientFileName.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'self.sPFPatientFileName' of [\(self.sPFPatientFileName)] is empty in the Database - attempting to use 'lastName,firstName'...")
+
+            if (self.sPFPatientFileLastName.count  > 0 &&
+                self.sPFPatientFileFirstName.count > 0)
+            {
+            
+                self.sPFPatientFileName = "\(self.sPFPatientFileLastName),\(self.sPFPatientFileFirstName)"
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <PFOuery Data Probe> - 'self.sPFPatientFileLastName' is [\(self.sPFPatientFileLastName)] and 'self.sPFPatientFileFirstName' of [\(self.sPFPatientFileFirstName)] - set 'self.sPFPatientFileName' to [\(self.sPFPatientFileName)]...")
+            
+            }
+        
+        }
+
+        self.sPFPatientFileNameNoWS                  = self.sPFPatientFileName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
 
         self.sPFPatientFileHomeLoc                   = String(describing: (pfPatientFileObject.object(forKey:"histLoc1")             ?? ""))
 

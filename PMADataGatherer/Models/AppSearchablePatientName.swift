@@ -17,7 +17,7 @@ final class AppSearchablePatientName: Identifiable
     {
         
         static let sClsId        = "AppSearchablePatientName"
-        static let sClsVers      = "v1.0101"
+        static let sClsVers      = "v1.0201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -29,8 +29,9 @@ final class AppSearchablePatientName: Identifiable
 
     var id:UUID             = UUID()
     var sPatientName:String = ""
+    var sPatientPID:String  = ""
 
-    init(id:UUID? = nil, sPatientName:String)
+    init(id:UUID? = nil, sPatientName:String, sPatientPID:String)
     {
 
         if (id != nil)
@@ -47,8 +48,9 @@ final class AppSearchablePatientName: Identifiable
         }
 
         self.sPatientName = sPatientName
+        self.sPatientPID  = sPatientPID
 
-    }   // End of init(id:UUID, sPatientName:String).
+    }   // End of init(id:UUID, sPatientName:String, sPatientPID:String).
 
 }   // End of final class AppSearchablePatientName(Identifiable).
 
