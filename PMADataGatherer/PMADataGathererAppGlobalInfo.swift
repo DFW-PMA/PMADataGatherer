@@ -467,6 +467,10 @@ public class AppGlobalInfo: NSObject
             let sTest11:String = sTest4.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeNone], bResultIsLowerCased:false)
             let sTest12:String = sTest4.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeNone], bResultIsLowerCased:true)
 
+            let sTest21:String = "Optional(096243EE-809D-4514-B6A6-464D6CD652CD)"
+            let sTest22:String = sTest21.stripOptionalStringWrapper()
+            let bTest22:Bool   = (sTest22 == "096243EE-809D-4514-B6A6-464D6CD652CD")
+
             self.xcgLogMsg("------------------------------------------------------------")
             self.xcgLogMsg("'sTest4'  is [\(sTest4)]...")
             self.xcgLogMsg("'sTest5'  is [\(sTest5)]  -> 'sTest4' cleaned (case-sensitive)...")
@@ -477,6 +481,10 @@ public class AppGlobalInfo: NSObject
             self.xcgLogMsg("'sTest10' is [\(sTest10)] -> 'sTest4' cleaned (.removeAll, lowercased)...")
             self.xcgLogMsg("'sTest11' is [\(sTest11)] -> 'sTest4' cleaned (.removeNone, case-sensitive)...")
             self.xcgLogMsg("'sTest12' is [\(sTest12)] -> 'sTest4' cleaned (.removeNone, lowercased)...")
+            self.xcgLogMsg("------------------------------------------------------------")
+            self.xcgLogMsg("'sTest21' is [\(sTest21)]...")
+            self.xcgLogMsg("'sTest22' is [\(sTest22)] -> should be a string of '096243EE-809D-4514-B6A6-464D6CD652CD'...")
+            self.xcgLogMsg("'bTest22' is [\(bTest22)] -> should be 'true'...")
             self.xcgLogMsg("------------------------------------------------------------")
         
         }
