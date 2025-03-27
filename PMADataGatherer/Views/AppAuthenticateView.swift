@@ -19,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2601"
+        static let sClsVers      = "v1.2701"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -525,11 +525,17 @@ struct AppAuthenticateView: View
                                     }
                                     else
                                     {
+
                                         let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
 
                                         if (bUserLoginValidated == true)
                                         {
-                                            self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                            AppAuthenticateView.timerOnDemandThirdOfSec = Timer.scheduledTimer(withTimeInterval:0.35, repeats:false)
+                                            { _ in
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                                                self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                                            }
                                         }
                                     }
                                 }

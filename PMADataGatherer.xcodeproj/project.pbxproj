@@ -34,6 +34,8 @@
 		F00619A62C94A8060094614E /* MultipartRequestInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006199D2C94A8060094614E /* MultipartRequestInfo.swift */; };
 		F00619A72C94A8060094614E /* MultipartRequestInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F006199D2C94A8060094614E /* MultipartRequestInfo.swift */; };
 		F00619A82C94AEBE0094614E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F091A2942C8F865700FB85D5 /* LaunchScreen.storyboard */; };
+		F00D1CEA2D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00D1CE92D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift */; };
+		F00D1CEB2D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00D1CE92D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift */; };
 		F02204B12D4D670E00C5B182 /* ParsePFPatientFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */; };
 		F02204B22D4D670E00C5B182 /* ParsePFPatientFileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */; };
 		F0289D292C53D85B001B19CD /* JmUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0289D282C53D85B001B19CD /* JmUserDefaults.swift */; };
@@ -205,6 +207,7 @@
 		F006199B2C94A8060094614E /* MultipartDataExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartDataExtension.swift; sourceTree = "<group>"; };
 		F006199C2C94A8060094614E /* MultipartRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartRequest.swift; sourceTree = "<group>"; };
 		F006199D2C94A8060094614E /* MultipartRequestInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultipartRequestInfo.swift; sourceTree = "<group>"; };
+		F00D1CE92D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererSchedule1DetailsView.swift; sourceTree = "<group>"; };
 		F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFPatientFileItem.swift; sourceTree = "<group>"; };
 		F0289D282C53D85B001B19CD /* JmUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JmUserDefaults.swift; sourceTree = "<group>"; };
 		F0289D2A2C53D863001B19CD /* HelpBasicView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelpBasicView.swift; sourceTree = "<group>"; };
@@ -407,6 +410,7 @@
 		F028C5BF2C486134007C459E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F00D1CE92D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift */,
 				F0A8FB3D2D650BBF00ADD658 /* AppSchedPatLocMapView.swift */,
 				F0FBE7752D63C8A200028CBA /* AppSchedPatLocView.swift */,
 				F0D524F92D5FE3CA006216D8 /* AppTidScheduleRowView.swift */,
@@ -653,6 +657,7 @@
 				F091A6672D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */,
 				F048393F2D2733430060D765 /* ParsePFTherapistFileItem.swift in Sources */,
 				F05EDC382D53FB7C00306C62 /* AppSearchablePatientName.swift in Sources */,
+				F00D1CEA2D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift in Sources */,
 				F00619A22C94A8060094614E /* MultipartDataExtension.swift in Sources */,
 				F0EF09D32D00B6CC0088D819 /* ScheduledPatientLocationItem.swift in Sources */,
 				F06E184D2D52616700633988 /* AppLogPFDataView.swift in Sources */,
@@ -713,6 +718,7 @@
 				F05E47162D5D29150059F4C2 /* AppDataGathererPatient3View.swift in Sources */,
 				F08A94762D11F1A900B69C3C /* AppTidScheduleView.swift in Sources */,
 				F0BCCC5B2C820EF1007EA382 /* CalledObjCModule.m in Sources */,
+				F00D1CEB2D95D219001386F5 /* AppDataGathererSchedule1DetailsView.swift in Sources */,
 				F06BB2942D0B6D7200E524E5 /* JmAppSwiftDataManager.swift in Sources */,
 				F0BCCC5C2C820EF1007EA382 /* LogFileView.swift in Sources */,
 				F069E2AC2CEF8C42001F0A5E /* ParsePFAdminsDataItem.swift in Sources */,
@@ -1004,7 +1010,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 46.01.25C086;
+				CURRENT_PROJECT_VERSION = 46.09.25C086;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -1055,7 +1061,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 46.01.25C086;
+				CURRENT_PROJECT_VERSION = 46.09.25C086;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";

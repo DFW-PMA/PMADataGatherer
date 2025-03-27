@@ -28,7 +28,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1509"
+        static let sClsVers      = "v1.1604"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -36,7 +36,10 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         
     }
 
-    var id:UUID                                             = UUID()
+    var id:UUID
+//  var id:UUID                                             = UUID()
+//  { get: }
+
     var idSchedPatLocObject:Int                             = 0
 
     var schedPatLocClonedFrom:ScheduledPatientLocationItem? = nil 
@@ -129,6 +132,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.id = UUID()
 
         super.init()
 
@@ -338,6 +343,22 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         return sContents
 
     }   // End of public func toString().
+
+    public func getScheduledPatientLocationItemId()->UUID
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.id' is [\(self.id)]...")
+
+        return self.id
+
+    }   // End of public func getScheduledPatientLocationItemId()->UUID.
 
     public func displayScheduledPatientLocationItemToLog()
     {
