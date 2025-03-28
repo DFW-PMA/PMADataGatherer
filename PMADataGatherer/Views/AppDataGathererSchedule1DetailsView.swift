@@ -17,7 +17,7 @@ struct AppDataGathererSchedule1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererSchedule1DetailsView"
-        static let sClsVers      = "v1.0202"
+        static let sClsVers      = "v1.0205"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -37,6 +37,10 @@ struct AppDataGathererSchedule1DetailsView: View
 //  @Binding     private var sScheduledPatientLocationItemID:String
 
 //  @State       private var scheduledPatientLocationItem:ScheduledPatientLocationItem? = nil
+
+    @State       private var isAppStartTherapistDetailsByTIDShowing:Bool                = false
+    @State       private var isAppPatientDetailsByNameShowing:Bool                      = false
+    @State       private var isAppTherapistDetailsByTIDShowing:Bool                     = false
 
                          var jmAppDelegateVisitor:JmAppDelegateVisitor                  = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager                = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
@@ -275,7 +279,86 @@ struct AppDataGathererSchedule1DetailsView: View
                         {
 
                             Text("Schedule Item TID")
-                            Text("\(String(describing:scheduledPatientLocationItem!.sTid))")
+
+                            HStack
+                            {
+
+                                Text("\(String(describing:scheduledPatientLocationItem!.sTid))")
+                                
+                            if (self.sTherapistTID.count > 0)
+                            {
+
+                                Button
+                                {
+
+                                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererSchedule1DetailsView.Button(Xcode).'Therapist Detail(s) by TID'...")
+
+                                    self.isAppTherapistDetailsByTIDShowing.toggle()
+
+                                }
+                                label:
+                                {
+
+                                    VStack(alignment:.center)
+                                    {
+
+                                        Label("", systemImage: "doc.questionmark")
+                                            .help(Text("Show Therapist Detail(s) by TID..."))
+                                            .imageScale(.medium)
+
+                                        HStack(alignment:.center)
+                                        {
+
+                                            Spacer()
+
+                                            Text("Therapist Details...")
+                                                .font(.caption2)
+
+                                            Spacer()
+
+                                        }
+
+                                    }
+
+                                }
+                            #if os(macOS)
+                                .sheet(isPresented:$isAppTherapistDetailsByTIDShowing, content:
+                                {
+
+                                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <macOS> Showing 'Therapist Detail(s) by TID' for TID [\(self.sTherapistTID)]...")
+
+                                    AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
+
+                                })
+                            #endif
+                            #if os(iOS)
+                                .fullScreenCover(isPresented:$isAppTherapistDetailsByTIDShowing)
+                                {
+
+                                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <iOS> Showing 'Therapist Detail(s) by TID' for TID [\(self.sTherapistTID)]...")
+
+                                    AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
+
+                                }
+                            #endif
+                            #if os(macOS)
+                                .buttonStyle(.borderedProminent)
+                                .padding()
+                            //  .background(???.isPressed ? .blue : .gray)
+                                .cornerRadius(10)
+                                .foregroundColor(Color.primary)
+                            #endif
+                                .padding()
+
+                            }
+                            else
+                            {
+
+                                Spacer()
+
+                            }
+
+                            }
 
                         }
                         .font(.caption2) 
@@ -311,7 +394,78 @@ struct AppDataGathererSchedule1DetailsView: View
                         {
 
                             Text("Schedule Item PID")
-                            Text("\(String(describing:scheduledPatientLocationItem!.sPid))")
+
+                            HStack
+                            {
+
+                                Text("\(String(describing:scheduledPatientLocationItem!.sPid))")
+
+                            if (self.sPatientPID.count > 0)
+                            {
+
+                                Button
+                                {
+
+                                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererSchedule1DetailsView.Button(Xcode).'Patient Detail(s) by PID'...")
+
+                                    self.isAppPatientDetailsByNameShowing.toggle()
+
+                                }
+                                label:
+                                {
+
+                                    VStack(alignment:.center)
+                                    {
+
+                                        Label("", systemImage: "doc.questionmark")
+                                            .help(Text("Show Patient Detail(s) by PID..."))
+                                            .imageScale(.medium)
+
+                                        HStack(alignment:.center)
+                                        {
+
+                                            Spacer()
+
+                                            Text("Details...")
+                                                .font(.caption2)
+
+                                            Spacer()
+
+                                        }
+
+                                    }
+
+                                }
+                            #if os(macOS)
+                                .sheet(isPresented:$isAppPatientDetailsByNameShowing, content:
+                                {
+
+                                    AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
+
+                                })
+                            #endif
+                            #if os(iOS)
+                                .fullScreenCover(isPresented:$isAppPatientDetailsByNameShowing)
+                                {
+
+                                    AppDataGathererPatient1DetailsView(sPatientPID:$sPatientPID)
+
+                                }
+                            #endif
+                            #if os(macOS)
+                                .buttonStyle(.borderedProminent)
+                                .padding()
+                            //  .background(???.isPressed ? .blue : .gray)
+                                .cornerRadius(10)
+                                .foregroundColor(Color.primary)
+                            #endif
+                            #if os(iOS)
+                                .padding()
+                            #endif
+
+                            }
+
+                            }
 
                         }
                         .font(.caption2) 
@@ -330,6 +484,26 @@ struct AppDataGathererSchedule1DetailsView: View
 
                             Text("Schedule Item Patient Name")
                             Text("\(String(describing:scheduledPatientLocationItem!.sPtName))")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Schedule Item 'status'")
+                            Text("\(String(describing:scheduledPatientLocationItem!.scheduleType))")
+                                .foregroundStyle(scheduledPatientLocationItem!.colorOfItem)
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Schedule Item 'status' Color")
+                            Text("\(String(describing:scheduledPatientLocationItem!.colorOfItem))")
+                                .foregroundStyle(scheduledPatientLocationItem!.colorOfItem)
 
                         }
                         .font(.caption2) 
@@ -447,25 +621,6 @@ struct AppDataGathererSchedule1DetailsView: View
 
                             Text("Schedule Item VDate 'short' Display")
                             Text("\(String(describing:scheduledPatientLocationItem!.sVDateShortDisplay))")
-
-                        }
-                        .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
-                            Text("Schedule Item 'status'")
-                            Text("\(String(describing:scheduledPatientLocationItem!.scheduleType))")
-
-                        }
-                        .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
-                            Text("Schedule Item 'status' Color")
-                            Text("\(String(describing:scheduledPatientLocationItem!.colorOfItem))")
-                                .foregroundStyle(scheduledPatientLocationItem!.colorOfItem)
 
                         }
                         .font(.caption2) 

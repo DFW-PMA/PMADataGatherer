@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.1001"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -45,6 +45,7 @@ struct AppTidScheduleView: View
     
     @State private   var isAppPatientDetailsByPidShowing:Bool                           = false
     @State private   var isAppScheduleDetailByIdShowing:Bool                            = false
+    @State private   var isAppTherapistDetailByIdShowing:Bool                           = false
 
                      var jmAppDelegateVisitor:JmAppDelegateVisitor                      = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     
@@ -329,17 +330,7 @@ struct AppTidScheduleView: View
                                 TableRow(scheduledPatientLocationItem)
                                     .contextMenu 
                                     {
-                                        Button("Patient Details PID #(\(scheduledPatientLocationItem.sPid))") 
-                                        {
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Patient Detail(s) by PID' for PID - 'scheduledPatientLocationItem.sPid' is [\(String(describing: scheduledPatientLocationItem.sPid))]...")
-
-                                            self.sPatientPID = scheduledPatientLocationItem.sPid
-
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Patient Detail(s) by PID' for PID 'self.sPatientPID' is [\(String(describing: self.sPatientPID))]...")
-
-                                            self.isAppPatientDetailsByPidShowing.toggle()
-                                        }
-                                        Button("Schedule Details TID #(\(scheduledPatientLocationItem.sTid))") 
+                                        Button("Schedule Details by TID #(\(scheduledPatientLocationItem.sTid))") 
                                         {
                                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Schedule Detail(s) by TID' for TID - 'scheduledPatientLocationItem.sTid' is [\(String(describing: scheduledPatientLocationItem.sTid))]...")
 
@@ -350,6 +341,28 @@ struct AppTidScheduleView: View
                                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Schedule Detail(s) by TID' for TID - 'scheduledPatientLocationItem.sTid' is [\(String(describing: scheduledPatientLocationItem.sTid))] - 'scheduledPatientLocationItem.sPid' is [\(String(describing: scheduledPatientLocationItem.sPid))] - 'self.sScheduledPatientLocationItemID' is [\(self.sScheduledPatientLocationItemID)]...")
 
                                             self.isAppScheduleDetailByIdShowing.toggle()
+                                        }
+                                        Button("Patient Details by PID #(\(scheduledPatientLocationItem.sPid))") 
+                                        {
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Patient Detail(s) by PID' for PID - 'scheduledPatientLocationItem.sPid' is [\(String(describing: scheduledPatientLocationItem.sPid))]...")
+
+                                            self.sPatientPID = scheduledPatientLocationItem.sPid
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Patient Detail(s) by PID' for PID 'self.sPatientPID' is [\(String(describing: self.sPatientPID))]...")
+
+                                            self.isAppPatientDetailsByPidShowing.toggle()
+                                        }
+                                        Button("Therapist Details by TID #(\(scheduledPatientLocationItem.sTid))") 
+                                        {
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Therapist Detail(s) by TID' for TID - 'scheduledPatientLocationItem.sTid' is [\(String(describing: scheduledPatientLocationItem.sTid))]...")
+
+                                            self.sTherapistTID                   = scheduledPatientLocationItem.sTid
+                                            self.sPatientPID                     = scheduledPatientLocationItem.sPid
+                                            self.sScheduledPatientLocationItemID = scheduledPatientLocationItem.id.uuidString
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).contextMenu.'Therapist Detail(s) by TID' for TID - 'scheduledPatientLocationItem.sTid' is [\(String(describing: scheduledPatientLocationItem.sTid))] - 'scheduledPatientLocationItem.sPid' is [\(String(describing: scheduledPatientLocationItem.sPid))] - 'self.sScheduledPatientLocationItemID' is [\(self.sScheduledPatientLocationItemID)]...")
+
+                                            self.isAppTherapistDetailByIdShowing.toggle()
                                         }
                                     }
                                 //  .foregroundStyle(scheduledPatientLocationItem.colorOfItem)    // TableRow does NOT support the modifier...
@@ -426,6 +439,22 @@ struct AppTidScheduleView: View
                                                                 sPatientPID:  $sPatientPID)
                         //  AppDataGathererSchedule1DetailsView(sTherapistTID:                  $sTherapistTID,
                         //                                      sScheduledPatientLocationItemID:$sScheduledPatientLocationItemID)
+                    
+                        }
+                    #endif
+                    #if os(macOS)
+                        .sheet(isPresented:$isAppTherapistDetailByIdShowing, content:
+                        {
+                    
+                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
+                    
+                        })
+                    #endif
+                    #if os(iOS)
+                        .fullScreenCover(isPresented:$isAppTherapistDetailByIdShowing)
+                        {
+                    
+                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
                     
                         }
                     #endif
