@@ -17,7 +17,7 @@ struct AppDataGathererSchedule1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererSchedule1DetailsView"
-        static let sClsVers      = "v1.0111"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -33,7 +33,8 @@ struct AppDataGathererSchedule1DetailsView: View
     @Environment(\.openWindow)       var openWindow
 
     @Binding     private var sTherapistTID:String
-    @Binding     private var sScheduledPatientLocationItemID:String
+    @Binding     private var sPatientPID:String
+//  @Binding     private var sScheduledPatientLocationItemID:String
 
 //  @State       private var scheduledPatientLocationItem:ScheduledPatientLocationItem? = nil
 
@@ -41,7 +42,8 @@ struct AppDataGathererSchedule1DetailsView: View
     @ObservedObject      var jmAppParseCoreManager:JmAppParseCoreManager                = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
 //                       var appScheduleLoadingAssistant:AppScheduleLoadingAssistant    = AppScheduleLoadingAssistant.ClassSingleton.appScheduleLoadingAssistant
     
-    init(sTherapistTID:Binding<String>, sScheduledPatientLocationItemID:Binding<String>)
+//  init(sTherapistTID:Binding<String>, sScheduledPatientLocationItemID:Binding<String>)
+    init(sTherapistTID:Binding<String>, sPatientPID:Binding<String>)
     {
 
         let sCurrMethod:String = #function
@@ -50,7 +52,8 @@ struct AppDataGathererSchedule1DetailsView: View
         // Handle the 'sTherapistTID' and 'sScheduledPatientLocationItemID' parameters...
 
         _sTherapistTID                   = sTherapistTID
-        _sScheduledPatientLocationItemID = sScheduledPatientLocationItemID
+        _sPatientPID                     = sPatientPID
+    //  _sScheduledPatientLocationItemID = sScheduledPatientLocationItemID
 
     //  // Locate the ScheduledPatientLocationItem by TID and Item ID...
     //
@@ -152,7 +155,8 @@ struct AppDataGathererSchedule1DetailsView: View
                         .font(.caption2) 
                         .frame(maxWidth:.infinity, alignment:.center)
 
-                    Text("DATA Gatherer - Schedule Details by TID/Scheduled Item ID")
+                //  Text("DATA Gatherer - Schedule Details by TID/Scheduled Item ID")
+                    Text("DATA Gatherer - Schedule Details by TID/PID")
                         .bold()
                         .font(.caption2) 
                         .frame(maxWidth:.infinity, alignment:.center)
@@ -178,14 +182,31 @@ struct AppDataGathererSchedule1DetailsView: View
 
                 }
 
+                HStack()
+                {
+
+                    Text("::: Patient: PID #")
+                        .font(.caption) 
+
+                    Text("\(self.sPatientPID)")
+                        .italic()
+                        .font(.caption) 
+                        .foregroundColor(.red)
+
+                    Spacer()
+
+                }
+
                 let scheduledPatientLocationItem:ScheduledPatientLocationItem? =
-                    self.locateScheduledPatientLocationItemForTidByID()
+                    self.locateScheduledPatientLocationItemForTidAndPid()
+            //  let scheduledPatientLocationItem:ScheduledPatientLocationItem? =
+            //      self.locateScheduledPatientLocationItemForTidByID()
 
             if (scheduledPatientLocationItem != nil)
             {
 
             //  let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) <Diagnostic #1> - 'self.sTherapistTID' is [\(self.sTherapistTID)] - 'self.sScheduledPatientLocationItemID' is [\(self.sScheduledPatientLocationItemID)] - 'self.scheduledPatientLocationItem' is [\(String(describing: self.scheduledPatientLocationItem))] - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))]...")
-                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) <Diagnostic #1> - 'self.sTherapistTID' is [\(self.sTherapistTID)] - 'self.sScheduledPatientLocationItemID' is [\(self.sScheduledPatientLocationItemID)] - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))]...")
+                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) <Diagnostic #1> - 'self.sTherapistTID' is [\(self.sTherapistTID)] - 'self.sPatientPID' is [\(self.sPatientPID)] - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))]...")
 
                 ScrollView(.vertical)
                 {
@@ -460,7 +481,7 @@ struct AppDataGathererSchedule1DetailsView: View
             {
 
             //  let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) <Diagnostic #2> - 'self.sTherapistTID' is [\(self.sTherapistTID) - 'self.sScheduledPatientLocationItemID' is [\(self.sScheduledPatientLocationItemID) - 'self.scheduledPatientLocationItem' is [\(String(describing: self.scheduledPatientLocationItem))]...")
-                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) <Diagnostic #2> - 'self.sTherapistTID' is [\(self.sTherapistTID) - 'self.sScheduledPatientLocationItemID' is [\(self.sScheduledPatientLocationItemID)...")
+                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):body(some View) <Diagnostic #2> - 'self.sTherapistTID' is [\(self.sTherapistTID) - 'self.sPatientPID' is [\(self.sPatientPID)...")
 
                 Divider() 
 
@@ -470,7 +491,7 @@ struct AppDataGathererSchedule1DetailsView: View
                 {
 
                     Text("<<< NO Data >>>")
-                    Text("Therapist TID #(\(self.sTherapistTID)) - Schedule Item ID #[\(self.sScheduledPatientLocationItemID)]")
+                    Text("Therapist TID #(\(self.sTherapistTID)) - Patient PID #[\(self.sPatientPID)]")
                         .italic()
 
                 }
@@ -491,45 +512,121 @@ struct AppDataGathererSchedule1DetailsView: View
         
     }
 
-    private func locateScheduledPatientLocationItemForTidByID()->ScheduledPatientLocationItem?
+//  private func locateScheduledPatientLocationItemForTidByID()->ScheduledPatientLocationItem?
+//  {
+//
+//      let sCurrMethod:String = #function
+//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+//      
+//  //  self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self.scheduledPatientLocationItem' is [\(String(describing: self.scheduledPatientLocationItem))]...")
+//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+//
+//      // Locate the ScheduledPatientLocationItem by TID and Item ID...
+//
+//      let scheduledPatientLocationItem:ScheduledPatientLocationItem? =
+//          self.getScheduledPatientLocationItemForTidByID(sTherapistTID:                  self.sTherapistTID,
+//                                                         sScheduledPatientLocationItemID:self.sScheduledPatientLocationItemID)
+//
+//  //  if (scheduledPatientLocationItem      != nil &&
+//  //      self.scheduledPatientLocationItem == nil)
+//  //  {
+//  //  
+//  //      self.scheduledPatientLocationItem = scheduledPatientLocationItem
+//  //  
+//  //  }
+//      
+//      // Exit...
+//
+//  //  self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))] - 'self.scheduledPatientLocationItem' is [\(String(describing: self.scheduledPatientLocationItem))]...")
+//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))]...")
+//
+//      return scheduledPatientLocationItem
+//
+//  }   // End of private func locateScheduledPatientLocationItemForTidByID()->ScheduledPatientLocationItem?.
+//  
+//  private func getScheduledPatientLocationItemForTidByID(sTherapistTID:String = "", sScheduledPatientLocationItemID:String = "")->ScheduledPatientLocationItem?
+//  {
+//
+//      let sCurrMethod:String = #function
+//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+//      
+//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameters 'sTherapistTID' is [\(sTherapistTID)] - 'sScheduledPatientLocationItemID' is [\(sScheduledPatientLocationItemID)]...")
+//
+//      // Use the supplied TherapistTID and Scheduled item ID to lookup the ScheduledPatientLocationItem...
+//
+//      var scheduledPatientLocationItem:ScheduledPatientLocationItem?       = nil
+//      var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = [ScheduledPatientLocationItem]()
+//
+//      if (sTherapistTID.count > 0)
+//      {
+//
+//          if (self.jmAppParseCoreManager.dictSchedPatientLocItems.count > 0)
+//          {
+//
+//              listScheduledPatientLocationItems = self.jmAppParseCoreManager.dictSchedPatientLocItems[sTherapistTID] ?? [ScheduledPatientLocationItem]()
+//
+//              if (listScheduledPatientLocationItems.count > 0)
+//              {
+//              
+//                  for currentScheduledPatientLocationItem in listScheduledPatientLocationItems
+//                  {
+//                      
+//                      let sCurrentItemId:String = currentScheduledPatientLocationItem.id.uuidString
+//                      
+//                      if (sCurrentItemId == sScheduledPatientLocationItemID)
+//                      {
+//                      
+//                          scheduledPatientLocationItem = currentScheduledPatientLocationItem
+//
+//                          break
+//                      
+//                      }
+//
+//                  }
+//              
+//              }
+//
+//          }
+//
+//      }
+//      
+//      // Exit...
+//
+//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))]...")
+//
+//      return scheduledPatientLocationItem
+//
+//  }   // End of private func getScheduledPatientLocationItemForTidByID(sTherapistTID:String, sScheduledPatientLocationItemID:String)->ScheduledPatientLocationItem?.
+
+    private func locateScheduledPatientLocationItemForTidAndPid()->ScheduledPatientLocationItem?
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self.scheduledPatientLocationItem' is [\(String(describing: self.scheduledPatientLocationItem))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameters 'self.sTherapistTID' is [\(self.sTherapistTID)] - 'self.sPatientPID' is [\(self.sPatientPID)]...")
 
         // Locate the ScheduledPatientLocationItem by TID and Item ID...
 
         let scheduledPatientLocationItem:ScheduledPatientLocationItem? =
-            self.getScheduledPatientLocationItemForTidByID(sTherapistTID:                  self.sTherapistTID,
-                                                           sScheduledPatientLocationItemID:self.sScheduledPatientLocationItemID)
+            self.getScheduledPatientLocationItemForTidAndPid(sTherapistTID:self.sTherapistTID,
+                                                             sPatientPID:  self.sPatientPID)
 
-    //  if (scheduledPatientLocationItem      != nil &&
-    //      self.scheduledPatientLocationItem == nil)
-    //  {
-    //  
-    //      self.scheduledPatientLocationItem = scheduledPatientLocationItem
-    //  
-    //  }
-        
         // Exit...
 
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))] - 'self.scheduledPatientLocationItem' is [\(String(describing: self.scheduledPatientLocationItem))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'scheduledPatientLocationItem' is [\(String(describing: scheduledPatientLocationItem))]...")
 
         return scheduledPatientLocationItem
 
-    }   // End of private func locateScheduledPatientLocationItemForTidByID()->ScheduledPatientLocationItem?.
+    }   // End of private func locateScheduledPatientLocationItemForTidAndPid()->ScheduledPatientLocationItem?.
     
-    private func getScheduledPatientLocationItemForTidByID(sTherapistTID:String = "", sScheduledPatientLocationItemID:String = "")->ScheduledPatientLocationItem?
+    private func getScheduledPatientLocationItemForTidAndPid(sTherapistTID:String = "", sPatientPID:String = "")->ScheduledPatientLocationItem?
     {
   
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameters 'sTherapistTID' is [\(sTherapistTID)] - 'sScheduledPatientLocationItemID' is [\(sScheduledPatientLocationItemID)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameters 'sTherapistTID' is [\(sTherapistTID)] - 'sPatientPID' is [\(sPatientPID)]...")
   
         // Use the supplied TherapistTID and Scheduled item ID to lookup the ScheduledPatientLocationItem...
   
@@ -550,9 +647,7 @@ struct AppDataGathererSchedule1DetailsView: View
                     for currentScheduledPatientLocationItem in listScheduledPatientLocationItems
                     {
                         
-                        let sCurrentItemId:String = currentScheduledPatientLocationItem.id.uuidString
-                        
-                        if (sCurrentItemId == sScheduledPatientLocationItemID)
+                        if (currentScheduledPatientLocationItem.sPid == sPatientPID)
                         {
                         
                             scheduledPatientLocationItem = currentScheduledPatientLocationItem
@@ -575,6 +670,6 @@ struct AppDataGathererSchedule1DetailsView: View
   
         return scheduledPatientLocationItem
   
-    }   // End of private func getScheduledPatientLocationItemForTidByID(sTherapistTID:String, sScheduledPatientLocationItemID:String)->ScheduledPatientLocationItem?.
+    }   // End of private func getScheduledPatientLocationItemForTidAndPid(sTherapistTID:String = "", sPatientPID:String = "")->ScheduledPatientLocationItem?.
 
 }   // End of struct AppDataGathererSchedule1DetailsView(View).

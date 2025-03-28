@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.0803"
+        static let sClsVers      = "v1.0901"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -411,8 +411,10 @@ struct AppTidScheduleView: View
                         .sheet(isPresented:$isAppScheduleDetailByIdShowing, content:
                         {
                     
-                            AppDataGathererSchedule1DetailsView(sTherapistTID:                  $sTherapistTID,
-                                                                sScheduledPatientLocationItemID:$sScheduledPatientLocationItemID)
+                            AppDataGathererSchedule1DetailsView(sTherapistTID:$sTherapistTID,
+                                                                sPatientPID:  $sPatientPID)
+                        //  AppDataGathererSchedule1DetailsView(sTherapistTID:                  $sTherapistTID,
+                        //                                      sScheduledPatientLocationItemID:$sScheduledPatientLocationItemID)
                     
                         })
                     #endif
@@ -420,8 +422,10 @@ struct AppTidScheduleView: View
                         .fullScreenCover(isPresented:$isAppScheduleDetailByIdShowing)
                         {
                     
-                            AppDataGathererSchedule1DetailsView(sTherapistTID:                  $sTherapistTID,
-                                                                sScheduledPatientLocationItemID:$sScheduledPatientLocationItemID)
+                            AppDataGathererSchedule1DetailsView(sTherapistTID:$sTherapistTID,
+                                                                sPatientPID:  $sPatientPID)
+                        //  AppDataGathererSchedule1DetailsView(sTherapistTID:                  $sTherapistTID,
+                        //                                      sScheduledPatientLocationItemID:$sScheduledPatientLocationItemID)
                     
                         }
                     #endif
