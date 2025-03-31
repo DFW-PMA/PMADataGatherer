@@ -19,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2701"
+        static let sClsVers      = "v1.2810"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -32,6 +32,9 @@ struct AppAuthenticateView: View
 //  @Environment(\.modelContext) var modelContext
 
     static              var timerOnDemandThirdOfSec                               = Timer()
+    static              var timerOnDemandHalfOfSec                                = Timer()
+
+    @Binding            var uuid4ForcingViewRefresh:UUID
 
     enum FocusedFields: Hashable
     {
@@ -106,11 +109,15 @@ struct AppAuthenticateView: View
                         var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
                         var appGlobalInfo:AppGlobalInfo                           = AppGlobalInfo.ClassSingleton.appGlobalInfo
 
-    init()
+    init(uuid4ForcingViewRefresh:Binding<UUID>)
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        // Handle the 'uuid4ForcingViewRefresh' parameter...
+
+        _uuid4ForcingViewRefresh = uuid4ForcingViewRefresh
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
         
@@ -281,6 +288,12 @@ struct AppAuthenticateView: View
                             if (bUserLoginValidated == true)
                             {
                                 self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                
+                            //  // Generate a new UUID to force the View to be (completely) recreated...
+                            //
+                            //  uuid4ForcingViewRefresh = UUID()
+                            //
+                            //  let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).Button(Xcode).'Refresh'.#(\(self.cAppViewRefreshButtonPresses)) - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                             }
 
                         }
@@ -378,6 +391,12 @@ struct AppAuthenticateView: View
                     if (bUserLoginValidated == true)
                     {
                         self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                    //  // Generate a new UUID to force the View to be (completely) recreated...
+                    //
+                    //  uuid4ForcingViewRefresh = UUID()
+                    //
+                    //  let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).onAppear #1 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                     }
 
                 }
@@ -495,23 +514,17 @@ struct AppAuthenticateView: View
                         //  }
                         //  .padding()
 
+                        //  Button("FaceId")
                             Button
                             {
 
                                 self.cAppViewRefreshButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).Button(Xcode).'Refresh'.#(\(self.cAppViewRefreshButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).Button(Xcode).'Refresh (FaceId)'.#(\(self.cAppViewRefreshButtonPresses))...")
 
                                 self.bIsFaceIdAuthenticated = false
 
                                 self.authenticateViaFaceId()
-
-                            //  let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
-                            //
-                            //  if (bUserLoginValidated == true)
-                            //  {
-                            //      self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
-                            //  }
 
                                 if sLoginUsername.isEmpty
                                 {
@@ -530,34 +543,49 @@ struct AppAuthenticateView: View
 
                                         if (bUserLoginValidated == true)
                                         {
+
                                             AppAuthenticateView.timerOnDemandThirdOfSec = Timer.scheduledTimer(withTimeInterval:0.35, repeats:false)
                                             { _ in
-                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
                                                 self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
-                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+
                                             }
+
+                                            AppAuthenticateView.timerOnDemandHalfOfSec = Timer.scheduledTimer(withTimeInterval:0.50, repeats:false)
+                                            { _ in
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.50-second' Timer 'pop' - generating a new UUID in <'uuid4ForcingViewRefresh'>...")
+
+                                                // Generate a new UUID to force the View to be (completely) recreated...
+                                              
+                                                uuid4ForcingViewRefresh = UUID()
+
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.50-second' Timer 'pop' - generated  a new UUID in <'uuid4ForcingViewRefresh'>...")
+                                            }
+
                                         }
                                     }
                                 }
                             }
                             label:
                             {
-
+                          
                                 VStack(alignment:.center)
                                 {
-
+                          
                                     Label("", systemImage: "faceid")
                                         .help(Text("'Refresh' App 'Authenticate' Screen..."))
                                         .foregroundStyle(.tint)
                                         .font(.system(size: 30))
-
+                          
                                     Text("Refresh - #(\(self.cAppViewRefreshButtonPresses))...")
                                         .font(.footnote)
-
+                          
                                 }
-
+                          
                             }
                             .padding()
+                        //  .buttonStyle(.borderedProminent)
 
                         #endif
 
@@ -610,6 +638,12 @@ struct AppAuthenticateView: View
                                 if (bUserLoginValidated == true)
                                 {
                                     self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                                //  // Generate a new UUID to force the View to be (completely) recreated...
+                                //
+                                //  uuid4ForcingViewRefresh = UUID()
+                                //
+                                //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).Text #1 - Received an .onSubmit() - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                                 }
                             }
                             .alert("\(self.sCredentialsCheckReason) - try again...", isPresented:$isUserLoginFailureShowing)
@@ -647,6 +681,12 @@ struct AppAuthenticateView: View
                                         if (bUserLoginValidated == true)
                                         {
                                             self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                                        //  // Generate a new UUID to force the View to be (completely) recreated...
+                                        //
+                                        //  uuid4ForcingViewRefresh = UUID()
+                                        //
+                                        //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed the 'Login' button - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                                         }
                                     }
                                 }
@@ -670,6 +710,12 @@ struct AppAuthenticateView: View
                             if (bUserLoginValidated == true)
                             {
                                 self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                            //  // Generate a new UUID to force the View to be (completely) recreated...
+                            //
+                            //  uuid4ForcingViewRefresh = UUID()
+                            //
+                            //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear #2 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                             }
                         }
                     )
@@ -719,6 +765,12 @@ struct AppAuthenticateView: View
                     if (bUserLoginValidated == true)
                     {
                         self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                    //  // Generate a new UUID to force the View to be (completely) recreated...
+                    //
+                    //  uuid4ForcingViewRefresh = UUID()
+                    //
+                    //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear #3 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                     }
 
                 })
@@ -730,9 +782,15 @@ struct AppAuthenticateView: View
                 {
                     AppAuthenticateView.timerOnDemandThirdOfSec = Timer.scheduledTimer(withTimeInterval:0.35, repeats:false)
                     { _ in
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' .hidden> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
                         self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <on demand> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' .hidden> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+
+                    //  // Generate a new UUID to force the View to be (completely) recreated...
+                    //
+                    //  uuid4ForcingViewRefresh = UUID()
+                    //
+                    //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - JmAppDelegateVisitor has 'signalled' a View 'refresh' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                     }
                 }
             }
@@ -1514,10 +1572,10 @@ struct AppAuthenticateView: View
 
 }   // End of struct AppAuthenticateView(View).
 
-#Preview
-{
-    
-    AppAuthenticateView()
-    
-}
+//  #Preview
+//  {
+//      
+//      AppAuthenticateView()
+//      
+//  }
 

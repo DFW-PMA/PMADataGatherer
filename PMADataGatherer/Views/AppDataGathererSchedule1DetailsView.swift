@@ -17,7 +17,7 @@ struct AppDataGathererSchedule1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererSchedule1DetailsView"
-        static let sClsVers      = "v1.0205"
+        static let sClsVers      = "v1.0303"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -242,8 +242,10 @@ struct AppDataGathererSchedule1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Schedule Item ID")
-                            Text("\(String(describing: scheduledPatientLocationItem!.getScheduledPatientLocationItemId()))")
+                            Text("Schedule Item 'status'")
+                        //  Text("\(String(describing:scheduledPatientLocationItem!.scheduleType))")
+                            Text("\(String(describing:scheduledPatientLocationItem!.scheduleType.rawValue))")
+                                .foregroundStyle(scheduledPatientLocationItem!.colorOfItem)
 
                         }
                         .font(.caption2) 
@@ -251,8 +253,9 @@ struct AppDataGathererSchedule1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Schedule Object ID")
-                            Text("\(String(describing:scheduledPatientLocationItem!.idSchedPatLocObject))")
+                            Text("Schedule Item 'status' Color")
+                            Text("\(String(describing:scheduledPatientLocationItem!.colorOfItem))")
+                                .foregroundStyle(scheduledPatientLocationItem!.colorOfItem)
 
                         }
                         .font(.caption2) 
@@ -260,25 +263,16 @@ struct AppDataGathererSchedule1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Schedule 'cloned' From")
-                            Text("\(String(describing:scheduledPatientLocationItem!.schedPatLocClonedFrom))")
+                        //  Text("Schedule Item TID")
 
-                        }
-                        .font(.caption2) 
+                            VStack
+                            {
 
-                        GridRow(alignment:.bottom)
-                        {
+                                Text("Schedule Item TID")
+                                Text("")    // ...vertical spacing...
+                                Text("")    // ...vertical spacing...
 
-                            Text("Schedule 'cloned' To")
-                            Text("\(String(describing:scheduledPatientLocationItem!.schedPatLocClonedTo))")
-
-                        }
-                        .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
-                            Text("Schedule Item TID")
+                            }
 
                             HStack
                             {
@@ -393,7 +387,16 @@ struct AppDataGathererSchedule1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Schedule Item PID")
+                        //  Text("Schedule Item PID")
+
+                            VStack
+                            {
+
+                                Text("Schedule Item PID")
+                                Text("")    // ...vertical spacing...
+                                Text("")    // ...vertical spacing...
+
+                            }
 
                             HStack
                             {
@@ -426,7 +429,7 @@ struct AppDataGathererSchedule1DetailsView: View
 
                                             Spacer()
 
-                                            Text("Details...")
+                                            Text("Patient Details...")
                                                 .font(.caption2)
 
                                             Spacer()
@@ -484,26 +487,6 @@ struct AppDataGathererSchedule1DetailsView: View
 
                             Text("Schedule Item Patient Name")
                             Text("\(String(describing:scheduledPatientLocationItem!.sPtName))")
-
-                        }
-                        .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
-                            Text("Schedule Item 'status'")
-                            Text("\(String(describing:scheduledPatientLocationItem!.scheduleType))")
-                                .foregroundStyle(scheduledPatientLocationItem!.colorOfItem)
-
-                        }
-                        .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
-                            Text("Schedule Item 'status' Color")
-                            Text("\(String(describing:scheduledPatientLocationItem!.colorOfItem))")
-                                .foregroundStyle(scheduledPatientLocationItem!.colorOfItem)
 
                         }
                         .font(.caption2) 
@@ -621,6 +604,42 @@ struct AppDataGathererSchedule1DetailsView: View
 
                             Text("Schedule Item VDate 'short' Display")
                             Text("\(String(describing:scheduledPatientLocationItem!.sVDateShortDisplay))")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Schedule Item ID")
+                            Text("\(String(describing: scheduledPatientLocationItem!.getScheduledPatientLocationItemId()))")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Schedule Object ID")
+                            Text("\(String(describing:scheduledPatientLocationItem!.idSchedPatLocObject))")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Schedule 'cloned' From")
+                            Text("\(String(describing:scheduledPatientLocationItem!.schedPatLocClonedFrom))")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Schedule 'cloned' To")
+                            Text("\(String(describing:scheduledPatientLocationItem!.schedPatLocClonedTo))")
 
                         }
                         .font(.caption2) 

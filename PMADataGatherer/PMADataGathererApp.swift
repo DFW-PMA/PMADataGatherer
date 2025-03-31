@@ -18,7 +18,7 @@ struct PMADataGathererApp: App
     {
         
         static let sClsId        = "PMADataGathererApp"
-        static let sClsVers      = "v1.2002"
+        static let sClsVers      = "v1.2101"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -45,6 +45,8 @@ struct PMADataGathererApp: App
     // App Data field(s):
 
     let sAppBundlePath:String                                       = Bundle.main.bundlePath
+
+    @State          var uuid4ForcingViewRefresh:UUID                = UUID()
 
                     var jmAppDelegateVisitor:JmAppDelegateVisitor   = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
@@ -95,7 +97,8 @@ struct PMADataGathererApp: App
         WindowGroup
         {
             
-            AppAuthenticateView()
+            AppAuthenticateView(uuid4ForcingViewRefresh:$uuid4ForcingViewRefresh)
+                .id(uuid4ForcingViewRefresh)                    // This is the key to forcing a complete 'refresh'...
                 .navigationTitle(AppGlobalInfo.sGlobalInfoAppId)
                 .onOpenURL(perform:
                             { url in
