@@ -26,7 +26,7 @@ struct AppDataGathererPatient1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererPatient1DetailsView"
-        static let sClsVers      = "v1.1101"
+        static let sClsVers      = "v1.1201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -419,6 +419,15 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
+                            Text("Patients' DOB (Date Of Birth)")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileDOB)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
                             Text("Patient is 'Real' Patient?")
                             Text("\(self.pfPatientFileItem!.bPFPatientFileIsRealPatient)")
                                 .foregroundStyle((self.pfPatientFileItem!.bPFPatientFileIsRealPatient) ? .red : .primary)
@@ -429,7 +438,7 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Patients' Languate preference")
+                            Text("Patients' Language preference")
                             Text("\(self.pfPatientFileItem!.sPFPatientFileLanguagePref)")
 
                         }

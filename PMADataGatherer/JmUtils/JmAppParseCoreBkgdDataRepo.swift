@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1506"
+        static let sClsVers      = "v1.1603"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1337,7 +1337,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 //  pfQueryPatientCalDay.addAscendingOrder("startTime")
 
-                    pfQueryPatientCalDay.limit = 1000
+                    pfQueryPatientCalDay.limit = 2000
 
                     let listPFPatientCalDayObjects:[PFObject]? = try pfQueryPatientCalDay.findObjects()
 
@@ -1359,6 +1359,19 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                                     ScheduledPatientLocationItem(scheduledPatientLocationItem:scheduledPatientLocationItemTemplate)
 
                             scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFPatientCalDay(pfPatientCalDayItem:pfPatientCalDayObject)
+
+                            if (scheduledPatientLocationItem.sPid.count > 0)
+                            {
+                            
+                                if (self.dictPFPatientFileItems.count                               > 0 &&
+                                    self.dictPFPatientFileItems[scheduledPatientLocationItem.iPid] != nil)
+                                {
+
+                                    scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFPatientFile(pfPatientFileItem:self.dictPFPatientFileItems[scheduledPatientLocationItem.iPid]!)
+
+                                }
+                            
+                            }
 
                             listScheduledPatientLocationItems.append(scheduledPatientLocationItem)
 

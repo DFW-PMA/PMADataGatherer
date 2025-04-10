@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.1001"
+        static let sClsVers      = "v1.1107"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -41,8 +41,10 @@ struct AppTidScheduleView: View
     @State private   var sPatientPID:String                                             = ""
     @State private   var sScheduledPatientLocationItemID:String                         = ""
 
+    @State private   var cAppSchedExportViewButtonPresses:Int                           = 0
     @State private   var cAppSchedPatLocViewRefreshButtonPresses:Int                    = 0
     
+    @State private   var isAppSchedExportByTidShowing:Bool                              = false
     @State private   var isAppPatientDetailsByPidShowing:Bool                           = false
     @State private   var isAppScheduleDetailByIdShowing:Bool                            = false
     @State private   var isAppTherapistDetailByIdShowing:Bool                           = false
@@ -58,6 +60,14 @@ struct AppTidScheduleView: View
         // Handle the 'listScheduledPatientLocationItems' parameter...
 
         self.listScheduledPatientLocationItems = listScheduledPatientLocationItems
+
+        if (listScheduledPatientLocationItems.count > 0)
+        {
+
+        //  self.sTherapistTID = listScheduledPatientLocationItems[0].sTid
+            _sTherapistTID = State(wrappedValue:listScheduledPatientLocationItems[0].sTid)
+
+        }
 
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'listScheduledPatientLocationItems' is [\(listScheduledPatientLocationItems)]...")
 
@@ -118,7 +128,7 @@ struct AppTidScheduleView: View
                         label:
                         {
 
-                            VStack(alignment:.center)
+                            HStack(alignment:.center)
                             {
 
                                 Label("", systemImage: "mappin.and.ellipse")
@@ -156,7 +166,7 @@ struct AppTidScheduleView: View
                         label:
                         {
 
-                            HStack(alignment:.center)
+                            VStack(alignment:.center)
                             {
 
                                 Label("", systemImage: "mappin.and.ellipse")
@@ -182,6 +192,58 @@ struct AppTidScheduleView: View
                     #endif
 
                     }
+
+                    Spacer()
+
+                    Button
+                    {
+
+                        self.cAppSchedExportViewButtonPresses += 1
+
+                        if (listScheduledPatientLocationItems.count > 0)
+                        {
+                            self.sTherapistTID = listScheduledPatientLocationItems[0].sTid
+                        }
+
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppTidScheduleView.Button(Xcode).'Sched Export'.#(\(self.cAppSchedExportViewButtonPresses)) for TID 'self.sTherapistTID' of [\(self.sTherapistTID)]...")
+
+                        self.isAppSchedExportByTidShowing.toggle()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
+                        {
+
+                            Label("", systemImage: "rectangle.expand.vertical")
+                                .help(Text("Export the Schedule by TID View..."))
+                                .imageScale(.medium)
+
+                            Text("Schedule Export")
+                                .font(.caption)
+
+                        }
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppSchedExportByTidShowing, content:
+                        {
+
+                            AppDataGathererSchedule1ExportView(sTherapistTID:sTherapistTID)
+
+                        }
+                    )
+                #endif
+                #if os(iOS)
+                    .fullScreenCover(isPresented:$isAppSchedExportByTidShowing)
+                    {
+
+                        AppDataGathererSchedule1ExportView(sTherapistTID:sTherapistTID)
+
+                    }
+                #endif
+                    .padding()
 
                     Spacer()
 

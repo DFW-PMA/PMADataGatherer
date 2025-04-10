@@ -15,7 +15,7 @@ struct AppSchedPatLocView: View
     {
         
         static let sClsId        = "AppSchedPatLocView"
-        static let sClsVers      = "v1.0803"
+        static let sClsVers      = "v1.0903"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -37,17 +37,21 @@ struct AppSchedPatLocView: View
     static          var timerOnDemand90Sec                                      = Timer()
     static          var timerOnDemand3Sec                                       = Timer()
     
-    @State private  var cAppLogPFDataButtonPresses:Int                          = 0
+//  @State private  var sTherapistTID:String                                    = ""
+    
+//  @State private  var cAppLogPFDataButtonPresses:Int                          = 0
 //  @State private  var cAppTidScheduleViewButtonPresses:Int                    = 0
 
-    @State private  var isAppLogPFDataViewModal:Bool                            = false
+//  @State private  var isAppLogPFDataViewModal:Bool                            = false
 
+    @State private  var cAppSchedExportViewButtonPresses:Int                    = 0
     @State private  var cAppSchedPatLocViewRebuildButtonPresses:Int             = 0
     @State private  var cAppSchedPatLocViewRefreshButtonPresses:Int             = 0
     @State private  var cAppSchedPatLocViewRefreshAutoTimer:Int                 = 0
     @State private  var cAppScheduleViewRefreshAutoTimer:Int                    = 0
     @State private  var cAppDataButtonPresses:Int                               = 0
 
+    @State private  var isAppSchedExportByTidShowing:Bool                       = false
     @State private  var isAppDataViewModal:Bool                                 = false
 //  @State private  var isAppTidScheduleViewModal:Bool                          = false
 
@@ -111,59 +115,109 @@ struct AppSchedPatLocView: View
                 HStack(alignment:.center)
                 {
 
-                    if (AppGlobalInfo.bPerformAppDevTesting == true)
+                //  if (AppGlobalInfo.bPerformAppDevTesting == true)
+                //  {
+                //
+                //      Button
+                //      {
+                //
+                //          self.cAppLogPFDataButtonPresses += 1
+                //
+                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppSchedPatLocView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
+                //
+                //          self.isAppLogPFDataViewModal.toggle()
+                //
+                //      }
+                //      label:
+                //      {
+                //
+                //          VStack(alignment:.center)
+                //          {
+                //
+                //              Label("", systemImage: "doc.text.magnifyingglass")
+                //                  .help(Text("Log PFXxxDataItem(s)..."))
+                //                  .imageScale(.medium)
+                //
+                //              Text("Log PFData")
+                //                  .font(.footnote)
+                //
+                //          }
+                //
+                //      }
+                //  #if os(macOS)
+                //      .sheet(isPresented:$isAppLogPFDataViewModal, content:
+                //          {
+                //
+                //              AppLogPFDataView()
+                //
+                //          }
+                //      )
+                //  #endif
+                //  #if os(iOS)
+                //      .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
+                //      {
+                //
+                //          AppLogPFDataView()
+                //
+                //      }
+                //  #endif
+                //      .padding()
+                //  #if os(macOS)
+                //      .buttonStyle(.borderedProminent)
+                //  //  .background(???.isPressed ? .blue : .gray)
+                //      .cornerRadius(10)
+                //      .foregroundColor(Color.primary)
+                //  #endif
+                //
+                //  Spacer()
+                //
+                //  }
+
+                    Button
                     {
 
-                        Button
+                        self.cAppSchedExportViewButtonPresses += 1
+                    //  self.sTherapistTID                     = "-1"
+
+                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppTidScheduleView.Button(Xcode).'Sched Export'.#(\(self.cAppSchedExportViewButtonPresses)) for TID 'self.sTherapistTID' of [-1]...")
+
+                        self.isAppSchedExportByTidShowing.toggle()
+
+                    }
+                    label:
+                    {
+
+                        VStack(alignment:.center)
                         {
 
-                            self.cAppLogPFDataButtonPresses += 1
+                            Label("", systemImage: "rectangle.expand.vertical")
+                                .help(Text("Export the Schedule by TID View..."))
+                                .imageScale(.medium)
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppSchedPatLocView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
-
-                            self.isAppLogPFDataViewModal.toggle()
+                            Text("Schedule Export")
+                                .font(.caption)
 
                         }
-                        label:
+
+                    }
+                #if os(macOS)
+                    .sheet(isPresented:$isAppSchedExportByTidShowing, content:
                         {
 
-                            VStack(alignment:.center)
-                            {
-
-                                Label("", systemImage: "doc.text.magnifyingglass")
-                                    .help(Text("Log PFXxxDataItem(s)..."))
-                                    .imageScale(.medium)
-
-                                Text("Log PFData")
-                                    .font(.footnote)
-
-                            }
+                            AppDataGathererSchedule1ExportView(sTherapistTID:"-1")
 
                         }
-                    #if os(macOS)
-                        .sheet(isPresented:$isAppLogPFDataViewModal, content:
-                            {
+                    )
+                #endif
+                #if os(iOS)
+                    .fullScreenCover(isPresented:$isAppSchedExportByTidShowing)
+                    {
 
-                                AppLogPFDataView()
+                        AppDataGathererSchedule1ExportView(sTherapistTID:"-1")
 
-                            }
-                        )
-                    #endif
-                    #if os(iOS)
-                        .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
-                        {
-
-                            AppLogPFDataView()
-
-                        }
-                    #endif
-                        .padding()
-                    #if os(macOS)
-                        .buttonStyle(.borderedProminent)
-                    //  .background(???.isPressed ? .blue : .gray)
-                        .cornerRadius(10)
-                        .foregroundColor(Color.primary)
-                    #endif
+                    }
+                #endif
+                    .padding()
 
                     Spacer()
 
@@ -185,7 +239,7 @@ struct AppSchedPatLocView: View
                                 .help(Text("Sync PFQuery Data Item(s)..."))
                                 .imageScale(.medium)
 
-                            Text("Sync PFData")
+                            Text("Sync Data")
                                 .font(.footnote)
 
                         }
@@ -198,8 +252,6 @@ struct AppSchedPatLocView: View
                     .cornerRadius(10)
                     .foregroundColor(Color.primary)
                 #endif
-
-                    }
 
                     Spacer()
 

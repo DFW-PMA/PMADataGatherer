@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.3303"
+        static let sClsVers      = "v1.3403"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -41,14 +41,18 @@ struct ContentView: View
     @State private var isAppSettingsModal:Bool                   = false
 
 #endif
+
+//  @State private var sTherapistTID:String                      = ""
     
-    @State private var cAppLogPFDataButtonPresses:Int            = 0
+//  @State private var cAppLogPFDataButtonPresses:Int            = 0
+    @State private var cAppSchedExportViewButtonPresses:Int      = 0
     @State private var cAppRefreshButtonPresses:Int              = 0
     @State private var cAppDataButtonPresses:Int                 = 0
     @State private var cAppWorkRouteButtonPresses:Int            = 0
     @State private var cAppSchedPatLocButtonPresses:Int          = 0
 
-    @State private var isAppLogPFDataViewModal:Bool              = false
+//  @State private var isAppLogPFDataViewModal:Bool              = false
+    @State private var isAppSchedExportByTidShowing:Bool         = false
     @State private var isAppDataViewModal:Bool                   = false
     @State private var isAppWorkRouteViewModal:Bool              = false
     @State private var isAppSchedPatLocViewModal:Bool            = false
@@ -117,63 +121,109 @@ struct ContentView: View
             HStack
             {
 
-                if (AppGlobalInfo.bPerformAppDevTesting == true)
+            //  if (AppGlobalInfo.bPerformAppDevTesting == true)
+            //  {
+            //
+            //      Button
+            //      {
+            //
+            //          self.cAppLogPFDataButtonPresses += 1
+            //
+            //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
+            //
+            //          self.isAppLogPFDataViewModal.toggle()
+            //
+            //      //  self.detailPFCscDataItems()
+            //
+            //      }
+            //      label:
+            //      {
+            //
+            //          VStack(alignment:.center)
+            //          {
+            //
+            //              Label("", systemImage: "doc.text.magnifyingglass")
+            //                  .help(Text("Log PFXxxDataItem(s)..."))
+            //                  .imageScale(.small)
+            //
+            //              Text("Log PFData")
+            //                  .font(.caption2)
+            //
+            //          }
+            //
+            //      }
+            //  #if os(macOS)
+            //      .sheet(isPresented:$isAppLogPFDataViewModal, content:
+            //          {
+            //
+            //              AppLogPFDataView()
+            //
+            //          }
+            //      )
+            //  #endif
+            //  #if os(iOS)
+            //      .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
+            //      {
+            //
+            //          AppLogPFDataView()
+            //
+            //      }
+            //  #endif
+            //      .padding()
+            //  #if os(macOS)
+            //      .buttonStyle(.borderedProminent)
+            //  //  .background(???.isPressed ? .blue : .gray)
+            //      .cornerRadius(10)
+            //      .foregroundColor(Color.primary)
+            //  #endif
+            //
+            //  }
+
+                Button
                 {
 
-                    Button
-                    {
+                    self.cAppSchedExportViewButtonPresses += 1
+                //  self.sTherapistTID                     = "-1"
 
-                        self.cAppLogPFDataButtonPresses += 1
+                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppTidScheduleView.Button(Xcode).'Sched Export'.#(\(self.cAppSchedExportViewButtonPresses)) for TID 'self.sTherapistTID' of [-1]...")
 
-                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
-
-                        self.isAppLogPFDataViewModal.toggle()
-
-                    //  self.detailPFCscDataItems()
-
-                    }
-                    label:
-                    {
-
-                        VStack(alignment:.center)
-                        {
-
-                            Label("", systemImage: "doc.text.magnifyingglass")
-                                .help(Text("Log PFXxxDataItem(s)..."))
-                                .imageScale(.small)
-
-                            Text("Log PFData")
-                                .font(.caption2)
-
-                        }
-
-                    }
-                #if os(macOS)
-                    .sheet(isPresented:$isAppLogPFDataViewModal, content:
-                        {
-
-                            AppLogPFDataView()
-
-                        }
-                    )
-                #endif
-                #if os(iOS)
-                    .fullScreenCover(isPresented:$isAppLogPFDataViewModal)
-                    {
-
-                        AppLogPFDataView()
-
-                    }
-                #endif
-                    .padding()
-                #if os(macOS)
-                    .buttonStyle(.borderedProminent)
-                //  .background(???.isPressed ? .blue : .gray)
-                    .cornerRadius(10)
-                    .foregroundColor(Color.primary)
-                #endif
+                    self.isAppSchedExportByTidShowing.toggle()
 
                 }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "rectangle.expand.vertical")
+                            .help(Text("Export the Schedule by TID View..."))
+                            .imageScale(.medium)
+
+                        Text("Schedule Export")
+                            .font(.caption)
+
+                    }
+
+                }
+            #if os(macOS)
+                .sheet(isPresented:$isAppSchedExportByTidShowing, content:
+                    {
+
+                        AppDataGathererSchedule1ExportView(sTherapistTID:"-1")
+
+                    }
+                )
+            #endif
+            #if os(iOS)
+                .fullScreenCover(isPresented:$isAppSchedExportByTidShowing)
+                {
+
+                    AppDataGathererSchedule1ExportView(sTherapistTID:"-1")
+
+                }
+            #endif
+                .padding()
 
                 Spacer()
 

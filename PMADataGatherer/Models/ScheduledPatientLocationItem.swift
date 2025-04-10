@@ -28,7 +28,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1604"
+        static let sClsVers      = "v1.1701"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -55,6 +55,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     var sPid:String                                         = "-1" // From 'PFQuery::PatientCalDay["pid"]' <Int>
     var iPid:Int                                            = -1   // Converted from 'sPid <String>'...
     var sPtName:String                                      = ""   // From 'PFQuery::PatientCalDay["ptName"]'
+    var sPatientDOB:String                                  = ""   // From 'PFQuery::PatientFile["DOB"]' (Date Of Birth)
 
     var sVDate:String                                       = ""   // From 'PFQuery::PatientCalDay["VDate"]'
     var sVDateStartTime:String                              = ""   // From 'PFQuery::PatientCalDay["startTime"]'
@@ -311,6 +312,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         asToString.append("'sPid': [\(String(describing: self.sPid))],")
         asToString.append("'iPid': (\(String(describing: self.iPid))),")
         asToString.append("'sPtName': [\(String(describing: self.sPtName))],")
+        asToString.append("'sPatientDOB': [\(String(describing: self.sPatientDOB))],")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'sVDate': [\(String(describing: self.sVDate))],")
@@ -383,6 +385,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPid'                  is [\(String(describing: self.sPid))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'iPid'                  is (\(String(describing: self.iPid)))...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPtName'               is [\(String(describing: self.sPtName))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPatientDOB'           is [\(String(describing: self.sPatientDOB))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'sVDate'                is [\(String(describing: self.sVDate))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sVDateStartTime'       is [\(String(describing: self.sVDateStartTime))]...")
@@ -450,6 +453,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.sPid                                          = scheduledPatientLocationItem.sPid               
         self.iPid                                          = scheduledPatientLocationItem.iPid               
         self.sPtName                                       = scheduledPatientLocationItem.sPtName            
+        self.sPatientDOB                                   = scheduledPatientLocationItem.sPatientDOB            
                                                                                                              
         self.sVDate                                        = scheduledPatientLocationItem.sVDate             
         self.sVDateStartTime                               = scheduledPatientLocationItem.sVDateStartTime    
@@ -517,6 +521,46 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         return
   
     }   // End of public func updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:PFObject).
+
+    public func updateScheduledPatientLocationItemFromPFPatientFile(pfPatientFileItem:PFObject)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfPatientFileItem.ID' is [\(String(describing: pfPatientFileItem.object(forKey:"ID")))]...")
+
+        // Handle the 'update' (setup) of field(s)...
+
+        self.sPatientDOB = String(describing: (pfPatientFileItem.object(forKey:"DOB") ?? ""))
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of public func updateScheduledPatientLocationItemFromPFPatientFile(pfPatientFileItem:PFObject).
+
+    public func updateScheduledPatientLocationItemFromPFPatientFile(pfPatientFileItem:ParsePFPatientFileItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfPatientFileItem.idPFPatientFileObject' is [\(String(describing: pfPatientFileItem.idPFPatientFileObject))]...")
+
+        // Handle the 'update' (setup) of field(s)...
+
+        self.sPatientDOB = pfPatientFileItem.sPFPatientFileDOB
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of public func updateScheduledPatientLocationItemFromPFPatientFile(pfPatientFileItem:PFObject).
 
     public func updateScheduledPatientLocationItemFromPFPatientCalDay(pfPatientCalDayItem:PFObject)
     {

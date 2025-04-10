@@ -18,7 +18,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFPatientFileItem"
-        static let sClsVers      = "v1.1001"
+        static let sClsVers      = "v1.1101"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -88,6 +88,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
     var sPFPatientFileLastName:String                           = "-N/A-"    // 'pfPatientFileObject[lastName]' (<middle> last)
     var sPFPatientFileEmerContacts:String                       = ""         // 'pfPatientFileObject[emerContacts]' <list>
     var sPFPatientFileHomeLoc:String                            = ""         // 'pfPatientFileObject[histLoc1]' [latitude,longitude]
+    var sPFPatientFileDOB:String                                = ""         // 'pfPatientFileObject[DOB]' (Date Of Birth)
 
     // ----------------------------------------------------------------------------------------------------------
     //  --- Pass #2 ---
@@ -449,6 +450,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         asToString.append("'sPFPatientFileLastName': [\(String(describing: self.sPFPatientFileLastName))],")
         asToString.append("'sPFPatientFileEmerContacts': [\(String(describing: self.sPFPatientFileEmerContacts))],")
         asToString.append("'sPFPatientFileHomeLoc': [\(String(describing: self.sPFPatientFileHomeLoc))],")
+        asToString.append("'sPFPatientFileDOB': [\(String(describing: self.sPFPatientFileDOB))],")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'bPFPatientFileIsRealPatient': [\(String(describing: self.bPFPatientFileIsRealPatient))],")
@@ -587,6 +589,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLastName'                  is [\(String(describing: self.sPFPatientFileLastName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileEmerContacts'              is [\(String(describing: self.sPFPatientFileEmerContacts))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileHomeLoc'                   is [\(String(describing: self.sPFPatientFileHomeLoc))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileDOB'                       is [\(String(describing: self.sPFPatientFileDOB))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'bPFPatientFileIsRealPatient'             is [\(String(describing: self.bPFPatientFileIsRealPatient))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFPatientFileLanguagePref'              is [\(String(describing: self.sPFPatientFileLanguagePref))]...")
@@ -811,6 +814,8 @@ class ParsePFPatientFileItem: NSObject, Identifiable
                                                                                         listStringsToRemove:          [""],
                                                                                         bFormatNumericsAsPhoneNumbers:true)
 
+        self.sPFPatientFileDOB                       = String(describing: (pfPatientFileObject.object(forKey:"DOB")                  ?? ""))
+
         self.bPFPatientFileIsRealPatient             = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"realPatient") ?? "0"))) ?? 0) as NSNumber)
         self.sPFPatientFileLanguagePref              = String(describing: (pfPatientFileObject.object(forKey:"langPreference")       ?? ""))
         self.bPFPatientFileIsOnHold                  = Bool(truncating: (Int(String(describing: (pfPatientFileObject.object(forKey:"onHold")      ?? "0"))) ?? 0) as NSNumber)
@@ -947,6 +952,7 @@ class ParsePFPatientFileItem: NSObject, Identifiable
         self.sPFPatientFileLastName                  = pfPatientFileItem.sPFPatientFileLastName
         self.sPFPatientFileEmerContacts              = pfPatientFileItem.sPFPatientFileEmerContacts
         self.sPFPatientFileHomeLoc                   = pfPatientFileItem.sPFPatientFileHomeLoc
+        self.sPFPatientFileDOB                       = pfPatientFileItem.sPFPatientFileDOB
         
         self.bPFPatientFileIsRealPatient             = pfPatientFileItem.bPFPatientFileIsRealPatient
         self.sPFPatientFileLanguagePref              = pfPatientFileItem.sPFPatientFileLanguagePref 
