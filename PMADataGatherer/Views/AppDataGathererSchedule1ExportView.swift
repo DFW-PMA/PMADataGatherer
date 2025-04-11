@@ -39,7 +39,7 @@ struct AppDataGathererSchedule1ExportView: View
     {
         
         static let sClsId        = "AppDataGathererSchedule1ExportView"
-        static let sClsVers      = "v1.0202"
+        static let sClsVers      = "v1.0205"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -65,6 +65,9 @@ struct AppDataGathererSchedule1ExportView: View
     @State       private var sTherapistTID:String
 
     @State       private var isAppScheduleExportAlertShowing:Bool                  = false
+    @State       private var isAppScheduleExportErrorShowing:Bool                  = false
+
+    @State       private var sAppScheduleExportErrorReason:String                  = ""
   
     @State       private var bSelectReportDates:Bool                               = false
     @State       private var dateOfReportStart:Date                                = Calendar.current.date(byAdding:.day, value:-9, to:.now)!
@@ -191,6 +194,13 @@ struct AppDataGathererSchedule1ExportView: View
                         .bold()
                         .font(.caption2) 
                         .frame(maxWidth:.infinity, alignment:.center)
+                        .alert("App \(self.sAppScheduleExportErrorReason)", isPresented:$isAppScheduleExportErrorShowing)
+                        {
+                            Button("Ok", role:.cancel) 
+                            { 
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
+                        }
 
                     Text(" - - - - - - - - - - - - - - - - - - - - ")
                         .font(.caption2) 
@@ -309,9 +319,21 @@ struct AppDataGathererSchedule1ExportView: View
                         {
 
                             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed 'Ok' to 'export' the TID Schedule(s) - running...")
-                            let _ = self.runAppTidSchedulesExport()
 
-                            self.presentationMode.wrappedValue.dismiss()
+                            let bExportOk:Bool = self.runAppTidSchedulesExport()
+
+                            if (bExportOk == false)
+                            {
+                            
+                                self.isAppScheduleExportErrorShowing.toggle()
+                            
+                            }
+                            else
+                            {
+                            
+                                self.presentationMode.wrappedValue.dismiss()
+                            
+                            }
 
                         }
 
@@ -730,7 +752,7 @@ struct AppDataGathererSchedule1ExportView: View
   
     }   // End of generateAppTidSchedulesExportSelectedDetails().
 
-    func runAppTidSchedulesExport() -> Bool
+    func runAppTidSchedulesExport()->Bool
     {
   
         let sCurrMethod:String = #function
@@ -767,15 +789,41 @@ struct AppDataGathererSchedule1ExportView: View
     //  self.xcgLogMsg("\(sCurrMethodDisp) Calling 'self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)], bRunFullExportSchedules:[\(selectedReportValues.bRunFullExportSchedules)])'...")
         self.xcgLogMsg("\(sCurrMethodDisp) Calling 'self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)]'...")
 
-        self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:selectedReportValues.iTherapistTID, sExportSchedulesStartWeek:sCurrentDateStart, sExportSchedulesEndWeek:sCurrentDateEnd)
+        let bDataCreationOk:Bool = self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:selectedReportValues.iTherapistTID, sExportSchedulesStartWeek:sCurrentDateStart, sExportSchedulesEndWeek:sCurrentDateEnd)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Called  'self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)]'...")
 
+        if (bDataCreationOk == false)
+        {
+
+            self.sAppScheduleExportErrorReason = "'export' Data creation failed - Error!"
+        
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - \(self.sAppScheduleExportErrorReason)")
+
+            return false
+        
+        }
+
         self.xcgLogMsg("\(sCurrMethodDisp) Calling 'self.jmAppParseCoreBkgdDataRepo.exportJmAppPFQueriesForScheduledLocations()'...")
 
-        self.jmAppParseCoreBkgdDataRepo.exportJmAppPFQueriesForScheduledLocations()
+        let bDataConversionAndUploadOk:Bool = self.jmAppParseCoreBkgdDataRepo.exportJmAppPFQueriesForScheduledLocations()
 
         self.xcgLogMsg("\(sCurrMethodDisp) Called  'self.jmAppParseCoreBkgdDataRepo.exportJmAppPFQueriesForScheduledLocations()'...")
+
+        if (bDataConversionAndUploadOk == false)
+        {
+
+            self.sAppScheduleExportErrorReason = "'export' Data conversion and upload failed - Error!"
+        
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - \(self.sAppScheduleExportErrorReason)")
+
+            return false
+        
+        }
 
         // Exit...
   
@@ -783,7 +831,7 @@ struct AppDataGathererSchedule1ExportView: View
   
         return true
   
-    }   // End of runAppTidSchedulesExport().
+    }   // End of runAppTidSchedulesExport()->Bool.
 
     func generateAppTidSchedulesExportSelectedStartDate()->String
     {

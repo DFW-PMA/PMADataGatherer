@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1704"
+        static let sClsVers      = "v1.1705"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1943,7 +1943,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
     } // End of public func gatherJmAppParsePFQueriesForPatientFileInBackground(bForceReloadOfPFQuery:Bool).
 
-    public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool = false, iTherapistTID:Int = -1, sExportSchedulesStartWeek:String = "", sExportSchedulesEndWeek:String = "")
+    public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool = false, iTherapistTID:Int = -1, sExportSchedulesStartWeek:String = "", sExportSchedulesEndWeek:String = "")->Bool
     {
 
         let sCurrMethod:String = #function;
@@ -1963,7 +1963,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
-            return
+            return false
         
         }
 
@@ -1983,11 +1983,11 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
   
-        return
+        return true
 
-    } // End of public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:).
+    } // End of public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)->Bool.
     
-    public func exportJmAppPFQueriesForScheduledLocations()
+    public func exportJmAppPFQueriesForScheduledLocations()->Bool
     {
 
         let sCurrMethod:String = #function;
@@ -2006,7 +2006,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
 
-            return
+            return false
         
         }
   
@@ -2018,9 +2018,9 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
   
-        return
+        return true
 
-    } // End of public func exportJmAppPFQueriesForScheduledLocations().
+    } // End of public func exportJmAppPFQueriesForScheduledLocations()->Bool.
     
     public func convertTidToTherapistName(sPFTherapistParseTID:String = "")->String
     {
