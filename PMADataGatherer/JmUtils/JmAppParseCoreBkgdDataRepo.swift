@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1705"
+        static let sClsVers      = "v1.1706"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -1972,9 +1972,53 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         self.bHasDictExportSchedPatientLocItemsBeenDisplayed = false
         self.dictExportSchedPatientLocItems                  = [String:[ScheduledPatientLocationItem]]()
   
-        // Creating the dictionary of 'export' SchedPatientLocItems...
+        // Creating the dictionary of 'export' SchedPatientLocItems - make sure we have 'Therapist' and 'Patient' dictionaries...
 
         self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - creating the 'export' data...")
+
+        if (self.dictPFTherapistFileItems.count < 1)
+        {
+        
+            self.getJmAppParsePFQueryForTherapistFileToAddToAdmins(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
+        
+        }
+        
+        if (self.dictPFPatientFileItems.count < 1)
+        {
+        
+            self.gatherJmAppParsePFQueriesForPatientFileInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
+        
+        }
+        
+        // Make sure both the 'Therapist' and 'Patient' dictionaries are NOT 'empty'...
+
+        if (self.dictPFTherapistFileItems.count < 1)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'self.dictPFTherapistFileItems' with #(\(self.dictPFTherapistFileItems.count)) item(s) is an 'empty' dictionary - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+        
+        if (self.dictPFPatientFileItems.count < 1)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'self.dictPFPatientFileItems' with #(\(self.dictPFPatientFileItems.count)) item(s) is an 'empty' dictionary - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+
+        // Gather the PFQueries for PatientCalDay (the actual Schedules)...
 
     //  self.gatherJmAppParsePFQueriesForPatientCalDayInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
     //  self.gatherJmAppParsePFQueriesForBackupVisitInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
