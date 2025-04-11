@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1603"
+        static let sClsVers      = "v1.1704"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -33,63 +33,68 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     struct ClassSingleton
     {
 
-        static var appParseCodeBkgdDataRepo:JmAppParseCoreBkgdDataRepo       = JmAppParseCoreBkgdDataRepo()
+        static var appParseCodeBkgdDataRepo:JmAppParseCoreBkgdDataRepo         = JmAppParseCoreBkgdDataRepo()
 
     }
 
     // App Data field(s):
 
-    var parseConfig:ParseClientConfiguration?                                = nil       
+    var parseConfig:ParseClientConfiguration?                                  = nil       
 
-    var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]                 = [String:ParsePFAdminsDataItem]()
-                                                                               // [String:ParsePFAdminsDataItem]
-                                                                               // Key:PFAdminsParseTID(String)
+    var dictPFAdminsDataItems:[String:ParsePFAdminsDataItem]                   = [String:ParsePFAdminsDataItem]()
+                                                                                 // [String:ParsePFAdminsDataItem]
+                                                                                 // Key:PFAdminsParseTID(String)
 
-    var bHasDictTherapistFileItemsBeenDisplayed:Bool                         = false
-    var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]              = [Int:ParsePFTherapistFileItem]()
-                                                                               // [Int:ParsePFTherapistFileItem]
-                                                                               // Key:Tid(Int) -> TherapistID (Int)
+    var bHasDictTherapistFileItemsBeenDisplayed:Bool                           = false
+    var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]                = [Int:ParsePFTherapistFileItem]()
+                                                                                 // [Int:ParsePFTherapistFileItem]
+                                                                                 // Key:Tid(Int) -> TherapistID (Int)
 
-    var dictTherapistTidXref:[String:String]                                 = [String:String]()
-                                                                               // [String:String]
-                                                                               // Key:Tid(String)                               -> TherapistName (String)
-                                                                               // Key:TherapistName(String)                     -> Tid (String)
-                                                                               // Key:TherapistName(String)<lowercased>         -> Tid (String)
-                                                                               // Key:TherapistName(String)<lowercased & NO WS> -> Tid (String)
+    var dictTherapistTidXref:[String:String]                                   = [String:String]()
+                                                                                 // [String:String]
+                                                                                 // Key:Tid(String)                               -> TherapistName (String)
+                                                                                 // Key:TherapistName(String)                     -> Tid (String)
+                                                                                 // Key:TherapistName(String)<lowercased>         -> Tid (String)
+                                                                                 // Key:TherapistName(String)<lowercased & NO WS> -> Tid (String)
 
-    var bHasDictPatientFileItemsBeenDisplayed:Bool                           = false
-    var dictPFPatientFileItems:[Int:ParsePFPatientFileItem]                  = [Int:ParsePFPatientFileItem]()
-                                                                               // [Int:ParsePFPatientFileItem]
-                                                                               // Key:Pid(Int) -> PatientPid (Int)
+    var bHasDictPatientFileItemsBeenDisplayed:Bool                             = false
+    var dictPFPatientFileItems:[Int:ParsePFPatientFileItem]                    = [Int:ParsePFPatientFileItem]()
+                                                                                 // [Int:ParsePFPatientFileItem]
+                                                                                 // Key:Pid(Int) -> PatientPid (Int)
 
-    var dictPatientPidXref:[String:String]                                   = [String:String]()
-                                                                               // [String:String]
-                                                                               // Key:Pid(String)                             -> PatientName (String)
-                                                                               // Key:PatientName(String)                     -> Pid (String)
-                                                                               // Key:PatientName(String)<lowercased>         -> Pid (String)
-                                                                               // Key:PatientName(String)<lowercased & NO WS> -> Pid (String)
+    var dictPatientPidXref:[String:String]                                     = [String:String]()
+                                                                                 // [String:String]
+                                                                                 // Key:Pid(String)                             -> PatientName (String)
+                                                                                 // Key:PatientName(String)                     -> Pid (String)
+                                                                                 // Key:PatientName(String)<lowercased>         -> Pid (String)
+                                                                                 // Key:PatientName(String)<lowercased & NO WS> -> Pid (String)
 
-    var bNeedFirstPassPFQueriesInBackground:Bool                             = true
+    var bNeedFirstPassPFQueriesInBackground:Bool                               = true
 
-    var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                       = false
-    var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]]     = [String:[ScheduledPatientLocationItem]]()
+    var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                         = false
+    var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]]       = [String:[ScheduledPatientLocationItem]]()
+                                                                                 // [String:[ScheduledPatientLocationItem]]
+                                                                                 // Key:sPFTherapistParseTID(String)
+
+    var bHasDictExportSchedPatientLocItemsBeenDisplayed:Bool                   = false
+    var dictExportSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
                                                                                // [String:[ScheduledPatientLocationItem]]
                                                                                // Key:sPFTherapistParseTID(String)
 
-    var listPFCscDataItems:[ParsePFCscDataItem]                              = [ParsePFCscDataItem]()
-    var listPFCscNameItems:[String]                                          = [String]()
+    var listPFCscDataItems:[ParsePFCscDataItem]                                = [ParsePFCscDataItem]()
+    var listPFCscNameItems:[String]                                            = [String]()
 
-    var jmAppDelegateVisitor:JmAppDelegateVisitor?                           = nil
-                                                                               // 'jmAppDelegateVisitor' MUST remain declared this way
-                                                                               // as having it reference the 'shared' instance of 
-                                                                               // JmAppDelegateVisitor causes a circular reference
-                                                                               // between the 'init()' methods of the 2 classes...
-    var jmAppSwiftDataManager:JmAppSwiftDataManager                          = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
-    var jmAppParseCoreManager:JmAppParseCoreManager                          = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+    var jmAppDelegateVisitor:JmAppDelegateVisitor?                             = nil
+                                                                                 // 'jmAppDelegateVisitor' MUST remain declared this way
+                                                                                 // as having it reference the 'shared' instance of 
+                                                                                 // JmAppDelegateVisitor causes a circular reference
+                                                                                 // between the 'init()' methods of the 2 classes...
+    var jmAppSwiftDataManager:JmAppSwiftDataManager                            = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
+    var jmAppParseCoreManager:JmAppParseCoreManager                            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
 
     // App <global> Message(s) 'stack' cached before XCGLogger is available:
 
-    var  listPreXCGLoggerMessages:[String]                                   = [String]()
+    var  listPreXCGLoggerMessages:[String]                                     = [String]()
 
     // ------------------------------------------------------------------------------------------------------
     //
@@ -195,6 +200,10 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         asToString.append("[")
         asToString.append("'bHasDictSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictSchedPatientLocItemsBeenDisplayed))]")
         asToString.append("'dictSchedPatientLocItems': [\(String(describing: self.dictSchedPatientLocItems))]")
+        asToString.append("],")
+        asToString.append("[")
+        asToString.append("'bHasDictExportSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictExportSchedPatientLocItemsBeenDisplayed))]")
+        asToString.append("'dictExportSchedPatientLocItems': [\(String(describing: self.dictExportSchedPatientLocItems))]")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))] <WorkRoute items>")
@@ -1933,6 +1942,85 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         return
 
     } // End of public func gatherJmAppParsePFQueriesForPatientFileInBackground(bForceReloadOfPFQuery:Bool).
+
+    public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool = false, iTherapistTID:Int = -1, sExportSchedulesStartWeek:String = "", sExportSchedulesEndWeek:String = "")
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameters are 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)] - 'iTherapistTID' is (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)]...")
+
+        // Make sure the 2 Date(s) fields are not 'empty' strings...
+
+        if (sExportSchedulesStartWeek.count < 1 ||
+            sExportSchedulesEndWeek.count   < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)] - 1 or BOTH fields are 'empty' strings - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        
+        }
+
+        // Clear the 'export' SchedPatientLocItems field(s)...
+
+        self.bHasDictExportSchedPatientLocItemsBeenDisplayed = false
+        self.dictExportSchedPatientLocItems                  = [String:[ScheduledPatientLocationItem]]()
+  
+        // Creating the dictionary of 'export' SchedPatientLocItems...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - creating the 'export' data...")
+
+    //  self.gatherJmAppParsePFQueriesForPatientCalDayInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
+    //  self.gatherJmAppParsePFQueriesForBackupVisitInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:).
+    
+    public func exportJmAppPFQueriesForScheduledLocations()
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Check that we have data to 'export'...
+
+        if (self.dictExportSchedPatientLocItems.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) is an 'empty' dictionary - unable to process the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        
+        }
+  
+        // Convert the dictionary of 'export' SchedPatientLocItems into an Excel file...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - converting the 'export' data into Excel...")
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of public func exportJmAppPFQueriesForScheduledLocations().
     
     public func convertTidToTherapistName(sPFTherapistParseTID:String = "")->String
     {

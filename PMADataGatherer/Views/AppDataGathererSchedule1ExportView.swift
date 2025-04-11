@@ -39,7 +39,7 @@ struct AppDataGathererSchedule1ExportView: View
     {
         
         static let sClsId        = "AppDataGathererSchedule1ExportView"
-        static let sClsVers      = "v1.0117"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -764,11 +764,18 @@ struct AppDataGathererSchedule1ExportView: View
 
         // Execute the 'export' of TID Schedule(s)...
 
-    //  self.xcgLogMsg("\(sCurrMethodDisp) Calling '---TBD---.xxx(iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)], bRunFullExportSchedules:[\(selectedReportValues.bRunFullExportSchedules)])'...")
-        self.xcgLogMsg("\(sCurrMethodDisp) Calling '---TBD---.xxx(iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)]'...")
+    //  self.xcgLogMsg("\(sCurrMethodDisp) Calling 'self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)], bRunFullExportSchedules:[\(selectedReportValues.bRunFullExportSchedules)])'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)]'...")
 
+        self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:selectedReportValues.iTherapistTID, sExportSchedulesStartWeek:sCurrentDateStart, sExportSchedulesEndWeek:sCurrentDateEnd)
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Called  '---TBD---.xxx(iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)]'...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  'self.jmAppParseCoreBkgdDataRepo.gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:true, iTherapistTID:(\(Int32(selectedReportValues.iTherapistTID))), sExportSchedulesStartWeek:[\(sCurrentDateStart)], sExportSchedulesEndWeek:[\(sCurrentDateEnd)]'...")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'self.jmAppParseCoreBkgdDataRepo.exportJmAppPFQueriesForScheduledLocations()'...")
+
+        self.jmAppParseCoreBkgdDataRepo.exportJmAppPFQueriesForScheduledLocations()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  'self.jmAppParseCoreBkgdDataRepo.exportJmAppPFQueriesForScheduledLocations()'...")
 
         // Exit...
   
