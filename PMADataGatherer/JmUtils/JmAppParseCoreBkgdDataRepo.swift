@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1706"
+        static let sClsVers      = "v1.1817"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -36,6 +36,11 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         static var appParseCodeBkgdDataRepo:JmAppParseCoreBkgdDataRepo         = JmAppParseCoreBkgdDataRepo()
 
     }
+
+    // 'Internal' Trace flag:
+
+    private 
+    var bInternalTraceFlag:Bool                                                = false
 
     // App Data field(s):
 
@@ -78,9 +83,10 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
     var bHasDictExportSchedPatientLocItemsBeenDisplayed:Bool                   = false
     var dictExportSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
-                                                                               // [String:[ScheduledPatientLocationItem]]
-                                                                               // Key:sPFTherapistParseTID(String)
+                                                                                 // [String:[ScheduledPatientLocationItem]]
+                                                                                 // Key:sPFTherapistParseTID(String)
 
+                                                                                 // <<< PFCsc is WorkRoute locations:
     var listPFCscDataItems:[ParsePFCscDataItem]                                = [ParsePFCscDataItem]()
     var listPFCscNameItems:[String]                                            = [String]()
 
@@ -1967,12 +1973,81 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         
         }
 
-        // Clear the 'export' SchedPatientLocItems field(s)...
+        // Gather the PFQueries for PatientCalDay (the actual Schedules)...
 
-        self.bHasDictExportSchedPatientLocItemsBeenDisplayed = false
-        self.dictExportSchedPatientLocItems                  = [String:[ScheduledPatientLocationItem]]()
+        self.xcgLogMsg("\(sCurrMethodDisp) Fetching PatientCalDay via 'self.fetchJmAppPFQueriesForPatientCalDayForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)' for 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)]...")
+
+        let bFetchPatientCalDayOk:Bool = self.fetchJmAppPFQueriesForPatientCalDayForExport(bForceReloadOfPFQuery:bForceReloadOfPFQuery, iTherapistTID:iTherapistTID, sExportSchedulesStartWeek:sExportSchedulesStartWeek, sExportSchedulesEndWeek:sExportSchedulesEndWeek)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Fetched  PatientCalDay via 'self.fetchJmAppPFQueriesForPatientCalDayForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)' for 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)] - return value of 'bFetchPatientCalDayOk' was [\(bFetchPatientCalDayOk)]...")
+
+        if (bFetchPatientCalDayOk == false)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)] - fetch of the PatientCalDay information failed - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+
+        // Gather the PFQueries for BackupVisit (the 'last' Visit locations)...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Fetching BackupVisit via 'self.fetchJmAppPFQueriesForBackupVisitForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)' for 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)]...")
+
+        let bFetchBackupVisitOk:Bool = self.fetchJmAppPFQueriesForBackupVisitForExport(bForceReloadOfPFQuery:bForceReloadOfPFQuery, iTherapistTID:iTherapistTID, sExportSchedulesStartWeek:sExportSchedulesStartWeek, sExportSchedulesEndWeek:sExportSchedulesEndWeek)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Fetched  BackupVisit via 'self.fetchJmAppPFQueriesForBackupVisitForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)' for 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)] - return value of 'bFetchBackupVisitOk' was [\(bFetchBackupVisitOk)]...")
+
+        if (bFetchBackupVisitOk == false)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)] - fetch of the BackupVisit information failed - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+
+        // Exit...
   
-        // Creating the dictionary of 'export' SchedPatientLocItems - make sure we have 'Therapist' and 'Patient' dictionaries...
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return true
+
+    } // End of public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)->Bool.
+
+    private func fetchJmAppPFQueriesForPatientCalDayForExport(bForceReloadOfPFQuery:Bool = false, iTherapistTID:Int = -1, sExportSchedulesStartWeek:String = "", sExportSchedulesEndWeek:String = "")->Bool
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameters are 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)] - 'iTherapistTID' is (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)]...")
+
+        // Make sure the 2 Date(s) fields are not 'empty' strings...
+
+        if (sExportSchedulesStartWeek.count < 1 ||
+            sExportSchedulesEndWeek.count   < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)] - 1 or BOTH fields are 'empty' strings - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+
+        // Make sure we have 'Therapist' and 'Patient' dictionaries...
 
         self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - creating the 'export' data...")
 
@@ -1990,7 +2065,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         
         }
         
-        // Make sure both the 'Therapist' and 'Patient' dictionaries are NOT 'empty'...
+        // Check again to make sure both the 'Therapist' and 'Patient' dictionaries are NOT 'empty'...
 
         if (self.dictPFTherapistFileItems.count < 1)
         {
@@ -2018,10 +2093,227 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         
         }
 
-        // Gather the PFQueries for PatientCalDay (the actual Schedules)...
+        // Clear the 'export' SchedPatientLocItems field(s)...
 
-    //  self.gatherJmAppParsePFQueriesForPatientCalDayInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
-    //  self.gatherJmAppParsePFQueriesForBackupVisitInBackground(bForceReloadOfPFQuery:bForceReloadOfPFQuery)
+        self.bHasDictExportSchedPatientLocItemsBeenDisplayed = false
+        self.dictExportSchedPatientLocItems                  = [String:[ScheduledPatientLocationItem]]()
+  
+        // Create a PFQuery for the 'PatientCalDay' class...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'PatientCalDay' class...")
+
+        let pfQueryPatientCalDay:PFQuery = PFQuery(className:"PatientCalDay")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'PatientCalDay' class...")
+
+        // Set the query parameter(s) and issue the 'find' then (possibly) iterate the result(s)...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Returned query of 'pfQueryPatientCalDay' is [\(String(describing: pfQueryPatientCalDay))]...")
+
+        do
+        {
+
+        //  "class" : "select * from PatientCalDay where tid = 'iTherapistTID' and VDate = \"2024-12-03\";",
+
+            pfQueryPatientCalDay.whereKeyExists("pid")
+            pfQueryPatientCalDay.whereKeyExists("startTime")
+
+            if (iTherapistTID == -1)
+            {
+            
+                pfQueryPatientCalDay.whereKeyExists("tid")
+            
+            }
+            else
+            {
+            
+                pfQueryPatientCalDay.whereKey("tid", equalTo:iTherapistTID)
+            
+            }
+
+            pfQueryPatientCalDay.whereKey("VDate", greaterThanOrEqualTo:sExportSchedulesStartWeek)
+            pfQueryPatientCalDay.whereKey("VDate", lessThanOrEqualTo:sExportSchedulesEndWeek)
+
+        //  pfQueryPatientCalDay.addAscendingOrder("startTime")
+
+            pfQueryPatientCalDay.limit = 2000
+
+            let listPFPatientCalDayObjects:[PFObject]? = try pfQueryPatientCalDay.findObjects()
+
+            if (listPFPatientCalDayObjects != nil &&
+                listPFPatientCalDayObjects!.count > 0)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryPatientCalDay' returned a count of #(\(listPFPatientCalDayObjects!.count)) PFObject(s) for the TID of [\(iTherapistTID)]...")
+                self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the result(s) of query of 'pfQueryPatientCalDay'...")
+
+                var cPFPatientCalDayObjects:Int = 0
+
+                for pfPatientCalDayObject in listPFPatientCalDayObjects!
+                {
+
+                    cPFPatientCalDayObjects += 1
+
+                    let scheduledPatientLocationItem:ScheduledPatientLocationItem = 
+                        ScheduledPatientLocationItem(pfPatientCalDayItem:pfPatientCalDayObject)
+
+                    if (scheduledPatientLocationItem.sTid.count < 1)
+                    {
+                    
+                        self.xcgLogMsg("\(sCurrMethodDisp) Constructed ScheduledPatientLocationItem from a PFPatientCalDay object has a 'scheduledPatientLocationItem.sTid' of [\(scheduledPatientLocationItem.sTid)] that is an 'empty' string - unable to generate the 'export' data for this object - bypassing - Error!")
+                        
+                        continue
+                    
+                    }
+
+                    if (self.dictPFTherapistFileItems.count                               > 0 &&
+                        self.dictPFTherapistFileItems[scheduledPatientLocationItem.iTid] != nil)
+                    {
+
+                        scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:self.dictPFTherapistFileItems[scheduledPatientLocationItem.iTid]!)
+
+                    }
+
+                    if (scheduledPatientLocationItem.sPid.count > 0)
+                    {
+
+                        if (self.dictPFPatientFileItems.count                               > 0 &&
+                            self.dictPFPatientFileItems[scheduledPatientLocationItem.iPid] != nil)
+                        {
+
+                            scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFPatientFile(pfPatientFileItem:self.dictPFPatientFileItems[scheduledPatientLocationItem.iPid]!)
+
+                        }
+
+                    }
+
+                    var listScheduledPatientLocationItems:[ScheduledPatientLocationItem] = [ScheduledPatientLocationItem]()
+
+                    if (self.dictExportSchedPatientLocItems.count                               > 0 &&
+                        self.dictExportSchedPatientLocItems[scheduledPatientLocationItem.sTid] != nil)
+                    {
+
+                        listScheduledPatientLocationItems = self.dictExportSchedPatientLocItems[scheduledPatientLocationItem.sTid]!
+
+                    }
+
+                    listScheduledPatientLocationItems.append(scheduledPatientLocationItem)
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Added an updated Item #(\(cPFPatientCalDayObjects)) 'scheduledPatientLocationItem' of [\(scheduledPatientLocationItem)] to the list 'listScheduledPatientLocationItems' for 'scheduledPatientLocationItem.sTid' of [\(scheduledPatientLocationItem.sTid)]...")
+
+                    self.dictExportSchedPatientLocItems[scheduledPatientLocationItem.sTid] = listScheduledPatientLocationItems
+
+                }
+
+                if (self.dictExportSchedPatientLocItems.count > 0)
+                {
+
+                    var cExportPFTherapistParseTIDs:Int = 0
+
+                    for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictExportSchedPatientLocItems
+                    {
+
+                        cExportPFTherapistParseTIDs += 1
+
+                        if (sPFTherapistParseTID.count  < 1 ||
+                            sPFTherapistParseTID       == "-N/A-")
+                        {
+
+                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                            continue
+
+                        }
+
+                        if (listScheduledPatientLocationItems.count < 1)
+                        {
+
+                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
+
+                            continue
+
+                        }
+
+                        if (listScheduledPatientLocationItems.count < 2)
+                        {
+
+                            self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field count is less than 2 - the list does NOT need sorting...")
+
+                            continue
+
+                        }
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) Sorting #(\(listScheduledPatientLocationItems.count)) Item(s) in the 'listScheduledPatientLocationItems' of [\(listScheduledPatientLocationItems)] for 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)]...")
+                        
+                        var listSortedScheduledPatientLocationItems:[ScheduledPatientLocationItem] = listScheduledPatientLocationItems
+                        
+                        listSortedScheduledPatientLocationItems.sort
+                        { (scheduledPatientLocationItem1, scheduledPatientLocationItem2) in
+
+                            var bIsItem1GreaterThanItem2:Bool = false
+
+                            //  Compare for Sort: '<' sorts 'ascending' and '>' sorts 'descending'...
+                        
+                            if (scheduledPatientLocationItem1.sVDate == scheduledPatientLocationItem2.sVDate)
+                            {
+                            
+                            //  bIsItem1GreaterThanItem2 = (scheduledPatientLocationItem1.iVDateStartTime24h > scheduledPatientLocationItem2.iVDateStartTime24h)
+                                bIsItem1GreaterThanItem2 = (scheduledPatientLocationItem1.iVDateStartTime24h < scheduledPatientLocationItem2.iVDateStartTime24h)
+                            
+                            }
+                            else
+                            {
+                            
+                                bIsItem1GreaterThanItem2 = (scheduledPatientLocationItem1.sVDate < scheduledPatientLocationItem2.sVDate)
+                            
+                            }
+                        
+                        //  self.xcgLogMsg("\(sCurrMethodDisp) Sort <OP> Returning 'bIsItem1GreaterThanItem2' of [\(bIsItem1GreaterThanItem2)] because 'scheduledPatientLocationItem1.iVDateStartTime24h' is [\(scheduledPatientLocationItem1.iVDateStartTime24h)] and is less than 'scheduledPatientLocationItem2.iVDateStartTime24h' is [\(scheduledPatientLocationItem2.iVDateStartTime24h)] for 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)]...")
+                        
+                            return bIsItem1GreaterThanItem2
+                        
+                        }
+                        
+                        self.dictExportSchedPatientLocItems[sPFTherapistParseTID] = listSortedScheduledPatientLocationItems
+                        
+                        self.xcgLogMsg("\(sCurrMethodDisp) Sorted  #(\(listScheduledPatientLocationItems.count)) Item(s) in the 'listScheduledPatientLocationItems' of [\(listScheduledPatientLocationItems)] for 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)]...")
+
+                    }
+
+                }
+
+                // If we created item(s) in the 'dictSchedPatientLocItems' and we haven't displayed them, then display them...
+
+                if (self.bHasDictExportSchedPatientLocItemsBeenDisplayed == false)
+                {
+
+                    self.bHasDictExportSchedPatientLocItemsBeenDisplayed = true
+
+                    self.displayDictExportSchedPatientLocItems()
+
+                }
+
+            }
+            else
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryPatientCalDay' returned an 'empty' or nil list of PFObject(s) for the TID of [\(iTherapistTID)]  - unable to generate the 'export' data - Warning!")
+
+            }
+
+        }
+        catch
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parse - failed execute the query 'pfQueryPatientCalDay' - Details: \(error) - for 'iTherapistTID' of (\(iTherapistTID)) - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+
+        }
 
         // Exit...
   
@@ -2029,7 +2321,418 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         return true
 
-    } // End of public func gatherJmAppPFQueriesForScheduledLocationsForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)->Bool.
+    }   // End of private func fetchJmAppPFQueriesForPatientCalDayForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)->Bool.
+    
+    private func fetchJmAppPFQueriesForBackupVisitForExport(bForceReloadOfPFQuery:Bool = false, iTherapistTID:Int = -1, sExportSchedulesStartWeek:String = "", sExportSchedulesEndWeek:String = "")->Bool
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameters are 'bForceReloadOfPFQuery' is [\(bForceReloadOfPFQuery)] - 'iTherapistTID' is (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)]...")
+
+        // Make sure the 2 Date(s) fields are not 'empty' strings...
+
+        if (sExportSchedulesStartWeek.count < 1 ||
+            sExportSchedulesEndWeek.count   < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'sExportSchedulesStartWeek' is [\(sExportSchedulesStartWeek)] - 'sExportSchedulesEndWeek' is [\(sExportSchedulesEndWeek)] - 1 or BOTH fields are 'empty' strings - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+
+        // Make sure the 'export' SchedPatientLocItems dictionary is NOT 'empty'...
+
+        if (self.dictExportSchedPatientLocItems.count < 1)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'iTherapistTID' of (\(iTherapistTID)) - 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) is an 'empty' dictionary - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+        
+        // Prepare to get the BackupVisit(s) for the set of TIDs and PIDs...
+
+        var listOfExportTIDs:[Int]          = [Int]()
+        var listOfExportPIDs:[Int]          = [Int]()
+        var cExportPFTherapistParseTIDs:Int = 0
+
+        for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictExportSchedPatientLocItems
+        {
+            
+            cExportPFTherapistParseTIDs += 1
+
+            if (sPFTherapistParseTID.count  < 1 ||
+                sPFTherapistParseTID       == "-N/A-")
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                continue
+
+            }
+
+            if (listScheduledPatientLocationItems.count < 1)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
+
+                continue
+
+            }
+
+            let iTherapistTID:Int = Int(sPFTherapistParseTID)!
+
+            if (listOfExportTIDs.contains(iTherapistTID) == false)
+            {
+            
+                listOfExportTIDs.append(Int(sPFTherapistParseTID)!)
+            
+            }
+            
+            for scheduledPatientLocationItem in listScheduledPatientLocationItems
+            {
+
+                if (listOfExportPIDs.contains(scheduledPatientLocationItem.iPid) == false)
+                {
+                
+                    listOfExportPIDs.append(scheduledPatientLocationItem.iPid)
+                
+                }
+
+            }
+
+        }
+
+        if (listOfExportTIDs.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) The generated list 'listOfExportTIDs' with #(\(listOfExportTIDs.count)) item(s) is 'empty' - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+        
+        if (listOfExportPIDs.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) The generated list 'listOfExportPIDs' with #(\(listOfExportPIDs.count)) item(s) is 'empty' - unable to generate the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+
+        // Prepare to get the BackupVisit(s) for the last Month...
+
+        let dtFormatterDate:DateFormatter = DateFormatter()
+
+        dtFormatterDate.locale     = Locale(identifier: "en_US")
+        dtFormatterDate.timeZone   = TimeZone.current
+        dtFormatterDate.dateFormat = "yyyy-MM-dd"
+
+        let dateForCurrentQuery:Date = Calendar.current.date(byAdding:.day, value:-30, to:.now)!
+        let sCurrentQueryDate:String = dtFormatterDate.string(from:dateForCurrentQuery)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) BackupVisit 'sCurrentQueryDate' is [\(String(describing: sCurrentQueryDate))] <formatted>...")
+
+        // Create a PFQuery for the 'BackupVisit' class...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'BackupVisit' class...")
+
+        let pfQueryBackupVisit:PFQuery = PFQuery(className:"BackupVisit")
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'BackupVisit' class...")
+
+        // Set the query parameter(s) and issue the 'find' then (possibly) iterate the result(s)...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Returned query of 'pfQueryBackupVisit' is [\(String(describing: pfQueryBackupVisit))]...")
+
+        do
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> Searching for 'pfQueryBackupVisit' Item(s) keyed by #(\(listOfExportTIDs.count)) TIDs 'listOfExportTIDs' of [\(String(describing:listOfExportTIDs))] for #(\(listOfExportPIDs.count)) PIDs of 'listOfExportPIDs' of [\(String(describing:listOfExportPIDs))]...")
+
+            pfQueryBackupVisit.whereKeyExists("lat")
+            pfQueryBackupVisit.whereKeyExists("long")
+
+            pfQueryBackupVisit.whereKey("tid",            containedIn:listOfExportTIDs)
+            pfQueryBackupVisit.whereKey("pid",            containedIn:listOfExportPIDs)
+            pfQueryBackupVisit.whereKey("billable",       equalTo:1)
+            pfQueryBackupVisit.whereKey("isTelepractice", notEqualTo:1)
+            pfQueryBackupVisit.whereKey("VDate",          greaterThan:sCurrentQueryDate)
+
+            pfQueryBackupVisit.addDescendingOrder("VDate")
+
+            pfQueryBackupVisit.limit = 5000
+
+            let listPFBackupVisitObjects:[PFObject]? = try pfQueryBackupVisit.findObjects()
+
+            if (listPFBackupVisitObjects != nil &&
+                listPFBackupVisitObjects!.count > 0)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - query of 'pfQueryBackupVisit' returned a count of #(\(listPFBackupVisitObjects!.count)) PFObject(s))...")
+
+                if (self.bInternalTraceFlag == true)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - returned list 'listPFBackupVisitObjects' is [\(String(describing:listPFBackupVisitObjects))]...")
+
+                }
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+        }
+        catch
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - failed execute the query 'pfQueryBackupVisit' - Details: \(error) - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+
+        }
+
+     // // Repopulate the 'dictSchedPatientLocItems' dictionary with BackupVisit information...
+     //
+     // self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the dictionary of #(\(self.dictSchedPatientLocItems.count)) 'dictSchedPatientLocItems' item(s) to gather 'BackupVisit' information...")
+     //
+     // let cPFTherapistTotalTIDs:Int = self.dictExportSchedPatientLocItems.count
+     // var cPFTherapistParseTIDs:Int = 0
+     //
+     // for (sPFTherapistParseTID, listOfScheduledPatientLocationItems) in self.dictExportSchedPatientLocItems
+     // {
+     //
+     //     cPFTherapistParseTIDs += 1
+     //
+     //     if (sPFTherapistParseTID.count  < 1 ||
+     //         sPFTherapistParseTID       == "-N/A-")
+     //     {
+     //
+     //         self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+     //
+     //         continue
+     //
+     //     }
+     //
+     //     if (listOfScheduledPatientLocationItems.count < 1)
+     //     {
+     //
+     //         self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistTotalTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listOfScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
+     //
+     //         continue
+     //
+     //     }
+     //
+     //     var cPFPatientParsePIDs:Int = 0 
+     //
+     //     for scheduledPatientLocationItem in listOfScheduledPatientLocationItems
+     //     {
+     //
+     //         cPFPatientParsePIDs += 1 
+     //
+     //         if (scheduledPatientLocationItem.iPid < 1)
+     //         {
+     //         
+     //             self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFPatientParsePIDs)) for 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the patient 'pid' field ('iPid') is < 1 - Warning!")
+     //
+     //             continue
+     //         
+     //         }
+     //         
+     //         // Create a PFQuery for the 'BackupVisit' class...
+     //
+     //         self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'BackupVisit' class...")
+     //
+     //         let pfQueryBackupVisit:PFQuery = PFQuery(className:"BackupVisit")
+     //
+     //         self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'BackupVisit' class...")
+     //
+     //         // Set the query parameter(s) and issue the 'find' then (possibly) iterate the result(s)...
+     //
+     //         self.xcgLogMsg("\(sCurrMethodDisp) Returned query of 'pfQueryBackupVisit' is [\(String(describing: pfQueryBackupVisit))]...")
+     //
+     //         do
+     //         {
+     //
+     //         // ------------------------------------------------------------------------------------------------------------------
+     //         //  :: From PFQuery Class: 'BackupVisit' ::
+     //         //
+     //         //  [Query::{ "pid"            : NumberLong(13556), 
+     //         //            "billable"       : NumberLong(1), 
+     //         //            "isTelepractice" : { "$ne" : NumberLong(1) },
+     //         //            "VDate"          : { "$gt" : "2024-11-10" } }]  // Yields all visit(s) in last 30 day(s) or such...
+     //         //  [Sort::{"VDate": -1}]                                     // Yields visit(s) newest to oldest (1st one is newest)...
+     //         // ------------------------------------------------------------------------------------------------------------------
+     //
+     //             self.xcgLogMsg("\(sCurrMethodDisp) Searching for 'pfQueryBackupVisit' Item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] for PID (\(scheduledPatientLocationItem.iPid))...")
+     //
+     //             pfQueryBackupVisit.whereKeyExists("lat")
+     //             pfQueryBackupVisit.whereKeyExists("long")
+     //
+     //             pfQueryBackupVisit.whereKey("pid",            equalTo:scheduledPatientLocationItem.iPid)
+     //             pfQueryBackupVisit.whereKey("billable",       equalTo:1)
+     //             pfQueryBackupVisit.whereKey("isTelepractice", notEqualTo:1)
+     //             pfQueryBackupVisit.whereKey("VDate",          greaterThan:sCurrentQueryDate)
+     //             
+     //             pfQueryBackupVisit.whereKey("tid", containedIn: [])
+     //
+     //             pfQueryBackupVisit.addDescendingOrder("VDate")
+     //
+     //             pfQueryBackupVisit.limit = 1000
+     //
+     //             let listPFBackupVisitObjects:[PFObject]? = try pfQueryBackupVisit.findObjects()
+     //
+     //             if (listPFBackupVisitObjects != nil &&
+     //                 listPFBackupVisitObjects!.count > 0)
+     //             {
+     //
+     //                 self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryBackupVisit' returned a count of #(\(listPFBackupVisitObjects!.count)) PFObject(s) for PID (\(scheduledPatientLocationItem.iPid))...")
+     //                 self.xcgLogMsg("\(sCurrMethodDisp) Using the 1st returned 'pfQueryBackupVisit' item...")
+     //
+     //                 // ------------------------------------------------------------------------------------------------
+     //                 //  >>> Template 1st entry, then search for new Template
+     //                 //  >>>     (if item(s) are available and address == ""),
+     //                 //  >>> to re-Template an item that is address != ""; and posted = 1;...
+     //                 // ------------------------------------------------------------------------------------------------
+     //
+     //                 var pfQueryBackupVisitTemplate = listPFBackupVisitObjects![0]
+     //
+     //                 if (listPFBackupVisitObjects!.count > 1 &&
+     //                     String(describing: (pfQueryBackupVisitTemplate.object(forKey:"address"))) == "")
+     //                 {
+     //
+     //                     for pfBackupVisit in listPFBackupVisitObjects!
+     //                     {
+     //
+     //                         if (String(describing: (pfBackupVisit.object(forKey:"address"))) != "" &&
+     //                             String(describing: (pfBackupVisit.object(forKey:"posted")))  == "1")
+     //                         {
+     //
+     //                             pfQueryBackupVisitTemplate = pfBackupVisit
+     //                             
+     //                             break;
+     //                         
+     //                         }
+     //
+     //                     }
+     //
+     //                 }
+     //
+     //                 scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:pfQueryBackupVisitTemplate)
+     //
+     //                 if (scheduledPatientLocationItem.sLastVDateAddress == "")
+     //                 {
+     //
+     //                     self.xcgLogMsg("\(sCurrMethodDisp) Updating 'scheduledPatientLocationItem' by calling 'updateGeocoderLocation()' for Latitude/Longitude of [\(scheduledPatientLocationItem.sLastVDateLatitude)/\(scheduledPatientLocationItem.sLastVDateLongitude)]...")
+     //
+     //                     if (self.jmAppDelegateVisitor!.jmAppCLModelObservable2 != nil)
+     //                     {
+     //                     
+     //                         let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor!.jmAppCLModelObservable2!
+     //                         let dblDeadlineInterval:Double                      = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.tertiary)
+     //
+     //                         DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
+     //                         {
+     //                             self.xcgLogMsg("\(sCurrMethodDisp) <closure> Calling 'updateGeocoderLocation()'with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(scheduledPatientLocationItem.sLastVDateLatitude)/\(scheduledPatientLocationItem.sLastVDateLongitude)] from 'scheduledPatientLocationItem' for Patient named [\(scheduledPatientLocationItem.sPtName)]...")
+     //
+     //                             let _ = clModelObservable2.updateGeocoderLocations(requestID: 1, 
+     //                                                                                latitude:  Double(scheduledPatientLocationItem.sLastVDateLatitude)!,
+     //                                                                                longitude: Double(scheduledPatientLocationItem.sLastVDateLongitude)!, 
+     //                                                                                withCompletionHandler:
+     //                                                                                    { (requestID:Int, dictCurrentLocation:[String:Any]) in
+     //
+     //                                                                                        let sStreetAddress:String = String(describing: (dictCurrentLocation["sCurrentLocationName"]       ?? ""))
+     //                                                                                        let sCity:String          = String(describing: (dictCurrentLocation["sCurrentCity"]               ?? ""))
+     //                                                                                        let sState:String         = String(describing: (dictCurrentLocation["sCurrentAdministrativeArea"] ?? ""))
+     //                                                                                        let sZipCode:String       = String(describing: (dictCurrentLocation["sCurrentPostalCode"]         ?? ""))
+     //
+     //                                                                                        if (sStreetAddress.count < 1 ||
+     //                                                                                            sCity.count          < 1)
+     //                                                                                        {
+     //                                                                                            
+     //                                                                                            scheduledPatientLocationItem.sLastVDateAddress = ""
+     //                                                                                        
+     //                                                                                        }
+     //                                                                                        else
+     //                                                                                        {
+     //
+     //                                                                                            scheduledPatientLocationItem.sLastVDateAddress = "\(sStreetAddress), \(sCity), \(sState), \(sZipCode)"
+     //
+     //                                                                                        }
+     //
+     //                                                                                        self.xcgLogMsg("\(sCurrMethodDisp) Updated 'scheduledPatientLocationItem' for an address of [\(scheduledPatientLocationItem.sLastVDateAddress)] for Latitude/Longitude of [\(scheduledPatientLocationItem.sLastVDateLatitude)/\(scheduledPatientLocationItem.sLastVDateLongitude)]...")
+     //
+     //                                                                                    }
+     //                                                                               )
+     //                         }
+     //
+     //                     }
+     //
+     //                 }
+     //
+     //                 self.xcgLogMsg("\(sCurrMethodDisp) Updated an Item 'scheduledPatientLocationItem' of [\(scheduledPatientLocationItem)] (in a List) to the dictionary of 'dictSchedPatientLocItems' item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] for PID (\(scheduledPatientLocationItem.iPid))...")
+     //
+     //             }
+     //             else
+     //             {
+     //
+     //                 self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryBackupVisit' returned an 'empty' or nil list of PFObject(s) for PID (\(scheduledPatientLocationItem.iPid))...")
+     //
+     //             }
+     //
+     //         }
+     //         catch
+     //         {
+     //
+     //             self.xcgLogMsg("\(sCurrMethodDisp) Parse - failed execute the query 'pfQueryBackupVisit' - Details: \(error) - Error!")
+     //
+     //         }
+     //
+     //     }
+     //
+     // }
+     //
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return true
+
+    }   // End of private func fetchJmAppPFQueriesForBackupVisitForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)->Bool.
     
     public func exportJmAppPFQueriesForScheduledLocations()->Bool
     {
@@ -2040,6 +2743,11 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Check that we have data to 'export'...
+
+    //  var bHasDictExportSchedPatientLocItemsBeenDisplayed:Bool                   = false
+    //  var dictExportSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
+    //                                                                               // [String:[ScheduledPatientLocationItem]]
+    //                                                                               // Key:sPFTherapistParseTID(String)
 
         if (self.dictExportSchedPatientLocItems.count < 1)
         {
@@ -3022,6 +3730,86 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         return
 
     } // End of func displayDictSchedPatientLocItems().
+    
+    public func displayDictExportSchedPatientLocItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Display the dictionary of 'dictExportSchedPatientLocItems'...
+
+        if (self.dictExportSchedPatientLocItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictExportSchedPatientLocItems.count)) 'dictExportSchedPatientLocItems' item(s)...")
+
+            let cExportPFTherapistTotalTIDs:Int               = self.dictExportSchedPatientLocItems.count
+            var cExportPFTherapistParseTIDs:Int               = 0
+            var cTotalExportScheduledPatientLocationItems:Int = 0
+
+            for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictExportSchedPatientLocItems
+            {
+
+                cExportPFTherapistParseTIDs += 1
+
+                if (sPFTherapistParseTID.count  < 1 ||
+                    sPFTherapistParseTID       == "-N/A-")
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                    continue
+
+                }
+
+                if (listScheduledPatientLocationItems.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
+
+                    continue
+
+                }
+
+                var cExportScheduledPatientLocationItems:Int = 0
+
+                for scheduledPatientLocationItem in listScheduledPatientLocationItems
+                {
+
+                    cExportScheduledPatientLocationItems += 1
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Of #(\(cExportPFTherapistTotalTIDs)) TIDs - For TID [\(sPFTherapistParseTID)] - Displaying 'scheduledPatientLocationItem' item #(\(cExportPFTherapistParseTIDs).\(cExportScheduledPatientLocationItems)):")
+
+                    scheduledPatientLocationItem.displayScheduledPatientLocationItemToLog()
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <Export Counts> Of #(\(cExportPFTherapistTotalTIDs)) TIDs - #(\(cExportPFTherapistParseTIDs)) TID of [\(sPFTherapistParseTID)] has a TOTAL of #(\(cExportScheduledPatientLocationItems)) scheduled visits...")
+
+                cTotalExportScheduledPatientLocationItems += cExportScheduledPatientLocationItems
+
+            }
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Export Counts> A TOTAL of #(\(cExportPFTherapistTotalTIDs)) TIDs have a TOTAL of #(\(cTotalExportScheduledPatientLocationItems)) scheduled visits...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictExportSchedPatientLocItems' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictExportSchedPatientLocItems().
     
     public func displayListPFCscDataItems()
     {

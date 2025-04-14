@@ -28,7 +28,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1701"
+        static let sClsVers      = "v1.1703"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -513,6 +513,35 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         }
   
         self.sTherapistName = String(describing: (pfTherapistFileItem.object(forKey:"name") ?? ""))
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of public func updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:PFObject).
+
+    public func updateScheduledPatientLocationItemFromPFTherapistFile(pfTherapistFileItem:ParsePFTherapistFileItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfTherapistFileItem.iPFTherapistFileTID' is [\(String(describing: pfTherapistFileItem.iPFTherapistFileTID))]...")
+
+        // Handle the 'update' (setup) of field(s)...
+
+        if (self.sTid.count  < 1 ||
+            self.sTid       == "-1")
+        {
+
+            self.sTid = String(describing: pfTherapistFileItem.iPFTherapistFileTID)
+            self.iTid = pfTherapistFileItem.iPFTherapistFileTID
+
+        }
+  
+        self.sTherapistName = pfTherapistFileItem.sPFTherapistFileName
 
         // Exit:
   

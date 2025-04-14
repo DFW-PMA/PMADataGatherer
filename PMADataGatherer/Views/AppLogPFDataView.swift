@@ -16,7 +16,7 @@ struct AppLogPFDataView: View
     {
         
         static let sClsId        = "AppLogPFDataView"
-        static let sClsVers      = "v1.0602"
+        static let sClsVers      = "v1.0701"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -30,33 +30,35 @@ struct AppLogPFDataView: View
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.openWindow)       var openWindow
 
-    @State private  var cAppDataButtonPresses:Int                             = 0
-    @State private  var cAppWorkRouteButtonPresses:Int                        = 0
+    @State private  var cAppDataButtonPresses:Int                              = 0
+    @State private  var cAppWorkRouteButtonPresses:Int                         = 0
     
-    @State private  var isAppDataViewModal:Bool                               = false
-    @State private  var isAppWorkRouteViewModal:Bool                          = false
+    @State private  var isAppDataViewModal:Bool                                = false
+    @State private  var isAppWorkRouteViewModal:Bool                           = false
 
-    @State private  var cAppLogPFDataLoggingRefreshButtonPresses:Int          = 0
-    @State private  var cAppLogPFDataLoggingPFAdminsButtonPresses:Int         = 0
-    @State private  var cAppLogPFDataLoggingPFCscButtonPresses:Int            = 0
-    @State private  var cAppLogPFDataLoggingPFTherapistNamesButtonPresses:Int = 0
-    @State private  var cAppLogPFDataLoggingPFTherapistFileButtonPresses:Int  = 0
-    @State private  var cAppLogPFDataLoggingTherapistXrefButtonPresses:Int    = 0
-    @State private  var cAppLogPFDataLoggingPFPatientNamesButtonPresses:Int   = 0
-    @State private  var cAppLogPFDataLoggingPFPatientFileButtonPresses:Int    = 0
-    @State private  var cAppLogPFDataLoggingPFPatientXrefButtonPresses:Int    = 0
-    @State private  var cAppLogPFDataLoggingPatientXrefButtonPresses:Int      = 0
-    @State private  var cAppLogPFDataLoggingSchedPatLocButtonPresses:Int      = 0
+    @State private  var cAppLogPFDataLoggingRefreshButtonPresses:Int           = 0
+    @State private  var cAppLogPFDataLoggingPFAdminsButtonPresses:Int          = 0
+    @State private  var cAppLogPFDataLoggingPFCscButtonPresses:Int             = 0
+    @State private  var cAppLogPFDataLoggingPFTherapistNamesButtonPresses:Int  = 0
+    @State private  var cAppLogPFDataLoggingPFTherapistFileButtonPresses:Int   = 0
+    @State private  var cAppLogPFDataLoggingTherapistXrefButtonPresses:Int     = 0
+    @State private  var cAppLogPFDataLoggingPFPatientNamesButtonPresses:Int    = 0
+    @State private  var cAppLogPFDataLoggingPFPatientFileButtonPresses:Int     = 0
+    @State private  var cAppLogPFDataLoggingPFPatientXrefButtonPresses:Int     = 0
+    @State private  var cAppLogPFDataLoggingPatientXrefButtonPresses:Int       = 0
+    @State private  var cAppLogPFDataLoggingSchedPatLocButtonPresses:Int       = 0
+    @State private  var cAppLogPFDataLoggingExportSchedPatLocButtonPresses:Int = 0
 
-    @State private  var cAppLogPFDataReloadPFAdminsButtonPresses:Int          = 0
-    @State private  var cAppLogPFDataReloadPFCscButtonPresses:Int             = 0
-    @State private  var cAppLogPFDataReloadPFTherapistFileButtonPresses:Int   = 0
-    @State private  var cAppLogPFDataReloadPFPatientFileButtonPresses:Int     = 0
-    @State private  var cAppLogPFDataReloadSchedPatLocButtonPresses:Int       = 0
+    @State private  var cAppLogPFDataReloadPFAdminsButtonPresses:Int           = 0
+    @State private  var cAppLogPFDataReloadPFCscButtonPresses:Int              = 0
+    @State private  var cAppLogPFDataReloadPFTherapistFileButtonPresses:Int    = 0
+    @State private  var cAppLogPFDataReloadPFPatientFileButtonPresses:Int      = 0
+    @State private  var cAppLogPFDataReloadSchedPatLocButtonPresses:Int        = 0
+    @State private  var cAppLogPFDataReloadExportSchedPatLocButtonPresses:Int  = 0
 
-                    var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
-                    var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
+                    var jmAppDelegateVisitor:JmAppDelegateVisitor              = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager            = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                    var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo  = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
     
     init()
     {
@@ -749,6 +751,53 @@ struct AppLogPFDataView: View
 
                         }
 
+                        HStack(alignment:.center)
+                        {
+
+                            Spacer()
+
+                            Button
+                            {
+
+                                self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses += 1
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for 'export' SchedPatLoc'.#(\(self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses))...")
+
+                                self.detailDictExportSchedPatientLocItems()
+
+                            }
+                            label:
+                            {
+
+                                HStack(alignment:.center)
+                                {
+
+                                    Spacer()
+
+                                    Label("", systemImage: "arrow.down.square")
+                                        .help(Text("Log PFData for 'export' SchedPatLoc..."))
+                                        .imageScale(.small)
+
+                                    Text("Log PFData 'export' (SchedPatLoc) - #(\(self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses))...")
+                                        .font(.caption2)
+
+                                    Spacer()
+
+                                }
+
+                            }
+                        #if os(macOS)
+                            .buttonStyle(.borderedProminent)
+                            .padding()
+                        //  .background(???.isPressed ? .blue : .gray)
+                            .cornerRadius(10)
+                            .foregroundColor(Color.primary)
+                        #endif
+
+                            Spacer()
+
+                        }
+
                     }
 
                     Section(header: Text("Data Reloading (Cloud) Options:"))
@@ -970,6 +1019,53 @@ struct AppLogPFDataView: View
                                         .imageScale(.small)
 
                                     Text("Reload PFData (SchedPatLoc) - #(\(self.cAppLogPFDataReloadSchedPatLocButtonPresses))...")
+                                        .font(.caption2)
+
+                                    Spacer()
+
+                                }
+
+                            }
+                        #if os(macOS)
+                            .buttonStyle(.borderedProminent)
+                            .padding()
+                        //  .background(???.isPressed ? .blue : .gray)
+                            .cornerRadius(10)
+                            .foregroundColor(Color.primary)
+                        #endif
+
+                            Spacer()
+
+                        }
+
+                        HStack(alignment:.center)
+                        {
+
+                            Spacer()
+
+                            Button
+                            {
+
+                                self.cAppLogPFDataReloadExportSchedPatLocButtonPresses += 1
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for 'export' SchedPatLoc'.#(\(self.cAppLogPFDataReloadExportSchedPatLocButtonPresses))...")
+
+                                self.reloadDictExportSchedPatientLocItems()
+
+                            }
+                            label:
+                            {
+
+                                HStack(alignment:.center)
+                                {
+
+                                    Spacer()
+
+                                    Label("", systemImage: "icloud.and.arrow.down.fill")
+                                        .help(Text("Reload PFData for 'export' SchedPatLoc..."))
+                                        .imageScale(.small)
+
+                                    Text("Reload PFData 'export' (SchedPatLoc) - #(\(self.cAppLogPFDataReloadExportSchedPatLocButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -1432,7 +1528,7 @@ struct AppLogPFDataView: View
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
     
-        // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFCscDataItem(s)...
+        // Log BOTH of the ParseCoreManager and ParseCoreBkgdDataRepo PFSchedPatientLocItems...
     
         self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreManager' #(\(self.jmAppParseCoreManager.dictSchedPatientLocItems.count)) dictionary of ScheduledPatientLocationItem(s)...")
     
@@ -1449,6 +1545,28 @@ struct AppLogPFDataView: View
         return
     
     }   // End of private func detailDictSchedPatientLocItems()
+
+    private func detailDictExportSchedPatientLocItems()
+    {
+    
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+    
+        // Log ParseCoreBkgdDataRepo PFSchedPatientLocItems...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Displaying 'jmAppParseCoreBkgdDataRepo' #(\(self.jmAppParseCoreBkgdDataRepo.dictExportSchedPatientLocItems.count)) dictionary of 'export' ScheduledPatientLocationItem(s)")
+    
+        self.jmAppParseCoreBkgdDataRepo.displayDictExportSchedPatientLocItems()
+    
+        // Exit...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+    
+        return
+    
+    }   // End of private func detailDictExportSchedPatientLocItems()
 
     // 'Reload' Method(s):
 
@@ -1613,6 +1731,30 @@ struct AppLogPFDataView: View
         self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to get ScheduledPatientLocation item(s)...")
 
         let _ = self.jmAppParseCoreBkgdDataRepo.gatherJmAppParsePFQueriesForScheduledLocationsInBackground(bForceReloadOfPFQuery:true)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to get ScheduledPatientLocation item(s)...")
+    
+        // Exit...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+    
+        return
+    
+    }   // End of private func reloadDictSchedPatientLocItems()
+
+    private func reloadDictExportSchedPatientLocItems()
+    {
+    
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Reload the ParseCoreBkgdDataRepo PFSchedPatientLocItems...
+    
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to get ScheduledPatientLocation item(s)...")
+
+    //  let _ = self.jmAppParseCoreBkgdDataRepo.gatherJmAppParsePFQueriesForScheduledLocationsInBackground(bForceReloadOfPFQuery:true)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'gatherJmAppParsePFQueriesForScheduledLocationsInBackground()' to get ScheduledPatientLocation item(s)...")
     
