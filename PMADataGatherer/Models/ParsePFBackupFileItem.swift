@@ -18,7 +18,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFBackupFileItem"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0202"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -231,13 +231,13 @@ class ParsePFBackupFileItem: NSObject, Identifiable
             self.sCurrentCity.count         < 1)
         {
         
-            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <PFBackupFile> - Copied 'self.sCurrentLocationName' is [\(self.sCurrentLocationName)] and 'self.sCurrentCity' is [\(self.sCurrentCity)] - 1 or both are 'blank' - 'PFBackupFileItem.sCurrentLocationName' is [\(PFBackupFileItem.sCurrentLocationName)] and 'PFBackupFileItem.sCurrentCity' is [\(PFBackupFileItem.sCurrentCity)] - Warning!")
+            self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <PFBackupFile> - Copied 'self.sCurrentLocationName' is [\(self.sCurrentLocationName)] and 'self.sCurrentCity' is [\(self.sCurrentCity)] - 1 or both are 'blank' - 'PFBackupFileItem.sCurrentLocationName' is [\(pfBackupFileItem.sCurrentLocationName)] and 'PFBackupFileItem.sCurrentCity' is [\(pfBackupFileItem.sCurrentCity)] - Warning!")
         
         }
 
         // Trace the 'clone' From/To fields in both objects...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <PFBackupFile> - From/To 'self.pfBackupFileObjectClonedFrom' is [\(String(describing: self.pfBackupFileObjectClonedFrom))] and 'self.pfBackupFileObjectClonedTo' is [\(String(describing: self.pfBackupFileObjectClonedTo))] - 'PFBackupFileItem.pfBackupFileObjectClonedFrom' is [\(String(describing: PFBackupFileItem.pfBackupFileObjectClonedFrom))] and 'PFBackupFileItem.pfBackupFileObjectClonedTo' is [\(String(describing: PFBackupFileItem.pfBackupFileObjectClonedTo))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup copy 'init'> <PFBackupFile> - From/To 'self.pfBackupFileObjectClonedFrom' is [\(String(describing: self.pfBackupFileObjectClonedFrom))] and 'self.pfBackupFileObjectClonedTo' is [\(String(describing: self.pfBackupFileObjectClonedTo))] - 'PFBackupFileItem.pfBackupFileObjectClonedFrom' is [\(String(describing: pfBackupFileItem.pfBackupFileObjectClonedFrom))] and 'PFBackupFileItem.pfBackupFileObjectClonedTo' is [\(String(describing: pfBackupFileItem.pfBackupFileObjectClonedTo))]...")
 
         // Exit:
   
@@ -293,7 +293,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
 
     //  asToString.append("'pfBackupFilePFObject': [\(String(describing: self.pfBackupFilePFObject))],")
 
-        if (self.pfCscObject == nil)
+        if (self.pfBackupFilePFObject == nil)
         {
             asToString.append("'pfBackupFilePFObject': [-nil-],")
         }
@@ -374,7 +374,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
 
     //  self.xcgLogMsg("\(sCurrMethodDisp) 'pfBackupFilePFObject'              is [\(String(describing: self.pfBackupFilePFObject))]...")
 
-        if (self.pfCscObject == nil)
+        if (self.pfBackupFilePFObject == nil)
         {
             self.xcgLogMsg("\(sCurrMethodDisp) 'pfBackupFilePFObject':             is [-nil-]...")
         }
@@ -468,8 +468,8 @@ class ParsePFBackupFileItem: NSObject, Identifiable
         self.sPFBackupFileObjectLongitude      = String(describing: self.pfBackupFileObjectLongitude!)
         self.dblPFBackupFileObjectLatitude     = Double(self.sPFBackupFileObjectLatitude)  ?? 0.0
         self.dblPFBackupFileObjectLongitude    = Double(self.sPFBackupFileObjectLongitude) ?? 0.0
-        self.dblConvertedLatitude              = Double(String(describing: pfBackupFileObject.object(forKey:"latitude")!))  ?? 0.0
-        self.dblConvertedLongitude             = Double(String(describing: pfBackupFileObject.object(forKey:"longitude")!)) ?? 0.0
+        self.dblConvertedLatitude              = Double(String(describing: pfBackupVisit.object(forKey:"latitude")!))  ?? 0.0
+        self.dblConvertedLongitude             = Double(String(describing: pfBackupVisit.object(forKey:"longitude")!)) ?? 0.0
         
         self.bCurrentAddessLookupScheduled     = false
         self.bCurrentAddessLookupComplete      = false
@@ -513,7 +513,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
     //  
     //  }
 
-        self.pfBackupFileObject                = pfBackupFileItem.pfBackupFileObject                 
+        self.pfBackupFilePFObject              = pfBackupFileItem.pfBackupFilePFObject
         
         self.sPFBackupFileParseClassName       = pfBackupFileItem.sPFBackupFileParseClassName        
         self.sPFBackupFileParseObjectId        = pfBackupFileItem.sPFBackupFileParseObjectId         
@@ -524,17 +524,17 @@ class ParsePFBackupFileItem: NSObject, Identifiable
         self.bPFBackupFileParseIdDirty         = pfBackupFileItem.bPFBackupFileParseIdDirty          
         self.sPFBackupFileParseAllKeys         = pfBackupFileItem.sPFBackupFileParseAllKeys          
         
-        self.sTid                              = pfBacckupFileItem.sTid               
-        self.iTid                              = pfBacckupFileItem.iTid               
-        self.sPid                              = pfBacckupFileItem.sPid               
-        self.iPid                              = pfBacckupFileItem.iPid               
+        self.sTid                              = pfBackupFileItem.sTid
+        self.iTid                              = pfBackupFileItem.iTid
+        self.sPid                              = pfBackupFileItem.sPid
+        self.iPid                              = pfBackupFileItem.iPid
                                                                                       
-        self.sLastVDate                        = pfBacckupFileItem.sLastVDate         
-        self.sLastVDateType                    = pfBacckupFileItem.sLastVDateType     
-        self.iLastVDateType                    = pfBacckupFileItem.iLastVDateType     
-        self.sLastVDateLatitude                = pfBacckupFileItem.sLastVDateLatitude 
-        self.sLastVDateLongitude               = pfBacckupFileItem.sLastVDateLongitude
-        self.sLastVDateAddress                 = pfBacckupFileItem.sLastVDateAddress  
+        self.sLastVDate                        = pfBackupFileItem.sLastVDate
+        self.sLastVDateType                    = pfBackupFileItem.sLastVDateType
+        self.iLastVDateType                    = pfBackupFileItem.iLastVDateType
+        self.sLastVDateLatitude                = pfBackupFileItem.sLastVDateLatitude
+        self.sLastVDateLongitude               = pfBackupFileItem.sLastVDateLongitude
+        self.sLastVDateAddress                 = pfBackupFileItem.sLastVDateAddress
 
         self.pfBackupFileObjectLatitude        = pfBackupFileItem.pfBackupFileObjectLatitude         
         self.pfBackupFileObjectLongitude       = pfBackupFileItem.pfBackupFileObjectLongitude        
@@ -549,9 +549,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
         let dblCurrentLongitude:Double         = pfBackupFileItem.dblConvertedLongitude
 
         self.dblConvertedLatitude              = pfBackupFileItem.dblConvertedLatitude        
-        self.dblConvertedLongitude             = pfBackupFileItem.dblConvertedLongitude       
-
-        self.sPFTherapistParseTID              = pfBackupFileItem.sPFTherapistParseTID        
+        self.dblConvertedLongitude             = pfBackupFileItem.dblConvertedLongitude
 
         // If 'self' (current) does NOT have 'important' location data, then copy all of it...
 
@@ -629,7 +627,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
 
         // Trace the 'clone' From/To fields in both objects...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFBackupFile> - From/To 'self.pfBackupFileObjectClonedFrom' is [\(String(describing: self.pfBackupFileObjectClonedFrom))] and 'self.pfBackupFileObjectClonedTo' is [\(String(describing: self.pfBackupFileObjectClonedTo))] - 'pfBackupFileItem.pfBackupFileObjectClonedFrom' is [\(String(describing: pfBackupFileItem.pfBackupFileObjectClonedFrom))] and 'PFBackupFileItem.pfBackupFileObjectClonedTo' is [\(String(describing: PFBackupFileItem.pfBackupFileObjectClonedTo))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Intermediate <dup 'overlay'> <PFBackupFile> - From/To 'self.pfBackupFileObjectClonedFrom' is [\(String(describing: self.pfBackupFileObjectClonedFrom))] and 'self.pfBackupFileObjectClonedTo' is [\(String(describing: self.pfBackupFileObjectClonedTo))] - 'pfBackupFileItem.pfBackupFileObjectClonedFrom' is [\(String(describing: pfBackupFileItem.pfBackupFileObjectClonedFrom))] and 'PFBackupFileItem.pfBackupFileObjectClonedTo' is [\(String(describing: pfBackupFileItem.pfBackupFileObjectClonedTo))]...")
 
         // Exit:
   
@@ -677,10 +675,10 @@ class ParsePFBackupFileItem: NSObject, Identifiable
 
             DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
             {
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfBackupFileObject)): <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFBackupFileParseName)]...")
+                self.xcgLogMsg("\(sCurrMethodDisp) #(1: <closure> Calling 'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sTid)]...")
 
-                let _ = clModelObservable2.updateGeocoderLocations(requestID: self.idpfBackupFileObject, 
-                                                                   latitude:  self.dblConvertedLatitude, 
+                let _ = clModelObservable2.updateGeocoderLocations(requestID: 1,
+                                                                   latitude:  self.dblConvertedLatitude,
                                                                    longitude: self.dblConvertedLongitude, 
                                                                    withCompletionHandler:
                                                                        { (requestID:Int, dictCurrentLocation:[String:Any]) in
@@ -696,7 +694,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
             self.bCurrentAddessLookupScheduled = false
             self.bCurrentAddessLookupComplete  = false
 
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(self.idpfBackupFileObject)): CoreLocation (service) is NOT available...")
+            self.xcgLogMsg("\(sCurrMethodDisp) #(1): CoreLocation (service) is NOT available...")
 
         }
 
@@ -714,14 +712,14 @@ class ParsePFBackupFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] for Therapist [\(self.sPFBackupFileParseName)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)] - 'requestID' is [\(requestID)] - 'dictCurrentLocation' is [\(String(describing: dictCurrentLocation))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] for Therapist [\(self.sTid)] - parameter 'bIsDownstreamObject' is [\(bIsDownstreamObject)] - 'requestID' is [\(requestID)] - 'dictCurrentLocation' is [\(String(describing: dictCurrentLocation))]...")
 
         // Update the address info for BOTH 'self' and (possibly 'from'/'to')...
 
         if (dictCurrentLocation.count > 0)
         {
         
-            self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sPFBackupFileParseName)] current 'location' [\(String(describing: dictCurrentLocation))]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'updateGeocoderLocation()' with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(self.dblConvertedLatitude)/\(self.dblConvertedLongitude)] for Therapist [\(self.sTid)] current 'location' [\(String(describing: dictCurrentLocation))]...")
 
             self.sCurrentLocationName = String(describing: (dictCurrentLocation["sCurrentLocationName"] ?? ""))
             self.sCurrentCity         = String(describing: (dictCurrentLocation["sCurrentCity"]         ?? ""))
@@ -738,11 +736,11 @@ class ParsePFBackupFileItem: NSObject, Identifiable
                     self.pfBackupFileObjectClonedFrom != self)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfBackupFileObjectClonedFrom' of [\(String(describing: self.pfBackupFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFBackupFileParseName)]...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfBackupFileObjectClonedFrom' of [\(String(describing: self.pfBackupFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sTid)]...")
 
                     self.pfBackupFileObjectClonedFrom!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfBackupFileObjectClonedFrom' of [\(String(describing: self.pfBackupFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFBackupFileParseName)]...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfBackupFileObjectClonedFrom' of [\(String(describing: self.pfBackupFileObjectClonedFrom))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sTid)]...")
 
                 }
 
@@ -750,11 +748,11 @@ class ParsePFBackupFileItem: NSObject, Identifiable
                     self.pfBackupFileObjectClonedTo != self)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfBackupFileObjectClonedTo' of [\(String(describing: self.pfBackupFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFBackupFileParseName)]...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Calling 'self.pfBackupFileObjectClonedTo' of [\(String(describing: self.pfBackupFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sTid)]...")
 
                     self.pfBackupFileObjectClonedTo!.handleLocationAndAddressClosureEvent(bIsDownstreamObject:true, requestID:requestID, dictCurrentLocation:dictCurrentLocation)
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfBackupFileObjectClonedTo' of [\(String(describing: self.pfBackupFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sPFBackupFileParseName)]...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(requestID)): <closure> Called  'self.pfBackupFileObjectClonedTo' of [\(String(describing: self.pfBackupFileObjectClonedTo))] with 'self' of [\(String(describing: self))] for Therapist [\(self.sTid)]...")
 
                 }
             

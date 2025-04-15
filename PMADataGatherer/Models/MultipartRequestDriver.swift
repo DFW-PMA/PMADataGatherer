@@ -18,7 +18,7 @@ final class MultipartRequestDriver: Sendable
     {
         
         static let sClsId          = "MultipartRequestDriver"
-        static let sClsVers        = "v1.0904"
+        static let sClsVers        = "v1.1002"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
