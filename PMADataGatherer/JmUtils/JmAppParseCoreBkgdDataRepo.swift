@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.1817"
+        static let sClsVers      = "v1.1910"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -50,7 +50,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                                                                                  // [String:ParsePFAdminsDataItem]
                                                                                  // Key:PFAdminsParseTID(String)
 
-    var bHasDictTherapistFileItemsBeenDisplayed:Bool                           = false
+//  var bHasDictTherapistFileItemsBeenDisplayed:Bool                           = false
+    var bHasDictTherapistFileItemsBeenDisplayed:Bool                           = true   // Let this fire 'on-demand'...
     var dictPFTherapistFileItems:[Int:ParsePFTherapistFileItem]                = [Int:ParsePFTherapistFileItem]()
                                                                                  // [Int:ParsePFTherapistFileItem]
                                                                                  // Key:Tid(Int) -> TherapistID (Int)
@@ -62,7 +63,8 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                                                                                  // Key:TherapistName(String)<lowercased>         -> Tid (String)
                                                                                  // Key:TherapistName(String)<lowercased & NO WS> -> Tid (String)
 
-    var bHasDictPatientFileItemsBeenDisplayed:Bool                             = false
+//  var bHasDictPatientFileItemsBeenDisplayed:Bool                             = false
+    var bHasDictPatientFileItemsBeenDisplayed:Bool                             = true   // Let this fire 'on-demand'...
     var dictPFPatientFileItems:[Int:ParsePFPatientFileItem]                    = [Int:ParsePFPatientFileItem]()
                                                                                  // [Int:ParsePFPatientFileItem]
                                                                                  // Key:Pid(Int) -> PatientPid (Int)
@@ -74,17 +76,35 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                                                                                  // Key:PatientName(String)<lowercased>         -> Pid (String)
                                                                                  // Key:PatientName(String)<lowercased & NO WS> -> Pid (String)
 
-    var bNeedFirstPassPFQueriesInBackground:Bool                               = true
+//  var bNeedFirstPassPFQueriesInBackground:Bool                               = true
+    var bNeedFirstPassPFQueriesInBackground:Bool                               = false  // Let this fire from a View...
 
-    var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                         = false
+//  var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                         = false
+    var bHasDictSchedPatientLocItemsBeenDisplayed:Bool                         = true   // Let this fire 'on-demand'...
     var dictSchedPatientLocItems:[String:[ScheduledPatientLocationItem]]       = [String:[ScheduledPatientLocationItem]]()
                                                                                  // [String:[ScheduledPatientLocationItem]]
                                                                                  // Key:sPFTherapistParseTID(String)
 
-    var bHasDictExportSchedPatientLocItemsBeenDisplayed:Bool                   = false
+//  var bHasDictExportSchedPatientLocItemsBeenDisplayed:Bool                   = false
+    var bHasDictExportSchedPatientLocItemsBeenDisplayed:Bool                   = true   // Let this fire 'on-demand'...
     var dictExportSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
                                                                                  // [String:[ScheduledPatientLocationItem]]
                                                                                  // Key:sPFTherapistParseTID(String)
+
+//  var bHasDictExportBackupFileItemsBeenDisplayed:Bool                        = false
+    var bHasDictExportBackupFileItemsBeenDisplayed:Bool                        = true   // Let this fire 'on-demand'...
+    var dictExportBackupFileItems:[String:[String:ParsePFBackupFileItem]]      = [String:[String:ParsePFBackupFileItem]]()
+                                                                                 // [String:[String:ParsePFBackupFileItem]]
+                                                                                 // Key #1:"sTherapistTID(String).sPatientPID(String)"
+                                                                                 // Key #2:ParsePFBackupFileItem.sLastVDate
+                                                                                 // Value :ParsePFBackupFileItem
+
+//  var bHasDictExportLastBackupFileItemsBeenDisplayed:Bool                    = false
+    var bHasDictExportLastBackupFileItemsBeenDisplayed:Bool                    = true   // Let this fire 'on-demand'...
+    var dictExportLastBackupFileItems:[String:ParsePFBackupFileItem]           = [String:ParsePFBackupFileItem]()
+                                                                                 // [String:ParsePFBackupFileItem]
+                                                                                 // Key #1:"sTherapistTID(String).sPatientPID(String)"
+                                                                                 // Value :ParsePFBackupFileItem
 
                                                                                  // <<< PFCsc is WorkRoute locations:
     var listPFCscDataItems:[ParsePFCscDataItem]                                = [ParsePFCscDataItem]()
@@ -210,6 +230,10 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         asToString.append("[")
         asToString.append("'bHasDictExportSchedPatientLocItemsBeenDisplayed': [\(String(describing: self.bHasDictExportSchedPatientLocItemsBeenDisplayed))]")
         asToString.append("'dictExportSchedPatientLocItems': [\(String(describing: self.dictExportSchedPatientLocItems))]")
+        asToString.append("'bHasDictExportBackupFileItemsBeenDisplayed': [\(String(describing: self.bHasDictExportBackupFileItemsBeenDisplayed))]")
+        asToString.append("'dictExportBackupFileItems': [\(String(describing: self.dictExportBackupFileItems))]")
+        asToString.append("'bHasDictExportLastBackupFileItemsBeenDisplayed': [\(String(describing: self.bHasDictExportLastBackupFileItemsBeenDisplayed))]")
+        asToString.append("'dictExportLastBackupFileItems': [\(String(describing: self.dictExportLastBackupFileItems))]")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'listPFCscDataItems': [\(String(describing: self.listPFCscDataItems))] <WorkRoute items>")
@@ -2015,6 +2039,14 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         
         }
 
+        // Apply the BackupVisit data to the Scheduled Patient Location data...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Calling 'self.applyBackupFileItemsToScheduledLocations()'...")
+
+        self.applyBackupFileItemsToScheduledLocations()
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Called  'self.applyBackupFileItemsToScheduledLocations()'...")
+
         // Exit...
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -2049,7 +2081,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
         // Make sure we have 'Therapist' and 'Patient' dictionaries...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - creating the 'export' data...")
+        self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - creating the 'export' data...")
 
         if (self.dictPFTherapistFileItems.count < 1)
         {
@@ -2454,6 +2486,9 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
         self.xcgLogMsg("\(sCurrMethodDisp) BackupVisit 'sCurrentQueryDate' is [\(String(describing: sCurrentQueryDate))] <formatted>...")
 
+        self.dictExportBackupFileItems     = [String:[String:ParsePFBackupFileItem]]()
+        self.dictExportLastBackupFileItems = [String:ParsePFBackupFileItem]()
+
         // Create a PFQuery for the 'BackupVisit' class...
 
         self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'BackupVisit' class...")
@@ -2499,15 +2534,114 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
                 }
 
+                var cParsePFBackupVisitObjects:Int = 0
 
+                for parsePFBackupVisitObject in listPFBackupVisitObjects!
+                {
 
+                    cParsePFBackupVisitObjects += 1
 
+                    let parsePFBackupFileItem:ParsePFBackupFileItem = ParsePFBackupFileItem(pfBackupVisit:parsePFBackupVisitObject)
 
+                    if (parsePFBackupFileItem.sTid.count < 1 ||
+                        parsePFBackupFileItem.sPid.count < 1)
+                    {
+                    
+                        self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - For the 'parsePFBackupFileItem' object - either the TID string of [\(parsePFBackupFileItem.sTid)] or PID string of [\(parsePFBackupFileItem.sPid)] is an 'empty' string - bypassing this object - Warning!")
+                        
+                        continue
 
+                    }
 
+                    if (parsePFBackupFileItem.sLastVDate.count < 1)
+                    {
+                    
+                        self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - For the 'parsePFBackupFileItem' object - the 'sLastVDate' string of [\(parsePFBackupFileItem.sLastVDate)] is an 'empty' string - bypassing this object - Warning!")
+                        
+                        continue
 
+                    }
 
+                    // ----------------------------------------------------------------------------------------------------------
+                    //  var dictExportBackupFileItems:[String:[String:ParsePFBackupFileItem]] = 
+                    //      [String:[String:ParsePFBackupFileItem]]()
+                    //          // [String:[String:ParsePFBackupFileItem]]
+                    //          // Key #1:"sTherapistTID(String).sPatientPID(String)"
+                    //          // Key #2:ParsePFBackupFileItem.sLastVDate
+                    //          // Value :ParsePFBackupFileItem
+                    // ----------------------------------------------------------------------------------------------------------
 
+                    let sExportBackupFileItemKey:String = "\(parsePFBackupFileItem.sTid).\(parsePFBackupFileItem.sPid)"
+
+                    if (self.dictExportBackupFileItems[sExportBackupFileItemKey] == nil)
+                    {
+                    
+                        self.dictExportBackupFileItems[sExportBackupFileItemKey] = [String:ParsePFBackupFileItem]()
+                    
+                    }
+
+                    var dictExportBackupFileItemsByDate:[String:ParsePFBackupFileItem] =
+                        self.dictExportBackupFileItems[sExportBackupFileItemKey]!
+
+                    if (dictExportBackupFileItemsByDate[parsePFBackupFileItem.sLastVDate] == nil)
+                    {
+                    
+                        dictExportBackupFileItemsByDate[parsePFBackupFileItem.sLastVDate] = parsePFBackupFileItem
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - for a 'primary' Key of [\(sExportBackupFileItemKey)] and 'secondary' Key of [\(parsePFBackupFileItem.sLastVDate)] added a 'parsePFBackupFileItem' object to the dictionary of 'dictExportBackupFileItemsByDate'...")
+                    
+                    }
+                    else
+                    {
+                    
+                        dictExportBackupFileItemsByDate[parsePFBackupFileItem.sLastVDate]!.updateParsePFBackupFileItemFromPFBackupVisitIfNewer(pfBackupFileItem:parsePFBackupFileItem)
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - for a 'primary' Key of [\(sExportBackupFileItemKey)] and 'secondary' Key of [\(parsePFBackupFileItem.sLastVDate)] updated the 'parsePFBackupFileItem' object in the dictionary of 'dictExportBackupFileItemsByDate'...")
+                    
+                    }
+
+                    self.dictExportBackupFileItems[sExportBackupFileItemKey] = dictExportBackupFileItemsByDate
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Parse> - for a 'primary' Key of [\(sExportBackupFileItemKey)] and 'secondary' Key of [\(parsePFBackupFileItem.sLastVDate)] updated the dictionary of 'dictExportBackupFileItemsByDate'...")
+
+                    if (self.dictExportLastBackupFileItems[sExportBackupFileItemKey] == nil)
+                    {
+
+                        let pfBackupFileItem:ParsePFBackupFileItem                   = ParsePFBackupFileItem(pfBackupFileItem:parsePFBackupFileItem)
+
+                        self.dictExportLastBackupFileItems[sExportBackupFileItemKey] = pfBackupFileItem
+                    
+                    }
+                    else
+                    {
+                    
+                        self.dictExportLastBackupFileItems[sExportBackupFileItemKey]!.updateParsePFBackupFileItemFromPFBackupVisitIfNewer(pfBackupFileItem:parsePFBackupFileItem)
+                    
+                    }
+
+                }
+
+            }
+
+            // If we created item(s) in the 'dictExportBackupFileItems' and we haven't displayed them, then display them...
+
+            if (self.bHasDictExportBackupFileItemsBeenDisplayed == false)
+            {
+
+                self.bHasDictExportBackupFileItemsBeenDisplayed = true
+
+                self.displayDictExportBackupFileItems()
+
+            }
+
+            // If we created item(s) in the 'dictExportLastBackupFileItems' and we haven't displayed them, then display them...
+
+            if (self.bHasDictExportLastBackupFileItemsBeenDisplayed == false)
+            {
+
+                self.bHasDictExportLastBackupFileItemsBeenDisplayed = true
+
+                self.displayDictExportLastBackupFileItems()
 
             }
 
@@ -2525,207 +2659,6 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
         }
 
-     // // Repopulate the 'dictSchedPatientLocItems' dictionary with BackupVisit information...
-     //
-     // self.xcgLogMsg("\(sCurrMethodDisp) Enumerating the dictionary of #(\(self.dictSchedPatientLocItems.count)) 'dictSchedPatientLocItems' item(s) to gather 'BackupVisit' information...")
-     //
-     // let cPFTherapistTotalTIDs:Int = self.dictExportSchedPatientLocItems.count
-     // var cPFTherapistParseTIDs:Int = 0
-     //
-     // for (sPFTherapistParseTID, listOfScheduledPatientLocationItems) in self.dictExportSchedPatientLocItems
-     // {
-     //
-     //     cPFTherapistParseTIDs += 1
-     //
-     //     if (sPFTherapistParseTID.count  < 1 ||
-     //         sPFTherapistParseTID       == "-N/A-")
-     //     {
-     //
-     //         self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
-     //
-     //         continue
-     //
-     //     }
-     //
-     //     if (listOfScheduledPatientLocationItems.count < 1)
-     //     {
-     //
-     //         self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFTherapistTotalTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listOfScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
-     //
-     //         continue
-     //
-     //     }
-     //
-     //     var cPFPatientParsePIDs:Int = 0 
-     //
-     //     for scheduledPatientLocationItem in listOfScheduledPatientLocationItems
-     //     {
-     //
-     //         cPFPatientParsePIDs += 1 
-     //
-     //         if (scheduledPatientLocationItem.iPid < 1)
-     //         {
-     //         
-     //             self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cPFPatientParsePIDs)) for 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the patient 'pid' field ('iPid') is < 1 - Warning!")
-     //
-     //             continue
-     //         
-     //         }
-     //         
-     //         // Create a PFQuery for the 'BackupVisit' class...
-     //
-     //         self.xcgLogMsg("\(sCurrMethodDisp) Calling PFQuery to construct an instance for the 'BackupVisit' class...")
-     //
-     //         let pfQueryBackupVisit:PFQuery = PFQuery(className:"BackupVisit")
-     //
-     //         self.xcgLogMsg("\(sCurrMethodDisp) Called  PFQuery to construct an instance for the 'BackupVisit' class...")
-     //
-     //         // Set the query parameter(s) and issue the 'find' then (possibly) iterate the result(s)...
-     //
-     //         self.xcgLogMsg("\(sCurrMethodDisp) Returned query of 'pfQueryBackupVisit' is [\(String(describing: pfQueryBackupVisit))]...")
-     //
-     //         do
-     //         {
-     //
-     //         // ------------------------------------------------------------------------------------------------------------------
-     //         //  :: From PFQuery Class: 'BackupVisit' ::
-     //         //
-     //         //  [Query::{ "pid"            : NumberLong(13556), 
-     //         //            "billable"       : NumberLong(1), 
-     //         //            "isTelepractice" : { "$ne" : NumberLong(1) },
-     //         //            "VDate"          : { "$gt" : "2024-11-10" } }]  // Yields all visit(s) in last 30 day(s) or such...
-     //         //  [Sort::{"VDate": -1}]                                     // Yields visit(s) newest to oldest (1st one is newest)...
-     //         // ------------------------------------------------------------------------------------------------------------------
-     //
-     //             self.xcgLogMsg("\(sCurrMethodDisp) Searching for 'pfQueryBackupVisit' Item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] for PID (\(scheduledPatientLocationItem.iPid))...")
-     //
-     //             pfQueryBackupVisit.whereKeyExists("lat")
-     //             pfQueryBackupVisit.whereKeyExists("long")
-     //
-     //             pfQueryBackupVisit.whereKey("pid",            equalTo:scheduledPatientLocationItem.iPid)
-     //             pfQueryBackupVisit.whereKey("billable",       equalTo:1)
-     //             pfQueryBackupVisit.whereKey("isTelepractice", notEqualTo:1)
-     //             pfQueryBackupVisit.whereKey("VDate",          greaterThan:sCurrentQueryDate)
-     //             
-     //             pfQueryBackupVisit.whereKey("tid", containedIn: [])
-     //
-     //             pfQueryBackupVisit.addDescendingOrder("VDate")
-     //
-     //             pfQueryBackupVisit.limit = 1000
-     //
-     //             let listPFBackupVisitObjects:[PFObject]? = try pfQueryBackupVisit.findObjects()
-     //
-     //             if (listPFBackupVisitObjects != nil &&
-     //                 listPFBackupVisitObjects!.count > 0)
-     //             {
-     //
-     //                 self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryBackupVisit' returned a count of #(\(listPFBackupVisitObjects!.count)) PFObject(s) for PID (\(scheduledPatientLocationItem.iPid))...")
-     //                 self.xcgLogMsg("\(sCurrMethodDisp) Using the 1st returned 'pfQueryBackupVisit' item...")
-     //
-     //                 // ------------------------------------------------------------------------------------------------
-     //                 //  >>> Template 1st entry, then search for new Template
-     //                 //  >>>     (if item(s) are available and address == ""),
-     //                 //  >>> to re-Template an item that is address != ""; and posted = 1;...
-     //                 // ------------------------------------------------------------------------------------------------
-     //
-     //                 var pfQueryBackupVisitTemplate = listPFBackupVisitObjects![0]
-     //
-     //                 if (listPFBackupVisitObjects!.count > 1 &&
-     //                     String(describing: (pfQueryBackupVisitTemplate.object(forKey:"address"))) == "")
-     //                 {
-     //
-     //                     for pfBackupVisit in listPFBackupVisitObjects!
-     //                     {
-     //
-     //                         if (String(describing: (pfBackupVisit.object(forKey:"address"))) != "" &&
-     //                             String(describing: (pfBackupVisit.object(forKey:"posted")))  == "1")
-     //                         {
-     //
-     //                             pfQueryBackupVisitTemplate = pfBackupVisit
-     //                             
-     //                             break;
-     //                         
-     //                         }
-     //
-     //                     }
-     //
-     //                 }
-     //
-     //                 scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:pfQueryBackupVisitTemplate)
-     //
-     //                 if (scheduledPatientLocationItem.sLastVDateAddress == "")
-     //                 {
-     //
-     //                     self.xcgLogMsg("\(sCurrMethodDisp) Updating 'scheduledPatientLocationItem' by calling 'updateGeocoderLocation()' for Latitude/Longitude of [\(scheduledPatientLocationItem.sLastVDateLatitude)/\(scheduledPatientLocationItem.sLastVDateLongitude)]...")
-     //
-     //                     if (self.jmAppDelegateVisitor!.jmAppCLModelObservable2 != nil)
-     //                     {
-     //                     
-     //                         let clModelObservable2:CoreLocationModelObservable2 = self.jmAppDelegateVisitor!.jmAppCLModelObservable2!
-     //                         let dblDeadlineInterval:Double                      = clModelObservable2.requestNextReverseLocationLookupDeadlineInterval(clRevLocType:CLRevLocType.tertiary)
-     //
-     //                         DispatchQueue.main.asyncAfter(deadline:(.now() + dblDeadlineInterval))
-     //                         {
-     //                             self.xcgLogMsg("\(sCurrMethodDisp) <closure> Calling 'updateGeocoderLocation()'with 'self' of [\(String(describing: self))] for Latitude/Longitude of [\(scheduledPatientLocationItem.sLastVDateLatitude)/\(scheduledPatientLocationItem.sLastVDateLongitude)] from 'scheduledPatientLocationItem' for Patient named [\(scheduledPatientLocationItem.sPtName)]...")
-     //
-     //                             let _ = clModelObservable2.updateGeocoderLocations(requestID: 1, 
-     //                                                                                latitude:  Double(scheduledPatientLocationItem.sLastVDateLatitude)!,
-     //                                                                                longitude: Double(scheduledPatientLocationItem.sLastVDateLongitude)!, 
-     //                                                                                withCompletionHandler:
-     //                                                                                    { (requestID:Int, dictCurrentLocation:[String:Any]) in
-     //
-     //                                                                                        let sStreetAddress:String = String(describing: (dictCurrentLocation["sCurrentLocationName"]       ?? ""))
-     //                                                                                        let sCity:String          = String(describing: (dictCurrentLocation["sCurrentCity"]               ?? ""))
-     //                                                                                        let sState:String         = String(describing: (dictCurrentLocation["sCurrentAdministrativeArea"] ?? ""))
-     //                                                                                        let sZipCode:String       = String(describing: (dictCurrentLocation["sCurrentPostalCode"]         ?? ""))
-     //
-     //                                                                                        if (sStreetAddress.count < 1 ||
-     //                                                                                            sCity.count          < 1)
-     //                                                                                        {
-     //                                                                                            
-     //                                                                                            scheduledPatientLocationItem.sLastVDateAddress = ""
-     //                                                                                        
-     //                                                                                        }
-     //                                                                                        else
-     //                                                                                        {
-     //
-     //                                                                                            scheduledPatientLocationItem.sLastVDateAddress = "\(sStreetAddress), \(sCity), \(sState), \(sZipCode)"
-     //
-     //                                                                                        }
-     //
-     //                                                                                        self.xcgLogMsg("\(sCurrMethodDisp) Updated 'scheduledPatientLocationItem' for an address of [\(scheduledPatientLocationItem.sLastVDateAddress)] for Latitude/Longitude of [\(scheduledPatientLocationItem.sLastVDateLatitude)/\(scheduledPatientLocationItem.sLastVDateLongitude)]...")
-     //
-     //                                                                                    }
-     //                                                                               )
-     //                         }
-     //
-     //                     }
-     //
-     //                 }
-     //
-     //                 self.xcgLogMsg("\(sCurrMethodDisp) Updated an Item 'scheduledPatientLocationItem' of [\(scheduledPatientLocationItem)] (in a List) to the dictionary of 'dictSchedPatientLocItems' item(s) keyed by 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] for PID (\(scheduledPatientLocationItem.iPid))...")
-     //
-     //             }
-     //             else
-     //             {
-     //
-     //                 self.xcgLogMsg("\(sCurrMethodDisp) Parse - query of 'pfQueryBackupVisit' returned an 'empty' or nil list of PFObject(s) for PID (\(scheduledPatientLocationItem.iPid))...")
-     //
-     //             }
-     //
-     //         }
-     //         catch
-     //         {
-     //
-     //             self.xcgLogMsg("\(sCurrMethodDisp) Parse - failed execute the query 'pfQueryBackupVisit' - Details: \(error) - Error!")
-     //
-     //         }
-     //
-     //     }
-     //
-     // }
-     //
-
         // Exit...
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
@@ -2733,6 +2666,173 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         return true
 
     }   // End of private func fetchJmAppPFQueriesForBackupVisitForExport(bForceReloadOfPFQuery:Bool, iTherapistTID:, sExportSchedulesStartWeek:, sExportSchedulesEndWeek:)->Bool.
+    
+    private func applyBackupFileItemsToScheduledLocations()->Bool
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Check that we have data to 'apply'...
+
+        if (self.dictExportSchedPatientLocItems.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) is an 'empty' dictionary - unable to apply the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+  
+        if (self.dictExportBackupFileItems.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportBackupFileItems' with #(\(self.dictExportBackupFileItems.count)) item(s) is an 'empty' dictionary - unable to apply the 'export' data - Error!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return false
+        
+        }
+
+        // Loop thru the dictionary of Scheduled Patient Locations and apply the appropriate BackupFile item(s)...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Applying the dictionary of #(\(self.dictExportBackupFileItems.count)) 'dictExportBackupFileItems' item(s) to the dictionary of #(\(self.dictExportSchedPatientLocItems.count)) 'dictExportSchedPatientLocItems' item(s)...")
+
+        let cExportPFTherapistTotalTIDs:Int               = self.dictExportSchedPatientLocItems.count
+        var cExportPFTherapistParseTIDs:Int               = 0
+        var cTotalExportScheduledPatientLocationItems:Int = 0
+        var cTotalExportLastBackupFileItemsApplied:Int    = 0
+
+        for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictExportSchedPatientLocItems
+        {
+
+            cExportPFTherapistParseTIDs += 1
+
+            if (sPFTherapistParseTID.count  < 1 ||
+                sPFTherapistParseTID       == "-N/A-")
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                continue
+
+            }
+
+            if (listScheduledPatientLocationItems.count < 1)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
+
+                continue
+
+            }
+
+            var cExportScheduledPatientLocationItems:Int = 0
+
+            for scheduledPatientLocationItem in listScheduledPatientLocationItems
+            {
+
+                cExportScheduledPatientLocationItems += 1
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Of #(\(cExportPFTherapistTotalTIDs)) TIDs - For TID [\(sPFTherapistParseTID)] - Applying the BackupFile data to 'scheduledPatientLocationItem' item #(\(cExportPFTherapistParseTIDs).\(cExportScheduledPatientLocationItems)):")
+
+                if (scheduledPatientLocationItem.sPid.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For the 'scheduledPatientLocationItem' object - the PID string of [\(scheduledPatientLocationItem.sPid)] is an 'empty' string - bypassing this object - Warning!")
+
+                    continue
+
+                }
+
+                if (scheduledPatientLocationItem.sVDate.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For the 'scheduledPatientLocationItem' object - the VDate string of [\(scheduledPatientLocationItem.sVDate)] is an 'empty' string - bypassing this object - Warning!")
+
+                    continue
+
+                }
+
+                let sExportBackupFileItemKey:String = "\(sPFTherapistParseTID).\(scheduledPatientLocationItem.sPid)"
+
+                if (self.dictExportBackupFileItems[sExportBackupFileItemKey] == nil)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For the 'scheduledPatientLocationItem' object - the 'sExportBackupFileItemKey' of [\(sExportBackupFileItemKey)] does NOT exist in the BackupFile item(s) dictionary - bypassing this object - Warning!")
+
+                    continue
+
+                }
+
+                var dictExportBackupFileItemsByDate:[String:ParsePFBackupFileItem] =
+                    self.dictExportBackupFileItems[sExportBackupFileItemKey]!
+
+                if (dictExportBackupFileItemsByDate[scheduledPatientLocationItem.sVDate] == nil)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For a 'primary' Key of [\(sExportBackupFileItemKey)] the 'scheduledPatientLocationItem.sVDate' of [\(scheduledPatientLocationItem.sVDate)] does NOT exist in the BackupFile item(s) dictionary - bypassing this object - Warning!")
+
+                    continue
+
+                }
+
+                let pfBackupFileItem:ParsePFBackupFileItem = dictExportBackupFileItemsByDate[scheduledPatientLocationItem.sVDate]!
+
+                scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFBackupVisitItem(pfBackupFileItem:pfBackupFileItem)
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For a 'primary' Key of [\(sExportBackupFileItemKey)] and 'secondary' Key of [\(scheduledPatientLocationItem.sVDate)] overlayed the BackupFile item - 'scheduledPatientLocationItem.sLastVDate' is [\(scheduledPatientLocationItem.sLastVDate)]...")
+
+                if (scheduledPatientLocationItem.sLastVDate.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For a 'primary' Key of [\(sExportBackupFileItemKey)] and 'secondary' Key of [\(scheduledPatientLocationItem.sVDate)] the 'scheduledPatientLocationItem.sLastVDate' of [\(scheduledPatientLocationItem.sLastVDate)] is an 'empty' string - attempting to apply a LAST BackupFile item...")
+
+                    if (self.dictExportLastBackupFileItems[sExportBackupFileItemKey] == nil)
+                    {
+
+                        self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For the 'scheduledPatientLocationItem' object - the 'sExportBackupFileItemKey' of [\(sExportBackupFileItemKey)] does NOT exist in the LAST BackupFile item(s) dictionary - bypassing this object - Warning!")
+
+                        continue
+
+                    }
+
+                    let pfBackupFileItem:ParsePFBackupFileItem = self.dictExportLastBackupFileItems[sExportBackupFileItemKey]!
+
+                    scheduledPatientLocationItem.updateScheduledPatientLocationItemFromPFBackupVisitItem(pfBackupFileItem:pfBackupFileItem)
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) <Apply BackupVisit to SchedPatLoc> - For a 'primary' Key of [\(sExportBackupFileItemKey)] and 'secondary' Key of [\(scheduledPatientLocationItem.sVDate)] overlayed the LAST BackupFile item...")
+
+                    cTotalExportLastBackupFileItemsApplied += 1
+                
+                }
+
+            }
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Export Counts> Of #(\(cExportPFTherapistTotalTIDs)) TIDs - #(\(cExportPFTherapistParseTIDs)) TID of [\(sPFTherapistParseTID)] has a TOTAL of #(\(cExportScheduledPatientLocationItems)) scheduled visits...")
+
+            cTotalExportScheduledPatientLocationItems += cExportScheduledPatientLocationItems
+
+        }
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <Export Counts> A TOTAL of #(\(cExportPFTherapistTotalTIDs)) TIDs have a TOTAL of #(\(cTotalExportScheduledPatientLocationItems)) scheduled visits with a TOTAL of #(\(cTotalExportLastBackupFileItemsApplied)) LAST BackupFile visits applied...")
+  
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return true
+
+    }   // End of private func applyBackupFileItemsToScheduledLocations()->Bool.
     
     public func exportJmAppPFQueriesForScheduledLocations()->Bool
     {
@@ -2744,15 +2844,10 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
 
         // Check that we have data to 'export'...
 
-    //  var bHasDictExportSchedPatientLocItemsBeenDisplayed:Bool                   = false
-    //  var dictExportSchedPatientLocItems:[String:[ScheduledPatientLocationItem]] = [String:[ScheduledPatientLocationItem]]()
-    //                                                                               // [String:[ScheduledPatientLocationItem]]
-    //                                                                               // Key:sPFTherapistParseTID(String)
-
         if (self.dictExportSchedPatientLocItems.count < 1)
         {
         
-            self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) is an 'empty' dictionary - unable to process the 'export' data - Error!")
+            self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) is an 'empty' dictionary - unable to process the 'export' data - Error!")
 
             // Exit...
 
@@ -2764,7 +2859,9 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
   
         // Convert the dictionary of 'export' SchedPatientLocItems into an Excel file...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - converting the 'export' data into Excel...")
+        self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - converting the 'export' data into Excel...")
+
+        // ...
 
         // Exit...
   
@@ -3810,6 +3907,175 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         return
 
     } // End of func displayDictExportSchedPatientLocItems().
+    
+    public func displayDictExportBackupFileItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // ----------------------------------------------------------------------------------------------------------
+        //  var dictExportBackupFileItems:[String:[String:ParsePFBackupFileItem]] = 
+        //      [String:[String:ParsePFBackupFileItem]]()
+        //          // [String:[String:ParsePFBackupFileItem]]
+        //          // Key #1:"sTherapistTID(String).sPatientPID(String)"
+        //          // Key #2:ParsePFBackupFileItem.sLastVDate
+        //          // Value :ParsePFBackupFileItem
+        // ----------------------------------------------------------------------------------------------------------
+
+        // Display the dictionary of 'dictExportBackupFileItems'...
+
+        if (self.bInternalTraceFlag == true)
+        {
+      
+            self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Display> - the dictionary of #(\(self.dictExportBackupFileItems.count)) 'dictExportBackupFileItems' item(s) is [\(String(describing: self.dictExportBackupFileItems))]...")
+      
+        }
+
+        if (self.dictExportBackupFileItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictExportBackupFileItems.count)) 'dictExportBackupFileItems' item(s)...")
+
+            let cExportTotalTIDsAndPIDs:Int     = self.dictExportBackupFileItems.count
+            var cExportParseTIDsAndPIDs:Int     = 0
+            var cExportTotalBackupFileItems:Int = 0
+
+            for (sExportBackupFileItemKey, dictExportBackupFileItemsByDate) in self.dictExportBackupFileItems
+            {
+
+                cExportParseTIDsAndPIDs += 1
+
+                if (sExportBackupFileItemKey.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportParseTIDsAndPIDs)) 'sExportBackupFileItemKey' is an 'empty' string - Warning!")
+
+                    continue
+
+                }
+
+                if (dictExportBackupFileItemsByDate.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportParseTIDsAndPIDs)) 'sExportBackupFileItemKey' of [\(sExportBackupFileItemKey)] - the 'dictExportBackupFileItemsByDate' count is less than 1 - Warning!")
+
+                    continue
+
+                }
+
+                var cExportBackupFileItems:Int = 0
+
+                for (sLastVDate, parsePFBackupFileItem) in dictExportBackupFileItemsByDate
+                {
+
+                    cExportBackupFileItems += 1
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Of #(\(cExportTotalTIDsAndPIDs)) TIDs.PIDs Keys - For Key [\(sExportBackupFileItemKey)] - Displaying 'parsePFBackupFileItem' item #(\(cExportParseTIDsAndPIDs).\(cExportBackupFileItems)):")
+
+                    parsePFBackupFileItem.displayParsePFBackupFileItemToLog()
+
+                }
+
+                self.xcgLogMsg("\(sCurrMethodDisp) <Export Counts> Of #(\(cExportTotalTIDsAndPIDs)) TIDs.PIDs Keys - For Key [\(sExportBackupFileItemKey)] has a TOTAL of #(\(cExportBackupFileItems)) backup visits...")
+
+                cExportTotalBackupFileItems += cExportBackupFileItems
+
+            }
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Export Counts> A TOTAL of #(\(cExportTotalTIDsAndPIDs)) TIDs.PIDs have a TOTAL of #(\(cExportTotalBackupFileItems)) backup visits...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictExportBackupFileItems' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictExportBackupFileItems().
+    
+    public func displayDictExportLastBackupFileItems()
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // ----------------------------------------------------------------------------------------------------------
+        //  var dictExportLastBackupFileItems:[String:ParsePFBackupFileItem] = 
+        //      [String:ParsePFBackupFileItem]()
+        //          // [String:ParsePFBackupFileItem]
+        //          // Key #1:"sTherapistTID(String).sPatientPID(String)"
+        //          // Value :ParsePFBackupFileItem
+        // ----------------------------------------------------------------------------------------------------------
+
+        // Display the dictionary of 'dictExportLastBackupFileItems'...
+
+        if (self.bInternalTraceFlag == true)
+        {
+      
+            self.xcgLogMsg("\(sCurrMethodDisp) <BackupVisit Display> - the dictionary of #(\(self.dictExportLastBackupFileItems.count)) 'dictExportLastBackupFileItems' item(s) is [\(String(describing: self.dictExportLastBackupFileItems))]...")
+      
+        }
+
+        if (self.dictExportLastBackupFileItems.count > 0)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Displaying the dictionary of #(\(self.dictExportLastBackupFileItems.count)) 'dictExportLastBackupFileItems' item(s)...")
+
+            let cExportTotalTIDsAndPIDs:Int     = self.dictExportLastBackupFileItems.count
+            var cExportParseTIDsAndPIDs:Int     = 0
+            var cExportTotalBackupFileItems:Int = 0
+
+            for (sExportBackupFileItemKey, parsePFBackupFileItem) in self.dictExportLastBackupFileItems
+            {
+
+                cExportParseTIDsAndPIDs += 1
+
+                if (sExportBackupFileItemKey.count < 1)
+                {
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportParseTIDsAndPIDs)) 'sExportBackupFileItemKey' is an 'empty' string - Warning!")
+
+                    continue
+
+                }
+
+                cExportTotalBackupFileItems += 1
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Of #(\(cExportTotalTIDsAndPIDs)) TIDs.PIDs Keys - For Key [\(sExportBackupFileItemKey)] - Displaying 'parsePFBackupFileItem' item #(\(cExportParseTIDsAndPIDs).\(cExportTotalBackupFileItems)):")
+
+                parsePFBackupFileItem.displayParsePFBackupFileItemToLog()
+
+            }
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Export Counts> A TOTAL of #(\(cExportTotalTIDsAndPIDs)) TIDs.PIDs have a TOTAL of #(\(cExportTotalBackupFileItems)) backup visits...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Unable to display the dictionary of 'dictExportLastBackupFileItems' item(s) - item(s) count is less than 1 - Warning!")
+
+        }
+        
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+
+    } // End of func displayDictExportLastBackupFileItems().
     
     public func displayListPFCscDataItems()
     {

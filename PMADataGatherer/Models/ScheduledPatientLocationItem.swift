@@ -28,7 +28,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1703"
+        static let sClsVers      = "v1.1902"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -36,6 +36,13 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         
     }
 
+    // 'Internal' Trace flag:
+
+    private 
+    var bInternalTraceFlag:Bool                             = false
+
+    // Item Data field(s):
+    
     var id:UUID
 //  var id:UUID                                             = UUID()
 //  { get: }
@@ -156,7 +163,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
   
         self.init()
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter - 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Finish the 'convenience' setup of field(s)...
 
@@ -178,7 +185,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
   
         self.init()
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Finish the 'convenience' setup of field(s)...
 
@@ -225,7 +232,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
   
         self.init()
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfTherapistFileItem.ID' is [\(String(describing: pfTherapistFileItem.object(forKey:"ID")))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Finish the 'convenience' setup of field(s)...
 
@@ -247,7 +254,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
   
         self.init()
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfPatientCalDayItem.tid' is [\(String(describing: pfPatientCalDayItem.object(forKey:"tid")))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Finish the 'convenience' setup of field(s)...
 
@@ -431,7 +438,14 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'scheduledPatientLocationItem' is [\(scheduledPatientLocationItem)]...")
+
+        }
 
         // Finish the 'convenience' setup of field(s)...
 
@@ -499,7 +513,14 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfTherapistFileItem.ID' is [\(String(describing: pfTherapistFileItem.object(forKey:"ID")))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfTherapistFileItem.ID' is [\(String(describing: pfTherapistFileItem.object(forKey:"ID")))]...")
+
+        }
 
         // Handle the 'update' (setup) of field(s)...
 
@@ -528,7 +549,14 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfTherapistFileItem.iPFTherapistFileTID' is [\(String(describing: pfTherapistFileItem.iPFTherapistFileTID))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfTherapistFileItem.iPFTherapistFileTID' is [\(String(describing: pfTherapistFileItem.iPFTherapistFileTID))]...")
+
+        }
 
         // Handle the 'update' (setup) of field(s)...
 
@@ -557,7 +585,14 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfPatientFileItem.ID' is [\(String(describing: pfPatientFileItem.object(forKey:"ID")))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfPatientFileItem.ID' is [\(String(describing: pfPatientFileItem.object(forKey:"ID")))]...")
+
+        }
 
         // Handle the 'update' (setup) of field(s)...
 
@@ -577,7 +612,14 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfPatientFileItem.idPFPatientFileObject' is [\(String(describing: pfPatientFileItem.idPFPatientFileObject))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfPatientFileItem.idPFPatientFileObject' is [\(String(describing: pfPatientFileItem.idPFPatientFileObject))]...")
+
+        }
 
         // Handle the 'update' (setup) of field(s)...
 
@@ -597,7 +639,14 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfPatientCalDayItem.tid' is [\(String(describing: pfPatientCalDayItem.object(forKey:"tid")))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfPatientCalDayItem.tid' is [\(String(describing: pfPatientCalDayItem.object(forKey:"tid")))]...")
+
+        }
 
         // Handle the 'update' (setup) of field(s)...
 
@@ -680,7 +729,14 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfBackupVisit.VDate' is [\(String(describing: pfBackupVisit.object(forKey:"VDate")))] <for 'tid' of [\(String(describing: pfBackupVisit.object(forKey:"tid")))]>...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfBackupVisit.VDate' is [\(String(describing: pfBackupVisit.object(forKey:"VDate")))] <for 'tid' of [\(String(describing: pfBackupVisit.object(forKey:"tid")))]>...")
+
+        }
 
         // Handle the 'update' (setup) of field(s)...
   
@@ -702,6 +758,42 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         return
   
     }   // End of public func updateScheduledPatientLocationItemFromPFBackupVisit(pfBackupVisit:PFObject).
+
+    public func updateScheduledPatientLocationItemFromPFBackupVisitItem(pfBackupFileItem:ParsePFBackupFileItem)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfBackupFileItem.VDate' is [\(String(describing: pfBackupFileItem.sLastVDate))] <for 'tid' of [\(String(describing: pfBackupFileItem.sTid))]>...")
+
+        }
+
+        // Handle the 'update' (setup) of field(s)...
+  
+        self.sLastVDate          = pfBackupFileItem.sLastVDate         
+        self.sLastVDateType      = pfBackupFileItem.sLastVDateType     
+        self.iLastVDateType      = pfBackupFileItem.iLastVDateType     
+        self.sLastVDateAddress   = pfBackupFileItem.sLastVDateAddress  
+        self.sLastVDateLatitude  = pfBackupFileItem.sLastVDateLatitude 
+        self.sLastVDateLongitude = pfBackupFileItem.sLastVDateLongitude
+
+        // Test this item for Visit occurance...
+
+        self.testScheduledPatientLocationItemForVisitOccurance()
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of public func updateScheduledPatientLocationItemFromPFBackupVisitItem(pfBackupFileItem:ParsePFBackupFileItem).
 
     public func convertVDateStartTimeTo24Hour(sVDateStartTime:String)->(String, Int)
     {
@@ -918,12 +1010,17 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         let bBothVDatesAreAvailable:Bool    = (bIsVDateAvailable == true  && bIsLastVDateAvailable == true)
         let bDoBothVDatesMatch:Bool         = (bBothVDatesAreAvailable == true && self.sVDate == self.sLastVDate)
 
-        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bIsVDateAvailable' is [\(bIsVDateAvailable)]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bIsLastVDateAvailable' is [\(bIsLastVDateAvailable)]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bBothVDatesAreNotAvailable' is [\(bBothVDatesAreNotAvailable)]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bBothVDatesAreAvailable' is [\(bBothVDatesAreAvailable)]...")
-        self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bDoBothVDatesMatch' is [\(bDoBothVDatesMatch)]...")
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bIsVDateAvailable' is [\(bIsVDateAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bIsLastVDateAvailable' is [\(bIsLastVDateAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bBothVDatesAreNotAvailable' is [\(bBothVDatesAreNotAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bBothVDatesAreAvailable' is [\(bBothVDatesAreAvailable)]...")
+            self.xcgLogMsg("\(sCurrMethodDisp) <Visit-Occurance> 'bDoBothVDatesMatch' is [\(bDoBothVDatesMatch)]...")
+
+        }
 
         // If there is NO 'sVDate', then we have NO data to compare...
 

@@ -18,13 +18,18 @@ class ParsePFBackupFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFBackupFileItem"
-        static let sClsVers      = "v1.0202"
+        static let sClsVers      = "v1.0308"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
         static let bClsFileLog   = true
         
     }
+
+    // 'Internal' Trace flag:
+
+    private 
+    var bInternalTraceFlag:Bool                             = false
 
     // Item Data field(s):
     
@@ -178,6 +183,28 @@ class ParsePFBackupFileItem: NSObject, Identifiable
 
     }   // End of override init().
 
+    convenience init(pfBackupVisit:PFObject)
+    {
+        
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+  
+        self.init()
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+
+        // Finish the 'convenience' setup of field(s)...
+
+        self.updateParsePFBackupFileItemFromPFBackupVisit(pfBackupVisit:pfBackupVisit)
+
+        // Exit:
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+  
+        return
+  
+    }   // End of convenience init(pfBackupVisit:PFObject).
+
     convenience init(pfBackupFileItem:ParsePFBackupFileItem)
     {
         
@@ -186,7 +213,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
   
         self.init()
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfBackupFileItem' is [\(pfBackupFileItem)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Finish the 'convenience' setup of field(s)...
 
@@ -208,7 +235,7 @@ class ParsePFBackupFileItem: NSObject, Identifiable
   
         self.init()
         
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter is 'pfBackupFileItem' is [\(pfBackupFileItem)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Finish the 'convenience' setup of field(s)...
 
@@ -435,7 +462,14 @@ class ParsePFBackupFileItem: NSObject, Identifiable
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
 
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] - parameter 'pfBackupVisit' is [\(String(describing: pfBackupVisit))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))]...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfBackupVisit' is [\(String(describing: pfBackupVisit))]...")
+
+        }
 
         // Assign the various field(s) of this object from the supplied PFObject...
 
@@ -462,14 +496,14 @@ class ParsePFBackupFileItem: NSObject, Identifiable
         self.sLastVDateLatitude                = String(describing: (pfBackupVisit.object(forKey:"lat")     ?? ""))
         self.sLastVDateLongitude               = String(describing: (pfBackupVisit.object(forKey:"long")    ?? ""))
 
-        self.pfBackupFileObjectLatitude        = (pfBackupVisit.object(forKey:"latitude"))  != nil ? pfBackupVisit.object(forKey:"latitude")  : nil
-        self.pfBackupFileObjectLongitude       = (pfBackupVisit.object(forKey:"longitude")) != nil ? pfBackupVisit.object(forKey:"longitude") : nil
-        self.sPFBackupFileObjectLatitude       = String(describing: self.pfBackupFileObjectLatitude!)
-        self.sPFBackupFileObjectLongitude      = String(describing: self.pfBackupFileObjectLongitude!)
+        self.pfBackupFileObjectLatitude        = (pfBackupVisit.object(forKey:"lat"))  != nil ? pfBackupVisit.object(forKey:"lat")  : nil
+        self.pfBackupFileObjectLongitude       = (pfBackupVisit.object(forKey:"long")) != nil ? pfBackupVisit.object(forKey:"long") : nil
+        self.sPFBackupFileObjectLatitude       = String(describing: (self.pfBackupFileObjectLatitude  ?? "0.0000"))
+        self.sPFBackupFileObjectLongitude      = String(describing: (self.pfBackupFileObjectLongitude ?? "0.0000"))
         self.dblPFBackupFileObjectLatitude     = Double(self.sPFBackupFileObjectLatitude)  ?? 0.0
         self.dblPFBackupFileObjectLongitude    = Double(self.sPFBackupFileObjectLongitude) ?? 0.0
-        self.dblConvertedLatitude              = Double(String(describing: pfBackupVisit.object(forKey:"latitude")!))  ?? 0.0
-        self.dblConvertedLongitude             = Double(String(describing: pfBackupVisit.object(forKey:"longitude")!)) ?? 0.0
+        self.dblConvertedLatitude              = Double(String(describing: (self.pfBackupFileObjectLatitude  ?? "0.0000"))) ?? 0.0
+        self.dblConvertedLongitude             = Double(String(describing: (self.pfBackupFileObjectLongitude ?? "0.0000"))) ?? 0.0
         
         self.bCurrentAddessLookupScheduled     = false
         self.bCurrentAddessLookupComplete      = false
@@ -490,13 +524,156 @@ class ParsePFBackupFileItem: NSObject, Identifiable
 
     }   // End of public func updateParsePFBackupFileItemFromPFBackupVisit(pfBackupVisit:PFObject).
 
+    public func updateParsePFBackupFileItemFromPFBackupVisitIfNewer(pfBackupVisit:PFObject)
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))]...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfBackupVisit' is [\(String(describing: pfBackupVisit))]...")
+
+        }
+
+        // Create a 'pfBackupFileItem' object from the supplied PFObject...
+
+        let pfBackupFileItem:ParsePFBackupFileItem = ParsePFBackupFileItem(pfBackupVisit:pfBackupVisit)
+
+        self.updateParsePFBackupFileItemFromPFBackupVisitIfNewer(pfBackupFileItem:pfBackupFileItem)
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of public func updateParsePFBackupFileItemFromPFBackupVisitIfNewer(pfBackupVisit:PFObject).
+
+    public func updateParsePFBackupFileItemFromPFBackupVisitIfNewer(pfBackupFileItem:ParsePFBackupFileItem)
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))]...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfBackupFileItem' is [\(String(describing: pfBackupFileItem))]...")
+
+        }
+
+        // If there is no supplied Date value, then just return...
+
+        if (pfBackupFileItem.sLastVDate.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) The created 'pfBackupFileItem' object has a 'sLastVDate' of [\(String(describing: pfBackupFileItem.sLastVDate))] that is an 'empty' string - unable to compare dates - Warning!")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        
+        }
+        
+        // if the current (self) Data is an 'empty' string, then update this object from the created one...
+
+        if (self.sLastVDate.count < 1)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) The current 'self' object has a 'sLastVDate' of [\(String(describing: self.sLastVDate))] that is an 'empty' string - updating from the supplied object...")
+
+            self.overlayPFBackupFileItemWithAnotherPFBackupFileItem(pfBackupFileItem:pfBackupFileItem)
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+        
+        }
+
+        // Both objects' have a date, convert both date string(s) to date objects for comparison...
+
+        let dateFormatter:DateFormatter = DateFormatter()
+        dateFormatter.dateFormat        = "yyyy-MM-dd"
+
+        guard let dateSuppliedLastVDate:Date = dateFormatter.date(from:pfBackupFileItem.sLastVDate)
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) The supplied 'pfBackupFileItem' object has a 'sLastVDate' of [\(String(describing: pfBackupFileItem.sLastVDate))] string that failed to convert to a date - unable to compare dates - Warning!")
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        guard let dateCurrentLastVDate:Date = dateFormatter.date(from:self.sLastVDate)
+        else
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) The current 'self' object has a 'sLastVDate' of [\(String(describing: self.sLastVDate))] string that failed to convert to a date - updating from the created object...")
+
+            self.overlayPFBackupFileItemWithAnotherPFBackupFileItem(pfBackupFileItem:pfBackupFileItem)
+
+            // Exit:
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+            return
+
+        }
+
+        // Both objects' have a date, if the date of this Visit is newer than the one in this object, then update this object from it...
+
+        if (dateSuppliedLastVDate > dateCurrentLastVDate)
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) The supplied date 'dateSuppliedLastVDate' of [\(String(describing: dateSuppliedLastVDate))] is greater (newer) than the current date 'dateCurrentLastVDate' of [\(String(describing: dateCurrentLastVDate))] - updating from the supplied object...")
+
+            self.overlayPFBackupFileItemWithAnotherPFBackupFileItem(pfBackupFileItem:pfBackupFileItem)
+        
+        }
+        else
+        {
+        
+            self.xcgLogMsg("\(sCurrMethodDisp) The supplied date 'dateSuppliedLastVDate' of [\(String(describing: dateSuppliedLastVDate))] is NOT greater (newer) than the current date 'dateCurrentLastVDate' of [\(String(describing: dateCurrentLastVDate))] - bypassing updating from the supplied object...")
+        
+        }
+
+        // Exit:
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+
+        return
+
+    }   // End of public func updateParsePFBackupFileItemFromPFBackupVisitIfNewer(pfBackupFileItem:ParsePFBackupFileItem).
+
     public func overlayPFBackupFileItemWithAnotherPFBackupFileItem(pfBackupFileItem:ParsePFBackupFileItem)
     {
         
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))] - parameter is 'pfBackupFileItem' is [\(pfBackupFileItem)]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self' is [\(String(describing: self))]...")
+
+        if (self.bInternalTraceFlag == true)
+        {
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Parameter 'pfBackupFileItem' is [\(String(describing: pfBackupFileItem))]...")
+
+        }
 
         // Finish the 'overlay' update of field(s)...
 
