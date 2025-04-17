@@ -28,7 +28,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.1902"
+        static let sClsVers      = "v1.2001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -63,6 +63,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     var iPid:Int                                            = -1   // Converted from 'sPid <String>'...
     var sPtName:String                                      = ""   // From 'PFQuery::PatientCalDay["ptName"]'
     var sPatientDOB:String                                  = ""   // From 'PFQuery::PatientFile["DOB"]' (Date Of Birth)
+    var iPatientPrimaryIns:Int                              = -1   // 'pfPatientFileObject[primaryIns]'
+    var iPatientSecondaryIns:Int                            = -1   // 'pfPatientFileObject[secondaryIns]'
 
     var sVDate:String                                       = ""   // From 'PFQuery::PatientCalDay["VDate"]'
     var sVDateStartTime:String                              = ""   // From 'PFQuery::PatientCalDay["startTime"]'
@@ -320,6 +322,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         asToString.append("'iPid': (\(String(describing: self.iPid))),")
         asToString.append("'sPtName': [\(String(describing: self.sPtName))],")
         asToString.append("'sPatientDOB': [\(String(describing: self.sPatientDOB))],")
+        asToString.append("'iPatientPrimaryIns': (\(String(describing: self.iPatientPrimaryIns))),")
+        asToString.append("'iPatientSecondaryIns': (\(String(describing: self.iPatientSecondaryIns))),")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'sVDate': [\(String(describing: self.sVDate))],")
@@ -393,6 +397,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.xcgLogMsg("\(sCurrMethodDisp) 'iPid'                  is (\(String(describing: self.iPid)))...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPtName'               is [\(String(describing: self.sPtName))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPatientDOB'           is [\(String(describing: self.sPatientDOB))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPatientPrimaryIns'    is (\(String(describing: self.iPatientPrimaryIns)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'iPatientSecondaryIns'  is (\(String(describing: self.iPatientSecondaryIns)))...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'sVDate'                is [\(String(describing: self.sVDate))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sVDateStartTime'       is [\(String(describing: self.sVDateStartTime))]...")
@@ -420,8 +426,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         
         }
         
-        self.xcgLogMsg("\(sCurrMethodDisp) - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
-        self.xcgLogMsg("\(sCurrMethodDisp) <VDate-comparison> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))] - 'bDoBothVDatesMatch' is [\(bDoBothVDatesMatch)]...")
+    //  self.xcgLogMsg("\(sCurrMethodDisp) - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ")
+    //  self.xcgLogMsg("\(sCurrMethodDisp) <VDate-comparison> 'sVDate' of [\(String(describing: self.sVDate))] matched to 'sLastVDate' of [\(String(describing: self.sLastVDate))] - 'bDoBothVDatesMatch' is [\(bDoBothVDatesMatch)]...")
         self.xcgLogMsg("\(sCurrMethodDisp) = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ")
 
         // Exit:
@@ -468,6 +474,8 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
         self.iPid                                          = scheduledPatientLocationItem.iPid               
         self.sPtName                                       = scheduledPatientLocationItem.sPtName            
         self.sPatientDOB                                   = scheduledPatientLocationItem.sPatientDOB            
+        self.iPatientPrimaryIns                            = scheduledPatientLocationItem.iPatientPrimaryIns            
+        self.iPatientSecondaryIns                          = scheduledPatientLocationItem.iPatientSecondaryIns            
                                                                                                              
         self.sVDate                                        = scheduledPatientLocationItem.sVDate             
         self.sVDateStartTime                               = scheduledPatientLocationItem.sVDateStartTime    
@@ -596,7 +604,9 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 
         // Handle the 'update' (setup) of field(s)...
 
-        self.sPatientDOB = String(describing: (pfPatientFileItem.object(forKey:"DOB") ?? ""))
+        self.sPatientDOB          = String(describing: (pfPatientFileItem.object(forKey:"DOB") ?? ""))
+        self.iPatientPrimaryIns   = Int(String(describing: (pfPatientFileItem.object(forKey:"primaryIns")   ?? "-1"))) ?? -2
+        self.iPatientSecondaryIns = Int(String(describing: (pfPatientFileItem.object(forKey:"secondaryIns") ?? "-1"))) ?? -2
 
         // Exit:
   
@@ -623,7 +633,9 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 
         // Handle the 'update' (setup) of field(s)...
 
-        self.sPatientDOB = pfPatientFileItem.sPFPatientFileDOB
+        self.sPatientDOB          = pfPatientFileItem.sPFPatientFileDOB
+        self.iPatientPrimaryIns   = pfPatientFileItem.iPFPatientFilePrimaryIns
+        self.iPatientSecondaryIns = pfPatientFileItem.iPFPatientFileSecondaryIns
 
         // Exit:
   

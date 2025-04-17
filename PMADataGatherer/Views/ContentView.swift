@@ -17,7 +17,7 @@ struct ContentView: View
     {
         
         static let sClsId        = "ContentView"
-        static let sClsVers      = "v1.3403"
+        static let sClsVers      = "v1.3501"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -46,6 +46,7 @@ struct ContentView: View
     
 //  @State private var cAppLogPFDataButtonPresses:Int            = 0
     @State private var cAppSchedExportViewButtonPresses:Int      = 0
+    @State private var cAppSchedExportAuditViewButtonPresses:Int = 0
     @State private var cAppRefreshButtonPresses:Int              = 0
     @State private var cAppDataButtonPresses:Int                 = 0
     @State private var cAppWorkRouteButtonPresses:Int            = 0
@@ -53,6 +54,7 @@ struct ContentView: View
 
 //  @State private var isAppLogPFDataViewModal:Bool              = false
     @State private var isAppSchedExportByTidShowing:Bool         = false
+    @State private var isAppSchedExportAuditShowing:Bool         = false
     @State private var isAppDataViewModal:Bool                   = false
     @State private var isAppWorkRouteViewModal:Bool              = false
     @State private var isAppSchedPatLocViewModal:Bool            = false
@@ -220,6 +222,53 @@ struct ContentView: View
                 {
 
                     AppDataGathererSchedule1ExportView(sTherapistTID:"-1")
+
+                }
+            #endif
+                .padding()
+
+                Spacer()
+
+                Button
+                {
+
+                    self.cAppSchedExportAuditViewButtonPresses += 1
+
+                    let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppTidScheduleView.Button(Xcode).'Audit Sched Export'.#(\(self.cAppSchedExportAuditViewButtonPresses))...")
+
+                    self.isAppSchedExportAuditShowing.toggle()
+
+                }
+                label:
+                {
+
+                    VStack(alignment:.center)
+                    {
+
+                        Label("", systemImage: "checkmark.rectangle")
+                            .help(Text("Audit the Schedule Export data..."))
+                            .imageScale(.medium)
+
+                        Text("Audit Export")
+                            .font(.caption)
+
+                    }
+
+                }
+            #if os(macOS)
+                .sheet(isPresented:$isAppSchedExportAuditShowing, content:
+                    {
+
+                        AppDataGathererExportAudit1DetailsView()
+
+                    }
+                )
+            #endif
+            #if os(iOS)
+                .fullScreenCover(isPresented:$isAppSchedExportAuditShowing)
+                {
+
+                    AppDataGathererExportAudit1DetailsView()
 
                 }
             #endif

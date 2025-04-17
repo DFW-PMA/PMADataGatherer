@@ -19,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2810"
+        static let sClsVers      = "v1.2901"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -202,7 +202,7 @@ struct AppAuthenticateView: View
 
                         self.cAppAboutButtonPresses += 1
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppAuthenticateView.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
 
                         self.isAppAboutViewModal.toggle()
 
@@ -439,7 +439,7 @@ struct AppAuthenticateView: View
 
                                 self.cAppAboutButtonPresses += 1
 
-                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppAuthenticateView.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
 
                                 self.isAppAboutViewModal.toggle()
 
@@ -539,6 +539,8 @@ struct AppAuthenticateView: View
                                     else
                                     {
 
+                                        focusedField = nil
+
                                         let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
 
                                         if (bUserLoginValidated == true)
@@ -612,7 +614,14 @@ struct AppAuthenticateView: View
                                 }
                                 else
                                 {
-                                    focusedField = .fieldPassword
+                                    if sLoginPassword.isEmpty
+                                    {
+                                        focusedField = .fieldPassword
+                                    }
+                                    else
+                                    {
+                                        focusedField = nil
+                                    }
                                 }
                             }
 
@@ -624,6 +633,12 @@ struct AppAuthenticateView: View
                             .onSubmit
                             {
                                 focusedField = .fieldPassword
+                            }
+                            .onAppear
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).AppAuthenticateView.TextField #1 - Received an .onAppear() #1...")
+
+                                focusedField = nil
                             }
 
                         SecureField("Password", text: $sLoginPassword)
@@ -645,6 +660,12 @@ struct AppAuthenticateView: View
                                 //
                                 //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).Text #1 - Received an .onSubmit() - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
                                 }
+                            }
+                            .onAppear
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).AppAuthenticateView.TextField #2 - Received an .onAppear() #1...")
+
+                                focusedField = nil
                             }
                             .alert("\(self.sCredentialsCheckReason) - try again...", isPresented:$isUserLoginFailureShowing)
                             {
@@ -676,6 +697,8 @@ struct AppAuthenticateView: View
                                     }
                                     else
                                     {
+                                        focusedField = nil
+
                                         let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
 
                                         if (bUserLoginValidated == true)
@@ -709,6 +732,8 @@ struct AppAuthenticateView: View
 
                             if (bUserLoginValidated == true)
                             {
+                                focusedField = nil
+
                                 self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
 
                             //  // Generate a new UUID to force the View to be (completely) recreated...
@@ -764,6 +789,8 @@ struct AppAuthenticateView: View
 
                     if (bUserLoginValidated == true)
                     {
+                        focusedField = nil
+
                         self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
 
                     //  // Generate a new UUID to force the View to be (completely) recreated...
