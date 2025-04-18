@@ -20,7 +20,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.2009"
+        static let sClsVers      = "v1.2010"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -2804,7 +2804,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
                 else
                 {
 
-                    var dictExportBackupFileItemsByDate:[String:ParsePFBackupFileItem] =
+                    let dictExportBackupFileItemsByDate:[String:ParsePFBackupFileItem] =
                         self.dictExportBackupFileItems[sExportBackupFileItemKey1]!
 
                     if (dictExportBackupFileItemsByDate[scheduledPatientLocationItem.sVDate] == nil)

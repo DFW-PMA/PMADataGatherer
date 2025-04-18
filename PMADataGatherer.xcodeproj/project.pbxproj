@@ -71,6 +71,8 @@
 		F05E47132D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E47112D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift */; };
 		F05E47152D5D29150059F4C2 /* AppDataGathererPatient3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E47142D5D29150059F4C2 /* AppDataGathererPatient3View.swift */; };
 		F05E47162D5D29150059F4C2 /* AppDataGathererPatient3View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E47142D5D29150059F4C2 /* AppDataGathererPatient3View.swift */; };
+		F05E875B2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E875A2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift */; };
+		F05E875C2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05E875A2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift */; };
 		F05EBBB12D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
 		F05EBBB22D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */; };
 		F05EDC312D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F05EDC2E2D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift */; };
@@ -243,6 +245,7 @@
 		F05B51542CE7D8B5008A0EEE /* ParsePFCscDataItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParsePFCscDataItem.swift; sourceTree = "<group>"; };
 		F05E47112D5D0D550059F4C2 /* AppDataGathererTherapist3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererTherapist3View.swift; sourceTree = "<group>"; };
 		F05E47142D5D29150059F4C2 /* AppDataGathererPatient3View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererPatient3View.swift; sourceTree = "<group>"; };
+		F05E875A2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledPatientLocationItemEnums.swift; sourceTree = "<group>"; };
 		F05EBBB02D2C7A6A00E5EE06 /* AppDataGathererTherapist2View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererTherapist2View.swift; sourceTree = "<group>"; };
 		F05EDC2E2D53FA2F00306C62 /* AppDataGathererPatient1DetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererPatient1DetailsView.swift; sourceTree = "<group>"; };
 		F05EDC2F2D53FA2F00306C62 /* AppDataGathererPatient1View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataGathererPatient1View.swift; sourceTree = "<group>"; };
@@ -342,6 +345,7 @@
 		F0289D2C2C53D920001B19CD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F05E875A2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift */,
 				F0F7177E2DAEE43600E7CA2A /* ParsePFBackupFileItem.swift */,
 				F05EDC372D53FB7C00306C62 /* AppSearchablePatientName.swift */,
 				F02204B02D4D670E00C5B182 /* ParsePFPatientFileItem.swift */,
@@ -683,6 +687,7 @@
 				F04D88A22CDAA8A00002AA0B /* MultipartZipFileCreator.swift in Sources */,
 				F08A94772D11F1A900B69C3C /* AppTidScheduleView.swift in Sources */,
 				F0D17B932C52E951000E5A52 /* LogFileView.swift in Sources */,
+				F05E875B2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift in Sources */,
 				F0786E462CE68E9E0052A534 /* CoreLocationModelObservable2.swift in Sources */,
 				F069E2B02CEFADE5001F0A5E /* AppAuthenticateView.swift in Sources */,
 				F0CBE9012CEBDD6E00B0625E /* AppWorkRouteMapView.swift in Sources */,
@@ -761,6 +766,7 @@
 				F0BCCC632C820EF1007EA382 /* PMADataGathererApp.swift in Sources */,
 				F07F7B962C94DB2D0094AE18 /* DefinesObjCOverrides.m in Sources */,
 				F029E0BB2C823ACB00FC96B9 /* AppAboutView.swift in Sources */,
+				F05E875C2DB29C1C00C309B7 /* ScheduledPatientLocationItemEnums.swift in Sources */,
 				F0EEDD872CADC38400E437E8 /* JmAppMetricKitManager.swift in Sources */,
 				F0786E482CE68E9E0052A534 /* CoreLocationModelObservable2.swift in Sources */,
 				F0786E492CE68E9E0052A534 /* CoreLocationSiteItem.swift in Sources */,
@@ -941,7 +947,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 54.01.25C107;
+				CURRENT_PROJECT_VERSION = 55.01.25C108;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -985,7 +991,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 54.01.25C107;
+				CURRENT_PROJECT_VERSION = 55.01.25C108;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -1028,7 +1034,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 54.12.25C107;
+				CURRENT_PROJECT_VERSION = 55.01.25C108;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -1079,7 +1085,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 54.12.25C107;
+				CURRENT_PROJECT_VERSION = 55.01.25C108;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
