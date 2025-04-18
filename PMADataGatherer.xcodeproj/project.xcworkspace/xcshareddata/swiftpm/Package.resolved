@@ -1,5 +1,5 @@
 {
-  "originHash" : "8568d29b04408f94989ca9deed6eb9016882a373dcff1bcb994eb13a0acb3897",
+  "originHash" : "5067dc94c377ac74f88689c5e05180394bc669e14f8d24948bd5b223b7397d2b",
   "pins" : [
     {
       "identity" : "bolts-objc",
@@ -44,6 +44,15 @@
       "state" : {
         "revision" : "4def3c1c772ca90ad5e7bfc8ac437c3b0b4276cf",
         "version" : "7.1.5"
+      }
+    },
+    {
+      "identity" : "ziparchive",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ZipArchive/ZipArchive.git",
+      "state" : {
+        "revision" : "df35718ea19a94e015b91dc4881dee028ce4cdba",
+        "version" : "2.6.0"
       }
     }
   ],

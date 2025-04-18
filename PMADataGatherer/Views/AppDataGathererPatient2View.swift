@@ -17,7 +17,7 @@ struct AppDataGathererPatient2View: View
     {
         
         static let sClsId        = "AppDataGathererPatient2View"
-        static let sClsVers      = "v1.0401"
+        static let sClsVers      = "v1.0502"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -469,7 +469,7 @@ struct AppDataGathererPatient2View: View
 
                         listSelectablePatientNames = [AppSearchablePatientName]()
 
-                        listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:"...placeholder..."))
+                        listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:"...placeholder...", sPatientPID:"-1"))
 
                     }
 
@@ -587,6 +587,7 @@ struct AppDataGathererPatient2View: View
 
             }
 
+            let sPatientPID:String      = "\(pfPatientFileItem.iPFPatientFilePID)"
             let sPatientName:String     = pfPatientFileItem.sPFPatientFileName
             let sPatientNameLow:String  = sPatientName.lowercased()
             let sPatientNameNoWS:String = pfPatientFileItem.sPFPatientFileNameNoWS
@@ -595,11 +596,11 @@ struct AppDataGathererPatient2View: View
                 sPatientNameNoWS.contains(sSearchValueLow) == true)
             {
             
-                self.listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:sPatientName))
+                self.listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:sPatientName, sPatientPID:sPatientPID))
 
                 cSelectablePatientNames += 1
 
-                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientNames)): 'sPatientName' of [\(sPatientName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+                self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientNames)): 'sPatientName' of [\(sPatientName)] - 'sPatientPID' is [\(sPatientPID)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
             
             }
 

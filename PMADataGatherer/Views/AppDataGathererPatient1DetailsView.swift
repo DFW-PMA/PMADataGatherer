@@ -26,7 +26,7 @@ struct AppDataGathererPatient1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererPatient1DetailsView"
-        static let sClsVers      = "v1.0901"
+        static let sClsVers      = "v1.1201"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -148,7 +148,7 @@ struct AppDataGathererPatient1DetailsView: View
                                 .help(Text("App TID/Patient Schedule Viewer"))
                                 .imageScale(.large)
 
-                            Text("Schedule")
+                            Text("Schedule Today")
                                 .font(.caption)
 
                         }
@@ -251,7 +251,7 @@ struct AppDataGathererPatient1DetailsView: View
 
                 }
 
-                HStack()
+                HStack
                 {
 
                     Text("::: Patients' PID: ")
@@ -272,7 +272,7 @@ struct AppDataGathererPatient1DetailsView: View
 
                 }
 
-                HStack()
+                HStack
                 {
 
                     Text("Patients' Name: ")
@@ -419,6 +419,15 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
+                            Text("Patients' DOB (Date Of Birth)")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileDOB)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
                             Text("Patient is 'Real' Patient?")
                             Text("\(self.pfPatientFileItem!.bPFPatientFileIsRealPatient)")
                                 .foregroundStyle((self.pfPatientFileItem!.bPFPatientFileIsRealPatient) ? .red : .primary)
@@ -429,8 +438,18 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Patients' Languate preference")
+                            Text("Patients' Language preference")
                             Text("\(self.pfPatientFileItem!.sPFPatientFileLanguagePref)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patient is 'Discharged'?")
+                            Text("\(self.pfPatientFileItem!.bPFPatientFileIsDischarged)")
+                                .foregroundStyle((self.pfPatientFileItem!.bPFPatientFileIsDischarged) ? .red : .primary)
 
                         }
                         .font(.caption2) 
@@ -448,8 +467,9 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Patients' 'On Hold' Reason")
-                            Text("\(self.pfPatientFileItem!.iPFPatientFileHoldReason)")
+                            Text("Patients' 'On Hold' Date")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileOnHoldDate)")
+                                .foregroundStyle((self.pfPatientFileItem!.sPFPatientFileOnHoldDate.count > 0) ? .red : .primary)
 
                         }
                         .font(.caption2) 
@@ -457,9 +477,8 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Patients' 'On Hold' Date")
-                            Text("\(self.pfPatientFileItem!.sPFPatientFileOnHoldDate)")
-                                .foregroundStyle((self.pfPatientFileItem!.sPFPatientFileOnHoldDate.count > 0) ? .red : .primary)
+                            Text("Patients' 'On Hold' Reason")
+                            Text("\(self.pfPatientFileItem!.iPFPatientFileHoldReason)")
 
                         }
                         .font(.caption2) 
@@ -503,6 +522,125 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
+                            Text("Patients' Current TID(s)")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileCurrentTIDs)")
+
+                        }
+                        .font(.caption2) 
+
+                        if (self.pfPatientFileItem!.sPFPatientFileCurrentTIDs.count > 0)
+                        {
+                        
+                            GridRow(alignment:.bottom)
+                            {
+
+                                VStack
+                                {
+
+                                    Text("Patients' Therapist (TID)")
+                                        .onAppear
+                                        {
+
+                                            self.sTherapistTID  = self.getFirstTidFromTids(sTherapistTIDs:self.pfPatientFileItem!.sPFPatientFileCurrentTIDs)
+                                            self.sTherapistName = self.locateAppTherapistNamebyTid(tidType:TIDType.therapist, sTherapistTID:self.sTherapistTID)
+
+                                        }
+
+                                    Text("")    // ...vertical spacing...
+                                    Text("")    // ...vertical spacing...
+
+                                }
+
+                                HStack
+                                {
+
+                                    Text("\(self.sTherapistTID) <\(self.sTherapistName)>")
+
+                                    if (self.sTherapistTID.count    > 0 &&
+                                        (self.sTherapistName.count  > 0 &&
+                                         self.sTherapistName       != "-N/A-"))
+                                    {
+
+                                        Button
+                                        {
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient1DetailsView.Button(Xcode).'Therapist Detail(s) by TID'...")
+
+                                            self.isAppTherapistDetailsByTIDShowing.toggle()
+
+                                        }
+                                        label:
+                                        {
+
+                                            VStack(alignment:.center)
+                                            {
+
+                                                Label("", systemImage: "doc.questionmark")
+                                                    .help(Text("Show Therapist Detail(s) by TID..."))
+                                                    .imageScale(.medium)
+
+                                                HStack(alignment:.center)
+                                                {
+
+                                                    Spacer()
+
+                                                    Text("Therapist Details...")
+                                                        .font(.caption2)
+
+                                                    Spacer()
+
+                                                }
+
+                                            }
+
+                                        }
+                                    #if os(macOS)
+                                        .sheet(isPresented:$isAppTherapistDetailsByTIDShowing, content:
+                                        {
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <macOS> Showing 'Therapist Detail(s) by TID' for TID [\(self.sTherapistTID)]...")
+
+                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
+
+                                        })
+                                    #endif
+                                    #if os(iOS)
+                                        .fullScreenCover(isPresented:$isAppTherapistDetailsByTIDShowing)
+                                        {
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <iOS> Showing 'Therapist Detail(s) by TID' for TID [\(self.sTherapistTID)]...")
+
+                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
+
+                                        }
+                                    #endif
+                                    #if os(macOS)
+                                        .buttonStyle(.borderedProminent)
+                                        .padding()
+                                    //  .background(???.isPressed ? .blue : .gray)
+                                        .cornerRadius(10)
+                                        .foregroundColor(Color.primary)
+                                    #endif
+                                        .padding()
+
+                                    }
+                                    else
+                                    {
+
+                                        Spacer()
+
+                                    }
+
+                                }
+
+                            }
+                            .font(.caption2) 
+                        
+                        }
+
+                        GridRow(alignment:.bottom)
+                        {
+
                             VStack
                             {
 
@@ -512,7 +650,7 @@ struct AppDataGathererPatient1DetailsView: View
 
                             }
 
-                            HStack()
+                            HStack
                             {
 
                             //  Text("\(self.pfPatientFileItem!.iPFPatientFileSID) <\(self.pfPatientFileItem!.sPFPatientFileSidName)>")
@@ -600,6 +738,125 @@ struct AppDataGathererPatient1DetailsView: View
 
                         }
                         .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Patients' Start TID(s)")
+                            Text("\(self.pfPatientFileItem!.sPFPatientFileStartTIDs)")
+
+                        }
+                        .font(.caption2) 
+
+                        if (self.pfPatientFileItem!.sPFPatientFileStartTIDs.count > 0)
+                        {
+                        
+                            GridRow(alignment:.bottom)
+                            {
+
+                                VStack
+                                {
+
+                                    Text("Patients' Start Therapist (TID)")
+                                        .onAppear
+                                        {
+
+                                            self.sStartTherapistTID  = self.getFirstTidFromTids(sTherapistTIDs:self.pfPatientFileItem!.sPFPatientFileStartTIDs)
+                                            self.sStartTherapistName = self.locateAppTherapistNamebyTid(tidType:TIDType.therapist, sTherapistTID:self.sStartTherapistTID)
+
+                                        }
+
+                                    Text("")    // ...vertical spacing...
+                                    Text("")    // ...vertical spacing...
+
+                                }
+
+                                HStack
+                                {
+
+                                    Text("\(self.sStartTherapistTID) <\(self.sStartTherapistName)>")
+
+                                    if (self.sStartTherapistTID.count    > 0 &&
+                                        (self.sStartTherapistName.count  > 0 &&
+                                         self.sStartTherapistName       != "-N/A-"))
+                                    {
+
+                                        Button
+                                        {
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient1DetailsView.Button(Xcode).'Start Therapist Detail(s) by TID'...")
+
+                                            self.isAppStartTherapistDetailsByTIDShowing.toggle()
+
+                                        }
+                                        label:
+                                        {
+
+                                            VStack(alignment:.center)
+                                            {
+
+                                                Label("", systemImage: "doc.questionmark")
+                                                    .help(Text("Show Start Therapist Detail(s) by TID..."))
+                                                    .imageScale(.medium)
+
+                                                HStack(alignment:.center)
+                                                {
+
+                                                    Spacer()
+
+                                                    Text("Start Therapist Details...")
+                                                        .font(.caption2)
+
+                                                    Spacer()
+
+                                                }
+
+                                            }
+
+                                        }
+                                    #if os(macOS)
+                                        .sheet(isPresented:$isAppStartTherapistDetailsByTIDShowing, content:
+                                        {
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <macOS> Showing 'Start Therapist Detail(s) by TID' for TID [\(self.sStartTherapistTID)]...")
+
+                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sStartTherapistTID)
+
+                                        })
+                                    #endif
+                                    #if os(iOS)
+                                        .fullScreenCover(isPresented:$isAppStartTherapistDetailsByTIDShowing)
+                                        {
+
+                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <iOS> Showing 'Start Therapist Detail(s) by TID' for TID [\(self.sStartTherapistTID)]...")
+
+                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sStartTherapistTID)
+
+                                        }
+                                    #endif
+                                    #if os(macOS)
+                                        .buttonStyle(.borderedProminent)
+                                        .padding()
+                                    //  .background(???.isPressed ? .blue : .gray)
+                                        .cornerRadius(10)
+                                        .foregroundColor(Color.primary)
+                                    #endif
+                                        .padding()
+
+                                    }
+                                    else
+                                    {
+
+                                        Spacer()
+
+                                    }
+
+                                }
+
+                            }
+                            .font(.caption2) 
+                        
+                        }
 
                         GridRow(alignment:.bottom)
                         {
@@ -840,135 +1097,6 @@ struct AppDataGathererPatient1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Patients' Current TID(s)")
-                            Text("\(self.pfPatientFileItem!.sPFPatientFileCurrentTIDs)")
-
-                        }
-                        .font(.caption2) 
-
-                        if (self.pfPatientFileItem!.sPFPatientFileCurrentTIDs.count > 0)
-                        {
-                        
-                            GridRow(alignment:.bottom)
-                            {
-
-                                VStack
-                                {
-
-                                    Text("Patients' Therapist (TID)")
-                                        .onAppear
-                                        {
-
-                                            self.sTherapistTID  = self.getFirstTidFromTids(sTherapistTIDs:self.pfPatientFileItem!.sPFPatientFileCurrentTIDs)
-                                            self.sTherapistName = self.locateAppTherapistNamebyTid(tidType:TIDType.therapist, sTherapistTID:self.sTherapistTID)
-
-                                        }
-
-                                    Text("")    // ...vertical spacing...
-                                    Text("")    // ...vertical spacing...
-
-                                }
-
-                                HStack()
-                                {
-
-                                    Text("\(self.sTherapistTID) <\(self.sTherapistName)>")
-
-                                    if (self.sTherapistTID.count    > 0 &&
-                                        (self.sTherapistName.count  > 0 &&
-                                         self.sTherapistName       != "-N/A-"))
-                                    {
-
-                                        Button
-                                        {
-
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient1DetailsView.Button(Xcode).'Therapist Detail(s) by TID'...")
-
-                                            self.isAppTherapistDetailsByTIDShowing.toggle()
-
-                                        }
-                                        label:
-                                        {
-
-                                            VStack(alignment:.center)
-                                            {
-
-                                                Label("", systemImage: "doc.questionmark")
-                                                    .help(Text("Show Therapist Detail(s) by TID..."))
-                                                    .imageScale(.medium)
-
-                                                HStack(alignment:.center)
-                                                {
-
-                                                    Spacer()
-
-                                                    Text("Therapist Details...")
-                                                        .font(.caption2)
-
-                                                    Spacer()
-
-                                                }
-
-                                            }
-
-                                        }
-                                    #if os(macOS)
-                                        .sheet(isPresented:$isAppTherapistDetailsByTIDShowing, content:
-                                        {
-
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <macOS> Showing 'Therapist Detail(s) by TID' for TID [\(self.sTherapistTID)]...")
-
-                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
-
-                                        })
-                                    #endif
-                                    #if os(iOS)
-                                        .fullScreenCover(isPresented:$isAppTherapistDetailsByTIDShowing)
-                                        {
-
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <iOS> Showing 'Therapist Detail(s) by TID' for TID [\(self.sTherapistTID)]...")
-
-                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sTherapistTID)
-
-                                        }
-                                    #endif
-                                    #if os(macOS)
-                                        .buttonStyle(.borderedProminent)
-                                        .padding()
-                                    //  .background(???.isPressed ? .blue : .gray)
-                                        .cornerRadius(10)
-                                        .foregroundColor(Color.primary)
-                                    #endif
-                                        .padding()
-
-                                    }
-                                    else
-                                    {
-
-                                        Spacer()
-
-                                    }
-
-                                }
-
-                            }
-                            .font(.caption2) 
-                        
-                        }
-
-                        GridRow(alignment:.bottom)
-                        {
-
-                            Text("Patients' is Discharged?")
-                            Text("\(self.pfPatientFileItem!.bPFPatientFileIsDischarged)")
-                                .foregroundStyle((self.pfPatientFileItem!.bPFPatientFileIsDischarged) ? .red : .primary)
-
-                        }
-                        .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
                             Text("Patients' Evaluation Meds")
                             Text("\(self.pfPatientFileItem!.sPFPatientFileEvalMeds)")
 
@@ -1077,129 +1205,6 @@ struct AppDataGathererPatient1DetailsView: View
 
                         }
                         .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
-                            Text("Patients' Start TID(s)")
-                            Text("\(self.pfPatientFileItem!.sPFPatientFileStartTIDs)")
-
-                        }
-                        .font(.caption2) 
-
-                        if (self.pfPatientFileItem!.sPFPatientFileStartTIDs.count > 0)
-                        {
-                        
-                            GridRow(alignment:.bottom)
-                            {
-
-                                VStack
-                                {
-
-                                    Text("Patients' Start Therapist (TID)")
-                                        .onAppear
-                                        {
-
-                                            self.sStartTherapistTID  = self.getFirstTidFromTids(sTherapistTIDs:self.pfPatientFileItem!.sPFPatientFileStartTIDs)
-                                            self.sStartTherapistName = self.locateAppTherapistNamebyTid(tidType:TIDType.therapist, sTherapistTID:self.sStartTherapistTID)
-
-                                        }
-
-                                    Text("")    // ...vertical spacing...
-                                    Text("")    // ...vertical spacing...
-
-                                }
-
-                                HStack()
-                                {
-
-                                    Text("\(self.sStartTherapistTID) <\(self.sStartTherapistName)>")
-
-                                    if (self.sStartTherapistTID.count    > 0 &&
-                                        (self.sStartTherapistName.count  > 0 &&
-                                         self.sStartTherapistName       != "-N/A-"))
-                                    {
-
-                                        Button
-                                        {
-
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp)AppDataGathererPatient1DetailsView.Button(Xcode).'Start Therapist Detail(s) by TID'...")
-
-                                            self.isAppStartTherapistDetailsByTIDShowing.toggle()
-
-                                        }
-                                        label:
-                                        {
-
-                                            VStack(alignment:.center)
-                                            {
-
-                                                Label("", systemImage: "doc.questionmark")
-                                                    .help(Text("Show Start Therapist Detail(s) by TID..."))
-                                                    .imageScale(.medium)
-
-                                                HStack(alignment:.center)
-                                                {
-
-                                                    Spacer()
-
-                                                    Text("Start Therapist Details...")
-                                                        .font(.caption2)
-
-                                                    Spacer()
-
-                                                }
-
-                                            }
-
-                                        }
-                                    #if os(macOS)
-                                        .sheet(isPresented:$isAppStartTherapistDetailsByTIDShowing, content:
-                                        {
-
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <macOS> Showing 'Start Therapist Detail(s) by TID' for TID [\(self.sStartTherapistTID)]...")
-
-                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sStartTherapistTID)
-
-                                        })
-                                    #endif
-                                    #if os(iOS)
-                                        .fullScreenCover(isPresented:$isAppStartTherapistDetailsByTIDShowing)
-                                        {
-
-                                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <iOS> Showing 'Start Therapist Detail(s) by TID' for TID [\(self.sStartTherapistTID)]...")
-
-                                            AppDataGathererTherapist1DetailsView(sTherapistTID:$sStartTherapistTID)
-
-                                        }
-                                    #endif
-                                    #if os(macOS)
-                                        .buttonStyle(.borderedProminent)
-                                        .padding()
-                                    //  .background(???.isPressed ? .blue : .gray)
-                                        .cornerRadius(10)
-                                        .foregroundColor(Color.primary)
-                                    #endif
-                                        .padding()
-
-                                    }
-                                    else
-                                    {
-
-                                        Spacer()
-
-                                    }
-
-                                }
-
-                            }
-                            .font(.caption2) 
-                        
-                        }
-
-
-
-
 
                         GridRow(alignment:.bottom)
                         {

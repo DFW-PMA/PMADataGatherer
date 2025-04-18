@@ -17,7 +17,7 @@ struct AppDataGathererTherapist3View: View
     {
         
         static let sClsId        = "AppDataGathererTherapist3View"
-        static let sClsVers      = "v1.0501"
+        static let sClsVers      = "v1.0603"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -213,7 +213,7 @@ struct AppDataGathererTherapist3View: View
                                 .help(Text("App TID/Patient Schedule Viewer"))
                                 .imageScale(.large)
 
-                            Text("Schedule")
+                            Text("Schedule Today")
                                 .font(.caption)
 
                         }
@@ -671,6 +671,7 @@ struct AppDataGathererTherapist3View: View
                     TextField("Therapist tName...", text:$sTherapistName)
                         .italic()
                         .font(.caption) 
+                        .disableAutocorrection(true)
                         .focused($focusedField, equals:.therapistName)
                         .onAppear
                         {
@@ -881,14 +882,15 @@ struct AppDataGathererTherapist3View: View
 
                         listSelectableTherapistNames = [AppSearchableTherapistName]()
 
-                        listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:"...placeholder..."))
+                        listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:"...placeholder...", sTherapistTID:"-1"))
 
                     }
 
                 List(listSelectableTherapistNames, id:\.id)
                 { appSearchableTherapistName in
 
-                    Text(appSearchableTherapistName.sTherapistTName)
+                //  Text(appSearchableTherapistName.sTherapistTName)
+                    Text("\(appSearchableTherapistName.sTherapistTName) - \(appSearchableTherapistName.sTherapistTID)")
                         .onTapGesture
                         {
                             self.sTherapistName = appSearchableTherapistName.sTherapistTName
@@ -1103,6 +1105,7 @@ struct AppDataGathererTherapist3View: View
 
             }
 
+            let sTherapistTID:String       = ("\(pfTherapistFileItem.iPFTherapistFileTID)")
             let sTherapistTName:String     = pfTherapistFileItem.sPFTherapistFileName
             let sTherapistTNameLow:String  = sTherapistTName.lowercased()
             let sTherapistTNameNoWS:String = pfTherapistFileItem.sPFTherapistFileNameNoWS
@@ -1111,14 +1114,14 @@ struct AppDataGathererTherapist3View: View
                 sTherapistTNameNoWS.contains(sSearchValueLow) == true)
             {
             
-                self.listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:sTherapistTName))
+                self.listSelectableTherapistNames.append(AppSearchableTherapistName(sTherapistTName:sTherapistTName, sTherapistTID:sTherapistTID))
 
                 cSelectableTherapistNames += 1
 
                 if (self.bInternalTraceFlag == true)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'sTherapistTName' of [\(sTherapistTName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(cTherapistNames)): 'sTherapistTName' of [\(sTherapistTName)] - 'sTherapistTID' is [\(sTherapistTID)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
 
                 }
 

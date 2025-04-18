@@ -9,6 +9,8 @@
 import Foundation
 import SwiftUI
 import SwiftData
+import LocalAuthentication
+import LocalAuthenticationEmbeddedUI
 
 struct AppAuthenticateView: View
 {
@@ -17,7 +19,7 @@ struct AppAuthenticateView: View
     {
         
         static let sClsId        = "AppAuthenticateView"
-        static let sClsVers      = "v1.2101"
+        static let sClsVers      = "v1.2901"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -28,6 +30,11 @@ struct AppAuthenticateView: View
     // App Data field(s):
 
 //  @Environment(\.modelContext) var modelContext
+
+    static              var timerOnDemandThirdOfSec                               = Timer()
+    static              var timerOnDemandHalfOfSec                                = Timer()
+
+    @Binding            var uuid4ForcingViewRefresh:UUID
 
     enum FocusedFields: Hashable
     {
@@ -40,31 +47,77 @@ struct AppAuthenticateView: View
     @Query              var pfAdminsSwiftDataItems:[PFAdminsSwiftDataItem]
 
     @State      private var shouldContentViewChange:Bool                          = false
+
+    @State      private var bIsFaceIdAvailable:Bool                               = false
+    @State      private var bIsFaceIdAuthenticated:Bool                           = false
+    @State      private var sFaceIdAuthenticationMessage:String                   = ""
+
     @State      private var isUserAuthenticationAvailable:Bool                    = false
     @State      private var sCredentialsCheckReason:String                        = ""
     @State      private var isUserLoginFailureShowing:Bool                        = false
     @State      private var isUserLoggedIn:Bool                                   = false
-    @State      private var sLoginUsername:String                                 = ""
-    @State      private var sLoginPassword:String                                 = ""
+
+    @AppStorage("PMADataGatherer.LastLoginBlockedFromFaceId")
+                private var bIsUserBlockedFromFaceId:Bool                         = false
+    @AppStorage("PMADataGatherer.LastLoginUsername")
+                private var sLoginUsername:String                                 = ""
+    @AppStorage("PMADataGatherer.LastLoginPassword")
+                private var sLoginPassword:String                                 = ""
+
+                private var isUserAuthorizedAndLoggedIn:Bool
+    {
+        var bAreWeGoodToGo:Bool = false
+
+        if (self.bIsUserBlockedFromFaceId == true)
+        {
+            bAreWeGoodToGo = self.isUserLoggedIn
+        }
+        else
+        {
+            if (self.bIsFaceIdAvailable == false)
+            {
+                bAreWeGoodToGo = self.isUserLoggedIn
+            }
+            else
+            {
+                if (self.bIsFaceIdAuthenticated == true)
+                {
+                    bAreWeGoodToGo = self.isUserLoggedIn
+                }
+                else
+                {
+                    bAreWeGoodToGo = false
+                }
+            }
+        }
+
+        return bAreWeGoodToGo
+    }
 
 #if os(iOS)
 
     @State      private var cAppAboutButtonPresses:Int                            = 0
+    @State      private var cAppViewRefreshButtonPresses:Int                      = 0
 
     @State      private var isAppAboutViewModal:Bool                              = false
 
 #endif
 
-                        var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
+    @ObservedObject     var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
     @ObservedObject     var jmAppSwiftDataManager:JmAppSwiftDataManager           = JmAppSwiftDataManager.ClassSingleton.appSwiftDataManager
     @ObservedObject     var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
                         var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
+                        var appGlobalInfo:AppGlobalInfo                           = AppGlobalInfo.ClassSingleton.appGlobalInfo
 
-    init()
+    init(uuid4ForcingViewRefresh:Binding<UUID>)
     {
 
         let sCurrMethod:String = #function
         let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        // Handle the 'uuid4ForcingViewRefresh' parameter...
+
+        _uuid4ForcingViewRefresh = uuid4ForcingViewRefresh
         
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
         
@@ -119,6 +172,7 @@ struct AppAuthenticateView: View
         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'jmAppSwiftDataManager.pfAdminsSwiftDataItems.count' is (\(self.jmAppSwiftDataManager.pfAdminsSwiftDataItems.count))...")
         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable' is [\(self.jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable)]...")
         let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'isUserAuthenticationAvailable' is [\(isUserAuthenticationAvailable)]...")
+        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #1 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
         // Check if we have 'login' data available from SwiftData...
 
@@ -129,6 +183,7 @@ struct AppAuthenticateView: View
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'jmAppSwiftDataManager.pfAdminsSwiftDataItems.count' is (\(self.jmAppSwiftDataManager.pfAdminsSwiftDataItems.count))...")
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable' is [\(self.jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable)]...")
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'isUserAuthenticationAvailable' is [\(isUserAuthenticationAvailable)]...")
+            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #2 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
             VStack(alignment:.center)
             {
@@ -147,7 +202,7 @@ struct AppAuthenticateView: View
 
                         self.cAppAboutButtonPresses += 1
 
-                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                        let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppAuthenticateView.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
 
                         self.isAppAboutViewModal.toggle()
 
@@ -213,9 +268,53 @@ struct AppAuthenticateView: View
                     //      .imageScale(.large)
 
                     //  Text: --- (hidden) Horzonital <Spacer> ---
-                        Text("")
-                            .font(.caption)
-                            .opacity(0)
+                    //  Text("")
+                    //      .font(.caption)
+                    //      .opacity(0)
+
+                        Button
+                        {
+
+                            self.cAppViewRefreshButtonPresses += 1
+
+                            let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).Button(Xcode).'Refresh'.#(\(self.cAppViewRefreshButtonPresses))...")
+
+                            self.bIsFaceIdAuthenticated = false
+
+                            self.authenticateViaFaceId()
+
+                            let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                            if (bUserLoginValidated == true)
+                            {
+                                self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                
+                            //  // Generate a new UUID to force the View to be (completely) recreated...
+                            //
+                            //  uuid4ForcingViewRefresh = UUID()
+                            //
+                            //  let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).Button(Xcode).'Refresh'.#(\(self.cAppViewRefreshButtonPresses)) - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
+                            }
+
+                        }
+                        label:
+                        {
+
+                            VStack(alignment:.center)
+                            {
+
+                                Label("", systemImage: "faceid")
+                                    .help(Text("'Refresh' App 'Authenticate' Screen..."))
+                                    .foregroundStyle(.tint)
+                                    .font(.system(size: 30))
+
+                                Text("Refresh - #(\(self.cAppViewRefreshButtonPresses))...")
+                                    .font(.footnote)
+
+                            }
+
+                        }
+                        .padding()
 
                     }
 
@@ -244,6 +343,7 @@ struct AppAuthenticateView: View
 
                                     let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - Toggled 'self.shouldContentViewChange' which is now [\(self.shouldContentViewChange)]...")
                                     let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - 'self.isUserAuthenticationAvailable' is [\(self.isUserAuthenticationAvailable)]...")
+                                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onReceive #1 - 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
                                     if (isUserAuthenticationAvailable                           == false &&
                                         self.jmAppDelegateVisitor.isUserAuthenticationAvailable == true)
@@ -279,6 +379,28 @@ struct AppAuthenticateView: View
                 Spacer()
 
             }
+            .onAppear(
+                perform:
+                {
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear #1 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()'...")
+
+                    self.authenticateViaFaceId()
+
+                    let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                    if (bUserLoginValidated == true)
+                    {
+                        self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                    //  // Generate a new UUID to force the View to be (completely) recreated...
+                    //
+                    //  uuid4ForcingViewRefresh = UUID()
+                    //
+                    //  let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).onAppear #1 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
+                    }
+
+                }
+            )
 
         }
         else
@@ -288,7 +410,13 @@ struct AppAuthenticateView: View
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable' is [\(self.jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable)]...")
             let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'isUserAuthenticationAvailable' is [\(isUserAuthenticationAvailable)]...")
 
-            if (isUserLoggedIn == false)
+            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'bIsFaceIdAuthenticated' is [\(bIsFaceIdAuthenticated)]...")
+            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'isUserLoggedIn' is [\(isUserLoggedIn)]...")
+            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'isUserAuthorizedAndLoggedIn' is [\(isUserAuthorizedAndLoggedIn)]...")
+            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
+
+        //  if (isUserLoggedIn == false)
+            if (isUserAuthorizedAndLoggedIn == false)
             {
 
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #3 Toggle 'isUserLoggedIn' is \(isUserLoggedIn)...")
@@ -311,7 +439,7 @@ struct AppAuthenticateView: View
 
                                 self.cAppAboutButtonPresses += 1
 
-                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):SettingsSingleViewCore.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
+                                let _ = xcgLogMsg("\(ClassInfo.sClsDisp):AppAuthenticateView.Button(Xcode).'App About'.#(\(self.cAppAboutButtonPresses))...")
 
                                 self.isAppAboutViewModal.toggle()
 
@@ -370,21 +498,96 @@ struct AppAuthenticateView: View
 
                         #if os(iOS)
 
-                            VStack(alignment:.center)
+                        //  VStack(alignment:.center)
+                        //  {
+                        //
+                        //      Label("", systemImage: "textformat.size.smaller")
+                        //          .help(Text("App Marker"))
+                        //          .imageScale(.large)
+                        //          .opacity(0)
+                        //
+                        //  //  Text: --- (hidden) Horzonital <Spacer> ---
+                        //      Text("")
+                        //          .font(.caption)
+                        //          .opacity(0)
+                        //
+                        //  }
+                        //  .padding()
+
+                        //  Button("FaceId")
+                            Button
                             {
 
-                                Label("", systemImage: "textformat.size.smaller")
-                                    .help(Text("App Marker"))
-                                    .imageScale(.large)
-                                    .opacity(0)
+                                self.cAppViewRefreshButtonPresses += 1
 
-                            //  Text: --- (hidden) Horzonital <Spacer> ---
-                                Text("")
-                                    .font(.caption)
-                                    .opacity(0)
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp).Button(Xcode).'Refresh (FaceId)'.#(\(self.cAppViewRefreshButtonPresses))...")
 
+                                self.bIsFaceIdAuthenticated = false
+
+                                self.authenticateViaFaceId()
+
+                                if sLoginUsername.isEmpty
+                                {
+                                    focusedField = .fieldUsername
+                                }
+                                else
+                                {
+                                    if sLoginPassword.isEmpty
+                                    {
+                                        focusedField = .fieldPassword
+                                    }
+                                    else
+                                    {
+
+                                        focusedField = nil
+
+                                        let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                                        if (bUserLoginValidated == true)
+                                        {
+
+                                            AppAuthenticateView.timerOnDemandThirdOfSec = Timer.scheduledTimer(withTimeInterval:0.35, repeats:false)
+                                            { _ in
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                                                self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+
+                                            }
+
+                                            AppAuthenticateView.timerOnDemandHalfOfSec = Timer.scheduledTimer(withTimeInterval:0.50, repeats:false)
+                                            { _ in
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.50-second' Timer 'pop' - generating a new UUID in <'uuid4ForcingViewRefresh'>...")
+
+                                                // Generate a new UUID to force the View to be (completely) recreated...
+                                              
+                                                uuid4ForcingViewRefresh = UUID()
+
+                                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' FaceId> '.50-second' Timer 'pop' - generated  a new UUID in <'uuid4ForcingViewRefresh'>...")
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                            label:
+                            {
+                          
+                                VStack(alignment:.center)
+                                {
+                          
+                                    Label("", systemImage: "faceid")
+                                        .help(Text("'Refresh' App 'Authenticate' Screen..."))
+                                        .foregroundStyle(.tint)
+                                        .font(.system(size: 30))
+                          
+                                    Text("Refresh - #(\(self.cAppViewRefreshButtonPresses))...")
+                                        .font(.footnote)
+                          
+                                }
+                          
                             }
                             .padding()
+                        //  .buttonStyle(.borderedProminent)
 
                         #endif
 
@@ -411,7 +614,14 @@ struct AppAuthenticateView: View
                                 }
                                 else
                                 {
-                                    focusedField = .fieldPassword
+                                    if sLoginPassword.isEmpty
+                                    {
+                                        focusedField = .fieldPassword
+                                    }
+                                    else
+                                    {
+                                        focusedField = nil
+                                    }
                                 }
                             }
 
@@ -424,6 +634,12 @@ struct AppAuthenticateView: View
                             {
                                 focusedField = .fieldPassword
                             }
+                            .onAppear
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).AppAuthenticateView.TextField #1 - Received an .onAppear() #1...")
+
+                                focusedField = nil
+                            }
 
                         SecureField("Password", text: $sLoginPassword)
                         #if os(iOS)
@@ -432,7 +648,24 @@ struct AppAuthenticateView: View
                             .focused($focusedField, equals: .fieldPassword)
                             .onSubmit
                             {
-                                let _ = self.isUserPasswordValidForLogin()
+                                let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                                if (bUserLoginValidated == true)
+                                {
+                                    self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                                //  // Generate a new UUID to force the View to be (completely) recreated...
+                                //
+                                //  uuid4ForcingViewRefresh = UUID()
+                                //
+                                //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).Text #1 - Received an .onSubmit() - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
+                                }
+                            }
+                            .onAppear
+                            {
+                                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).AppAuthenticateView.TextField #2 - Received an .onAppear() #1...")
+
+                                focusedField = nil
                             }
                             .alert("\(self.sCredentialsCheckReason) - try again...", isPresented:$isUserLoginFailureShowing)
                             {
@@ -464,7 +697,20 @@ struct AppAuthenticateView: View
                                     }
                                     else
                                     {
-                                        let _ = self.isUserPasswordValidForLogin()
+                                        focusedField = nil
+
+                                        let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                                        if (bUserLoginValidated == true)
+                                        {
+                                            self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                                        //  // Generate a new UUID to force the View to be (completely) recreated...
+                                        //
+                                        //  uuid4ForcingViewRefresh = UUID()
+                                        //
+                                        //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) User pressed the 'Login' button - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
+                                        }
                                     }
                                 }
                             }
@@ -475,6 +721,29 @@ struct AppAuthenticateView: View
                         }
 
                     }
+                    .onAppear(
+                        perform:
+                        {
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear #2 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()'...")
+
+                            self.authenticateViaFaceId()
+
+                            let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                            if (bUserLoginValidated == true)
+                            {
+                                focusedField = nil
+
+                                self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                            //  // Generate a new UUID to force the View to be (completely) recreated...
+                            //
+                            //  uuid4ForcingViewRefresh = UUID()
+                            //
+                            //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear #2 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
+                            }
+                        }
+                    )
                     .padding()
 
                 }
@@ -486,7 +755,11 @@ struct AppAuthenticateView: View
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'jmAppSwiftDataManager.pfAdminsSwiftDataItems.count' is (\(self.jmAppSwiftDataManager.pfAdminsSwiftDataItems.count))...")
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable' is [\(self.jmAppSwiftDataManager.bArePFAdminsSwiftDataItemsAvailable)]...")
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'isUserAuthenticationAvailable' is [\(isUserAuthenticationAvailable)]...")
+
+                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'bIsFaceIdAuthenticated' is [\(bIsFaceIdAuthenticated)]...")
                 let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'isUserLoggedIn' is [\(isUserLoggedIn)]...")
+                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'isUserAuthorizedAndLoggedIn' is [\(isUserAuthorizedAndLoggedIn)]...")
+                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):body(some Scene) #4 Toggle 'bIsUserBlockedFromFaceId' is [\(bIsUserBlockedFromFaceId)]...")
 
                 ContentView(isUserLoggedIn:$isUserLoggedIn, sLoginUsername:$sLoginUsername, sLoginPassword:$sLoginPassword)
 
@@ -494,15 +767,60 @@ struct AppAuthenticateView: View
 
         }
 
-        Text("")            
+        Text("View 'refresh' flag: [\(self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh)]...")            
             .hidden()
             .onAppear(
                 perform:
                 {
                     // Continue App 'initialization'...
 
+                    let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear #3 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()'...")
+
                     let _ = self.finishAppInitializationInBackground()
+
+                    if (self.bIsUserBlockedFromFaceId == true)
+                    {
+                        self.sLoginPassword = ""
+                    }
+
+                    self.authenticateViaFaceId()
+
+                    let bUserLoginValidated:Bool = self.isUserPasswordValidForLogin()
+
+                    if (bUserLoginValidated == true)
+                    {
+                        focusedField = nil
+
+                        self.jmAppDelegateVisitor.setAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+
+                    //  // Generate a new UUID to force the View to be (completely) recreated...
+                    //
+                    //  uuid4ForcingViewRefresh = UUID()
+                    //
+                    //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onAppear #3 - Updating 'self.authenticateViaFaceId()' and then 'self.isUserPasswordValidForLogin()' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
+                    }
+
                 })
+            .onChange(of:self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh)
+            {
+                let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - JmAppDelegateVisitor has 'signalled' a View 'refresh' - 'appDelegateVisitorSwiftViewsShouldRefresh' is [\(self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh)]...")
+
+                if (self.jmAppDelegateVisitor.appDelegateVisitorSwiftViewsShouldRefresh == true)
+                {
+                    AppAuthenticateView.timerOnDemandThirdOfSec = Timer.scheduledTimer(withTimeInterval:0.35, repeats:false)
+                    { _ in
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' .hidden> '.35-second' Timer 'pop' - invoking the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+                        self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()
+                        let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp) <onDemand Timer> <View 'refresh' .hidden> '.35-second' Timer 'pop' - invoked  the 'self.jmAppDelegateVisitor.resetAppDelegateVisitorSignalSwiftViewsShouldRefresh()'...")
+
+                    //  // Generate a new UUID to force the View to be (completely) recreated...
+                    //
+                    //  uuid4ForcingViewRefresh = UUID()
+                    //
+                    //  let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp).onChange #1 - JmAppDelegateVisitor has 'signalled' a View 'refresh' - generated a new UUID in <'uuid4ForcingViewRefresh'>...")
+                    }
+                }
+            }
         
     }
     
@@ -606,55 +924,6 @@ struct AppAuthenticateView: View
 
         }
   
-    //  if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
-    //
-    //      let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForAdmins()
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary...")
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForAdmins()' to get a 'authentication' dictionary - 'jmAppParseCoreManager' is nil - Error!")
-    //
-    //  }
-    //
-    //  var bWasAppPFAdminsDataPresent:Bool = false
-    //
-    //  if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFAdminsDataPresent' is [\(String(describing: bWasAppPFAdminsDataPresent))]...")
-    //
-    //      bWasAppPFAdminsDataPresent = false
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      if ((jmAppDelegateVisitor.jmAppParseCoreManager?.dictPFAdminsDataItems.count)! < 1)
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is 'empty'...")
-    //
-    //          bWasAppPFAdminsDataPresent = false
-    //
-    //      }
-    //      else
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'dictPFAdminsDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.dictPFAdminsDataItems))]...")
-    //
-    //          bWasAppPFAdminsDataPresent = true
-    //
-    //      }
-    //
-    //  }
-        
         // Exit...
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFAdminsDataPresent' is [\(String(describing: bWasAppPFAdminsDataPresent))]...")
@@ -696,55 +965,6 @@ struct AppAuthenticateView: View
 
         }
 
-    //  if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
-    //
-    //      let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFQueryForCSC()
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list...")
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFQueryForCSC()' to get a 'location' list - 'jmAppParseCoreManager' is nil - Error!")
-    //
-    //  }
-    //
-    //  var bWasAppPFCscDataPresent:Bool = false
-    //
-    //  if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
-    //  {
-    //
-    //      self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
-    //
-    //      bWasAppPFCscDataPresent = false
-    //
-    //  }
-    //  else
-    //  {
-    //
-    //      if ((jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems.count)! < 1)
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is 'empty'...")
-    //
-    //          bWasAppPFCscDataPresent = false
-    //
-    //      }
-    //      else
-    //      {
-    //
-    //          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'listPFCscDataItems' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.listPFCscDataItems))]...")
-    //
-    //          bWasAppPFCscDataPresent = true
-    //
-    //      }
-    //
-    //  }
-        
         // Exit...
   
         self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFCscDataPresent' is [\(String(describing: bWasAppPFCscDataPresent))]...")
@@ -752,86 +972,6 @@ struct AppAuthenticateView: View
         return bWasAppPFCscDataPresent
   
     }   // End of private func checkIfAppParseCoreHasPFCscDataItems().
-
-//  private func checkIfAppParseCoreHasPFInstallationCurrent() -> Bool
-//  {
-//
-//      let sCurrMethod:String = #function
-//      let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
-//      
-//      self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
-//
-//      if (jmAppDelegateVisitor.jmAppParseCoreManager != nil)
-//      {
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
-//
-//          let _ = jmAppDelegateVisitor.jmAppParseCoreManager?.getJmAppParsePFInstallationCurrentInstance()
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent'...")
-//
-//      }
-//      else
-//      {
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) Could NOT call the 'jmAppParseCoreManager' method 'getJmAppParsePFInstallationCurrentInstance()' to get a 'pfInstallationCurrent' - 'jmAppParseCoreManager' is nil - Error!")
-//
-//      }
-//
-//      var bWasAppPFInstallationCurrentPresent:Bool = false
-//
-//      if (jmAppDelegateVisitor.jmAppParseCoreManager == nil)
-//      {
-//
-//          self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppDelegateVisitor' has a 'jmAppParseCoreManager' that is nil - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
-//
-//          bWasAppPFInstallationCurrentPresent = false
-//
-//      }
-//      else
-//      {
-//
-//          if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
-//          {
-//
-//              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is nil...")
-//
-//              if (jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent == nil)
-//              {
-//
-//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is STILL nil...")
-//
-//                  bWasAppPFInstallationCurrentPresent = false
-//
-//              }
-//              else
-//              {
-//
-//                  self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
-//
-//                  bWasAppPFInstallationCurrentPresent = true
-//
-//              }
-//
-//          }
-//          else
-//          {
-//
-//              self.xcgLogMsg("\(sCurrMethodDisp) 'jmAppParseCoreManager' has a 'pfInstallationCurrent' that is [\(String(describing: jmAppDelegateVisitor.jmAppParseCoreManager?.pfInstallationCurrent))]...")
-//
-//              bWasAppPFInstallationCurrentPresent = true
-//
-//          }
-//
-//      }
-//      
-//      // Exit...
-//
-//      self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bWasAppPFInstallationCurrentPresent' is [\(String(describing: bWasAppPFInstallationCurrentPresent))]...")
-//
-//      return bWasAppPFInstallationCurrentPresent
-//
-//  }   // End of private func checkIfAppParseCoreHasPFInstallationCurrent().
 
     private func getAppParseCoreManagerInstance()->JmAppParseCoreManager
     {
@@ -871,14 +1011,13 @@ struct AppAuthenticateView: View
             sLookupUserName     = self.sLoginUsername.lowercased()
             sLookupUserNameNoWS = sLookupUserName.removeUnwantedCharacters(charsetToRemove:[StringCleaning.removeAll], bResultIsLowerCased:true)
 
-
         }
         else
         {
 
             // Exit...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.sLoginUsername' is nil or Empty - can NOT be 'validated' - Error!")
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.sLoginUsername' is nil or Empty - can NOT be 'validated' - Warning!")
 
             pfAdminsDataItem = nil   
 
@@ -972,6 +1111,30 @@ struct AppAuthenticateView: View
 
             pfAdminsDataItem = nil   
 
+        }
+        else
+        {
+
+            if (pfAdminsDataItem!.bPFAdminsCanUseFaceId == false)
+            {
+
+                self.bIsUserBlockedFromFaceId     = true
+                self.bIsFaceIdAvailable           = false
+                self.bIsFaceIdAuthenticated       = false
+                self.sFaceIdAuthenticationMessage = "App 'user' is NOT allowed to use 'FaceId' Authentication"
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User can NOT use 'FaceId' - cleared the FaceId field(s) - Warning!")
+            
+            }
+            else
+            {
+
+                self.bIsUserBlockedFromFaceId     = false
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User CAN use 'FaceId' - set FaceId field...")
+
+            }
+            
         }
         
         // Exit...
@@ -1088,6 +1251,30 @@ struct AppAuthenticateView: View
             pfAdminsSwiftDataItem = nil   
 
         }
+        else
+        {
+
+            if (pfAdminsSwiftDataItem!.bPFAdminsCanUseFaceId == false)
+            {
+
+                self.bIsUserBlockedFromFaceId     = true
+                self.bIsFaceIdAvailable           = false
+                self.bIsFaceIdAuthenticated       = false
+                self.sFaceIdAuthenticationMessage = "App 'user' is NOT allowed to use 'FaceId' Authentication"
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User can NOT use 'FaceId' - cleared the FaceId field(s) - Warning!")
+
+            }
+            else
+            {
+
+                self.bIsUserBlockedFromFaceId     = false
+
+                self.xcgLogMsg("\(sCurrMethodDisp) 'sLookupUserName' of [\(sLookupUserName)] was found in the valid (\(jmAppParseCoreManager.dictPFAdminsDataItems.count)) login(s) dictionary - User CAN use 'FaceId' - set FaceId field...")
+
+            }
+
+        }
         
         // Exit...
   
@@ -1096,6 +1283,101 @@ struct AppAuthenticateView: View
         return pfAdminsSwiftDataItem
   
     }   // End of private func locateUserDataInSwiftData()->PFAdminsSwiftDataItem?.
+
+    private func authenticateViaFaceId() 
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
+
+        // Check if the 'last' User 'login' has the FaceId 'blocked'...
+
+        if (self.bIsUserBlockedFromFaceId == true)
+        {
+
+            self.bIsUserBlockedFromFaceId     = true
+            self.bIsFaceIdAvailable           = false
+            self.bIsFaceIdAuthenticated       = false
+            self.sFaceIdAuthenticationMessage = "App 'user' is NOT allowed to use 'FaceId' Authentication"
+
+            self.xcgLogMsg("\(sCurrMethodDisp) User can NOT use 'FaceId' - cleared the FaceId field(s) - Warning!")
+
+            // Exit...
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.bIsUserBlockedFromFaceId' is [\(self.bIsUserBlockedFromFaceId)] - 'self.bIsFaceIdAvailable' is [\(self.bIsFaceIdAvailable)] - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
+
+            return
+
+        }
+
+        // Check whether biometric authentication is possible...
+
+        let laContext = LAContext()
+        var error: NSError?
+
+        self.bIsFaceIdAvailable = false
+
+        if laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error:&error) 
+        {
+
+            // It's possible, so go ahead and use it...
+
+            self.bIsFaceIdAvailable        = true
+            let sFaceIdNeededReason:String = "We need to unlock your data."
+
+            laContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason:sFaceIdNeededReason) 
+            { success, authenticationError in
+
+                // Authentication has now completed...
+
+                if success 
+                {
+
+                    // Authenticated successfully...
+
+                    self.bIsFaceIdAuthenticated       = true
+                    self.sFaceIdAuthenticationMessage = "App has been 'successfully' Authenticated"
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) \(self.sFaceIdAuthenticationMessage) - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
+
+                } 
+                else 
+                {
+
+                    // There was a problem...
+
+                    self.bIsFaceIdAuthenticated       = false
+                    self.sFaceIdAuthenticationMessage = "App has 'failed' Authentication - 'success' is [\(success)] - 'authenticationError' is [\(String(describing: authenticationError))]"
+
+                    self.xcgLogMsg("\(sCurrMethodDisp) \(self.sFaceIdAuthenticationMessage) - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
+
+                }
+
+            }
+
+        } 
+        else 
+        {
+
+            // NO biometrics...
+
+            self.bIsFaceIdAvailable           = false
+            self.bIsFaceIdAuthenticated       = false
+            self.sFaceIdAuthenticationMessage = "App has 'failed' Authentication - NO Biometrics (Face ID) are available"
+
+            self.xcgLogMsg("\(sCurrMethodDisp) \(self.sFaceIdAuthenticationMessage) - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
+
+        }
+
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.bIsFaceIdAuthenticated' is [\(self.bIsFaceIdAuthenticated)] - 'self.sFaceIdAuthenticationMessage' is [\(self.sFaceIdAuthenticationMessage)]...")
+
+        return
+
+    }   // End of private func authenticateViaFaceId().
 
     private func isUserPasswordValidForLogin()->Bool
     {
@@ -1119,6 +1401,10 @@ struct AppAuthenticateView: View
 
         }
 
+        // Flag that indicates whether or not we've 'validated' the Username...
+
+        var bUserNameIsValid:Bool = false
+
         // Check SwiftData (1st) for a match on the User...
 
         let pfAdminsSwiftDataItem:PFAdminsSwiftDataItem? = self.locateUserDataInSwiftData()
@@ -1126,13 +1412,14 @@ struct AppAuthenticateView: View
         if (pfAdminsSwiftDataItem == nil)
         {
 
-            self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
-
+            self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid' - NOT found in 'Admins' <#1>"
             bUserLoginValidated          = false
 
         }
         else
         {
+
+            bUserNameIsValid = true
 
             if let sValidUserPassword:String = pfAdminsSwiftDataItem?.sPFAdminsParsePassword
             {
@@ -1142,7 +1429,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "User credential(s) are 'valid'"
-
                     bUserLoginValidated          = true
 
                 }
@@ -1150,7 +1436,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "For the Username '\(sValidUserName)', the password is 'invalid'"
-
                     bUserLoginValidated          = false
 
                 }
@@ -1159,8 +1444,7 @@ struct AppAuthenticateView: View
             else
             {
 
-                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
-
+                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'missing' a password in 'Admins' <#1>"
                 bUserLoginValidated          = false
 
             }
@@ -1191,13 +1475,20 @@ struct AppAuthenticateView: View
         if (pfAdminsDataItem == nil)
         {
 
-            self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
+            if (bUserNameIsValid == false)
+            {
+            
+                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid' - NOT found in 'Admins' <#2>"
+            
+            }
 
-            bUserLoginValidated          = false
+            bUserLoginValidated = false
 
         }
         else
         {
+
+            bUserNameIsValid = true
 
             if let sValidUserPassword:String = pfAdminsDataItem?.sPFAdminsParsePassword
             {
@@ -1207,7 +1498,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "User credential(s) are 'valid'"
-
                     bUserLoginValidated          = true
 
                 }
@@ -1215,7 +1505,6 @@ struct AppAuthenticateView: View
                 {
 
                     self.sCredentialsCheckReason = "For the Username '\(sValidUserName)', the password is 'invalid'"
-
                     bUserLoginValidated          = false
 
                 }
@@ -1224,8 +1513,7 @@ struct AppAuthenticateView: View
             else
             {
 
-                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'invalid'"
-
+                self.sCredentialsCheckReason = "The Username '\(sValidUserName)' is 'missing' a password in 'Admins' <#2>"
                 bUserLoginValidated          = false
 
             }
@@ -1249,7 +1537,7 @@ struct AppAuthenticateView: View
 
             self.dumpUserAuthenticationDataToLog()
 
-            self.sLoginPassword = ""
+        //  self.sLoginPassword = ""
 
             self.isUserLoginFailureShowing.toggle()
 
@@ -1311,53 +1599,10 @@ struct AppAuthenticateView: View
 
 }   // End of struct AppAuthenticateView(View).
 
-#Preview
-{
-    
-    AppAuthenticateView()
-    
-}
-
-// --------------------------------------------------------------------------------------------------
-//
-// NOTES: Sample...   
-//
-//     let today         = Date()
-//     let tripPredicate = #Predicate<Trip> 
-//                             { 
-//                               $0.destination == "New York" &&
-//                               $0.name.contains("birthday") &&
-//                               $0.startDate > today
-//                             }
-//
-//     let descriptor    = FetchDescriptor<Trip>(predicate:tripPredicate)
-//     let trips         = try context.fetch(descriptor)
-//
-//     --- OR ---
-//
-//     let descriptor        = FetchDescriptor<Student>()
-//     var totalResults      = 0
-//     var totalDistinctions = 0
-//     var totalPasses       = 0
-//
-//     do 
-//     {
-//
-//         try modelContext.enumerate(descriptor) 
-//             { student in
-//                 totalResults      += student.scores.count
-//                 totalDistinctions += student.scores.filter { $0 >= 85 }.count
-//                 totalPasses       += student.scores.filter { $0 >= 70 && $0 < 85 }.count
-//             }
-//     } 
-//     catch 
-//     {
-//         print("Unable to calculate student results.")
-//     }
-//
-//     print("Total test results: \(totalResults)")
-//     print("Distinctions: \(totalDistinctions)")
-//     print("Passes: \(totalPasses)")
-//
-// --------------------------------------------------------------------------------------------------
+//  #Preview
+//  {
+//      
+//      AppAuthenticateView()
+//      
+//  }
 

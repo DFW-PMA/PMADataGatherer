@@ -17,7 +17,7 @@ struct AppAboutView: View
     {
         
         static let sClsId        = "AppAboutView"
-        static let sClsVers      = "v1.1001"
+        static let sClsVers      = "v1.1101"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true

@@ -17,7 +17,7 @@ public class AppScheduleLoadingAssistant: NSObject
     {
         
         static let sClsId          = "AppScheduleLoadingAssistant"
-        static let sClsVers        = "v1.0306"
+        static let sClsVers        = "v1.0501"
         static let sClsDisp        = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight   = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace       = true
@@ -45,13 +45,15 @@ public class AppScheduleLoadingAssistant: NSObject
                     var listScheduledPatientLocationItems:[ScheduledPatientLocationItem]
                                                                               = [ScheduledPatientLocationItem]()
 
-                    var cTotalScheduledPatientVisits:Int                      = 0
-
                     var dictOfSortedSchedPatientLocItems:[String:[ScheduledPatientLocationItem]]
                                                                               = [String:[ScheduledPatientLocationItem]]()
 
+                    var cTotalScheduledPatientVisits:Int                      = 0
+                    var cTotalTidsOnWorkRoute:Int                             = 0
+                    var cTotalTidsOnWorkRouteToday:Int                        = 0
+
                     var jmAppDelegateVisitor:JmAppDelegateVisitor             = JmAppDelegateVisitor.ClassSingleton.appDelegateVisitor
-    @ObservedObject var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
+                    var jmAppParseCoreManager:JmAppParseCoreManager           = JmAppParseCoreManager.ClassSingleton.appParseCodeManager
                     var jmAppParseCoreBkgdDataRepo:JmAppParseCoreBkgdDataRepo = JmAppParseCoreBkgdDataRepo.ClassSingleton.appParseCodeBkgdDataRepo
 
     private override init()
@@ -111,11 +113,15 @@ public class AppScheduleLoadingAssistant: NSObject
         asToString.append("[")
         asToString.append("'bScheduledPatientLocationItemsAreAvaiable': [\(String(describing: self.bScheduledPatientLocationItemsAreAvaiable))],")
         asToString.append("'sScheduledPatientLocationItemsTID': [\(String(describing: self.sScheduledPatientLocationItemsTID))],")
-        asToString.append("'listScheduledPatientLocationItems': [\(String(describing: self.listScheduledPatientLocationItems))],")
+    //  asToString.append("'listScheduledPatientLocationItems': [\(String(describing: self.listScheduledPatientLocationItems))],")
+        asToString.append("'listScheduledPatientLocationItems.count': (\(String(describing: self.listScheduledPatientLocationItems.count))),")
         asToString.append("],")
         asToString.append("[")
+    //  asToString.append("'dictOfSortedSchedPatientLocItems': [\(String(describing: self.dictOfSortedSchedPatientLocItems))],")
+        asToString.append("'dictOfSortedSchedPatientLocItems.count': (\(String(describing: self.dictOfSortedSchedPatientLocItems.count))),")
         asToString.append("'cTotalScheduledPatientVisits': (\(String(describing: self.cTotalScheduledPatientVisits))),")
-        asToString.append("'dictOfSortedSchedPatientLocItems': [\(String(describing: self.dictOfSortedSchedPatientLocItems))],")
+        asToString.append("'cTotalTidsOnWorkRoute': (\(String(describing: self.cTotalTidsOnWorkRoute))),")
+        asToString.append("'cTotalTidsOnWorkRouteToday': (\(String(describing: self.cTotalTidsOnWorkRouteToday))),")
         asToString.append("],")
         asToString.append("]")
 
@@ -272,12 +278,14 @@ public class AppScheduleLoadingAssistant: NSObject
 
         // Clear the SortedScheduledPatientLocationItems field(s)...
 
-        self.cTotalScheduledPatientVisits     = 0
         self.dictOfSortedSchedPatientLocItems = [String:[ScheduledPatientLocationItem]]()
+        self.cTotalScheduledPatientVisits     = 0
+        self.cTotalTidsOnWorkRoute            = 0
+        self.cTotalTidsOnWorkRouteToday       = 0
         
         // Exit...
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self' is [\(self.toString())]...")
   
         return
   
@@ -302,7 +310,9 @@ public class AppScheduleLoadingAssistant: NSObject
         
             // Exit...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+            self.countSortedScheduledPatientLocationItems()
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
 
             return listSortedScheduledPatientLocationItemsTNames
         
@@ -326,7 +336,7 @@ public class AppScheduleLoadingAssistant: NSObject
 
         // Exit...
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'listSortedScheduledPatientLocationItemsTNames' has #(\(listSortedScheduledPatientLocationItemsTNames.count)) item(s)...")
   
         return listSortedScheduledPatientLocationItemsTNames
   
@@ -351,7 +361,9 @@ public class AppScheduleLoadingAssistant: NSObject
         
             // Exit...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+            self.countSortedScheduledPatientLocationItems()
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
 
             return listSortedScheduledPatientLocationItemsTIDs
         
@@ -377,7 +389,7 @@ public class AppScheduleLoadingAssistant: NSObject
 
         // Exit...
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.listSortedScheduledPatientLocationItemsTIDs' has #(\(listSortedScheduledPatientLocationItemsTIDs.count)) item(s)...")
   
         return listSortedScheduledPatientLocationItemsTIDs
   
@@ -393,15 +405,18 @@ public class AppScheduleLoadingAssistant: NSObject
 
         // Load the SortedScheduledPatientLocationItems dictionary...
 
-        self.cTotalScheduledPatientVisits     = 0
         self.dictOfSortedSchedPatientLocItems = [String:[ScheduledPatientLocationItem]]()
+
+        self.countSortedScheduledPatientLocationItems()
 
         if (dictSchedPatientLocItems.count < 1)
         {
         
             // Exit...
 
-            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+        //  self.countSortedScheduledPatientLocationItems()
+
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting - Nothing to load - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
 
             return self.dictOfSortedSchedPatientLocItems
         
@@ -536,31 +551,125 @@ public class AppScheduleLoadingAssistant: NSObject
         }
 
         self.dictOfSortedSchedPatientLocItems = dictOfSortedSchedPatientLocItems
-        self.cTotalScheduledPatientVisits     = 0
+    //  self.cTotalScheduledPatientVisits     = 0
+    //
+    //  if (self.dictOfSortedSchedPatientLocItems.count > 0)
+    //  {
+    //
+    //      var cTotalScheduledPatientVisits:Int = 0
+    //    
+    //      for (_, listScheduledPatientLocationItems) in self.dictOfSortedSchedPatientLocItems
+    //      {
+    //    
+    //          cTotalScheduledPatientVisits += listScheduledPatientLocationItems.count
+    //    
+    //      }
+    //    
+    //      self.cTotalScheduledPatientVisits = cTotalScheduledPatientVisits
+    //
+    //  }
 
-        if (self.dictOfSortedSchedPatientLocItems.count > 0)
-        {
-
-            var cTotalScheduledPatientVisits:Int = 0
-          
-            for (_, listScheduledPatientLocationItems) in self.dictOfSortedSchedPatientLocItems
-            {
-          
-                cTotalScheduledPatientVisits += listScheduledPatientLocationItems.count
-          
-            }
-          
-            self.cTotalScheduledPatientVisits = cTotalScheduledPatientVisits
-
-        }
+        self.countSortedScheduledPatientLocationItems()
         
         // Exit...
   
-        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.cTotalScheduledPatientVisits' is [\(self.cTotalScheduledPatientVisits)] - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'self.dictOfSortedSchedPatientLocItems' has #(\(self.dictOfSortedSchedPatientLocItems.count)) item(s)...")
   
         return self.dictOfSortedSchedPatientLocItems
   
     }   // End of func loadSortedScheduledPatientLocationItems(dictSchedPatientLocItems::[String:[ScheduledPatientLocationItem]])->[String:[ScheduledPatientLocationItem]].
 
+    func countSortedScheduledPatientLocationItems()
+    {
+  
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+        
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
+        
+        // Count item(s) in the SortedScheduledPatientLocationItems dictionary...
+
+        self.cTotalScheduledPatientVisits = 0
+        self.cTotalTidsOnWorkRoute        = 0
+        self.cTotalTidsOnWorkRouteToday   = 0
+
+        if (self.dictOfSortedSchedPatientLocItems.count > 0)
+        {
+
+            var cTotalScheduledPatientVisits:Int = 0
+            var cTotalTidsOnWorkRoute:Int        = 0
+            var cTotalTidsOnWorkRouteToday:Int   = 0
+          
+            for (sTherapistTIDKey, listScheduledPatientLocationItems) in self.dictOfSortedSchedPatientLocItems
+            {
+          
+                cTotalScheduledPatientVisits += listScheduledPatientLocationItems.count
+
+                let pfCscObject:ParsePFCscDataItem
+                    = self.jmAppParseCoreManager.locatePFCscDataItemByTherapistTID(sTherapistTID:sTherapistTIDKey)
+
+                if (pfCscObject.sPFCscParseLastLocDate.count  > 0       &&
+                    pfCscObject.sPFCscParseLastLocDate       != "-N/A-" &&
+                    pfCscObject.sPFCscParseLastLocTime.count  > 0       &&
+                    pfCscObject.sPFCscParseLastLocTime       != "-N/A-")
+                {
+
+                    cTotalTidsOnWorkRoute += 1
+
+                    if (self.isDateInToday(sDateToCheck:pfCscObject.sPFCscParseLastLocDate) == true)
+                    {
+
+                        cTotalTidsOnWorkRouteToday += 1
+
+                    }
+
+                }
+          
+            }
+          
+            self.cTotalScheduledPatientVisits = cTotalScheduledPatientVisits
+            self.cTotalTidsOnWorkRoute        = cTotalTidsOnWorkRoute
+            self.cTotalTidsOnWorkRouteToday   = cTotalTidsOnWorkRouteToday
+
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - <count totals> 'self' is [\(self.toString())]...")
+  
+        return
+  
+    }   // End of func countSortedScheduledPatientLocationItems()
+
+    private func isDateInToday(sDateToCheck:String)->Bool
+    {
+
+        let sCurrMethod:String = #function;
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'sDateToCheck' is [\(sDateToCheck)]...")
+
+        // Check if the supplied Date (string) is 'inToday'...
+
+        var bDateIsInToday:Bool = false
+
+        if (sDateToCheck.count > 0)
+        {
+        
+            let dateFormatterFromString:DateFormatter = DateFormatter()
+            dateFormatterFromString.dateFormat        = "M/dd/yy"
+            let dateTestIsInToday:Date                = dateFormatterFromString.date(from:sDateToCheck) ?? Calendar.current.date(byAdding: .day, value: -1, to: .now)!
+            bDateIsInToday                            = (Calendar.current.isDateInToday(dateTestIsInToday))
+        
+        }
+
+        // Exit...
+  
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'bDateIsInToday' is [\(bDateIsInToday)]...")
+  
+        return bDateIsInToday
+
+    } // End of private func isDateInToday(dateToCheck:Date)->Bool.
+    
 }   // End of public class AppScheduleLoadingAssistant.
 

@@ -17,7 +17,7 @@ struct AppDataGathererPatient3View: View
     {
         
         static let sClsId        = "AppDataGathererPatient3View"
-        static let sClsVers      = "v1.0201"
+        static let sClsVers      = "v1.0303"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -587,6 +587,7 @@ struct AppDataGathererPatient3View: View
                     TextField("Patient Name...", text:$sPatientName)
                         .italic()
                         .font(.caption) 
+                        .disableAutocorrection(true)
                         .focused($focusedField, equals:.patientName)
                         .onAppear
                         {
@@ -786,14 +787,15 @@ struct AppDataGathererPatient3View: View
 
                         listSelectablePatientNames = [AppSearchablePatientName]()
 
-                        listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:"...placeholder..."))
+                        listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:"...placeholder...", sPatientPID:"-1"))
 
                     }
 
                 List(listSelectablePatientNames, id:\.id)
                 { appSearchablePatientName in
 
-                    Text(appSearchablePatientName.sPatientName)
+                //  Text(appSearchablePatientName.sPatientName)
+                    Text("\(appSearchablePatientName.sPatientName) - \(appSearchablePatientName.sPatientPID)")
                         .onTapGesture
                         {
                             self.sPatientName = appSearchablePatientName.sPatientName
@@ -972,6 +974,7 @@ struct AppDataGathererPatient3View: View
 
             }
 
+            let sPatientPID:String      = "\(pfPatientFileItem.iPFPatientFilePID)"
             let sPatientName:String     = pfPatientFileItem.sPFPatientFileName
             let sPatientNameLow:String  = sPatientName.lowercased()
             let sPatientNameNoWS:String = pfPatientFileItem.sPFPatientFileNameNoWS
@@ -980,14 +983,14 @@ struct AppDataGathererPatient3View: View
                 sPatientNameNoWS.contains(sSearchValueLow) == true)
             {
             
-                self.listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:sPatientName))
+                self.listSelectablePatientNames.append(AppSearchablePatientName(sPatientName:sPatientName, sPatientPID:sPatientPID))
 
                 cSelectablePatientNames += 1
 
                 if (self.bInternalTraceFlag == true)
                 {
 
-                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientNames)): 'sPatientName' of [\(sPatientName)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
+                    self.xcgLogMsg("\(sCurrMethodDisp) #(\(cPatientNames)): 'sPatientName' of [\(sPatientName)] - 'sPatientPID' of [\(sPatientPID)] contains the 'sSearchValue' of [\(sSearchValue)] - adding to the 'selectable' list...")
 
                 }
             

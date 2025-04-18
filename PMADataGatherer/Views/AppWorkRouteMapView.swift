@@ -16,7 +16,7 @@ struct AppWorkRouteMapView: View
     {
         
         static let sClsId        = "AppWorkRouteMapView"
-        static let sClsVers      = "v1.1601"
+        static let sClsVers      = "v1.1701"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -141,7 +141,7 @@ struct AppWorkRouteMapView: View
                                 .help(Text("App TID/Patient Schedule Viewer"))
                                 .imageScale(.large)
 
-                            Text("Schedule")
+                            Text("Schedule Today")
                                 .font(.caption)
 
                         }
