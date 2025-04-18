@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -127,6 +127,8 @@
 		F091A6662D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */; };
 		F091A6672D402F9D003C881E /* AppSearchableTherapistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = F091A6652D402F9C003C881E /* AppSearchableTherapistName.swift */; };
 		F0981DB42C52C5AE0054CE7C /* PMADataGathererAppGlobalInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0981DB32C52C5AD0054CE7C /* PMADataGathererAppGlobalInfo.swift */; };
+		F0988A142DB2B7F800F8BEDC /* SwiftXLSX in Frameworks */ = {isa = PBXBuildFile; productRef = F0988A132DB2B7F800F8BEDC /* SwiftXLSX */; };
+		F0988A162DB2B81900F8BEDC /* SwiftXLSX in Frameworks */ = {isa = PBXBuildFile; productRef = F0988A152DB2B81900F8BEDC /* SwiftXLSX */; };
 		F0A443392C498ED6005EEE81 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		F0A59E052C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A59E032C5962E900302BA8 /* JmObjCSwiftEnvBridge.swift */; };
 		F0A8FB3E2D650BBF00ADD658 /* AppSchedPatLocMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0A8FB3D2D650BBF00ADD658 /* AppSchedPatLocMapView.swift */; };
@@ -310,6 +312,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0988A162DB2B81900F8BEDC /* SwiftXLSX in Frameworks */,
 				F0C6A8FF2C4AA2A40004606A /* ObjcExceptionBridging in Frameworks */,
 				F0EDCABC2CE54444003A4D79 /* ParseObjC in Frameworks */,
 				F0A443392C498ED6005EEE81 /* (null) in Frameworks */,
@@ -322,6 +325,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0988A142DB2B7F800F8BEDC /* SwiftXLSX in Frameworks */,
 				F0BCCC6A2C820EF1007EA382 /* ObjcExceptionBridging in Frameworks */,
 				F08C00CD2CE537420045A5CD /* ParseObjC in Frameworks */,
 				F0BCCC6B2C820EF1007EA382 /* (null) in Frameworks */,
@@ -533,6 +537,7 @@
 				F0C6A9002C4AA2A40004606A /* XCGLogger */,
 				F0EDCAB92CE54444003A4D79 /* ParseLiveQuery */,
 				F0EDCABB2CE54444003A4D79 /* ParseObjC */,
+				F0988A152DB2B81900F8BEDC /* SwiftXLSX */,
 			);
 			productName = PMADataGatherer;
 			productReference = F028C5AD2C48610A007C459E /* PMADataGatherer_Mac.app */;
@@ -556,6 +561,7 @@
 				F0BCCC542C820EF1007EA382 /* XCGLogger */,
 				F08C00CA2CE537420045A5CD /* ParseLiveQuery */,
 				F08C00CC2CE537420045A5CD /* ParseObjC */,
+				F0988A132DB2B7F800F8BEDC /* SwiftXLSX */,
 			);
 			productName = PMADataGatherer;
 			productReference = F0BCCC762C820EF1007EA382 /* PMADataGatherer_iOS.app */;
@@ -593,6 +599,7 @@
 			packageReferences = (
 				F0C6A8FD2C4AA2A40004606A /* XCRemoteSwiftPackageReference "XCGLogger" */,
 				F08C00C92CE537420045A5CD /* XCRemoteSwiftPackageReference "Parse-SDK-iOS-OSX" */,
+				F0988A122DB2B7F800F8BEDC /* XCLocalSwiftPackageReference "../../../JWeb_MacOSx_apps/SwiftUI_GUI_tools/3973770_SwiftXLSX/SwiftXLSX" */,
 			);
 			productRefGroup = F028C5AE2C48610A007C459E /* Products */;
 			projectDirPath = "";
@@ -1034,7 +1041,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 55.01.25C108;
+				CURRENT_PROJECT_VERSION = 55.11.25C108;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -1085,7 +1092,7 @@
 				CODE_SIGN_ENTITLEMENTS = PMADataGatherer/PMADataGatherer.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 55.01.25C108;
+				CURRENT_PROJECT_VERSION = 55.11.25C108;
 				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"PMADataGatherer/Preview Content\"";
@@ -1199,6 +1206,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		F0988A122DB2B7F800F8BEDC /* XCLocalSwiftPackageReference "../../../JWeb_MacOSx_apps/SwiftUI_GUI_tools/3973770_SwiftXLSX/SwiftXLSX" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../JWeb_MacOSx_apps/SwiftUI_GUI_tools/3973770_SwiftXLSX/SwiftXLSX;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		F08C00C92CE537420045A5CD /* XCRemoteSwiftPackageReference "Parse-SDK-iOS-OSX" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1236,6 +1250,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F08C00C92CE537420045A5CD /* XCRemoteSwiftPackageReference "Parse-SDK-iOS-OSX" */;
 			productName = ParseObjC;
+		};
+		F0988A132DB2B7F800F8BEDC /* SwiftXLSX */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftXLSX;
+		};
+		F0988A152DB2B81900F8BEDC /* SwiftXLSX */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftXLSX;
 		};
 		F0BCCC522C820EF1007EA382 /* ObjcExceptionBridging */ = {
 			isa = XCSwiftPackageProductDependency;

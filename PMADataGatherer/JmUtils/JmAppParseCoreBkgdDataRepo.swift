@@ -9,6 +9,7 @@
 import Foundation
 import SwiftData
 import ParseCore
+import SwiftXLSX
 
 // Implementation class to handle access to the ParseCore 'background' Data (repo).
 
@@ -20,7 +21,7 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
     {
 
         static let sClsId        = "JmAppParseCoreBkgdDataRepo"
-        static let sClsVers      = "v1.2010"
+        static let sClsVers      = "v1.2115"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = false
@@ -3116,25 +3117,242 @@ public class JmAppParseCoreBkgdDataRepo: NSObject
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Check that we have data to 'export'...
-
+      
         if (self.dictExportSchedPatientLocItems.count < 1)
         {
         
             self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) is an 'empty' dictionary - unable to process the 'export' data - Error!")
-
+      
             // Exit...
-
+      
             self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
-
+      
             return false
         
         }
   
         // Convert the dictionary of 'export' SchedPatientLocItems into an Excel file...
 
-        self.xcgLogMsg("\(sCurrMethodDisp) For 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - converting the 'export' data into Excel...")
+        self.xcgLogMsg("\(sCurrMethodDisp) <SwiftXLSX> For 'self.dictExportSchedPatientLocItems' with #(\(self.dictExportSchedPatientLocItems.count)) item(s) - converting the 'export' data into Excel...")
 
-        // ...
+        // Set the SwiftXLSX WorkBook/WorkSheet 'title' line...
+
+        let xlsxWorkBook:XWorkBook          = XWorkBook()
+        var xlsxWorkSheet:XSheet            = xlsxWorkBook.NewSheet("ScheduleLocations")
+
+        var xlsxCurrentCell:XCell           = xlsxWorkSheet.AddCell(XCoords(row:1, col:1))
+        xlsxCurrentCell.value               = .text("Therapist")
+        xlsxCurrentCell.alignmentHorizontal = .left
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:2))
+        xlsxCurrentCell.value               = .text("Visit Date")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:3))
+        xlsxCurrentCell.value               = .text("Visit Time")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:4))
+        xlsxCurrentCell.value               = .text("Patient")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:5))
+        xlsxCurrentCell.value               = .text("DOB")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:6))
+        xlsxCurrentCell.value               = .text("Address")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:7))
+        xlsxCurrentCell.value               = .text("Latitude")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:8))
+        xlsxCurrentCell.value               = .text("Longitude")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:9))
+        xlsxCurrentCell.value               = .text("Primary Ins")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:1, col:10))
+        xlsxCurrentCell.value               = .text("emm_acc")
+        xlsxCurrentCell.alignmentHorizontal = .center
+        xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+        // Loop to build the SwiftXLSX WorkBook/WorkSheet 'data' line(s)...
+
+        let cExportPFTherapistTotalTIDs:Int               = self.dictExportSchedPatientLocItems.count
+        var cExportPFTherapistParseTIDs:Int               = 0
+        var cTotalExportScheduledPatientLocationItems:Int = 0
+        var cXLSXWorksheetRow:Int                         = 1
+
+        for (sPFTherapistParseTID, listScheduledPatientLocationItems) in self.dictExportSchedPatientLocItems
+        {
+            
+            cExportPFTherapistParseTIDs += 1
+
+            if (sPFTherapistParseTID.count  < 1 ||
+                sPFTherapistParseTID       == "-N/A-")
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' - the 'tid' field is nil or '-N/A-' - Warning!")
+
+                continue
+
+            }
+
+            if (listScheduledPatientLocationItems.count < 1)
+            {
+
+                self.xcgLogMsg("\(sCurrMethodDisp) Skipping object #(\(cExportPFTherapistParseTIDs)) 'sPFTherapistParseTID' of [\(sPFTherapistParseTID)] - the 'listScheduledPatientLocationItems' field is nil or the count is less than 1 - Warning!")
+
+                continue
+
+            }
+
+            for scheduledPatientLocationItem in listScheduledPatientLocationItems
+            {
+
+                cTotalExportScheduledPatientLocationItems += 1
+                cXLSXWorksheetRow                         += 1
+
+                var xlsxCurrentCell:XCell           = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:1))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sTherapistName)
+                xlsxCurrentCell.alignmentHorizontal = .left
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:2))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sVDate)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:3))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sVDateStartTime)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:4))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sPtName)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:5))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sPatientDOB)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:6))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sLastVDateAddress)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:7))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sLastVDateLatitude)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:8))
+                xlsxCurrentCell.value               = .text(scheduledPatientLocationItem.sLastVDateLongitude)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:9))
+            //  xlsxCurrentCell.value               = .text("\(scheduledPatientLocationItem.iPatientPrimaryIns)")
+                xlsxCurrentCell.value               = .text(InsuranceType.allCases[scheduledPatientLocationItem.iPatientPrimaryIns].rawValue)
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+                xlsxCurrentCell                     = xlsxWorkSheet.AddCell(XCoords(row:cXLSXWorksheetRow, col:10))
+                xlsxCurrentCell.value               = .text("ROOFTOP")
+                xlsxCurrentCell.alignmentHorizontal = .center
+                xlsxCurrentCell.Font                = XFont(.TrebuchetMS, 18, true)
+
+            }
+
+        }
+
+        xlsxWorkSheet.buildindex()
+
+        xlsxWorkSheet.ForColumnSetWidth(1,  180)
+        xlsxWorkSheet.ForColumnSetWidth(2,  100)
+        xlsxWorkSheet.ForColumnSetWidth(3,  100)
+        xlsxWorkSheet.ForColumnSetWidth(4,  240)
+        xlsxWorkSheet.ForColumnSetWidth(5,  100)
+        xlsxWorkSheet.ForColumnSetWidth(6,  240)
+        xlsxWorkSheet.ForColumnSetWidth(7,  200)
+        xlsxWorkSheet.ForColumnSetWidth(8,  200)
+        xlsxWorkSheet.ForColumnSetWidth(9,  180)
+        xlsxWorkSheet.ForColumnSetWidth(10, 120)
+
+        // Upload the 'export' Schedule Patient Location(s) data...
+
+        let sXLSXFilename:String       = "ScheduledPatientLocations.xlsx"
+        let sXLSXFilespec:String       = xlsxWorkBook.save(sXLSXFilename)
+        let bIsAppXLSXFilePresent:Bool = JmFileIO.fileExists(sFilespec:sXLSXFilespec)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <SwiftXLSX> 'export' for a 'sXLSXFilename' of [\(sXLSXFilename)] created a 'sXLSXFilespec' of [\(sXLSXFilespec)] and 'bIsAppXLSXFilePresent' is [\(bIsAppXLSXFilePresent)]...")
+
+        if (bIsAppXLSXFilePresent == true)
+        {
+
+            self.xcgLogMsg("[\(sCurrMethodDisp)] <SwiftXLSX> Preparing to upload the 'source' filespec ('current' SwiftXLSX file) of [\(String(describing: sXLSXFilespec))]...")
+
+        }
+        else
+        {
+
+            self.xcgLogMsg("[\(sCurrMethodDisp)] <SwiftXLSX> Failed to create an XLSX spreadsheet for a 'sXLSXFilename' of [\(sXLSXFilename)] created a 'sXLSXFilespec' of [\(sXLSXFilespec)] and 'bIsAppXLSXFilePresent' is [\(bIsAppXLSXFilePresent)] - the file is NOT present - Error!")
+            
+            // Exit...
+            
+            self.xcgLogMsg("\(sCurrMethodDisp) Exiting...")
+            
+            return false
+            
+        }
+
+        // Create the XLSX file's 'multipartRequestInfo' object (but WITHOUT any Data (yet))...
+
+        let multipartRequestInfo:MultipartRequestInfo = MultipartRequestInfo()
+
+        multipartRequestInfo.bAppZipSourceToUpload    = false
+        multipartRequestInfo.sAppUploadURL            = ""          // "" takes the Upload URL 'default'...
+        multipartRequestInfo.sAppUploadNotifyTo       = ""          // This is email notification - "" defaults to all Dev(s)...
+        multipartRequestInfo.sAppUploadNotifyCc       = ""          // This is email notification - "" defaults to 'none'...
+        multipartRequestInfo.sAppSourceFilespec       = sXLSXFilespec
+        multipartRequestInfo.sAppSourceFilename       = sXLSXFilename
+        multipartRequestInfo.sAppZipFilename          = ""
+        multipartRequestInfo.sAppSaveAsFilename       = sXLSXFilename
+        multipartRequestInfo.sAppFileMimeType         = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    //  multipartRequestInfo.sAppFileMimeType         = "text/plain"
+
+        // Create the XLSX file's 'multipartRequestInfo.dataAppFile' object...
+
+        multipartRequestInfo.dataAppFile              = FileManager.default.contents(atPath:sXLSXFilespec)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <SwiftXLSX> The 'upload' is using 'multipartRequestInfo' of [\(String(describing: multipartRequestInfo.toString()))]...")
+
+        // Send the XLSX file as an 'upload' to the Server...
+
+        let multipartRequestDriver:MultipartRequestDriver = MultipartRequestDriver(bGenerateResponseLongMsg:true)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <SwiftXLSX> Using 'multipartRequestInfo' of [\(String(describing: multipartRequestInfo.toString()))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) <SwiftXLSX> Calling 'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
+
+        multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:multipartRequestInfo)
+
+        self.xcgLogMsg("\(sCurrMethodDisp) <SwiftXLSX> Called  'multipartRequestDriver.executeMultipartRequest(multipartRequestInfo:)'...")
 
         // Exit...
   

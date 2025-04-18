@@ -9,58 +9,6 @@
 import Foundation
 import ParseCore
 
-//  enum InsuranceType: String, CaseIterable 
-//  {
-//
-//      case NoInsurance         = 0     // none
-//      case PrivatePay          = 1     // private
-//      case TMHP                = 2     // medicaid
-//      case ParklandComm        = 3     // medicaid
-//      case ParklandCHIP        = 4     // chip
-//      case Cigna               = 5     // private
-//      case BCBSTX              = 6     // private
-//      case Superior            = 7     // medicaid
-//      case Molina              = 8     // medicaid
-//      case Amerigroup          = 9     // medicaid
-//      case United              = 10    // private
-//      case Aetna               = 11    // private
-//      case CookComm            = 12    // medicaid
-//      case CookCHIP            = 13    // chip
-//      case UMR                 = 14    // private
-//      case AmerigroupCHIP      = 15    // chip
-//      case TMHPSSI             = 16    // medicaid
-//      case TRICARE             = 17    // private
-//      case TexasChildrens      = 18    // medicaid
-//      case AmerigroupSSI       = 19    // medicaid
-//      case AetnaMedicaid       = 20    // medicaid
-//      case AetnaChip           = 21    // chip
-//      case ArkansasBCBS        = 22    // private
-//      case ChildrensMed        = 23    // medicaid
-//      case CookStar            = 24    // medicaid
-//      case UnitedMedicare      = 25    // private
-//      case TennesseeBCBS       = 26    // private
-//      case AlabamaBCBS         = 27    // private
-//      case MolinaCHIP          = 28    // chip
-//      case TCHPCHIP            = 29    // chip
-//      case CookStarKids        = 30    // medicaid
-//      case Humana              = 31    // private
-//      case CSHCN               = 32    // private
-//      case AmerigroupWellPoint = 33    // private
-//
-//  }   // End of enum InsuranceType:String,CaseIterable.
-//
-//  enum ScheduleType: String, CaseIterable
-//  {
-//      
-//      case undefined = "Undefined"
-//      case pastdate  = "PastDate"
-//      case scheduled = "Scheduled"
-//      case done      = "Done"
-//      case dateError = "DateError"
-//      case missed    = "Missed"
-//      
-//  }   // End of enum ScheduleType:String,CaseIterable.
-
 class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
 {
     
@@ -68,7 +16,7 @@ class ScheduledPatientLocationItem: NSObject, Identifiable, ObservableObject
     {
         
         static let sClsId        = "ScheduledPatientLocationItem"
-        static let sClsVers      = "v1.2101"
+        static let sClsVers      = "v1.2103"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
