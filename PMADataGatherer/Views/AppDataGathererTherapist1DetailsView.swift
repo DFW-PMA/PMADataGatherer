@@ -26,7 +26,7 @@ struct AppDataGathererTherapist1DetailsView: View
     {
         
         static let sClsId        = "AppDataGathererTherapist1DetailsView"
-        static let sClsVers      = "v1.1402"
+        static let sClsVers      = "v1.1511"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -543,15 +543,6 @@ struct AppDataGathererTherapist1DetailsView: View
                         GridRow(alignment:.bottom)
                         {
 
-                            Text("Therapists' LAST Sync")
-                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileLastSync)")
-
-                        }
-                        .font(.caption2) 
-
-                        GridRow(alignment:.bottom)
-                        {
-
                             Text("Therapists' iPad Update #")
                             Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileIpadUpdate)")
 
@@ -563,6 +554,35 @@ struct AppDataGathererTherapist1DetailsView: View
 
                             Text("Therapists' iPhone Update #")
                             Text(verbatim:"\(self.pfTherapistFileItem!.iPFTherapistFileIphoneUpdate)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' LAST (Device) Sync")
+                            Text("\(self.pfTherapistFileItem!.sPFTherapistFileLastSync)")
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' FINAL Sync")
+                            Text("\(self.renderOptionalDateAsString(dateOptional:self.pfTherapistFileItem!.datePFTherapistFileFinalSync))")
+                                .foregroundStyle((self.isOptionalDateOlderThanPrevSat(dateOptional:self.pfTherapistFileItem!.datePFTherapistFileFinalSync) == true) ? .red : .green)
+
+                        }
+                        .font(.caption2) 
+
+                        GridRow(alignment:.bottom)
+                        {
+
+                            Text("Therapists' 2nd FINAL Sync")
+                            Text("\(self.renderOptionalDateAsString(dateOptional:self.pfTherapistFileItem!.datePFTherapistFileSecondFinalSync))")
+                                .foregroundStyle((self.isOptionalDateOlderThanPrevSat(dateOptional:self.pfTherapistFileItem!.datePFTherapistFileSecondFinalSync) == true) ? .red : .green)
 
                         }
                         .font(.caption2) 
@@ -855,5 +875,80 @@ struct AppDataGathererTherapist1DetailsView: View
         return sPhoneNumberFormatted
         
     }   // End of private func formatPhoneNumber(sPhoneNumber:String)->String
+
+    private func renderOptionalDateAsString(dateOptional:Date? = nil)->String
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'dateOptional' is [\(String(describing: dateOptional))]...")
+
+        // Convert and render the supplied 'optional' Date as a String...
+
+        var sRenderedOptionalDate:String = "-invalid-"
+
+        if (dateOptional != nil)
+        {
+        
+            let dateFormatter:DateFormatter = DateFormatter()
+            dateFormatter.dateFormat        = "yyyy-MM-dd"
+        //  dateFormatter.dateFormat        = "yyyy-MM-dd HH:mm a zzz"
+        //  dateFormatter.dateFormat        = "yyyy-MM-dd HH:mm:ss Z"
+
+            sRenderedOptionalDate = dateFormatter.string(from:dateOptional!)
+        
+        }
+
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'dateOptional' was [\(String(describing:dateOptional))] - 'sRenderedOptionalDate' is [\(sRenderedOptionalDate)]...")
+  
+        return sRenderedOptionalDate
+        
+    }   // End of private func renderOptionalDateAsString(dateOptional:Date?)->String.
+
+    private func isOptionalDateOlderThanPrevSat(dateOptional:Date? = nil)->Bool
+    {
+
+        let sCurrMethod:String = #function
+        let sCurrMethodDisp    = "\(ClassInfo.sClsDisp)'"+sCurrMethod+"':"
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Invoked - parameter 'dateOptional' is [\(String(describing: dateOptional))]...")
+
+        // Determine if the supplied 'optional' Date as older than the 'previous' Saturday...
+
+        var bIsOptionalDateOlderThanPrevSat:Bool = true
+
+        if (dateOptional != nil)
+        {
+        
+            var dateOfPreviousSaturday:Date   = Date.now
+            var dateOf2PreviousSaturdays:Date = Date.now
+            var tiPrevSaturday:TimeInterval   = 0.0
+            var tiPrev2Saturdays:TimeInterval = 0.0
+
+            let _ = Calendar.current.nextWeekend(startingAfter:.now,
+                                                 start:        &dateOfPreviousSaturday,
+                                                 interval:     &tiPrevSaturday,
+                                                 direction:    .backward)
+
+            let _ = Calendar.current.nextWeekend(startingAfter:dateOfPreviousSaturday,
+                                                 start:        &dateOf2PreviousSaturdays,
+                                                 interval:     &tiPrev2Saturdays,
+                                                 direction:    .backward)
+
+            bIsOptionalDateOlderThanPrevSat = (dateOptional! < dateOf2PreviousSaturdays)
+        //  bIsOptionalDateOlderThanPrevSat = (dateOptional! < dateOfPreviousSaturday)
+        
+        }
+
+        // Exit...
+
+        self.xcgLogMsg("\(sCurrMethodDisp) Exiting - 'dateOptional' was [\(String(describing:dateOptional))] - 'bIsOptionalDateOlderThanPrevSat' is [\(bIsOptionalDateOlderThanPrevSat)]...")
+  
+        return bIsOptionalDateOlderThanPrevSat
+        
+    }   // End of private func isOptionalDateOlderThanPrevSat(dateOptional:Date?)->String.
 
 }   // End of struct AppDataGathererTherapist1DetailsView(View).

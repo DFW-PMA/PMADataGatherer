@@ -39,7 +39,7 @@ struct AppDataGathererSchedule1ExportView: View
     {
         
         static let sClsId        = "AppDataGathererSchedule1ExportView"
-        static let sClsVers      = "v1.0303"
+        static let sClsVers      = "v1.0401"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -425,7 +425,9 @@ struct AppDataGathererSchedule1ExportView: View
                             }
 
                             TextField("TherapistTID...", text:$sTherapistTID)
+                            #if os(iOS)
                                 .keyboardType(.numberPad)
+                            #endif
                                 .onReceive(Just(sTherapistTID))
                                 { newValue in
                                     let filteredValue = newValue.filter { "-0123456789".contains($0) }

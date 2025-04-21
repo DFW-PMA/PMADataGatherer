@@ -18,7 +18,7 @@ struct AppTidScheduleView: View
     {
         
         static let sClsId        = "AppTidScheduleView"
-        static let sClsVers      = "v1.1107"
+        static let sClsVers      = "v1.1201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright © JustMacApps 2023-2025. All rights reserved."
         static let bClsTrace     = true
@@ -28,8 +28,9 @@ struct AppTidScheduleView: View
 
     // App Data field(s):
 
-    @Environment(\.presentationMode)     var presentationMode
-    @Environment(\.openURL)              var openURL
+    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.openURL)          var openURL
+    @Environment(\.openWindow)       var openWindow
 
     // App Data field(s):
 

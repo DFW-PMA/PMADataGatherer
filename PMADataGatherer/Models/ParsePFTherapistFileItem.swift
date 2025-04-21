@@ -18,7 +18,7 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     {
         
         static let sClsId        = "ParsePFTherapistFileItem"
-        static let sClsVers      = "v1.0902"
+        static let sClsVers      = "v1.1001"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -125,6 +125,9 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
     var sPFTherapistFileLastSync:String                           = "-N/A"     // 'pfTherapistFileObject[lastSync]'
     var iPFTherapistFileIpadUpdate:Int                            = -1         // 'pfTherapistFileObject[iPadUpdate]'
     var iPFTherapistFileIphoneUpdate:Int                          = -1         // 'pfTherapistFileObject[iPhoneUpdate]'
+
+    var datePFTherapistFileFinalSync:Date?                        = nil        // 'pfTherapistFileObject[finalSyncNSDate]'
+    var datePFTherapistFileSecondFinalSync:Date?                  = nil        // 'pfTherapistFileObject[secondFinalSyncNSDate]'
 
     // ----------------------------------------------------------------------------------------------------------
     // "startWk"            : "12/21/24",
@@ -397,6 +400,8 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         asToString.append("'sPFTherapistFileLastSync': [\(String(describing: self.sPFTherapistFileLastSync))],")
         asToString.append("'iPFTherapistFileIpadUpdate': (\(String(describing: self.iPFTherapistFileIpadUpdate))),")
         asToString.append("'iPFTherapistFileIphoneUpdate': (\(String(describing: self.iPFTherapistFileIphoneUpdate))),")
+        asToString.append("'datePFTherapistFileFinalSync': [\(String(describing: self.datePFTherapistFileFinalSync))],")
+        asToString.append("'datePFTherapistFileSecondFinalSync': [\(String(describing: self.datePFTherapistFileSecondFinalSync))],")
         asToString.append("],")
         asToString.append("[")
         asToString.append("'sPFTherapistFileStartWeek': [\(String(describing: self.sPFTherapistFileStartWeek))],")
@@ -503,6 +508,8 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileLastSync'               is [\(String(describing: self.sPFTherapistFileLastSync))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileIpadUpdate'             is (\(String(describing: self.iPFTherapistFileIpadUpdate)))...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'iPFTherapistFileIphoneUpdate'           is (\(String(describing: self.iPFTherapistFileIphoneUpdate)))...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFTherapistFileFinalSync'           is [\(String(describing: self.datePFTherapistFileFinalSync))]...")
+        self.xcgLogMsg("\(sCurrMethodDisp) 'datePFTherapistFileSecondFinalSync'     is [\(String(describing: self.datePFTherapistFileSecondFinalSync))]...")
 
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileStartWeek'              is [\(String(describing: self.sPFTherapistFileStartWeek))]...")
         self.xcgLogMsg("\(sCurrMethodDisp) 'sPFTherapistFileWeekStartInvoice'       is [\(String(describing: self.sPFTherapistFileWeekStartInvoice))]...")
@@ -604,6 +611,9 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         self.sPFTherapistFileLastSync                 = String(describing: (pfTherapistFileObject.object(forKey:"lastSync")              ?? ""))
         self.iPFTherapistFileIpadUpdate               = Int(String(describing: (pfTherapistFileObject.object(forKey:"iPadUpdate")        ?? "-1"))) ?? -2
         self.iPFTherapistFileIphoneUpdate             = Int(String(describing: (pfTherapistFileObject.object(forKey:"iPhoneUpdate")      ?? "-1"))) ?? -2
+
+        self.datePFTherapistFileFinalSync             = (pfTherapistFileObject.object(forKey:"finalSyncNSDate")       as? Date) ?? nil
+        self.datePFTherapistFileSecondFinalSync       = (pfTherapistFileObject.object(forKey:"secondFinalSyncNSDate") as? Date) ?? nil
 
         self.sPFTherapistFileStartWeek                = String(describing: (pfTherapistFileObject.object(forKey:"startWk")               ?? ""))
         self.sPFTherapistFileWeekStartInvoice         = String(describing: (pfTherapistFileObject.object(forKey:"wkStartInvoice")        ?? ""))
@@ -738,6 +748,9 @@ class ParsePFTherapistFileItem: NSObject, Identifiable
         self.sPFTherapistFileLastSync               = pfTherapistFileItem.sPFTherapistFileLastSync
         self.iPFTherapistFileIpadUpdate             = pfTherapistFileItem.iPFTherapistFileIpadUpdate
         self.iPFTherapistFileIphoneUpdate           = pfTherapistFileItem.iPFTherapistFileIphoneUpdate
+
+        self.datePFTherapistFileFinalSync           = pfTherapistFileItem.datePFTherapistFileFinalSync      
+        self.datePFTherapistFileSecondFinalSync     = pfTherapistFileItem.datePFTherapistFileSecondFinalSync
         
         self.sPFTherapistFileStartWeek              = pfTherapistFileItem.sPFTherapistFileStartWeek
         self.sPFTherapistFileWeekStartInvoice       = pfTherapistFileItem.sPFTherapistFileWeekStartInvoice
