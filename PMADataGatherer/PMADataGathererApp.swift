@@ -18,7 +18,7 @@ struct PMADataGathererApp: App
     {
         
         static let sClsId        = "PMADataGathererApp"
-        static let sClsVers      = "v1.2101"
+        static let sClsVers      = "v1.2201"
         static let sClsDisp      = sClsId+".("+sClsVers+"): "
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -181,8 +181,7 @@ struct PMADataGathererApp: App
             AppDataGathererView()
 
         }
-
-    #endif
+#endif
         
     }
     

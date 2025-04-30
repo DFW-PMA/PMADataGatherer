@@ -16,7 +16,7 @@ struct AppLogPFDataView: View
     {
         
         static let sClsId        = "AppLogPFDataView"
-        static let sClsVers      = "v1.0804"
+        static let sClsVers      = "v1.0905"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -50,6 +50,8 @@ struct AppLogPFDataView: View
     @State private  var cAppLogPFDataLoggingExportSchedPatLocButtonPresses:Int    = 0
     @State private  var cAppLogPFDataLoggingExportBackupFileButtonPresses:Int     = 0
     @State private  var cAppLogPFDataLoggingExportLastBackupFileButtonPresses:Int = 0
+
+    @State private  var isAppLogPFDataReloading:Bool                              = false
 
     @State private  var cAppLogPFDataReloadPFAdminsButtonPresses:Int              = 0
     @State private  var cAppLogPFDataReloadPFCscButtonPresses:Int                 = 0
@@ -1007,7 +1009,13 @@ struct AppLogPFDataView: View
 
                                 let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses))...")
 
+                            //  self.isAppLogPFDataReloading = true
+                            //  self.isAppLogPFDataReloading.toggle()
+
                                 self.reloadTherapistFileItems()
+
+                            //  self.isAppLogPFDataReloading = false
+                            //  self.isAppLogPFDataReloading.toggle()
 
                             }
                             label:
@@ -1024,6 +1032,24 @@ struct AppLogPFDataView: View
 
                                     Text("Reload PFData (PFTherapistFile) - #(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses))...")
                                         .font(.caption2)
+
+                                    if (self.isAppLogPFDataReloading == true)
+                                    {
+                                    
+                                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)]...")
+
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle())
+                                            .padding()
+                                        //  .frame(width:200, height:50)
+                                    
+                                    }
+                                    else
+                                    {
+                                    
+                                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)]...")
+
+                                    }
 
                                     Spacer()
 
@@ -1915,12 +1941,16 @@ struct AppLogPFDataView: View
         self.xcgLogMsg("\(sCurrMethodDisp) Invoked...")
 
         // Reload the ParseCoreBkgdDataRepo PFTherapistFileItem(s) (deepcopy to ParseCoreManager)...
+
+        self.isAppLogPFDataReloading = true
     
         self.xcgLogMsg("\(sCurrMethodDisp) Calling the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForTherapistFileToAddToAdmins()' to get Therapist dictionaries (TherapistFile, TherapistXref, TherapistNames)...")
 
         let _ = self.jmAppParseCoreBkgdDataRepo.getJmAppParsePFQueryForTherapistFileToAddToAdmins(bForceReloadOfPFQuery:true)
 
         self.xcgLogMsg("\(sCurrMethodDisp) Called  the 'jmAppParseCoreBkgdDataRepo' method 'getJmAppParsePFQueryForTherapistFileToAddToAdmins()' to get Therapist dictionaries (TherapistFile, TherapistXref, TherapistNames)...")
+
+        self.isAppLogPFDataReloading = false
 
         // Exit:
 
