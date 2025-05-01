@@ -9,70 +9,76 @@
 import Foundation
 import SwiftUI
 
-// Reusable loading modifier...
+// Reusable ProgressOverlay modifier and View extension...
 
-struct ContentLoadingModifier: ViewModifier 
+struct ProgressOverlay: ViewModifier
 {
 
     @Binding var isContentLoading:Bool
+             var backgroundColor:Color
+             var opacity:Double
     
+    public func xcgLogMsg(_ sMessage:String)
+    {
+
+        let dtFormatterDateStamp:DateFormatter = DateFormatter()
+
+        dtFormatterDateStamp.locale     = Locale(identifier: "en_US")
+        dtFormatterDateStamp.timeZone   = TimeZone.current
+        dtFormatterDateStamp.dateFormat = "yyyy-MM-dd hh:mm:ss.SSS"
+
+        let dateStampNow:Date = .now
+        let sDateStamp:String = ("\(dtFormatterDateStamp.string(from:dateStampNow)) >> ")
+
+        print("\(sDateStamp)\(sMessage)")
+
+        // Exit:
+
+        return
+
+    }   // End of public func xcgLogMsg().
+
     func body(content:Content)->some View 
     {
 
-        let _ = print("...ContentLoadingModifier:ViewModifier - 'isContentLoading' is [\(isContentLoading)] - launching the 'ZStack'...")
+        let _ = self.xcgLogMsg("<ContentLoading> ProgressOverlay:ViewModifier - 'isContentLoading' is [\(isContentLoading)] - launching the 'ZStack'...")
 
         ZStack 
         {
 
             content
                 .disabled(isContentLoading)
-                .blur(radius:((isContentLoading == true) ? 2 : 0))
+                .blur(radius:((isContentLoading == true) ? 3 : 0))
             
-            if (isContentLoading == true) 
+            if (isContentLoading == true)
             {
 
-                Color.black.opacity(0.4)
+                backgroundColor
+                    .opacity(opacity)
                     .edgesIgnoringSafeArea(.all)
                 
-                HStack 
-                {
-
-                    Text("Loading... ")
-                        .foregroundColor(.white)
-                        .font(.caption2)
-                        .padding(.top, 5)
-
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint:.white))
-                        .scaleEffect(0.50)
-
-                }
-                .padding(10)
-                .background(Color.gray.opacity(0.7))
-                .cornerRadius(5)
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint:.white))
+                    .scaleEffect(1.5)
 
             }
 
         }
+        .animation(.default, value:isContentLoading)
 
     }   // End of func body(content:Content)->some View.
 
-}   // End of struct ContentLoadingModifier:ViewModifier.
-
-// Extension to make it easy to use...
+}   // End of struct ProgressOverlay:ViewModifier.
 
 extension View 
 {
 
-    func showContentLoading(_ isContentLoading:Binding<Bool>)->some View 
+    func progressOverlay(isContentLoading:Binding<Bool>, backgroundColor:Color = .black, opacity:Double = 0.6)->some View 
     {
 
-    //  let _ = print("...Extension:View - 'isContentLoading' is [\(isContentLoading)] - launching the 'modifier'...")
+        modifier(ProgressOverlay(isContentLoading:isContentLoading, backgroundColor:backgroundColor, opacity:opacity))
 
-    //  modifier(ContentLoadingModifier(isContentLoading:true))
-        modifier(ContentLoadingModifier(isContentLoading:isContentLoading))
-
-    }   //  End of func showContentLoading(_ isContentLoading: Bool)->some View.
+    }   // End of func ProgressOverlay(isContentLoading:Binding<Bool>, backgroundColor:Color=.black, opacity:Double=0.6)->some View.
 
 }   // End of extension View.
 
@@ -83,7 +89,7 @@ struct AppLogPFDataView: View
     {
         
         static let sClsId        = "AppLogPFDataView"
-        static let sClsVers      = "v1.1012"
+        static let sClsVers      = "v1.1017"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -1078,14 +1084,12 @@ struct AppLogPFDataView: View
                                 let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses))...")
 
                                 self.isAppLogPFDataReloading = true
-                            //  self.isAppLogPFDataReloading.toggle()
 
                                 let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)] <should be 'true'>...")
 
                                 self.reloadTherapistFileItems()
 
                                 self.isAppLogPFDataReloading = false
-                            //  self.isAppLogPFDataReloading.toggle()
 
                                 let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)] <should be 'false'>...")
 
@@ -1103,34 +1107,16 @@ struct AppLogPFDataView: View
                                         .imageScale(.small)
 
                                     Text("Reload PFData (PFTherapistFile) - #(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses))...")
+                                        .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
                                         .font(.caption2)
-
-                                //  if (self.isAppLogPFDataReloading == true)
-                                //  {
-                                //  
-                                //      let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)]...")
-                                //
-                                //      ProgressView()
-                                //          .progressViewStyle(CircularProgressViewStyle())
-                                //          .padding()
-                                //      //  .frame(width:200, height:50)
-                                //  
-                                //  }
-                                //  else
-                                //  {
-                                //  
-                                //      let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)]...")
-                                //
-                                //  }
 
                                     Spacer()
 
                                 }
-                            //  .showContentLoading(self.isAppLogPFDataReloading)       // Apply the 'content' loading overlay...
-                            //  .showContentLoading($isAppLogPFDataReloading)           // Apply the 'content' loading overlay...
+                            //  .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
 
                             }
-                        //  .showContentLoading($isAppLogPFDataReloading)           // Apply the 'content' loading overlay...
+                        //  .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
                         #if os(macOS)
                             .buttonStyle(.borderedProminent)
                             .padding()
@@ -1142,7 +1128,7 @@ struct AppLogPFDataView: View
                             Spacer()
 
                         }
-                        .showContentLoading($isAppLogPFDataReloading)           // Apply the 'content' loading overlay...
+                    //  .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
 
                         HStack(alignment:.center)
                         {
