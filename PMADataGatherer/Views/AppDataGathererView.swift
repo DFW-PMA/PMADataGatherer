@@ -109,7 +109,7 @@ struct AppDataGathererView: View
 
                             self.cAppLogPFDataButtonPresses += 1
 
-                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
+                            let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppDataGathererView.Button(Xcode).'Log/Reload Data'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
 
                             self.isAppLogPFDataViewModal.toggle()
 
@@ -126,7 +126,7 @@ struct AppDataGathererView: View
                                     .help(Text("Log PFXxxDataItem(s)..."))
                                     .imageScale(.small)
 
-                                Text("Log PFData")
+                                Text("Log/Reload Data")
                                     .font(.caption2)
 
                             }

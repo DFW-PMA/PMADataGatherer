@@ -9,6 +9,79 @@
 import Foundation
 import SwiftUI
 
+// Reusable ProgressOverlay modifier and View extension...
+
+struct ProgressOverlay: ViewModifier
+{
+
+    @Binding var isContentLoading:Bool
+             var backgroundColor:Color
+             var opacity:Double
+    
+    public func xcgLogMsg(_ sMessage:String)
+    {
+
+        let dtFormatterDateStamp:DateFormatter = DateFormatter()
+
+        dtFormatterDateStamp.locale     = Locale(identifier: "en_US")
+        dtFormatterDateStamp.timeZone   = TimeZone.current
+        dtFormatterDateStamp.dateFormat = "yyyy-MM-dd hh:mm:ss.SSS"
+
+        let dateStampNow:Date = .now
+        let sDateStamp:String = ("\(dtFormatterDateStamp.string(from:dateStampNow)) >> ")
+
+        print("\(sDateStamp)\(sMessage)")
+
+        // Exit:
+
+        return
+
+    }   // End of public func xcgLogMsg().
+
+    func body(content:Content)->some View 
+    {
+
+        let _ = self.xcgLogMsg("<ContentLoading> ProgressOverlay:ViewModifier - 'isContentLoading' is [\(isContentLoading)] - launching the 'ZStack'...")
+
+        ZStack 
+        {
+
+            content
+                .disabled(isContentLoading)
+                .blur(radius:((isContentLoading == true) ? 3 : 0))
+            
+            if (isContentLoading == true)
+            {
+
+                backgroundColor
+                    .opacity(opacity)
+                    .edgesIgnoringSafeArea(.all)
+                
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint:.white))
+                    .scaleEffect(1.5)
+
+            }
+
+        }
+        .animation(.default, value:isContentLoading)
+
+    }   // End of func body(content:Content)->some View.
+
+}   // End of struct ProgressOverlay:ViewModifier.
+
+extension View 
+{
+
+    func progressOverlay(isContentLoading:Binding<Bool>, backgroundColor:Color = .black, opacity:Double = 0.6)->some View 
+    {
+
+        modifier(ProgressOverlay(isContentLoading:isContentLoading, backgroundColor:backgroundColor, opacity:opacity))
+
+    }   // End of func ProgressOverlay(isContentLoading:Binding<Bool>, backgroundColor:Color=.black, opacity:Double=0.6)->some View.
+
+}   // End of extension View.
+
 struct AppLogPFDataView: View 
 {
     
@@ -16,7 +89,7 @@ struct AppLogPFDataView: View
     {
         
         static let sClsId        = "AppLogPFDataView"
-        static let sClsVers      = "v1.0905"
+        static let sClsVers      = "v1.1017"
         static let sClsDisp      = sClsId+"(.swift).("+sClsVers+"):"
         static let sClsCopyRight = "Copyright (C) JustMacApps 2023-2025. All Rights Reserved."
         static let bClsTrace     = true
@@ -52,6 +125,7 @@ struct AppLogPFDataView: View
     @State private  var cAppLogPFDataLoggingExportLastBackupFileButtonPresses:Int = 0
 
     @State private  var isAppLogPFDataReloading:Bool                              = false
+//  @State private  var isAppLogPFDataReloading:Bool                              = true
 
     @State private  var cAppLogPFDataReloadPFAdminsButtonPresses:Int              = 0
     @State private  var cAppLogPFDataReloadPFCscButtonPresses:Int                 = 0
@@ -133,7 +207,7 @@ struct AppLogPFDataView: View
                         {
 
                             Label("", systemImage: "arrow.clockwise")
-                                .help(Text("'Refresh' App Log PFData Screen..."))
+                                .help(Text("'Refresh' App Log/Reload Data Screen..."))
                                 .imageScale(.large)
 
                             Text("Refresh - #(\(self.cAppLogPFDataLoggingRefreshButtonPresses))...")
@@ -344,7 +418,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingPFAdminsButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for PFAdmins'.#(\(self.cAppLogPFDataLoggingPFAdminsButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for PFAdmins'.#(\(self.cAppLogPFDataLoggingPFAdminsButtonPresses))...")
 
                                 self.detailPFAdminsDataItems()
 
@@ -358,10 +432,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for PFAdmins..."))
+                                        .help(Text("Log Data for PFAdmins..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData (PFAdmins) - #(\(self.cAppLogPFDataLoggingPFAdminsButtonPresses))...")
+                                    Text("Log Data (PFAdmins) - #(\(self.cAppLogPFDataLoggingPFAdminsButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -391,7 +465,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingPFCscButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for PFCsc'.#(\(self.cAppLogPFDataLoggingPFCscButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for PFCsc'.#(\(self.cAppLogPFDataLoggingPFCscButtonPresses))...")
 
                                 self.detailPFCscDataItems()
 
@@ -405,10 +479,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for PFCsc..."))
+                                        .help(Text("Log Data for PFCsc..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData (PFCsc) - #(\(self.cAppLogPFDataLoggingPFCscButtonPresses))...")
+                                    Text("Log Data (PFCsc) - #(\(self.cAppLogPFDataLoggingPFCscButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -438,7 +512,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingPFTherapistNamesButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for PFTherapist (Names)'.#(\(self.cAppLogPFDataLoggingPFTherapistNamesButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for PFTherapist (Names)'.#(\(self.cAppLogPFDataLoggingPFTherapistNamesButtonPresses))...")
 
                                 self.detailTherapistNamesList()
 
@@ -452,10 +526,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for PFTherapist (Names)..."))
+                                        .help(Text("Log Data for PFTherapist (Names)..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData (PFTherapist) Names - #(\(self.cAppLogPFDataLoggingPFTherapistNamesButtonPresses))...")
+                                    Text("Log Data (PFTherapist) Names - #(\(self.cAppLogPFDataLoggingPFTherapistNamesButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -485,7 +559,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingPFTherapistFileButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for PFTherapistFile'.#(\(self.cAppLogPFDataLoggingPFTherapistFileButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for PFTherapistFile'.#(\(self.cAppLogPFDataLoggingPFTherapistFileButtonPresses))...")
 
                                 self.detailTherapistFileItems()
 
@@ -499,10 +573,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for PFTherapistFile..."))
+                                        .help(Text("Log Data for PFTherapistFile..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData (PFTherapistFile) - #(\(self.cAppLogPFDataLoggingPFTherapistFileButtonPresses))...")
+                                    Text("Log Data (PFTherapistFile) - #(\(self.cAppLogPFDataLoggingPFTherapistFileButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -579,7 +653,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingPFPatientNamesButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for PFPatient (Names)'.#(\(self.cAppLogPFDataLoggingPFPatientNamesButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for PFPatient (Names)'.#(\(self.cAppLogPFDataLoggingPFPatientNamesButtonPresses))...")
 
                                 self.detailPatientNamesList()
 
@@ -593,10 +667,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for PFPatient (Names)..."))
+                                        .help(Text("Log Data for PFPatient (Names)..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData (PFPatient) Names - #(\(self.cAppLogPFDataLoggingPFPatientNamesButtonPresses))...")
+                                    Text("Log Data (PFPatient) Names - #(\(self.cAppLogPFDataLoggingPFPatientNamesButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -626,7 +700,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingPFPatientFileButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for PFPatientFile'.#(\(self.cAppLogPFDataLoggingPFPatientFileButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for PFPatientFile'.#(\(self.cAppLogPFDataLoggingPFPatientFileButtonPresses))...")
 
                                 self.detailPatientFileItems()
 
@@ -640,10 +714,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for PFPatientFile..."))
+                                        .help(Text("Log Data for PFPatientFile..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData (PFPatientFile) - #(\(self.cAppLogPFDataLoggingPFPatientFileButtonPresses))...")
+                                    Text("Log Data (PFPatientFile) - #(\(self.cAppLogPFDataLoggingPFPatientFileButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -720,7 +794,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingSchedPatLocButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for SchedPatLoc'.#(\(self.cAppLogPFDataLoggingSchedPatLocButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for SchedPatLoc'.#(\(self.cAppLogPFDataLoggingSchedPatLocButtonPresses))...")
 
                                 self.detailDictSchedPatientLocItems()
 
@@ -734,10 +808,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for SchedPatLoc..."))
+                                        .help(Text("Log Data for SchedPatLoc..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData (SchedPatLoc) - #(\(self.cAppLogPFDataLoggingSchedPatLocButtonPresses))...")
+                                    Text("Log Data (SchedPatLoc) - #(\(self.cAppLogPFDataLoggingSchedPatLocButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -767,7 +841,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for 'export' SchedPatLoc'.#(\(self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for 'export' SchedPatLoc'.#(\(self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses))...")
 
                                 self.detailDictExportSchedPatientLocItems()
 
@@ -781,10 +855,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for 'export' SchedPatLoc..."))
+                                        .help(Text("Log Data for 'export' SchedPatLoc..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData 'export' (SchedPatLoc) - #(\(self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses))...")
+                                    Text("Log Data 'export' (SchedPatLoc) - #(\(self.cAppLogPFDataLoggingExportSchedPatLocButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -814,7 +888,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingExportBackupFileButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for 'export' BackupFile Item(s)'.#(\(self.cAppLogPFDataLoggingExportBackupFileButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for 'export' BackupFile Item(s)'.#(\(self.cAppLogPFDataLoggingExportBackupFileButtonPresses))...")
 
                                 self.detailDictExportBackupFileItems()
 
@@ -828,10 +902,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for 'export' BackupFile item(s)..."))
+                                        .help(Text("Log Data for 'export' BackupFile item(s)..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData 'export' (BackupFile) - #(\(self.cAppLogPFDataLoggingExportBackupFileButtonPresses))...")
+                                    Text("Log Data 'export' (BackupFile) - #(\(self.cAppLogPFDataLoggingExportBackupFileButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -861,7 +935,7 @@ struct AppLogPFDataView: View
 
                                 self.cAppLogPFDataLoggingExportLastBackupFileButtonPresses += 1
 
-                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log PFData for 'export' LAST BackupFile Item(s)'.#(\(self.cAppLogPFDataLoggingExportLastBackupFileButtonPresses))...")
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Log/Reload Data for 'export' LAST BackupFile Item(s)'.#(\(self.cAppLogPFDataLoggingExportLastBackupFileButtonPresses))...")
 
                                 self.detailDictExportLastBackupFileItems()
 
@@ -875,10 +949,10 @@ struct AppLogPFDataView: View
                                     Spacer()
 
                                     Label("", systemImage: "arrow.down.square")
-                                        .help(Text("Log PFData for 'export' LAST BackupFile item(s)..."))
+                                        .help(Text("Log Data for 'export' LAST BackupFile item(s)..."))
                                         .imageScale(.small)
 
-                                    Text("Log PFData 'export' LAST (BackupFile) - #(\(self.cAppLogPFDataLoggingExportLastBackupFileButtonPresses))...")
+                                    Text("Log Data 'export' LAST (BackupFile) - #(\(self.cAppLogPFDataLoggingExportLastBackupFileButtonPresses))...")
                                         .font(.caption2)
 
                                     Spacer()
@@ -1009,13 +1083,15 @@ struct AppLogPFDataView: View
 
                                 let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses))...")
 
-                            //  self.isAppLogPFDataReloading = true
-                            //  self.isAppLogPFDataReloading.toggle()
+                                self.isAppLogPFDataReloading = true
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)] <should be 'true'>...")
 
                                 self.reloadTherapistFileItems()
 
-                            //  self.isAppLogPFDataReloading = false
-                            //  self.isAppLogPFDataReloading.toggle()
+                                self.isAppLogPFDataReloading = false
+
+                                let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)] <should be 'false'>...")
 
                             }
                             label:
@@ -1031,31 +1107,16 @@ struct AppLogPFDataView: View
                                         .imageScale(.small)
 
                                     Text("Reload PFData (PFTherapistFile) - #(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses))...")
+                                        .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
                                         .font(.caption2)
-
-                                    if (self.isAppLogPFDataReloading == true)
-                                    {
-                                    
-                                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)]...")
-
-                                        ProgressView()
-                                            .progressViewStyle(CircularProgressViewStyle())
-                                            .padding()
-                                        //  .frame(width:200, height:50)
-                                    
-                                    }
-                                    else
-                                    {
-                                    
-                                        let _ = self.xcgLogMsg("...\(ClassInfo.sClsDisp)AppLogPFDataView.Button(Xcode).'App Reload PFData for PFTherapistFile'.#(\(self.cAppLogPFDataReloadPFTherapistFileButtonPresses)) - 'self.isAppLogPFDataReloading' is [\(self.isAppLogPFDataReloading)]...")
-
-                                    }
 
                                     Spacer()
 
                                 }
+                            //  .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
 
                             }
+                        //  .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
                         #if os(macOS)
                             .buttonStyle(.borderedProminent)
                             .padding()
@@ -1067,6 +1128,7 @@ struct AppLogPFDataView: View
                             Spacer()
 
                         }
+                    //  .progressOverlay(isContentLoading:$isAppLogPFDataReloading)
 
                         HStack(alignment:.center)
                         {

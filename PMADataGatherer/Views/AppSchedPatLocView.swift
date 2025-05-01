@@ -123,7 +123,7 @@ struct AppSchedPatLocView: View
                 //
                 //          self.cAppLogPFDataButtonPresses += 1
                 //
-                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppSchedPatLocView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
+                //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):AppSchedPatLocView.Button(Xcode).'Log/Reload Data'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
                 //
                 //          self.isAppLogPFDataViewModal.toggle()
                 //
@@ -138,7 +138,7 @@ struct AppSchedPatLocView: View
                 //                  .help(Text("Log PFXxxDataItem(s)..."))
                 //                  .imageScale(.medium)
                 //
-                //              Text("Log PFData")
+                //              Text("Log/Reload Data")
                 //                  .font(.footnote)
                 //
                 //          }

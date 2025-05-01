@@ -131,7 +131,7 @@ struct ContentView: View
             //
             //          self.cAppLogPFDataButtonPresses += 1
             //
-            //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'Log PFData'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
+            //          let _ = self.xcgLogMsg("\(ClassInfo.sClsDisp):ContentView.Button(Xcode).'Log/Reload Data'.#(\(self.cAppLogPFDataButtonPresses)) pressed...")
             //
             //          self.isAppLogPFDataViewModal.toggle()
             //
@@ -148,7 +148,7 @@ struct ContentView: View
             //                  .help(Text("Log PFXxxDataItem(s)..."))
             //                  .imageScale(.small)
             //
-            //              Text("Log PFData")
+            //              Text("Log/Reload Data")
             //                  .font(.caption2)
             //
             //          }
